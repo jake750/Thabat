@@ -1,0 +1,1 @@
+package android.app; public class NotificationManager { public void createNotificationChannel(NotificationChannel c){} public void notify(int id,Notification n){} public void cancel(int id){} public boolean isNotificationPolicyAccessGranted(){return false;} public int getCurrentInterruptionFilter(){return 0;} public void setInterruptionFilter(int f){} }

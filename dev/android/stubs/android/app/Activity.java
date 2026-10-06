@@ -1,0 +1,5 @@
+package android.app; import android.content.Intent; public class Activity extends android.view.ContextThemeWrapper { public static final int RESULT_OK=-1;
+ protected void onCreate(android.os.Bundle b){} public void setContentView(android.view.View v){} public android.view.Window getWindow(){return null;}
+ public void onBackPressed(){} public void finish(){} public final void requestPermissions(String[] p,int c){}
+ public void onRequestPermissionsResult(int c,String[] p,int[] r){} public void startActivityForResult(Intent i,int c){}
+ protected void onActivityResult(int req,int res,Intent data){} protected void onResume(){} protected void onPause(){} public boolean moveTaskToBack(boolean b){return false;}  public final void runOnUiThread(Runnable r){} public Intent getIntent(){return null;} protected void onNewIntent(Intent i){} public void setIntent(Intent i){}  public android.window.OnBackInvokedDispatcher getOnBackInvokedDispatcher(){return null;} }

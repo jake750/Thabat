@@ -1,0 +1,1 @@
+package android.appwidget; import android.content.*; public class AppWidgetProvider extends BroadcastReceiver { public void onReceive(Context c,Intent i){} public void onUpdate(Context c,AppWidgetManager m,int[] ids){} public void onEnabled(Context c){} }

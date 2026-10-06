@@ -1,0 +1,2 @@
+package android.app; public class AlarmManager { public void setExactAndAllowWhileIdle(int t,long w,PendingIntent p){}
+ public void setAndAllowWhileIdle(int t,long w,PendingIntent p){} public void cancel(PendingIntent p){} }

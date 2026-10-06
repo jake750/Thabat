@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">ثبات</string>
+    <string name="w_next">الصلاة القادمة</string>
+    <string name="w_adh">📿 الأذكار</string>
+    <string name="w_desc">الصلاة القادمة وتقدّم اليوم وزر الأذكار</string>
+    <string name="w2_desc">الصلاة القادمة مع عدّ تنازلي</string>
+    <string name="sc_timer">ابدأ المؤقّت</string>
+    <string name="sc_note">ملاحظة جديدة</string>
+    <string name="sc_adhkar">الأذكار</string>
+    <string name="sc_quran">المصحف</string>
+    <string name="sc_inbox">صندوق الأفكار</string>
+    <string name="w3_name">التسبيح</string>
+    <string name="w3_desc">عدّاد تسبيح: اضغط للعدّ ويُضاف إلى يومك</string>
+    <string name="w4_name">مهمّتي الآن</string>
+    <string name="w4_desc">المهمة التي تعمل عليها الآن مع زرّ إنجاز</string>
+    <string name="w5_name">آية اليوم</string>
+    <string name="w5_desc">آية مختارة كل يوم</string>
+</resources>

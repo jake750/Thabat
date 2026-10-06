@@ -1,0 +1,15 @@
+# signing keys: never commit
+*.keystore
+*.jks
+/android/
+# local backups of the source
+dev/src_v*.html
+# build outputs (published as GitHub Release assets instead)
+Thabat/
+/Thabat.html
+*.apk
+*.aab
+*.idsig
+*.zip
+# local tool settings
+.claude/settings.local.json

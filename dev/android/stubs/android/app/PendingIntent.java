@@ -1,0 +1,2 @@
+package android.app; import android.content.*; public final class PendingIntent {
+ public static PendingIntent getBroadcast(Context c,int r,Intent i,int f){return null;} public static PendingIntent getActivity(Context c,int r,Intent i,int f){return null;} public static PendingIntent getService(Context c,int r,Intent i,int f){return null;} }

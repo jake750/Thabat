@@ -1,0 +1,71 @@
+ثبات / Thabat
+created by jake750_
+© 2026 فرات بوشاعة (jake750_) — جميع الحقوق محفوظة.
+رخصة خاصة: يُسمح بالاستخدام الشخصي، والمصدر متاح للاطلاع فقط.
+
+هذا البرنامج، أي شيفرته وتصميمه وشعاره واسمه («البرنامج»)، ملكٌ لمؤلّفه
+فرات بوشاعة المعروف بـ jake750_.
+
+ما يُسمح به:
+يُسمح لك مجاناً بتنزيل البرنامج وتثبيته واستخدامه والاطلاع عليه، لأغراضك
+الشخصية غير التجارية فقط.
+
+ما لا يجوز دون إذن كتابي مسبق من المؤلّف:
+  1. الاستخدام التجاري: بيع البرنامج أو أي جزء منه، أو تأجيره، أو ترخيصه
+     للغير، أو التربّح منه بأي وجه.
+  2. إعادة النشر: نشر البرنامج أو نسخه أو رفعه إلى أي متجر أو موقع أو
+     منصّة، سواء كان أصلياً أو معدّلاً.
+  3. التعديل: تعديل البرنامج أو ترجمته أو اقتباس أعمال مشتقّة منه، أو
+     تفكيكه أو إجراء هندسة عكسية عليه بقصد ذلك.
+  4. حذف الحقوق: حذف اسم المؤلّف أو شعاره أو عبارة «created by jake750_»
+     أو هذا الإشعار، أو إخفاؤها أو تغييرها.
+
+يجب أن يبقى إشعار الحقوق هذا مع كل نسخة من البرنامج أو أي جزء جوهري منه.
+
+إخلاء المسؤولية:
+يُقدَّم البرنامج «كما هو» دون أي ضمان صريح أو ضمني، بما في ذلك ضمان صلاحيته
+للتسويق، أو ملاءمته لغرض معيّن، أو عدم انتهاكه لحقوق الغير. ولا يتحمّل
+المؤلّف أي مسؤولية عن أي مطالبة أو ضرر أو تبعة تنشأ عن البرنامج أو عن
+استخدامه أو عن أي تعامل آخر فيه.
+
+للحصول على إذن أو للتواصل: jake750_
+
+======================================================================
+
+Thabat
+created by jake750_
+Copyright (c) 2026 Fourat Bouchaa (jake750_). All rights reserved.
+Proprietary license: personal use permitted, source available for viewing only.
+
+This software, including its code, design, logo and name (the "Software"),
+is the property of its author, Fourat Bouchaa, known as jake750_.
+
+PERMISSION
+You may download, install, use and view the Software free of charge, for
+your own personal and non-commercial purposes only.
+
+RESTRICTIONS
+Without the author's prior written permission you may NOT:
+  1. NO COMMERCIAL USE: sell, rent, lease, sublicense or otherwise monetize
+     the Software or any part of it.
+  2. NO REDISTRIBUTION: publish, copy or upload the Software, original or
+     modified, to any store, website or platform.
+  3. NO MODIFICATIONS: modify, adapt or translate the Software, create
+     derivative works based on it, or reverse engineer, decompile or
+     disassemble it for that purpose.
+  4. NO REMOVAL OF CREDIT: remove, hide or alter the author's name, logo,
+     the "created by jake750_" credit, or this notice.
+
+This copyright and permission notice shall be included in all copies or
+substantial portions of the Software.
+
+DISCLAIMER
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+For permissions or contact: jake750_

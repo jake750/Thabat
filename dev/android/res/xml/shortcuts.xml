@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="timer" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_timer" android:shortcutLongLabel="@string/sc_timer">
+        <intent android:action="tn.thabat.app.SC_TIMER" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="timer"/>
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="inbox" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_inbox" android:shortcutLongLabel="@string/sc_inbox">
+        <intent android:action="tn.thabat.app.SC_INBOX" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="inbox"/>
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="note" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_note" android:shortcutLongLabel="@string/sc_note">
+        <intent android:action="tn.thabat.app.SC_NOTE" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="note"/>
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="adhkar" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_adhkar" android:shortcutLongLabel="@string/sc_adhkar">
+        <intent android:action="tn.thabat.app.SC_ADHKAR" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="adhkar"/>
+        </intent>
+    </shortcut>
+    <shortcut android:shortcutId="quran" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_quran" android:shortcutLongLabel="@string/sc_quran">
+        <intent android:action="tn.thabat.app.SC_QURAN" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="quran"/>
+        </intent>
+    </shortcut>
+</shortcuts>

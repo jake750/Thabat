@@ -1,0 +1,1 @@
+package android.window; public interface OnBackInvokedDispatcher { int PRIORITY_DEFAULT=0; void registerOnBackInvokedCallback(int p, OnBackInvokedCallback c); }

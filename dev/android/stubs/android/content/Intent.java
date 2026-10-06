@@ -1,0 +1,4 @@
+package android.content; public class Intent { public Intent(Context c,Class<?> k){} public Intent(String a,android.net.Uri u){} public Intent(String a){} public Intent(Intent o){}
+ public Intent putExtra(String k,String v){return this;} public Intent putExtra(String k,int v){return this;} public String getStringExtra(String k){return null;}
+ public int getIntExtra(String k,int d){return 0;} public Intent addFlags(int f){return this;} public String getAction(){return null;} public Intent setType(String t){return this;} public Intent setAction(String a){return this;} public boolean getBooleanExtra(String k,boolean d){return d;} public ClipData getClipData(){return null;} public android.net.Uri getData(){return null;} public Intent putExtra(String k,boolean v){return this;}
+ public java.util.ArrayList<String> getStringArrayListExtra(String k){return null;} public static Intent createChooser(Intent t,CharSequence title){return null;} }
