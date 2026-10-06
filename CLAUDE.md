@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.4.2** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
+Current version: **3.4.3** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
 
 ## Working with the owner
 
@@ -11,6 +11,7 @@ Current version: **3.4.2** (`APP_VER` in `dev/src.html`; the Android versionCode
 - Ship builds for **Android, Windows and macOS**. Do not build anything for iOS.
 - He reports bugs with phone or PC screenshots. Reproduce each one at the matching size before fixing it.
 - After every change, rebuild and send him the updated files: `Thabat.apk`, `Thabat/Thabat.html`, plus `Thabat-Windows.zip`, `Thabat-Mac.zip` and `Thabat-Play.aab` when relevant.
+- Also copy the built `Thabat/Thabat.html` into his personal copy `C:\Users\foura\Documents\Thabat\Thabat.html` (back up the old one as `Thabat.html.bak` first). Touch nothing else there: it holds his data.
 - Never remove or weaken the "created by jake750_" credit, the logo or `LICENSE.txt`.
 
 ## Folder layout
