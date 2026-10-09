@@ -4,7 +4,7 @@ function qbSheet(id,title){let s=$('#'+id);if(!s){document.body.insertAdjacentHT
   s.onclick=e=>{if(e.target===s||e.target.closest('[data-x]'))qbClose()}}return s}
 function qbClose(){$$('.qbsh').forEach(s=>s.hidden=true)}
 function qbOpen(id){qbClose();const s=$('#'+id);if(s)s.hidden=false}
-function qbSummary(){const b=$('#qbPos');if(!b)return;const Q=S.quran,p=Math.max(1,Math.min(604,(MOB.matches?Q.pv:0)||Q.view||1));b.querySelector('span').textContent=`${qSurahAt(p).name} · ${t('q.juz')} ${qJuzAt(p)} · ${t('q.pageS')} ${p}`}
+function qbSummary(){const b=$('#qbPos');if(!b)return;const Q=S.quran,p=Math.max(1,Math.min(604,(MOB.matches?Q.pv:0)||Q.view||1));b.querySelector('span').textContent=`${qSurahAt(p).name} · ${t('qx.jz')}${qJuzAt(p)} · ${t('q.pageS')}${p}`}
 function qbLayout(){const bar=$('.qbar');if(!bar)return;if(!QB_ORDER)QB_ORDER=[...bar.children];const mob=MOB.matches;
   if(!mob){if(!bar.classList.contains('qbc'))return;QB_ORDER.forEach(e=>bar.append(e));[...$$('#qbTools .qbshb>*')].forEach(e=>{if(!QB_ORDER.includes(e))bar.append(e)});const top=$('#qbTop');if(top)top.remove();bar.classList.remove('qbc');qbClose();return}
   const nav=qbSheet('qbNav',t('qx.nav')),tools=qbSheet('qbTools',t('qx.tools')),nb=nav.querySelector('.qbshb'),tb=tools.querySelector('.qbshb');bar.classList.add('qbc');

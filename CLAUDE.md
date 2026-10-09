@@ -2,17 +2,27 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.8.1** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
+Current version: **3.8.2** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
-- Reply in Modern Standard Arabic (فصحى) or English. Never use Franco-Arabic (Arabic in Latin letters).
+- Reply in Modern Standard Arabic (فصحى) or English. Never use Franco-Arabic (Arabic in Latin letters). He writes in Tunisian/Libyan dialect; answer in فصحى.
 - Dates: Hijri first, Gregorian below it, with Maghrebi month names (جانفي، فيفري، مارس، أفريل، ماي، جوان، جويلية، أوت، سبتمبر، أكتوبر، نوفمبر، ديسمبر).
 - Ship builds for **Android, Windows and macOS**. Do not build anything for iOS.
-- He reports bugs with phone or PC screenshots. Reproduce each one at the matching size before fixing it.
-- After every change, rebuild and send him the updated files: `Thabat.apk`, `Thabat/Thabat.html`, plus `Thabat-Windows.zip`, `Thabat-Mac.zip` and `Thabat-Play.aab` when relevant.
-- Also copy the built `Thabat/Thabat.html` into his personal copy `C:\Users\foura\Documents\Thabat\Thabat.html` (back up the old one as `Thabat.html.bak` first). Touch nothing else there: it holds his data.
+- He reports bugs with phone or PC screenshots (his phone is about 411×860 CSS px, Android; his PC is 1920×1040 with the interface size around 125%). Reproduce each one at the matching size before fixing it.
+- When he asks for «اقتراحات», show 2–3 options as a visual mockup (the visualize widget) with a recommendation, then implement the one he picks. Ask before large redesigns.
+- After every change: rebuild, run `dev/release.py`, send him `Thabat.apk`, `Thabat-Windows.zip` and `Thabat-Mac.zip`, commit, push and publish a GitHub release (see «Release»).
+- His personal copy is `C:\Users\foura\Documents\Thabat\`. `release.py` replaces only `Thabat.html` there (old one kept as `Thabat.html.bak`). Touch nothing else in that folder: it holds his data (`الأيام`, `نسخ أسبوعية`, `thabat-backup.json`). Never package from it.
 - Never remove or weaken the "created by jake750_" credit, the logo or `LICENSE.txt`.
+
+## This machine (Windows 11)
+
+- Project: `C:\Users\foura\Documents\Thabat Dev` (git repo, remote https://github.com/jake750/Thabat, public, branch `main`). The home folder `C:\Users\foura` is also a git repo with no commits; ignore it.
+- Use `python` (3.14) and `node`. `dev/lib.py` and `dev/build.py` read and write UTF-8 with `newline=''`, so LF endings survive on Windows.
+- GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (logged in as `jake750`). Prepend it to `PATH` in Bash: `export PATH="/c/Program Files/GitHub CLI:$PATH"`.
+- Android SDK build-tools 35.0.1 (`zipalign.exe`, `lib/apksigner.jar`) under `%LOCALAPPDATA%\Android\Sdk`; JDK `C:\Users\foura\.jdks\temurin-24.0.2`. There is **no apktool/d8/aapt2/bundletool** here, so the APK is made by swapping the HTML into `android/base.apk` (see «Android»).
+- `android/` (git-ignored) holds `thabat-signing.keystore` and `base.apk`. The keystore password is **not** written anywhere in the repo; the owner gives it, and it goes in the `THABAT_KS_PASS` environment variable.
+- Playwright is not installed. Test in the built-in browser pane (below).
 
 ## Folder layout
 
@@ -21,34 +31,47 @@ Current version: **3.8.1** (`APP_VER` in `dev/src.html`; the Android versionCode
 | `dev/src.html` | **The source of truth.** Single-file app (HTML + CSS + JS) with placeholders for large inline assets |
 | `dev/placeholders.json` | Values of `__MQ_RAW__`, `__ICON192__`, `__ICON32__` that `build.py` fills in |
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
+| `dev/release.py` | Build, syntax check, package zips and APK, update the personal copy, print versions |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/*.js` | Feature modules already merged into `src.html` (c1–c9, d1–d5, e1–e2, f1 + f1.css, f2, f3 + f3.css, g1 + g1.css, g2, g3, g4 + g4.css, g5, g6, g7, g8 + g8.css, g9 + g9.css, demo.js); kept for reference |
+| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g10 (+ matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
-| `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me that go into `Thabat-Mac.zip` |
-| `dev/android/` | Java sources, stubs, `res/`, manifest and build scripts of the Android wrapper |
-| `Thabat/` | The Windows app folder: `Thabat.html`, launchers, `Thabat-Helper.ps1`, `mushaf/`, `tafsir/`, `LICENSE.txt` |
-| `Thabat.html` | Copy of the built app at the root |
-| `Thabat.apk`, `Thabat-Play.aab`, `Thabat-Windows.zip`, `Thabat-Mac.zip` | Release outputs |
-| `store/` | `privacy.html` and `store-listing.txt` for Google Play |
-| `android/thabat-signing.keystore` | Signing key: **private, never publish or commit it** |
+| `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
+| `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me for `Thabat-Mac.zip` |
+| `dev/android/` | Java sources, stubs, `res/`, manifest and the Linux build scripts of the Android wrapper |
+| `Thabat/Thabat.html`, `Thabat.html` | Build output (git-ignored) |
+| `Thabat.apk`, `Thabat-Windows.zip`, `Thabat-Mac.zip` | Release outputs (git-ignored; published as GitHub release assets). The zips are also the base for the next release |
+| `android/` | `thabat-signing.keystore` (**private, never publish or commit**) and `base.apk` (the 3.3.1 APK used as the shell) |
+| `.claude/launch.json` | Preview server for testing (`python -m http.server 8765`) |
 
 ## Architecture (short)
 
 - **One HTML file, no framework, no build step at runtime.** It must work from `file://`.
 - **Windows:** Edge app mode (`msedge --app=file:///…`) through `Thabat.bat`/`Thabat.vbs`. `Thabat-Helper.ps1` is a loopback HTTP listener on port 47813 for file saving and downloads. LAN transfer uses port 47814 with a 6-digit code.
 - **macOS:** no helper. `Thabat.command` opens the HTML in Chrome/Edge/Brave app mode, or Safari. `MAC` (user-agent check) sets `html.mac`, which hides helper-only features (Mawaqit search, link downloads, LAN transfer, ICS by URL, active-app detection, PC notifications); setup goes straight to calculated times. GitHub sync works (api.github.com allows CORS; Mawaqit does not).
-- **Android:** package `tn.thabat.app`, a WebView wrapper loading `assets/www/Thabat.html`. The bridge `window.ThabatAndroid` (`Bridge.java`) provides alarms, the adhan (`AdhanService`), widgets (`Widget`…`Widget5`), biometrics, share and file saving. minSdk 26, targetSdk 36.
-- **State:** a global `S` saved to `localStorage['thabat.v1']` and mirrored to IndexedDB `thabat`. Per-day data is under `day(key)`, with keys `YYYY-MM-DD`.
+- **Android:** package `tn.thabat.app`, a WebView wrapper loading `assets/www/Thabat.html`. The bridge `window.ThabatAndroid` (`Bridge.java`) provides alarms, the adhan (`AdhanService`), widgets (`Widget`…`Widget5`), biometrics, share and file saving. Native inset measurements are in `window.ANDNAV`. minSdk 26, targetSdk 36.
+- **State:** a global `S` saved to `localStorage['thabat.v1']` and mirrored to IndexedDB `thabat`. Per-day data is under `day(key)`, keys `YYYY-MM-DD`. GitHub (gist) sync works per record (`d:<date>` for days).
 - **i18n:** `t(key,…args)` with one Arabic and one English table. Every visible string goes through it. Default is `ar`/RTL.
-- **Theme:** CSS variables (`--bg --panel --line --text --muted --accent --water --gold`) set by `applyTheme()`. `html.lite` turns off heavy effects on weak devices, `html.android` marks the Android wrapper, `html.qfs` marks full-screen Quran.
+- **Theme:** CSS variables (`--bg --panel --line --text --muted --accent --water --gold`) set by `applyTheme()`; `applyLook2()` applies contrast and the interface zoom. Classes on `<html>`: `st-glass` (the glass style), `lite` (performance mode), `lg` (light glass: phones in automatic performance mode), `android`, `mac`, `qfs`/`qfs-one` (full-screen Quran), `mode-light`.
 - **Feature flags:** `THABAT_PLAY` (true only in the Play build), `SUPPORT_EMAIL` (still empty; the privacy page also has a placeholder).
+- **What's new:** `CHANGES` maps each `APP_VER` to an i18n key (`chg.38` …). The dialog opens after an update only when that key changed, so patch versions reuse the current key. A new feature release adds a new `chg.NN` in both languages.
+
+## Current design (3.6 → 3.8)
+
+- **Navigation:** pages sit in a floating pill (`nav.side.flt .navpill`, side on PC, bottom on phone); settings is a separate round button (`.navset`). Every page has a small title (`.pgt`, 20 px / 18 px on phone).
+- **Today:** date card | next-prayer card (same height, prayer times inside), then the ayah of the day as its own card.
+- **Settings:** a grouped list with coloured icons (`SETG` in g1.js); a group opens only its cards; search shows matches from all groups. Anything that scrolls to a setting opens its group first.
+- **Summary:** one «🧰 الأدوات» menu (`#btPanel`, grouped, each tool with a description) beside week/month and prev/now/next.
+- **Quran on phone:** one bar (`#qbTop`): position button «سورة · ج · ص» → «انتقل إلى» sheet; riwaya picker; full-screen icon; «⋯» → tools sheet. The PC bar is unchanged. Existing elements are moved, not copied.
+- **Notes:** row 1 sections + «⋯» (letters, Obsidian import/export) + «ملاحظة جديدة»; row 2 search.
+- **Calendar:** PC stars sit in the gaps; on phones stars and moons spread evenly over the whole calendar (best-candidate sampling) and never cover a day's text. The day panel shows sleep, pages read and the «يومك بين الصلوات» bar for any day.
+- **Quran tracking:** in full screen, 40 s on a page marks it read (`day.quran.pgs`), counts toward the wird, and moves the khatma only when it is the next page. Scanned riwayat have a highlighter (`S.quran.lmarks`).
 
 ## How to change the code
 
-Patch `dev/src.html` with a small Python script using `lib.P`. Never hand-edit the built `Thabat/Thabat.html`.
+Patch `dev/src.html` with a small Python script using `lib.P` (write it to the scratchpad, or a heredoc). Never hand-edit the built `Thabat/Thabat.html`.
 
 ```python
-import sys; sys.path.insert(0, '/home/claude/app/dev')
+import sys; sys.path.insert(0, r'C:\Users\foura\Documents\Thabat Dev\dev')
 from lib import P
 p = P()
 p.rep(old, new, count=1)          # exact replace; asserts the number of matches
@@ -59,67 +82,70 @@ p.save()
 ```
 
 Before applying a patch:
-1. Back up the source: `cp dev/src.html dev/src_vNN.html`.
-2. If you add a new module, run `bash dev/tlchk.sh dev/modules/x.js dev/src.html`. A second `function foo()` silently replaces the first one.
+1. Back up the source: `cp dev/src.html dev/src_vNNN.html`.
+2. Write new code as `dev/modules/<name>.js` (+ `.css`) and run `bash dev/tlchk.sh dev/modules/x.js dev/src.html`. A second `function foo()` silently replaces the first one.
+3. When a later fix changes a module, apply the same `rep` to the module file too. **Read a file before reopening it for writing** (opening with `'w'` empties it first).
 
-To extend an existing function, wrap it instead of rewriting it:
+To extend an existing function, wrap it instead of rewriting it (function declarations can be reassigned; callers use the new one):
 
 ```js
-{const _f = renderCal; renderCal = function(){ _f(); /* extra */ }}
+{const _f = renderCal; renderCal = function(...a){ const r=_f(...a); /* extra */ return r }}
 ```
 
-After applying a patch:
-1. Build: `python3 dev/build.py`, then `cp Thabat/Thabat.html Thabat.html`.
-2. Syntax check: extract the largest `<script>` and run `node --check` on it.
-3. Visual check with Playwright (Chromium is preinstalled). Test at:
-   - phone 360×780 and 390×844;
-   - PC 1366×700 and a short 1280×520 window;
-   - Arabic and English, dark and light.
+Bump `APP_VER` (and the `CHANGES` map) in the same patch.
 
-Then repackage what changed:
-- **Windows:** `zip -q Thabat-Windows.zip Thabat/Thabat.html` (and any other changed files).
-- **macOS:** `Thabat-Mac.zip` = folder `Thabat/` with `Thabat.html`, `Thabat.command` (Unix mode 755 in the zip, LF endings), the read-me, `LICENSE.txt`, both adhan mp3s, `mushaf/`, `tafsir/`. No `.bat`, `.vbs`, `.ps1` or `.ico`.
-- **Never** package from the owner's installed folder `Documents\Thabat`: it holds his personal data (`الأيام`, `نسخ أسبوعية`, `thabat-backup.json`). Use the last release zip as the base.
-- **Android APK and Play AAB:** see below.
+## Testing
 
-## Android builds
+1. `python dev/build.py` (or `python dev/release.py --no-apk`), then the syntax check is automatic in `release.py`.
+2. Start the preview: `preview_start` with name `thabat` (serves the project root on port 8765), then open `http://localhost:8765/Thabat.html?v=<something new>`. **Always change `?v=`**: the browser caches the old build otherwise.
+3. In the page, first close overlays: `document.querySelectorAll('.modal.on,.praymodal.on').forEach(m=>m.classList.remove('on'))` (the prayer reminder and «الجديد» dialog pop up in the test).
+4. Sizes: phone 360×780, 390×844 and 411×860; PC 1366×700, a short 1280×520, and 1920×1040 with `S.settings.zoom=1.25;applyLook2()`. Arabic and English, dark and light, and glass + lite. Simulate the phone's automatic lite mode with `window.LOWP_=true;applyTheme()`.
+5. Prefer measuring with JavaScript (bounding boxes, overlaps, `scrollWidth>innerWidth`) and confirm with a screenshot. Screenshots taken right after `showView` can catch the 0.25 s fade.
+6. Reset the viewport with `resize_window` preset `desktop` when done.
 
-The toolchain is not stored in this folder: apktool 2.4.1, d8, apksigner, bundletool, aapt2 and the Android stub jars. The scripts in `dev/android/` expect it under `/tmp/apkt` and `/tmp/aab`.
+## Release
 
-| Script | What it does |
-|---|---|
-| `build.sh` | Compiles the Java sources to `classes.dex` |
-| `mkapk.sh` | Copies the HTML, `mushaf/`, `tafsir/` and `LICENSE.txt` into the assets, then builds, aligns and signs `Thabat.apk` |
-| `mkaab.sh` | Sets `THABAT_PLAY=true`, converts the resources to proto, then builds and signs `Thabat-Play.aab` |
+1. `THABAT_KS_PASS` must be set (ask the owner), then `python dev/release.py`. It builds, checks syntax, swaps the HTML into `Thabat-Windows.zip`, `Thabat-Mac.zip` and `android/base.apk` (then zipalign + apksigner; it checks the certificate SHA-256 `cf19fc4a…22f0`), updates the personal copy and prints the version inside every output.
+2. Update «Current version» and the module list in this file.
+3. Commit (message ends with the Co-Authored-By line), `git push`, then:
+   `gh release create vX.Y.Z Thabat.apk Thabat-Windows.zip Thabat-Mac.zip --target main --title "ثبات X.Y.Z" --notes "<Arabic notes>\n\ncreated by jake750_"`
+4. Send the three files to the owner.
 
-- **Bump the version for each store upload:** `versionCode`/`versionName` in `apktool.yml` / the manifest, and `APP_VER` in `src.html`.
-- **Signing:** alias `thabat`. The scripts read the password from the `THABAT_KS_PASS` environment variable; it is not written in the repo. Ask the owner.
-- **Play policy:** declare `USE_EXACT_ALARM`, since this is an alarm app for the adhan. The privacy policy is `store/privacy.html`.
+Collaborator: `YoussefDOT` has write access (invited). `main` is not protected yet; the owner may ask to require pull requests.
+
+## Android
+
+- The APK shell (`android/base.apk`, from 3.3.1) holds the Java wrapper, resources, `mushaf/` and `tafsir/`. Releases only replace `assets/www/Thabat.html`, so the Java code and `versionCode` (32) stay as in 3.3.1. Changing Java or resources needs the Linux toolchain (`dev/android/build.sh`, `mkapk.sh`, `mkaab.sh`, which expect apktool 2.4.1, d8, aapt2 and bundletool under `/tmp/apkt` and `/tmp/aab`).
+- Same key and certificate as every earlier release, so the APK installs over the old one without losing data.
+- **Play:** bump `versionCode`/`versionName` in `apktool.yml` / the manifest and `APP_VER`; declare `USE_EXACT_ALARM` (adhan alarm app); the privacy policy is `store/privacy.html`. The AAB cannot be built on this machine.
 
 ## Web demo (for job applications)
 
-The demo is published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv (shared with anyone who has the link). To rebuild it, start from the built `Thabat/Thabat.html` and make three changes:
-
-1. **Pre-script:** insert it right after `<meta charset="UTF-8">`. It provides a safe storage shim and first-run defaults, and when `thabat.demoReset` is set it clears `thabat.v1` and deletes the `thabat` IndexedDB.
-2. **Title:** change it to `<title>ثبات Thabat</title>`.
-3. **Sample data:** insert `dev/modules/demo.js` after `setInterval(()=>folderBackup(),5*6e4);`. It seeds the sample data and adds the ribbon with the language switch and the reset button.
-
-The current demo page lives in `/home/claude/demo/index.html`, next to `mushaf/` and the adhan mp3. Republish it to the same artifact URL.
+Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, start from the built `Thabat/Thabat.html` and make three changes: (1) insert the pre-script (safe storage shim, first-run defaults, `thabat.demoReset` clears `thabat.v1` and the `thabat` IndexedDB) right after `<meta charset="UTF-8">`; (2) title `<title>ثبات Thabat</title>`; (3) insert `dev/modules/demo.js` after `setInterval(()=>folderBackup(),5*6e4);`. The old demo page (`/home/claude/demo/index.html`) was on a different machine and is not here; rebuild it from these steps. It is outdated (pre-3.4).
 
 ## Known pitfalls (all happened before)
 
-- **One settings key, two meanings.** `S.settings.water` was both the water colour and the water-tracker config, so `--water` became invalid and the logo vanished on PC. The tracker now lives in `S.settings.waterCfg`; `applyTheme` only accepts a string colour.
+- **One settings key, two meanings.** `S.settings.water` was both the water colour and the water-tracker config; the tracker now lives in `S.settings.waterCfg`; `applyTheme` only accepts a string colour.
 - **Generic CSS class names clash.** `.hrow` broke the hifz map and `.yh` clashed too. Prefix new classes.
-- **Grid overflow on phones.** Use `minmax(0,1fr)` and `min-width:0` on inputs, otherwise fields spill off narrow screens (this happened in the add-activity form).
-- **Text on a coloured fill must stay readable.** Calendar days with ≥45% fill get class `fl`, which switches to dark bold text.
+- **Grid overflow on phones.** Use `minmax(0,1fr)` and `min-width:0` on inputs.
+- **Text on a coloured fill must stay readable.** Calendar days with ≥45% fill get class `fl`.
 - **Lite mode must not kill essential motion.** Mushaf page turns keep a 0.28 s transition.
-- **Android bottom bar.** It must never sit under the system navigation: insets are measured natively (`--andfix`), with a manual "raise the bottom bar" setting (default 32 px) as a fallback. This is still not confirmed on every device.
-- **PC height.** `pcFit()` sizes the app to the visible height (`--pch`) for Edge app windows. The interface-size setting zooms `body`, so the app height is divided by `--uiz` (the zoom); popups and menus divide screen coordinates by it too (`uiZoom()`).
-- **Logo.** The «ثبات» wordmark is drawn in two layers, text plus a `::after` clipped copy in `--water`. Do not go back to `background-clip:text`.
-- **Accuracy over invention.** Only 8 riwayat have verified digital text; the rest of the 20 come from the user's own scans. Never fabricate Quran text, sajdah positions or prayer data.
+- **`.btn` beats `[hidden]`.** Buttons with `hidden` still show when a rule sets `display`; add `[hidden]{display:none!important}` for the container you style.
+- **Glass `.card` is `position:relative`.** Anything with class `card` that must be `position:fixed` needs `!important`.
+- **`position:fixed` inside a view.** `.view` animates with `transform`, which turns fixed children into relative ones; append floating panels to `document.body`.
+- **Interface zoom.** The size setting sets `body.style.zoom`; the app height is divided by `--uiz`, and popups divide screen coordinates by `uiZoom()`. Test at 125%.
+- **Popups that load content later** must re-fit: `qPopAt` uses a MutationObserver plus ResizeObserver (`ppFit`).
+- **Phones and animation.** Never animate registered custom properties on `<html>` for phones (it restyles every element each frame). Light glass moves only `#aurora` blobs with `transform`; card edges get a static sheen.
+- **Android bottom bar.** Insets are measured natively; the old automatic +32 px lift is reset to 0 on phones where `ANDNAV` reports them (`andLiftMigrate`). The manual setting stays as a fallback.
+- **PC height.** `pcFit()` sets `--pch` to the visible height for Edge app windows.
+- **Synced duplicates.** Tasks created automatically on two devices need a fixed id (al-Kahf uses `kahf-<date>`) or they duplicate after sync.
+- **Logo.** The «ثبات» wordmark is two layers (text plus a `::after` clipped copy in `--water`). Do not go back to `background-clip:text`.
+- **Accuracy over invention.** Only 8 riwayat have verified digital text; the rest come from the owner's own scans. Never fabricate Quran text, sajdah positions or prayer data.
 
 ## Open items
 
 - Support e-mail for `SUPPORT_EMAIL` and the contact line in `store/privacy.html`.
-- Confirm on a real phone that the bottom navigation no longer overlaps the system buttons.
-- The owner's pick from the 12 visual polish suggestions.
+- Confirm on his phone: the bottom bar height after the lift reset, light-glass smoothness, the full-screen Quran controls below the camera.
+- Maghrebi month names: `gShort`/`gStr` showed «أكتوبر» in tests; check the other months use the Maghrebi list.
+- After switching language and back, the ayah-of-the-day label stays in the other language until reload (pre-existing).
+- `main` branch protection for collaborators, if the owner wants it.

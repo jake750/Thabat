@@ -1,0 +1,8 @@
+/* v3.8.2 phone Quran bar: centred dots, icon-only full screen */
+.qbtop .qbmore,#qbTop #qFsBtn{display:grid!important;place-items:center;width:40px;height:36px;padding:0!important;flex:none}
+.qbtop .qbmore .qbdots{width:18px;height:18px;fill:currentColor;display:block}
+#qFsBtn .qbfsi{display:none}
+#qbTop #qFsBtn{font-size:0!important}
+#qbTop #qFsBtn .qbfsi{display:block;width:18px;height:18px}
+@media(max-width:380px){.qbtop .qbriw{flex-basis:88px}.qbtop{gap:5px}.qbtop .qbmore,#qbTop #qFsBtn{width:36px}}
+#qbTop #qFsBtn{display:flex!important;align-items:center;justify-content:center;line-height:0!important;gap:0}
