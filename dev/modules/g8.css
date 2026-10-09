@@ -1,0 +1,23 @@
+/* v3.8: phone Quran toolbar */
+.qbar button[hidden],.qbsh .qbshb button[hidden]{display:none!important}
+.qbar.qbc{display:block!important}
+.qbtop{display:flex;align-items:center;gap:6px;min-width:0}
+.qbtop .qbpos{flex:1;min-width:0;justify-content:space-between;display:flex;align-items:center;gap:6px;text-align:start}
+.qbtop .qbpos span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.qbtop .qbpos i{font-style:normal;opacity:.6;font-size:11px}
+.qbtop .qbriw{flex:0 1 128px;min-width:0}.qbtop .qbriw select{width:100%;min-width:0;padding:6px 8px;font-size:12.5px}
+.qbtop .qbmore{flex:none;width:40px;font-size:18px;line-height:1;padding:6px 0}
+.qbsh{position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.qbsh[hidden]{display:none!important}
+.qbshbox.card{width:min(560px,100%);border-radius:22px 22px 0 0!important;padding:14px 14px calc(16px + env(safe-area-inset-bottom) + var(--andman,0px))!important;max-height:80vh;overflow:auto;animation:qbup .2s ease-out}
+@keyframes qbup{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+.qbshh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.qbshh b{font-size:15px}
+#qbNav .qbshb{display:flex;flex-direction:column;gap:10px}
+#qbNav .qbshb select,#qbNav .qbshb label{width:100%;min-width:0}
+#qbNav .qbshb label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px!important}
+#qbNav .qbshb input{width:110px!important}
+#qbTools .qbshb{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+#qbTools .qbtool{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:3px;height:auto!important;min-height:64px;padding:8px 4px!important;font-size:11.5px;text-align:center;white-space:normal;line-height:1.3;border-radius:14px!important}
+#qbTools .qbtool small{font-size:11px;color:inherit;opacity:.85}
+@media(max-width:360px){#qbTools .qbshb{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#qbTools .qbtool[hidden]{display:none!important}
