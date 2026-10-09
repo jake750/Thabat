@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.9.0** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.9.1** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -66,7 +66,7 @@ Current version: **3.9.0** (`APP_VER` in `dev/src.html`). The Android `versionCo
 - **Calendar:** PC stars sit in the gaps; on phones stars and moons spread evenly over the whole calendar (best-candidate sampling) and never cover a day's text. The day panel shows sleep, pages read and the «يومك بين الصلوات» bar for any day.
 - **Day between the prayers (3.9, g11):** card `#pdlCard`, first in the narrow column (first card on phones). One row per prayer (after Fajr … after Isha) with tasks whose `after` is that prayer, focus time from sessions, timed events, and for the current period the time left and «ابدأ جلسة». Tasks drag between rows (PC) or tap → `tpMenu` (phone); today's tasks without a prayer show as chips below. No new data fields.
 - **Ctrl+K** also searches settings labels (`cmdSetHits`); the phone swipe shows an edge hint (`.swphint`); nav tooltips show the 1–5 shortcuts.
-- **Compact Today (preview):** `S.settings.tdCompact` (look settings, off by default) → `html.tdc`: one header card on phones, folded ayah, chips in one scrolling row; on PC date | ayah | prayers in one row. The owner has not approved it yet.
+- **Compact Today (3.9.1, approved, on by default):** `S.settings.tdCompact!==false` → `html.tdc`: on phones the date and next-prayer cards join into one, chips sit in one scrolling row; on PC date | ayah | prayers in one row. The ayah of the day is always shown in full (the owner does not want it folded). The look settings can switch it off.
 - **Quran tracking:** in full screen, 40 s on a page marks it read (`day.quran.pgs`), counts toward the wird, and moves the khatma only when it is the next page. Scanned riwayat have a highlighter (`S.quran.lmarks`).
 
 ## How to change the code

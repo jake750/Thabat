@@ -54,7 +54,6 @@
 .swphint.on{opacity:calc(.35 + .65*var(--p,0))}
 .swphint.go{background:var(--accent);color:#111;border-color:var(--accent)}
 /* compact Today (preview) */
-html.tdc #v-today .aydbox.card:not(.tdc-open) .aydt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden}
 html.tdc #v-today .tipbar{display:none!important}
 @media(max-width:700px){
   html.tdc #v-today .tdtop{row-gap:0!important}
@@ -72,7 +71,6 @@ html.tdc #v-today .tipbar{display:none!important}
 @media(min-width:981px){
   html.tdc #v-today .tdtop{grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr) minmax(0,1.1fr)!important;grid-template-areas:"hd ayd pr" "ev ev ev" "tip tip tip"!important;row-gap:10px!important;margin-bottom:14px}
   html.tdc #v-today .aydbox.card{display:flex;flex-direction:column;justify-content:center;padding:10px 18px!important}
-  html.tdc #v-today .aydbox.card:not(.tdc-open) .aydt{-webkit-line-clamp:3}
   html.tdc #v-today .tdev{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:thin}
   html.tdc #v-today .tdev .evchip{flex:none;white-space:nowrap}
 }

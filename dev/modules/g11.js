@@ -69,9 +69,8 @@ function navKeyTips(){$$('nav.side .navpill .navbtn').forEach((b,i)=>{const sp=b
 {const _ai=applyI18n;applyI18n=function(){_ai();try{navKeyTips()}catch(e){}}}
 try{navKeyTips()}catch(e){}
 
-/* ---- compact Today (preview, off by default): one header card, folded ayah, chips in one row ---- */
-function tdcApply(){const on=!!S.settings.tdCompact;document.documentElement.classList.toggle('tdc',on);const ev=$('#todayEv');if(ev)ev.classList.toggle('scrollx',on&&MOB.matches)}
-document.addEventListener('click',e=>{if(!S.settings.tdCompact)return;const a=e.target.closest('#aydBox');if(!a||a.classList.contains('tdc-open'))return;e.stopPropagation();e.preventDefault();a.classList.add('tdc-open')},true);
+/* ---- compact Today (on by default): one header card, the full ayah, chips in one row; on PC date | ayah | prayers ---- */
+function tdcApply(){const on=S.settings.tdCompact!==false;document.documentElement.classList.toggle('tdc',on);const ev=$('#todayEv');if(ev)ev.classList.toggle('scrollx',on&&MOB.matches)}
 {const _at=applyTheme;applyTheme=function(...a){const r=_at(...a);try{tdcApply()}catch(e){}return r}}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#tdcT'),!!S.settings.tdCompact,v=>{S.settings.tdCompact=v;tdcApply()})}catch(e){console.error(e)}}}
+{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#tdcT'),S.settings.tdCompact!==false,v=>{S.settings.tdCompact=v;tdcApply()})}catch(e){console.error(e)}}}
 try{tdcApply()}catch(e){}
