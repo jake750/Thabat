@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.8.2** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.9.0** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -33,7 +33,7 @@ Current version: **3.8.2** (`APP_VER` in `dev/src.html`). The Android `versionCo
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/release.py` | Build, syntax check, package zips and APK, update the personal copy, print versions |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g10 (+ matching `.css`), demo.js |
+| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g11 (+ matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
 | `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me for `Thabat-Mac.zip` |
@@ -55,7 +55,7 @@ Current version: **3.8.2** (`APP_VER` in `dev/src.html`). The Android `versionCo
 - **Feature flags:** `THABAT_PLAY` (true only in the Play build), `SUPPORT_EMAIL` (still empty; the privacy page also has a placeholder).
 - **What's new:** `CHANGES` maps each `APP_VER` to an i18n key (`chg.38` …). The dialog opens after an update only when that key changed, so patch versions reuse the current key. A new feature release adds a new `chg.NN` in both languages.
 
-## Current design (3.6 → 3.8)
+## Current design (3.6 → 3.9)
 
 - **Navigation:** pages sit in a floating pill (`nav.side.flt .navpill`, side on PC, bottom on phone); settings is a separate round button (`.navset`). Every page has a small title (`.pgt`, 20 px / 18 px on phone).
 - **Today:** date card | next-prayer card (same height, prayer times inside), then the ayah of the day as its own card.
@@ -64,6 +64,9 @@ Current version: **3.8.2** (`APP_VER` in `dev/src.html`). The Android `versionCo
 - **Quran on phone:** one bar (`#qbTop`): position button «سورة · ج · ص» → «انتقل إلى» sheet; riwaya picker; full-screen icon; «⋯» → tools sheet. The PC bar is unchanged. Existing elements are moved, not copied.
 - **Notes:** row 1 sections + «⋯» (letters, Obsidian import/export) + «ملاحظة جديدة»; row 2 search.
 - **Calendar:** PC stars sit in the gaps; on phones stars and moons spread evenly over the whole calendar (best-candidate sampling) and never cover a day's text. The day panel shows sleep, pages read and the «يومك بين الصلوات» bar for any day.
+- **Day between the prayers (3.9, g11):** card `#pdlCard`, first in the narrow column (first card on phones). One row per prayer (after Fajr … after Isha) with tasks whose `after` is that prayer, focus time from sessions, timed events, and for the current period the time left and «ابدأ جلسة». Tasks drag between rows (PC) or tap → `tpMenu` (phone); today's tasks without a prayer show as chips below. No new data fields.
+- **Ctrl+K** also searches settings labels (`cmdSetHits`); the phone swipe shows an edge hint (`.swphint`); nav tooltips show the 1–5 shortcuts.
+- **Compact Today (preview):** `S.settings.tdCompact` (look settings, off by default) → `html.tdc`: one header card on phones, folded ayah, chips in one scrolling row; on PC date | ayah | prayers in one row. The owner has not approved it yet.
 - **Quran tracking:** in full screen, 40 s on a page marks it read (`day.quran.pgs`), counts toward the wird, and moves the khatma only when it is the next page. Scanned riwayat have a highlighter (`S.quran.lmarks`).
 
 ## How to change the code

@@ -1,0 +1,78 @@
+/* ---- v3.9 the day between the prayers ---- */
+.pdlcard h3 .pdl-hint{cursor:help;font-size:13px;opacity:.7}
+.pdl{display:flex;flex-direction:column}
+.pdl-pre{font-size:12px;color:var(--muted);margin:-6px 0 8px}
+.pdl-s{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;border-radius:12px;padding:0 4px;transition:background .15s}
+.pdl-s.dropon{background:color-mix(in srgb,var(--accent) 12%,transparent);outline:1px dashed var(--accent)}
+.pdl-m{position:relative;display:flex;justify-content:center}
+.pdl-m:before{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--line)}
+.pdl-s:first-child .pdl-m:before{top:12px}.pdl-s:last-child .pdl-m:before{bottom:calc(100% - 14px)}
+.pdl-m i{position:relative;margin-top:8px;width:10px;height:10px;border-radius:50%;background:var(--panel);border:2px solid var(--muted);flex:none}
+.pdl-s.s-past .pdl-m i{background:var(--muted);border-color:var(--muted)}
+.pdl-s.s-now .pdl-m i{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.pdl-b{min-width:0;padding:4px 0 10px}
+.pdl-h{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px;font-size:13px;min-height:24px}
+.pdl-h[data-tog]{cursor:pointer}
+.pdl-h b{font-size:13.5px;color:var(--text)}
+.pdl-s.s-past .pdl-h b{color:var(--muted)}
+.pdl-h .plm{position:static;font-style:normal;font-size:12px}
+.pdl-tm{font-size:11.5px;color:var(--muted)}
+.pdl-now{font-size:11.5px;color:var(--accent);font-weight:600}
+.pdl-sum{font-size:11.5px;color:var(--muted)}
+.pdl-ch{margin-inline-start:auto;color:var(--muted);font-size:11px}
+.pdl-bar{position:relative;height:6px;border-radius:6px;background:color-mix(in srgb,var(--text) 8%,transparent);margin:6px 0 4px;overflow:hidden}
+.pdl-bar i{position:absolute;top:0;bottom:0;border-radius:6px}
+.pdl-bar i.lv{background-image:repeating-linear-gradient(45deg,transparent 0 4px,rgba(255,255,255,.25) 4px 8px)!important}
+.pdl-bar i.nw{width:2px;background:var(--text);border-radius:0;opacity:.8}
+.pdl-tk{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.pdl-tk li{display:flex;align-items:center;gap:8px;font-size:13px;padding:3px 6px;border-radius:8px;cursor:grab}
+.pdl-tk li:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
+.pdl-tk li.drag,.pdl-chip.drag{opacity:.4}
+.pdl-tk .ck{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--muted);display:grid;place-items:center;flex:none;padding:0;background:none;color:transparent}
+.pdl-tk .ck svg{width:12px;height:12px}
+.pdl-tk li.done .ck{background:var(--accent);border-color:var(--accent);color:#111}
+.pdl-tk li.done .tx{text-decoration:line-through;color:var(--muted)}
+.pdl-tk .tx{flex:1;min-width:0;overflow-wrap:anywhere;cursor:pointer}
+.pdl-ev{font-size:12.5px;color:var(--muted);margin-top:4px;cursor:pointer}
+.pdl-ev b{color:var(--text);font-weight:600;direction:ltr;unicode-bidi:isolate}
+.pdl-cap{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px}
+.pdl-run{color:var(--accent);font-weight:600}
+.pdl-add{background:none;border:none;color:var(--muted);font-size:12px;padding:4px 0 0;cursor:pointer;font-family:inherit}
+.pdl-add:hover{color:var(--accent)}
+.pdl-addf{display:flex;gap:6px;margin-top:6px}.pdl-addf .in{flex:1;min-width:0;padding:6px 10px;font-size:13px}
+.pdl-free{margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}
+.pdl-free small{display:block;font-size:11.5px;color:var(--muted);margin-bottom:6px}
+.pdl-fl{display:flex;flex-wrap:wrap;gap:6px}
+.pdl-chip{font-size:12px;padding:4px 10px;border-radius:20px;border:1px dashed var(--line);cursor:grab;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pdl-chip:hover{border-color:var(--accent)}
+@media(max-width:700px){.pdl-tk li{padding:6px;font-size:14px}.pdl-tk .ck{width:22px;height:22px}.pdl-add{font-size:13px;padding:6px 0 2px}}
+/* settings found from Ctrl+K */
+.field.cmdflash{animation:cmdflash 1.6s ease}
+@keyframes cmdflash{0%,40%{background:color-mix(in srgb,var(--accent) 22%,transparent)}100%{background:transparent}}
+/* swipe hint */
+.swphint{position:fixed;top:50%;z-index:80;padding:8px 14px;border-radius:20px;background:var(--panel);border:1px solid var(--line);color:var(--text);font-size:13px;pointer-events:none;opacity:0;transform:translateY(-50%) scale(calc(.85 + .15*var(--p,0)));transition:opacity .12s;box-shadow:0 6px 18px #0005}
+.swphint.on{opacity:calc(.35 + .65*var(--p,0))}
+.swphint.go{background:var(--accent);color:#111;border-color:var(--accent)}
+/* compact Today (preview) */
+html.tdc #v-today .aydbox.card:not(.tdc-open) .aydt{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden}
+html.tdc #v-today .tipbar{display:none!important}
+@media(max-width:700px){
+  html.tdc #v-today .tdtop{row-gap:0!important}
+  html.tdc #v-today .tdhd.card{flex-direction:row!important;flex-wrap:wrap;align-items:baseline!important;gap:2px 10px;padding:12px 16px 4px!important;border-bottom-left-radius:0!important;border-bottom-right-radius:0!important;border-bottom:none!important}
+  html.tdc #v-today .tdhd .date-h{font-size:17px}
+  html.tdc #v-today .tdhd .date-g{font-size:12.5px}
+  html.tdc #v-today .tdhd .adhkar-btn{margin:0 0 0 0;margin-inline-start:auto;padding:4px 10px;font-size:12px}
+  html.tdc #v-today .tdpr.card{border-top-left-radius:0!important;border-top-right-radius:0!important;border-top:none!important;padding-top:4px!important}
+  html.tdc #v-today .aydbox.card{margin-top:10px!important;padding:10px 16px!important}
+  html.tdc #v-today .tdev{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto;margin-top:10px!important;padding-bottom:2px;scrollbar-width:none;gap:6px}
+  html.tdc #v-today .tdev::-webkit-scrollbar{display:none}
+  html.tdc #v-today .tdev .evchip{flex:none;white-space:nowrap;min-height:32px}
+  html.tdc #v-today .tdev .evchip.jm{grid-column:auto}
+}
+@media(min-width:981px){
+  html.tdc #v-today .tdtop{grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr) minmax(0,1.1fr)!important;grid-template-areas:"hd ayd pr" "ev ev ev" "tip tip tip"!important;row-gap:10px!important;margin-bottom:14px}
+  html.tdc #v-today .aydbox.card{display:flex;flex-direction:column;justify-content:center;padding:10px 18px!important}
+  html.tdc #v-today .aydbox.card:not(.tdc-open) .aydt{-webkit-line-clamp:3}
+  html.tdc #v-today .tdev{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:thin}
+  html.tdc #v-today .tdev .evchip{flex:none;white-space:nowrap}
+}
