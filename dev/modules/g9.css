@@ -1,0 +1,13 @@
+/* v3.8.1 notes toolbar: row 1 sections · ⋯ · new note, row 2 search */
+#v-boards .nbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+#v-boards .nbar #nbSeg{order:1;width:auto!important;flex:0 1 auto}
+#v-boards .nbar .nxact{order:2;margin-inline-start:auto;display:flex;gap:8px;align-items:center}
+#v-boards .nbar .nxact[hidden]{display:none!important}
+#v-boards .nbar #nTools{order:3;flex:1 1 100%;width:100%}
+#v-boards .nbar #nTools #nSearch{flex:1;width:auto;min-width:0}
+#v-boards .nbar #nTools .nxhid{display:none!important}
+#nxMore{width:38px;font-size:18px;line-height:1;padding:6px 0}
+.nxmenu .nxitem{display:block!important;text-align:start}
+.nxmenu .nxitem b{display:block;font-weight:600;font-size:13.5px}
+.nxmenu .nxitem small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.45;white-space:normal}
+@media(max-width:700px){#v-boards .nbar #nbSeg{flex:1 1 auto;min-width:0}#v-boards .nbar #nbSeg button{flex:1;padding-inline:6px}#v-boards .nbar .nxact #nNew{white-space:nowrap}}
