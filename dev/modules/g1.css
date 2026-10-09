@@ -1,0 +1,65 @@
+/* v3.6: calmer layout — page titles, floating nav, Today header, grouped settings */
+.pgt{font-size:20px;font-weight:700;letter-spacing:-.2px;line-height:1.35;margin:2px 0 16px;padding-inline-end:96px}
+html.qfs .pgt{display:none}
+@media(max-width:700px){.pgt{font-size:18px;margin:0 0 12px;padding-inline-end:84px}}
+/* nav: transparent rail, pages in a floating pill, settings as a round button */
+html nav.side.flt,html.st-glass nav.side.flt,html.st-glass.mode-light nav.side.flt,html.lite.st-glass nav.side.flt,html.lite.st-glass.mode-light nav.side.flt{background:transparent!important;border:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html nav.side.flt::after,html nav.side.flt::before{display:none!important}
+nav.side.flt .navpill{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px!important;border-radius:30px!important;position:relative}
+nav.side.flt .navset{border-radius:50%!important;padding:0!important;width:50px!important;height:50px;display:grid!important;place-items:center;position:relative;flex:none!important}
+nav.side.flt .navset span{display:none}
+nav.side.flt .navset.on{color:var(--accent)}
+@media(min-width:701px){
+  .app{grid-template-columns:96px 1fr}
+  nav.side.flt{padding:16px 0 18px!important;gap:12px;justify-content:flex-start}
+  nav.side.flt .logo{margin-bottom:2px}
+  nav.side.flt .navpill .navbtn{width:64px}
+}
+@media(max-width:700px){
+  nav.side.flt{padding:6px 10px calc(8px + env(safe-area-inset-bottom))!important;gap:8px;align-items:center}
+  nav.side.flt .navpill{flex:1;min-width:0;flex-direction:row;justify-content:space-around;padding:4px!important;border-radius:28px!important;gap:2px}
+  nav.side.flt .navpill .navbtn{flex:1;min-width:0;padding:6px 0 5px}
+  nav.side.flt .navset{width:54px!important;height:54px}
+}
+/* Today: date card | next-prayer card (same height), ayah card below */
+#v-today .tdtop{display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)!important;grid-template-areas:"hd pr" "ayd ayd" "ev ev" "tip tip"!important;align-items:stretch!important;column-gap:14px!important;row-gap:14px!important;padding-inline-end:0!important;margin-bottom:18px}
+#v-today .tdhd.card{grid-area:hd;align-self:stretch!important;padding:16px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0}
+#v-today .tdhd .date-h{font-size:22px}
+#v-today .tdpr.card{grid-area:pr;align-self:stretch!important;align-items:stretch!important;justify-self:stretch!important;padding:14px 16px!important;display:flex;flex-direction:column;justify-content:center;gap:10px;min-width:0}
+#v-today .tdpr .nextline{text-align:start!important;margin:0;font-size:12.5px;line-height:1.5}
+#v-today .tdpr .nextline b{display:block;font-size:19px;font-weight:700;color:var(--text);margin-bottom:1px}
+#v-today .tdpr .prayers{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:2px;background:color-mix(in srgb,var(--text) 5%,transparent);border-radius:14px;padding:5px 4px}
+html #v-today .tdpr .pr,html.st-glass #v-today .tdpr .pr,html.st-glass.mode-light #v-today .tdpr .pr,html.lite.st-glass #v-today .tdpr .pr,html.lite.st-glass.mode-light #v-today .tdpr .pr{background:transparent!important;border:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;min-width:0;padding:6px 2px;text-align:center;border-radius:10px}
+html #v-today .tdpr .pr::after{display:none!important}
+html #v-today .tdpr .pr.next,html.st-glass #v-today .tdpr .pr.next,html.st-glass.mode-light #v-today .tdpr .pr.next,html.lite.st-glass #v-today .tdpr .pr.next,html.lite.st-glass.mode-light #v-today .tdpr .pr.next{background:color-mix(in srgb,var(--accent) 16%,transparent)!important}
+#v-today .tdpr .pr.next b,#v-today .tdpr .pr.next span{color:var(--accent)}
+#v-today .aydbox.card{grid-area:ayd;justify-self:stretch!important;align-self:stretch!important;width:auto!important;max-width:none!important;margin:0!important;padding:14px 22px!important}
+#v-today .aydbox.card[hidden]{display:none!important}
+@media(max-width:700px){
+  #v-today .tdtop{grid-template-columns:minmax(0,1fr)!important;grid-template-areas:"hd" "pr" "ayd" "ev" "tip"!important;row-gap:10px!important}
+  #v-today .tdhd.card{padding:14px 16px!important}
+  #v-today .tdhd .date-h{font-size:19px}
+  #v-today .tdpr.card{padding:12px!important}
+}
+/* settings: grouped list with coloured icons; a group opens its cards */
+#v-set .setq{max-width:760px;margin-inline:auto}
+.sgl{display:flex;flex-direction:column;gap:14px;max-width:760px;margin:0 auto 16px}
+.sgl[hidden],.sgbar[hidden]{display:none!important}
+.sgsec.card{padding:4px 0!important;overflow:hidden}
+.sgrow{display:flex;align-items:center;gap:12px;width:100%;padding:11px 16px;text-align:start;border-bottom:1px solid var(--line);transition:background .15s;position:relative}
+.sgrow:last-child{border-bottom:none}
+.sgrow:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
+.sgic{width:34px;height:34px;border-radius:9px;background:var(--c);color:#fff;display:grid;place-items:center;flex:none}
+.sgic svg{width:19px;height:19px}
+.sgt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.sgt b{font-weight:600;font-size:14.5px}
+.sgt small{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sgch{color:var(--muted);font-size:20px;line-height:1}
+html[dir=ltr] .sgch{transform:scaleX(-1)}
+.sgbar{display:flex;align-items:center;gap:10px;max-width:760px;margin:0 auto 14px}
+.sgbar b{font-size:16px}
+#v-set .card.sgoff{display:none!important}
+#v-set[data-sg=group] .foldh::after{display:none}
+#v-set[data-sg=group] .set{columns:1;max-width:760px}
+#v-set .setq{position:static;background:transparent!important;padding:0 0 12px}
+html.mode-light #setQ{background:color-mix(in srgb,#fff 78%,transparent)!important;border-color:var(--line)!important;color:var(--text)}
