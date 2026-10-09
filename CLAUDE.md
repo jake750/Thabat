@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.4.3** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
+Current version: **3.5.0** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
 
 ## Working with the owner
 
@@ -22,7 +22,7 @@ Current version: **3.4.3** (`APP_VER` in `dev/src.html`; the Android versionCode
 | `dev/placeholders.json` | Values of `__MQ_RAW__`, `__ICON192__`, `__ICON32__` that `build.py` fills in |
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/*.js` | Feature modules already merged into `src.html` (c1–c9, d1–d5, e1–e2, f1 + f1.css, f2, demo.js); kept for reference |
+| `dev/modules/*.js` | Feature modules already merged into `src.html` (c1–c9, d1–d5, e1–e2, f1 + f1.css, f2, f3 + f3.css, demo.js); kept for reference |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me that go into `Thabat-Mac.zip` |
 | `dev/android/` | Java sources, stubs, `res/`, manifest and build scripts of the Android wrapper |
