@@ -32,3 +32,10 @@ html.lite.lg.st-glass .card,html.lite.lg.st-glass .tile,html.lite.lg.st-glass .m
 html.lite.lg.st-glass .card,html.lite.lg.st-glass nav.side .navpill,html.lite.lg.st-glass .sheet-box{background:linear-gradient(180deg,color-mix(in srgb,#fff 3.5%,var(--liteS)),color-mix(in srgb,var(--liteS) 88%,transparent) 90px)}
 html:not(.android) .app{height:calc(var(--pch,100dvh) / var(--uiz,1))}
 html.android .app{height:calc((min(var(--apph,100%),var(--webh,100%)) - var(--andman,0px)) / var(--uiz,1))}
+/* v3.7.1 light glass, lighter: no per-frame repaint — static edge sheen on cards, movement only in the background colour (GPU transform) */
+html.lite.lg.st-glass{animation:none!important}
+html.lite.lg.st-glass .card::after,html.lite.lg.st-glass .tile::after,html.lite.lg.st-glass .mtile::after{background:linear-gradient(150deg,color-mix(in srgb,#fff 30%,transparent),color-mix(in srgb,var(--accent) 22%,transparent) 24%,transparent 46%,transparent 70%,color-mix(in srgb,var(--water) 16%,transparent))!important}
+html.lg #aurora{contain:strict}
+html.lg #aurora i:nth-child(3){display:none!important}
+html.lg #aurora i:nth-child(1){animation-duration:48s!important}
+html.lg #aurora i:nth-child(2){animation-duration:60s!important}
