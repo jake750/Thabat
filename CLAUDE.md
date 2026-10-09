@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.6.2** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
+Current version: **3.7.0** (`APP_VER` in `dev/src.html`; the Android versionCode is still 32 and must be bumped before the next store upload).
 
 ## Working with the owner
 
@@ -22,7 +22,7 @@ Current version: **3.6.2** (`APP_VER` in `dev/src.html`; the Android versionCode
 | `dev/placeholders.json` | Values of `__MQ_RAW__`, `__ICON192__`, `__ICON32__` that `build.py` fills in |
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/*.js` | Feature modules already merged into `src.html` (c1–c9, d1–d5, e1–e2, f1 + f1.css, f2, f3 + f3.css, g1 + g1.css, g2, g3, demo.js); kept for reference |
+| `dev/modules/*.js` | Feature modules already merged into `src.html` (c1–c9, d1–d5, e1–e2, f1 + f1.css, f2, f3 + f3.css, g1 + g1.css, g2, g3, g4 + g4.css, demo.js); kept for reference |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me that go into `Thabat-Mac.zip` |
 | `dev/android/` | Java sources, stubs, `res/`, manifest and build scripts of the Android wrapper |
@@ -114,7 +114,7 @@ The current demo page lives in `/home/claude/demo/index.html`, next to `mushaf/`
 - **Text on a coloured fill must stay readable.** Calendar days with ≥45% fill get class `fl`, which switches to dark bold text.
 - **Lite mode must not kill essential motion.** Mushaf page turns keep a 0.28 s transition.
 - **Android bottom bar.** It must never sit under the system navigation: insets are measured natively (`--andfix`), with a manual "raise the bottom bar" setting (default 32 px) as a fallback. This is still not confirmed on every device.
-- **PC height.** `pcFit()` sizes the app to the visible height (`--pch`) for Edge app windows.
+- **PC height.** `pcFit()` sizes the app to the visible height (`--pch`) for Edge app windows. The interface-size setting zooms `body`, so the app height is divided by `--uiz` (the zoom); popups and menus divide screen coordinates by it too (`uiZoom()`).
 - **Logo.** The «ثبات» wordmark is drawn in two layers, text plus a `::after` clipped copy in `--water`. Do not go back to `background-clip:text`.
 - **Accuracy over invention.** Only 8 riwayat have verified digital text; the rest of the 20 come from the user's own scans. Never fabricate Quran text, sajdah positions or prayer data.
 

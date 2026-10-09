@@ -1,0 +1,34 @@
+/* v3.7: summary tools menu */
+#btTools{display:inline-flex;align-items:center;gap:6px}
+#btTools .btchev{font-style:normal;font-size:11px;opacity:.7;transition:transform .2s}
+#btTools.on .btchev{transform:rotate(180deg)}
+.btpanel.card{position:fixed!important;z-index:80;width:min(380px,calc(100vw - 16px));padding:8px!important;overflow:auto;display:flex;flex-direction:column;gap:4px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.btpanel[hidden]{display:none!important}
+.btgrp[hidden]{display:none}
+.btgrp>b{display:block;font-size:11.5px;font-weight:600;color:var(--muted);padding:8px 10px 4px}
+.btlist{display:flex;flex-direction:column;gap:2px}
+.btpanel .btitem{display:block!important;text-align:start;width:100%;height:auto!important;padding:9px 12px!important;border-radius:12px!important;border:none!important;background:transparent!important;box-shadow:none!important;font-size:13.5px;font-weight:600;color:var(--text);position:relative}
+.btpanel .btitem:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)!important}
+.btpanel .btitem small{display:block;font-weight:400;font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.45}
+.btpanel .btitem::after{display:none!important}
+/* PC: keep the settings button above the Windows taskbar edge */
+@media(min-width:701px){nav.side.flt{padding-bottom:34px!important}}
+/* phone full screen Quran: bring the top controls below the front camera */
+html.qfs-one .qfsui{padding-top:calc(max(env(safe-area-inset-top,0px),26px) + 10px)}
+html.android.qfs .qfsui{padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)}
+/* light glass (phones, automatic performance): soft moving colour without live blur, and the two orbiting edge lights at a lower frame rate */
+html.lite.lg.st-glass #aurora{display:block!important}
+html.lg #aurora i{filter:none!important;opacity:.5!important;will-change:transform}
+html.lg #aurora i:nth-child(1){background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 34%,transparent),transparent)!important}
+html.lg #aurora i:nth-child(2){background:radial-gradient(closest-side,color-mix(in oklch,var(--accent),#3b82f6 55%) 0%,transparent)!important;opacity:.32!important}
+html.lg #aurora i:nth-child(3){background:radial-gradient(closest-side,color-mix(in oklch,var(--accent),#ec4899 45%) 0%,transparent)!important;opacity:.24!important}
+html.lg.mode-light #aurora i{opacity:.28!important}
+html.lite.lg.st-glass body{background:var(--bg)}
+html.lite.lg.st-glass{animation:orbitA 26s steps(260) infinite,orbitB 26s steps(260) infinite -13s!important}
+html.lite.lg.st-glass .card::after,html.lite.lg.st-glass .tile::after,html.lite.lg.st-glass .mtile::after{display:block!important;content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:radial-gradient(380px circle at var(--lx) var(--ly),color-mix(in srgb,#fff 55%,transparent),color-mix(in srgb,var(--accent) 38%,transparent) 26%,transparent 60%) fixed,radial-gradient(320px circle at var(--mx) var(--my),color-mix(in srgb,#fff 40%,transparent),color-mix(in srgb,var(--water) 30%,transparent) 28%,transparent 60%) fixed!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+html.lite.lg.st-glass .card,html.lite.lg.st-glass .tile,html.lite.lg.st-glass .mtile{position:relative}
+html.lite.lg.st-glass .card,html.lite.lg.st-glass nav.side .navpill,html.lite.lg.st-glass .sheet-box{background:linear-gradient(180deg,color-mix(in srgb,#fff 3.5%,var(--liteS)),color-mix(in srgb,var(--liteS) 88%,transparent) 90px)}
+html:not(.android) .app{height:calc(var(--pch,100dvh) / var(--uiz,1))}
+html.android .app{height:calc((min(var(--apph,100%),var(--webh,100%)) - var(--andman,0px)) / var(--uiz,1))}
