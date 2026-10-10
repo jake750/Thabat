@@ -1,0 +1,16 @@
+/* v3.12.5 full-screen mushaf on PC: the controls leave the text — a column in the empty side margin, or a strip above the pages when there is no margin */
+@media (min-width:701px) and (min-height:561px) and (min-aspect-ratio:3/2){
+  html.qfs:not(.qfs-one) .qfsui{right:auto;width:auto;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px;background:none;padding:14px 16px}
+  html.qfs:not(.qfs-one) .qfsui>#qFsX{position:fixed;top:14px;right:16px;left:auto}
+  html.qfs:not(.qfs-one) .qfsui .qfstm{position:static;margin:0}
+  html.qfs:not(.qfs-one) .qfsui .qfspg{padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55)}
+  html.qfs:not(.qfs-one) .qfsui .qfspg:empty{display:none}
+}
+@media (min-width:701px) and (min-height:561px){
+  html.qfs:not(.qfs-one) #mushaf{height:calc(100vh / var(--uiz,1))}
+  html.qfs:not(.qfs-one) .spread:not(.one) .qimg{height:calc(100vh / var(--uiz,1) - 92px)}
+}
+@media (min-width:701px) and (min-height:561px) and (max-aspect-ratio:3/2){
+  html.qfs:not(.qfs-one) #mushaf{padding-top:56px}
+  html.qfs:not(.qfs-one) .spread:not(.one) .qimg{height:calc(100vh / var(--uiz,1) - 148px)}
+}
