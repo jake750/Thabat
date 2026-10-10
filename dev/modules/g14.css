@@ -13,7 +13,7 @@ body[data-view=lib] .fab{display:none!important}
 .lbcth img+i,.lbth img+i{opacity:0}
 .lbpb{display:block;height:4px;border-radius:4px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}.lbpb i{display:block;height:100%;background:var(--accent);border-radius:4px}
 .lbfh{font-size:13px;color:var(--muted);margin:16px 0 8px}
-.lbcw{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.lbcw{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:22px}
 .lbcwi{display:flex;flex-direction:column;gap:4px;text-align:start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;font-family:inherit;color:var(--text);min-width:0}
 .lbcwi b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lbcwi small{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lbbar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}.lbbar b{font-size:16px}.lbpr{font-size:12px;color:var(--muted)}

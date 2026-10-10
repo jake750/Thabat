@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.1** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.2** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
