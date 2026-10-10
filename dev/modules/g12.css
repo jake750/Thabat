@@ -1,0 +1,71 @@
+/* ---- v3.10 ---- */
+/* phone: larger touch targets */
+@media(max-width:700px){
+  #v-today .btn.sm,#v-cal .btn.sm,#v-brief .btn.sm,#v-boards .btn.sm,#v-set .btn.sm,.modal .box .btn.sm,#v-today .adhkar-btn,#v-cal .calhead .btn,#v-brief .btn,#v-boards .nbar .btn,#v-boards .nbar .chip{min-height:40px}
+  #v-today .chip,#v-cal .chip,#v-brief .chip,.modal .box .chip,.seg button{min-height:38px}
+  #v-today .card>h3 .btn,#v-today .card>h3 .chip{min-height:36px}
+  .pdl-add{min-height:40px}.pdl-cap .btn{min-height:40px}
+  .aymenu>button,.pppop.aymenu button{min-height:44px}
+}
+@media(max-width:700px){
+  #tasks .task .pp,#tasks .task .sadd,#tasks .task .tplay,#tasks .task .tmx{display:none!important}
+  #tasks .task .tkm,#tasks .task .del{min-width:38px;min-height:38px;display:grid;place-items:center}
+  #tasks .task .ck{width:26px;height:26px;flex:none}
+  .card>h3 .uxcm{min-width:38px;min-height:36px}
+  #tTools .tt{min-height:36px}
+  #v-today .qck{width:26px;height:26px}
+}
+/* phone: dialogs as bottom sheets */
+@media(max-width:700px){
+  .modal.uxsheet{place-items:end center}
+  .modal.uxsheet>.box{width:100%!important;max-width:100%!important;min-width:0!important;border-radius:22px 22px 0 0!important;max-height:92vh;max-height:92dvh;overflow:auto;margin:0!important;border-bottom:none!important;padding-bottom:calc(20px + env(safe-area-inset-bottom) + var(--andman,0px))!important;animation:uxup .24s cubic-bezier(.2,.8,.3,1)}
+  html.lite .modal.uxsheet>.box{animation-duration:.18s}
+  .uxgrab{width:42px;height:5px;border-radius:5px;background:color-mix(in srgb,var(--text) 25%,transparent);margin:-8px auto 12px;flex:none}
+}
+@media(min-width:701px){.uxgrab{display:none}}
+@keyframes uxup{from{transform:translateY(40%);opacity:.4}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.modal.uxsheet>.box{animation:none!important}}
+/* smart task input */
+.uxparse{font-size:12px;color:var(--muted);margin:6px 2px 0;line-height:1.6}
+.uxparse b{color:var(--accent);font-weight:600}
+.uxparse .uxpt{color:var(--text)}
+.uxparse[hidden]{display:none}
+/* task handle, drop marks, selection */
+#tasks .task .tkh{cursor:grab;color:var(--muted);opacity:.35;font-size:15px;padding:0 2px;user-select:none;-webkit-user-select:none;touch-action:none;flex:none;align-self:center}
+#tasks .task:hover .tkh{opacity:.8}
+@media(max-width:700px){#tasks .task .tkh{opacity:.55;padding:6px 4px;font-size:17px}}
+#tasks .task.drag{opacity:.4}
+#tasks .task.tdrag{position:relative;z-index:5;background:var(--panel);box-shadow:0 8px 22px #0006;transition:none}
+#tasks .task.dropb{box-shadow:0 -2px 0 var(--accent)}
+#tasks .task.dropa{box-shadow:0 2px 0 var(--accent)}
+#tasks .task.uxs{background:color-mix(in srgb,var(--accent) 16%,transparent);outline:1px solid color-mix(in srgb,var(--accent) 55%,transparent);border-radius:10px}
+.uxselm #tasks .task{cursor:pointer}
+.uxsel{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 10px;margin:6px 0 8px;border-radius:12px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));font-size:13px}
+.uxtmall{display:block;margin:8px 0 0;margin-inline-start:auto;font-size:12.5px}.uxtmall[hidden]{display:none!important}
+.pppop .uxmsep{height:1px;background:var(--line);margin:4px 6px}
+/* recap card */
+.uxrecap{margin-bottom:14px}
+.uxrc-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font-size:14px}
+.uxrc-x{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;min-width:32px;min-height:32px}
+.uxrc-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.uxrc-g>div{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:12px;background:color-mix(in srgb,var(--text) 5%,transparent);text-align:center}
+.uxrc-g b{font-size:18px}.uxrc-g small{font-size:11px;color:var(--muted)}
+.uxrc-m{margin-top:10px;font-size:13px;color:var(--accent);text-align:center}
+.uxrc-tm{margin-top:10px;width:100%}
+/* card menu and folded cards */
+.card>h3 .uxcm{background:none;border:none;color:var(--muted);font-size:17px;line-height:1;cursor:pointer;padding:2px 6px;border-radius:8px;margin-inline-start:4px;flex:none;min-width:30px;min-height:28px}
+.card>h3 .uxcm:hover{background:color-mix(in srgb,var(--text) 8%,transparent);color:var(--text)}
+#v-today .card.uxfold>*:not(h3){display:none!important}
+#v-today .card.uxfold>h3{margin-bottom:0;cursor:pointer}
+#v-today .card.uxfold{padding-top:12px;padding-bottom:12px}
+/* wide PC: tasks beside the timer */
+html.wide3 #v-today .grid>.stack:nth-child(2){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:18px}
+html.wide3 #v-today .grid>.stack:nth-child(2)>.card{grid-column:1}
+html.wide3 #v-today .grid>.stack:nth-child(2)>.card.uxtkcard{grid-column:2;grid-row:1 / span 6}
+/* offline note */
+.uxnet{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:90;padding:6px 14px;border-radius:20px;font-size:12.5px;background:var(--panel);border:1px solid var(--line);color:var(--text);box-shadow:0 6px 18px #0004;max-width:calc(100vw - 24px);text-align:center}
+/* trash */
+.uxtr{display:flex;flex-direction:column;gap:6px;max-height:55vh;overflow:auto;text-align:start}
+.uxtrr{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.uxtrt{flex:1;min-width:0;overflow-wrap:anywhere;font-size:13px}
+.uxtrt small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
