@@ -12,7 +12,10 @@ Current version: **3.12.4** (`APP_VER` in `dev/src.html`). The Android `versionC
 - He reports bugs with phone or PC screenshots (his phone is about 411×860 CSS px, Android; his PC is 1920×1040 with the interface size around 125%). Reproduce each one at the matching size before fixing it.
 - When he asks for «اقتراحات», show 2–3 options as a visual mockup (the visualize widget) with a recommendation, then implement the one he picks. Ask before large redesigns.
 - After every change: rebuild, run `dev/release.py`, send him `Thabat.apk`, `Thabat-Windows.zip` and `Thabat-Mac.zip`, commit, push and publish a GitHub release (see «Release»).
-- His personal copy is `C:\Users\foura\Documents\Thabat\`. `release.py` replaces only `Thabat.html` there (old one kept as `Thabat.html.bak`). Touch nothing else in that folder: it holds his data (`الأيام`, `نسخ أسبوعية`, `thabat-backup.json`). Never package from it.
+- His personal copy is `C:\Users\foura\Documents\Thabat\`. `release.py` replaces only `Thabat.html` there (old one kept as `Thabat.html.bak`). Touch nothing else in that folder: it holds his data (`الأيام`, `نسخ أسبوعية`, `thabat-backup.json`). Never package from it. **Exception he approved (3.12):** when `dev/win/Thabat-Helper.ps1`, `Thabat-Library.ps1` or `Thabat.bat` change, copy them there too (keep a `.bak` of the old helper/bat), then restart the helper/library processes (see «Owner's machine»).
+- He chooses work from numbered suggestion lists shown in the visualize widget (checkboxes + «أرسل اختياراتي»). Check the code before suggesting anything (grep the i18n tables and functions): earlier lists suggested features that already existed. Numbers he sends refer to the list he answered; when two lists exist, confirm which one (in 3.11 he answered the 98-item list, not the corrected 100-item one).
+- Big batches go out as several releases (one per group), each with the three files sent.
+- The keystore password is given by the owner at the start of a chat when an APK is needed; use it only in the `THABAT_KS_PASS` environment variable of the release command. **Never write it into any file, commit, memory or release note** (the repo is public).
 - Never remove or weaken the "created by jake750_" credit, the logo or `LICENSE.txt`.
 
 ## This machine (Windows 11)
@@ -57,7 +60,7 @@ Current version: **3.12.4** (`APP_VER` in `dev/src.html`). The Android `versionC
 - **Feature flags:** `THABAT_PLAY` (true only in the Play build), `SUPPORT_EMAIL` (still empty; the privacy page also has a placeholder).
 - **What's new:** `CHANGES` maps each `APP_VER` to an i18n key (`chg.38` …). The dialog opens after an update only when that key changed, so patch versions reuse the current key. A new feature release adds a new `chg.NN` in both languages.
 
-## Current design (3.6 → 3.10)
+## Current design (3.6 → 3.12)
 
 - **Navigation:** pages sit in a floating pill (`nav.side.flt .navpill`, side on PC, bottom on phone); settings is a separate round button (`.navset`). Every page has a small title (`.pgt`, 20 px / 18 px on phone).
 - **Today:** date card | next-prayer card (same height, prayer times inside), then the ayah of the day as its own card.
@@ -152,6 +155,21 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 - **Logo.** The «ثبات» wordmark is two layers (text plus a `::after` clipped copy in `--water`). Do not go back to `background-clip:text`.
 - **Accuracy over invention.** Only 8 riwayat have verified digital text; the rest come from the owner's own scans. Never fabricate Quran text, sajdah positions or prayer data.
 
+## Work queue (picked by the owner, not done yet)
+
+Do these in this order, one release per group, testing each at phone and PC sizes:
+
+1. **Whiteboard (3.13).** From the 50-list: 1 search inside a board (Ctrl+F, jump to and highlight the text); 2 labels on arrows; 3 a table element (editable rows/columns); 5 export the frames as one multi-page PDF (`jpegPdf` exists for single pages); 8 new templates: Ramadan plan, year-goals tree, memorisation-review map. From the 98-list: 40 layers (show/hide/lock); 41 board background: squares, dots or lines; 42 embed a YouTube video or an audio clip; 46 export PNG with a transparent background. The board code is large (`wb.*` strings, `WB_FONTS`, frames, present mode, minimap, Obsidian Canvas import/export) — read it before adding.
+2. **Larger features (3.14+).** From the 50-list: 11 notes graph (nodes and `[[links]]`); 17 two text riwayat side by side (only the 8 verified text riwayat; numbering differs between them); 26 full Hijri month calendar grid; 29 multi-day events (a bar across days); 38 sync encryption with a passphrase (GitHub only sees ciphertext; think through migration and both devices); 44 time per portfolio work in the Studio (link sessions to a work). From the 98-list: 10 record your recitation and play it after the reciter; 11 guided memorisation plan («جزء عمّ قبل رمضان»: pages per day and tracking); 15 most-read surahs (from `day.quran.pgs`); 16 quiz from your memorised pages («in which surah is this ayah?», verified text only); 19 wird measured in minutes instead of pages; 33 book quotes (a reading log per book with quotes and pages); 55 daily expenses with categories and a monthly budget; 66 a path of seeking knowledge (texts/books by level with progress); 77 saved Today layouts (study/work/Ramadan) switched in one tap; 80 a wall screen (big clock and next prayer for a TV or home PC); 83 setup by lifestyle (student/employee/designer turns on what fits); 88 a printable monthly PDF report; 90 «fresh start»: archive a whole year and keep the archive.
+3. **Weekly calendar view (item 26 of the 31-list).** Two designs were shown: A = seven day columns; B = «your week between the prayers», rows are the prayer periods like the day card, tasks sit in the period of their prayer, drag between days/periods (recommended). **The owner has not chosen yet — ask before building.**
+
+## Owner's machine (state at 3.12.3)
+
+- Tailscale is installed and signed in on the PC (IP `100.105.191.69`, interface «Tailscale», network category Private) and on his phone. The Wi-Fi profile is Public; Windows Firewall already allows inbound `powershell.exe` on Private and Public, so the library port 47815 is reachable on both.
+- The personal copy holds the 3.12 `Thabat-Helper.ps1`, `Thabat-Library.ps1` and `Thabat.bat` (old helper/bat kept as `.bak`). A Startup shortcut `Thabat Library.lnk` starts the library server at sign-in. He picked his own course folder (an After Effects course: «Week 0 - AE Primer», «Week 1 …»); its thumbnails were generated.
+- To restart after changing the helper: stop `powershell.exe` processes whose command line matches `Thabat-Helper` (or `Thabat-Library`), then start them hidden from the personal copy (`powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "C:\Users\foura\Documents\Thabat\Thabat-Helper.ps1"`). The old helper never exits by itself while it has a prayer schedule. Ask before stopping it.
+- The preview server for tests is `preview_start` name `thabat`; its browser profile has test data only. When the real library server runs, the test page at `localhost:8765` connects to it and shows his real courses (read-only use is fine; do not change his library settings from tests).
+
 ## Open items
 
 - Support e-mail for `SUPPORT_EMAIL` and the contact line in `store/privacy.html`.
@@ -159,3 +177,5 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 - Maghrebi month names: `gShort`/`gStr` showed «أكتوبر» in tests; check the other months use the Maghrebi list.
 - After switching language and back, the ayah-of-the-day label stays in the other language until reload (pre-existing).
 - `main` branch protection for collaborators, if the owner wants it.
+- Library, not yet confirmed on his phone: reaching the PC over Tailscale from outside, pairing through sync or the pairing code, and the player's ✕/⛶ buttons below the status bar (3.12.1). The Mac app can watch the library but cannot host it.
+- Mushaf sideways on the phone (3.12.3) was tested only by emulation at 820×380.
