@@ -159,7 +159,7 @@ function uxCardMenu(c,btn){const L_=S.settings.home3||(S.settings.home3={}),k=ca
     else if(a==='all')openHomeLayout();
     else{const sib=[...c.parentElement.children].filter(x=>x.classList.contains('card')&&!x.classList.contains('hhide')).sort((a,b)=>(+a.style.order||0)-(+b.style.order||0)||[...a.parentElement.children].indexOf(a)-[...b.parentElement.children].indexOf(b));
       const i=sib.indexOf(c),j=a==='up'?i-1:i+1;if(j<0||j>=sib.length)return;[sib[i],sib[j]]=[sib[j],sib[i]];sib.forEach((x,n)=>{const kk=cardKey(x);(L_[kk]=L_[kk]||{}).o=n});save();homeApply();c.scrollIntoView({block:'nearest',behavior:'smooth'})}})}
-function uxCardBtns(){homeCards().forEach(c=>{const h=c.querySelector(':scope>h3');if(!h)return;let b=h.querySelector(':scope>.uxcm');if(!b){b=document.createElement('button');b.className='uxcm';b.type='button';b.textContent='⋯';b.setAttribute('aria-label',t('ux.cardMenu'));h.append(b);
+function uxCardBtns(){homeCards().forEach(c=>{const h=c.querySelector(':scope>h3');if(!h)return;let b=h.querySelector(':scope>.uxcm');if(!b){b=document.createElement('button');b.className='uxcm';b.type='button';b.innerHTML=UX_DOTS;b.setAttribute('aria-label',t('ux.cardMenu'));h.append(b);
     b.onclick=e=>{e.stopPropagation();uxCardMenu(c,b)}}b.title=t('ux.cardMenu')})}
 {const _ha=homeApply;homeApply=function(){_ha();try{const L_=S.settings.home3||{};homeCards().forEach(c=>{const o=L_[cardKey(c)]||{};c.classList.toggle('uxfold',!!o.c)});uxCardBtns()}catch(e){console.error(e)}}}
 document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('#v-today .card.uxfold>h3');if(!h||e.target.closest('button,a,input'))return;const c=h.parentElement,L_=S.settings.home3||{},o=L_[cardKey(c)];if(o){o.c=false;save();homeApply()}});
@@ -171,9 +171,20 @@ document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey||AN
   e.preventDefault();S.settings.zoom=z;applyLook2();save();toast(t('ux.zoom',Math.round(z*100)));const zi=$('#zoomIn');if(zi){zi.value=z;const zv=$('#zoomV');if(zv)zv.textContent=Math.round(z*100)+'%'}},true);
 
 /* ---- wide PC windows: tasks beside the timer ---- */
-function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false;document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');try{uxKeyTips()}catch(e){}}
+const UX_DOTS='<svg class="uxdots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false;document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
+  /* the other cards of that column go into their own column, so a long task list leaves no gaps beside it */
+  const st=tc&&tc.parentElement;let col=$('#uxCol');
+  if(on&&st&&st.classList.contains('stack')&&st.id!=='uxCol'){if(!col){[...st.children].forEach((c,i)=>c.dataset.uxi=i);col=document.createElement('div');col.className='stack uxcol';col.id='uxCol';st.prepend(col)}[...st.children].filter(c=>c!==col&&c!==tc&&c.classList.contains('card')).forEach(c=>col.append(c))}
+  else if(!on&&col){const p=col.parentElement;[...col.children].forEach(c=>p.insertBefore(c,col));col.remove();[...p.children].sort((a,b)=>(+a.dataset.uxi||0)-(+b.dataset.uxi||0)).forEach(c=>p.append(c))}
+  try{uxKeyTips()}catch(e){}}
 addEventListener('resize',uxWide);{const _al=applyLook2;applyLook2=function(...a){const r=_al(...a);try{uxWide()}catch(e){}return r}}
 try{uxWide()}catch(e){}
+{const _rt=renderToday;renderToday=function(...a){const r=_rt(...a);try{uxWide()}catch(e){}return r}}
+/* the notes «⋯» button: a drawn icon, centred in any font */
+function uxDotsFix(){const b=$('#nxMore');if(b&&!b.querySelector('.uxdots'))b.innerHTML=UX_DOTS}
+{const _rb=renderBoardsView;renderBoardsView=function(...a){const r=_rb(...a);try{uxDotsFix()}catch(e){}return r}}
+setTimeout(()=>{try{uxDotsFix()}catch(e){}},900);
 
 /* ---- PC: each button shows its keyboard shortcut ---- */
 function uxKeyTips(){if(MOB.matches)return;const set=(el,l,k)=>{if(el)el.title=l+'  ('+k+')'};
