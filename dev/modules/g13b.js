@@ -28,7 +28,7 @@ openKeys=function(){openInfo('⌨ '+t('ks.t'),`<p class="muted" style="margin:0 
   m.addEventListener('touchend',()=>{if(!on)return;on=false;if(el)el.classList.remove('on','go');if(dy<90)return;vib(10);if(SY.token){toast(t('sync.busy'));syncNow({force:true})}else{renderAll();toast(t('ptr.noSync'))}},{passive:true})})();
 
 /* ---- pages slide in from the side you are heading to ---- */
-const NAV_ORD=['today','quran','cal','brief','boards','set'];
+const NAV_ORD=['today','quran','cal','brief','boards','lib','set'];
 {const _sv=showView;showView=function(v,...a){const was=curView();const r=_sv(v,...a);try{if(was&&was!==v&&!document.documentElement.classList.contains('lite')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const el=$('#v-'+v),fw=NAV_ORD.indexOf(v)>NAV_ORD.indexOf(was);if(el){el.classList.remove('uxsl-f','uxsl-b');void el.offsetWidth;el.classList.add(fw?'uxsl-f':'uxsl-b');setTimeout(()=>el.classList.remove('uxsl-f','uxsl-b'),320)}}}catch(e){}return r}}
 
 /* ---- presentation mode: blur private text when sharing the screen (Ctrl+Shift+H) ---- */
@@ -44,9 +44,9 @@ setTimeout(()=>{try{if(!$('.modal.on'))gestGuide()}catch(e){}},6000);
 function comfyApply(){document.documentElement.classList.toggle('comfy',!!S.settings.comfy)}comfyApply();
 
 /* ---- choose and order the pages in the navigation ---- */
-function navApply(){const pill=$('nav.side .navpill');if(!pill)return;const C=S.settings.navCfg||{},ord=C.order||NAV_ORD.slice(0,5);
+function navApply(){const pill=$('nav.side .navpill');if(!pill)return;const C=S.settings.navCfg||{},o0=C.order||[],ord=[...new Set(o0.concat(NAV_ORD.filter(v=>v!=='set')))];
   ord.forEach(v=>{const b=pill.querySelector(`.navbtn[data-v="${v}"]`);if(b)pill.append(b)});pill.querySelectorAll('.navbtn').forEach(b=>{b.hidden=b.dataset.v!=='today'&&(C.hide||[]).includes(b.dataset.v)});try{navKeyTips()}catch(e){}}
-function openNavCfg(){const C=S.settings.navCfg||(S.settings.navCfg={}),ord=C.order||(C.order=NAV_ORD.slice(0,5));C.hide=C.hide||[];
+function openNavCfg(){const C=S.settings.navCfg||(S.settings.navCfg={}),ord=(C.order=[...new Set((C.order||[]).concat(NAV_ORD.filter(v=>v!=='set')))]);C.hide=C.hide||[];
   openInfo('🧭 '+t('nv.t'),`<p class="muted" style="margin:0 0 8px">${t('nv.sub')}</p><div class="hlist">${ord.map(v=>`<div class="hlrow" data-v="${v}"><span>${t(v==='boards'?'nav.notes':'nav.'+v)}</span><span class="row"><button class="btn sm ghost" data-up>↑</button><button class="btn sm ghost" data-dn>↓</button>${v==='today'?'':`<button class="btn sm ${C.hide.includes(v)?'':'ghost'}" data-hd>${C.hide.includes(v)?t('hl3.show'):t('hl3.hide')}</button>`}</span></div>`).join('')}</div><button class="btn sm ghost" id="nvReset">${t('hl3.reset')}</button>`);
   const persist=()=>{C.order=[...$$('.hlist .hlrow')].map(r=>r.dataset.v);save();navApply()};
   $$('.hlist .hlrow').forEach(r=>{r.querySelector('[data-up]').onclick=()=>{const p=r.previousElementSibling;if(p)p.before(r);persist()};r.querySelector('[data-dn]').onclick=()=>{const n=r.nextElementSibling;if(n)n.after(r);persist()};const h=r.querySelector('[data-hd]');if(h)h.onclick=()=>{const v=r.dataset.v;C.hide=C.hide.includes(v)?C.hide.filter(x=>x!==v):C.hide.concat(v);save();navApply();openNavCfg()}});

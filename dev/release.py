@@ -10,7 +10,8 @@ What it does:
   2. node --check on the largest <script>
   3. Thabat-Windows.zip and Thabat-Mac.zip: the previous release zips with
      Thabat/Thabat.html swapped in (mushaf/, tafsir/, launchers are kept);
-     the files in dev/mac/ (launchers, icon, read-me) replace or join the Mac zip
+     the files in dev/mac/ (launchers, icon, read-me) replace or join the Mac zip,
+     and the files in dev/win/ (helper, library server, Thabat.bat) the Windows zip
   4. Thabat.apk: android/base.apk with assets/www/Thabat.html swapped in,
      zipaligned and signed with android/thabat-signing.keystore (alias thabat)
   5. copies the build into the owner's personal copy, after backing it up
@@ -89,6 +90,7 @@ def main():
         shutil.copy(z, prev)
         swap(prev, z, 'Thabat/Thabat.html', html)
     put_files('Thabat-Mac.zip', os.path.join(ROOT, 'dev', 'mac'), 'Thabat/')
+    put_files('Thabat-Windows.zip', os.path.join(ROOT, 'dev', 'win'), 'Thabat/')
     if not no_apk:
         if not os.environ.get('THABAT_KS_PASS'):
             sys.exit('Set THABAT_KS_PASS (ask the owner) or pass --no-apk')
