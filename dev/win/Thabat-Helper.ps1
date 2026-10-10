@@ -160,7 +160,7 @@ while ($true) {
       Send-Response $stream '200 OK' 'text/plain' ($utf8.GetBytes([string]$global:blob.ph[[int]$matches[1]]))
     } elseif ($path -like '/lanclose*') {
       Lan-Close; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}'))
-    } elseif ($path -like '/libstart*') {
+    } elseif ($path -match '^/libstart(\?|$)') {
       # start the video library server (it exits by itself if it is already running)
       $lib = Join-Path $PSScriptRoot 'Thabat-Library.ps1'
       if (Test-Path -LiteralPath $lib) { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $lib + '"'); Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}')) }
