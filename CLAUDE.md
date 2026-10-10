@@ -36,7 +36,7 @@ Current version: **3.9.1** (`APP_VER` in `dev/src.html`). The Android `versionCo
 | `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g11 (+ matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
-| `dev/mac/` | macOS launcher `Thabat.command` and the bilingual read-me for `Thabat-Mac.zip` |
+| `dev/mac/` | Everything `release.py` puts into `Thabat-Mac.zip` besides the HTML: `Thabat.command` (launcher), `Create-Shortcut.command` (makes `~/Applications/Thabat.app` with the icon, pointing at that folder), `Thabat.icns` (built from the PNG frames of `Thabat.ico`), the bilingual read-me. `.command` files are stored as executable |
 | `dev/android/` | Java sources, stubs, `res/`, manifest and the Linux build scripts of the Android wrapper |
 | `Thabat/Thabat.html`, `Thabat.html` | Build output (git-ignored) |
 | `Thabat.apk`, `Thabat-Windows.zip`, `Thabat-Mac.zip` | Release outputs (git-ignored; published as GitHub release assets). The zips are also the base for the next release |
@@ -47,7 +47,7 @@ Current version: **3.9.1** (`APP_VER` in `dev/src.html`). The Android `versionCo
 
 - **One HTML file, no framework, no build step at runtime.** It must work from `file://`.
 - **Windows:** Edge app mode (`msedge --app=file:///…`) through `Thabat.bat`/`Thabat.vbs`. `Thabat-Helper.ps1` is a loopback HTTP listener on port 47813 for file saving and downloads. LAN transfer uses port 47814 with a 6-digit code.
-- **macOS:** no helper. `Thabat.command` opens the HTML in Chrome/Edge/Brave app mode, or Safari. `MAC` (user-agent check) sets `html.mac`, which hides helper-only features (Mawaqit search, link downloads, LAN transfer, ICS by URL, active-app detection, PC notifications); setup goes straight to calculated times. GitHub sync works (api.github.com allows CORS; Mawaqit does not).
+- **macOS:** no helper. `Create-Shortcut.command` makes a `Thabat.app` (untested on a real Mac so far). `Thabat.command` opens the HTML in Chrome/Edge/Brave app mode, or Safari. `MAC` (user-agent check) sets `html.mac`, which hides helper-only features (Mawaqit search, link downloads, LAN transfer, ICS by URL, active-app detection, PC notifications); setup goes straight to calculated times. GitHub sync works (api.github.com allows CORS; Mawaqit does not).
 - **Android:** package `tn.thabat.app`, a WebView wrapper loading `assets/www/Thabat.html`. The bridge `window.ThabatAndroid` (`Bridge.java`) provides alarms, the adhan (`AdhanService`), widgets (`Widget`…`Widget5`), biometrics, share and file saving. Native inset measurements are in `window.ANDNAV`. minSdk 26, targetSdk 36.
 - **State:** a global `S` saved to `localStorage['thabat.v1']` and mirrored to IndexedDB `thabat`. Per-day data is under `day(key)`, keys `YYYY-MM-DD`. GitHub (gist) sync works per record (`d:<date>` for days).
 - **i18n:** `t(key,…args)` with one Arabic and one English table. Every visible string goes through it. Default is `ar`/RTL.

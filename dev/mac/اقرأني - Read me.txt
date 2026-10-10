@@ -9,6 +9,12 @@
   (يُنصح بـ Chrome أو Edge: يدعمان الحفظ في مجلد والنافذة المستقلة.)
 - لا تفرّق الملفات: أبقِ Thabat.html ومجلدَي mushaf و tafsir بجانب Thabat.command.
 
+اختصار بأيقونة ثبات
+- انقر مرتين على Create-Shortcut.command (في أول مرة: زر الفأرة الأيمن ← «فتح» ← «فتح»).
+- يضيف Thabat.app بأيقونة ثبات إلى مجلد تطبيقاتك (~/Applications)، فيظهر في Launchpad وSpotlight،
+  ويمكنك سحبه إلى Dock.
+- يفتح التطبيقُ ثباتَ من هذا المجلد، فإن نقلت المجلد شغّل Create-Shortcut.command مرة أخرى.
+
 ما يعمل
 - المواقيت والأذان (ما دامت النافذة مفتوحة)، المصحف والتفسير، الورد والحفظ والمراجعة،
   المهام والمؤقّت والتقويم والملخّص والملاحظات، والمزامنة مع الهاتف عبر GitHub.
@@ -28,6 +34,9 @@ Thabat — macOS
 - Double-click Thabat.command. The first time, right-click it → Open → Open (macOS blocks unknown developers).
 - It opens in its own window in Chrome, Edge, Brave or Chromium, otherwise in Safari.
 - Keep Thabat.html and the mushaf and tafsir folders next to Thabat.command.
+- For an app with the Thabat icon, double-click Create-Shortcut.command (the first time: right-click → Open).
+  It adds Thabat.app to ~/Applications, so it shows in Launchpad and Spotlight and can be kept in the Dock.
+  If you move this folder, run Create-Shortcut.command again.
 - Not available on the Mac (they need the Windows helper): Mawaqit mosque search, link downloads,
   LAN transfer, external calendar by URL, active-app detection, notifications while closed.
 - Sync with your phone through GitHub works.

@@ -9,7 +9,8 @@ What it does:
   1. dev/build.py  ->  Thabat/Thabat.html, copied to ./Thabat.html
   2. node --check on the largest <script>
   3. Thabat-Windows.zip and Thabat-Mac.zip: the previous release zips with
-     Thabat/Thabat.html swapped in (mushaf/, tafsir/, launchers are kept)
+     Thabat/Thabat.html swapped in (mushaf/, tafsir/, launchers are kept);
+     the files in dev/mac/ (launchers, icon, read-me) replace or join the Mac zip
   4. Thabat.apk: android/base.apk with assets/www/Thabat.html swapped in,
      zipaligned and signed with android/thabat-signing.keystore (alias thabat)
   5. copies the build into the owner's personal copy, after backing it up
@@ -18,7 +19,7 @@ What it does:
 
 It never commits, pushes or publishes; see CLAUDE.md for those steps.
 """
-import os, re, shutil, subprocess, sys, tempfile, zipfile
+import os, re, shutil, subprocess, sys, tempfile, time, zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HTML = os.path.join(ROOT, 'Thabat', 'Thabat.html')
@@ -49,6 +50,23 @@ def swap(src, out, name, html, drop_meta=False):
     assert n == 1, f'{name} not found in {src}'
 
 
+def put_files(path, folder, prefix):
+    """Replace or add every file of folder in the zip under prefix; .command files stay executable."""
+    new = {prefix + n: os.path.join(folder, n) for n in os.listdir(folder) if os.path.isfile(os.path.join(folder, n))}
+    tmp = path + '.tmp'
+    with zipfile.ZipFile(path) as zi, zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as zo:
+        for it in zi.infolist():
+            if it.filename not in new:
+                zo.writestr(it, zi.read(it), compress_type=it.compress_type)
+        for name, src in sorted(new.items()):
+            it = zipfile.ZipInfo(name, date_time=time.localtime(os.path.getmtime(src))[:6])
+            it.create_system = 3
+            it.external_attr = (0o100755 if name.endswith('.command') else 0o100644) << 16
+            it.compress_type = zipfile.ZIP_DEFLATED
+            zo.writestr(it, open(src, 'rb').read())
+    os.replace(tmp, path)
+
+
 def ver_in(data):
     m = re.search(rb"APP_VER='([^']*)'", data)
     return m.group(1).decode() if m else '?'
@@ -70,6 +88,7 @@ def main():
         prev = os.path.join(tmp, z)
         shutil.copy(z, prev)
         swap(prev, z, 'Thabat/Thabat.html', html)
+    put_files('Thabat-Mac.zip', os.path.join(ROOT, 'dev', 'mac'), 'Thabat/')
     if not no_apk:
         if not os.environ.get('THABAT_KS_PASS'):
             sys.exit('Set THABAT_KS_PASS (ask the owner) or pass --no-apk')
