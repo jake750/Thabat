@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.6** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.7** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -150,6 +150,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 - **`position:fixed` inside a view.** `.view` animates with `transform`, which turns fixed children into relative ones; append floating panels to `document.body`.
 - **Interface zoom.** The size setting sets `body.style.zoom`; the app height is divided by `--uiz`, and popups divide screen coordinates by `uiZoom()`. Test at 125%.
 - **Popups that load content later** must re-fit: `qPopAt` uses a MutationObserver plus ResizeObserver (`ppFit`).
+- **Non-passive touch listeners make phone scrolling wait for JavaScript.** Never put `{passive:false}` touch listeners on `window`/`document`; attach them to the smallest element that needs them (3.12.7 moved the notes drag to the notes root, the Quran highlighter to the mushaf column, and made the ⠿ task drag passive since `.tkh` has `touch-action:none`).
 - **Phones and animation.** Never animate registered custom properties on `<html>` for phones (it restyles every element each frame). Light glass moves only `#aurora` blobs with `transform`; card edges get a static sheen.
 - **Android bottom bar.** Insets are measured natively; the old automatic +32 px lift is reset to 0 on phones where `ANDNAV` reports them (`andLiftMigrate`). The manual setting stays as a fallback.
 - **PC height.** `pcFit()` sets `--pch` to the visible height for Edge app windows.

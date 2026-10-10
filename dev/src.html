@@ -2719,7 +2719,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.6';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.7';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
@@ -5140,7 +5140,7 @@ function notesDrag(root){if(root._dg)return;root._dg=1;let D=null;
   window.addEventListener('pointermove',e=>{if(!D)return;if(!D.on){if(Math.hypot(e.clientX-D.x,e.clientY-D.y)>8){if(D.touch){clearTimeout(D.t);D=null;return}start()}else return}
     D.c.style.left=(e.clientX-D.dx)+'px';D.c.style.top=(e.clientY-D.dy)+'px';
     const el=document.elementFromPoint(e.clientX,e.clientY),o=el&&el.closest('#notesGrid .ncard[data-note]');if(o&&o!==D.c){const r=o.getBoundingClientRect();o[e.clientY<r.top+r.height/2?'before':'after'](D.ph)}else if(!o){const col=el&&el.closest('#notesGrid .ncol');if(col&&D.ph.parentNode!==col)col.append(D.ph)}});
-  document.addEventListener('touchmove',e=>{if(D&&D.on)e.preventDefault()},{passive:false});
+  root.addEventListener('touchmove',e=>{if(D&&D.on)e.preventDefault()},{passive:false});
   root.addEventListener('contextmenu',e=>{if(D)e.preventDefault()});
   const end=()=>{if(!D)return;clearTimeout(D.t);const d=D;D=null;if(!d.on)return;const ids=notesDropOrder(root,d);d.ph.replaceWith(d.c);d.c.style.cssText='';d.c.classList.remove('ndrag');window._ndragAt=Date.now();
     const base=Date.now();ids.forEach((id,i)=>{const n=NOTES().find(x=>x.id===id);if(n)n.ord=base-i*1000});
@@ -6536,7 +6536,7 @@ function renderTip(){const el=$('#tipBar');if(!el)return;const seen=S.tipsSeen||
 function openInfo(title,html){$('#infoBox').innerHTML=`<h2 style="font-size:20px">${title}</h2><div class="infob">${html}</div><div class="evact"><span style="flex:1"></span><button class="btn sm pri" id="infoX">${t('ok')}</button></div>`;$('#infoModal').classList.add('on');$('#infoX').onclick=()=>$('#infoModal').classList.remove('on')}
 $('#infoModal').onclick=e=>{if(e.target.id==='infoModal')$('#infoModal').classList.remove('on')};
 function openPrivacy(){openInfo('🔒 '+t('pv.t'),t('pv.body'))}
-const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312','3.12.1':'chg.312','3.12.2':'chg.312','3.12.3':'chg.312','3.12.4':'chg.312','3.12.5':'chg.312','3.12.6':'chg.312'};
+const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312','3.12.1':'chg.312','3.12.2':'chg.312','3.12.3':'chg.312','3.12.4':'chg.312','3.12.5':'chg.312','3.12.6':'chg.312','3.12.7':'chg.312'};
 function openWhatsNew(){openInfo('🎉 '+t('chg.t',APP_VER),t(CHANGES[APP_VER]||'chg.32'))}
 if(PRE_UPD&&!FIRST_RUN&&CHANGES[PRE_UPD.from]!==CHANGES[APP_VER])setTimeout(()=>{if(!$('.modal.on'))openWhatsNew()},2500);
 /* --- 7. error log + bug report --- */
@@ -7646,7 +7646,8 @@ function qhlBtns(){const img=qhlIsImg();let b=$('#qHlBtn');if(!b){$('#qDark').in
   const end=e=>{const d=QHL.drag;if(!d)return;QHL.drag=null;e.stopImmediatePropagation();d.pv.remove();let a=Math.min(d.y0,d.y1),b=Math.max(d.y0,d.y1);
     if(b-a<.015){a=Math.max(0,d.y0-.028);b=Math.min(1,d.y0+.028)}const k=S.quran.riwaya+':'+(+d.im.dataset.p),M=QLMK();(M[k]=M[k]||[]).push({a:Math.round(a*1000)/1000,b:Math.round(b*1000)/1000,c:QHL.c});save();qMarksDraw()};
   window.addEventListener('pointerup',end,true);window.addEventListener('pointercancel',end,true);
-  ['touchstart','touchmove','touchend','mousedown','mouseup','click','dblclick','contextmenu'].forEach(ev=>window.addEventListener(ev,e=>{if(!inPage(e))return;if(ev==='touchmove'||ev==='contextmenu')e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false}))}
+  /* 3.12.7: touch listeners sit on the mushaf column, so scrolling elsewhere never waits for them */
+  ['touchstart','touchmove','touchend','mousedown','mouseup','click','dblclick','contextmenu'].forEach(ev=>(ev.startsWith('touch')?($('#mushaf').parentElement||window):window).addEventListener(ev,e=>{if(!inPage(e))return;if(ev==='touchmove'||ev==='contextmenu')e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:ev!=='touchmove'&&ev!=='contextmenu'?true:false}))}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&QHL.on)qhlToggle(false)});
 /* the marks list also shows highlighted scanned pages of the current riwaya */
 {const _ml=qMarksList;qMarksList=function(){_ml();const M=QLMK(),rw=S.quran.riwaya,ps=Object.keys(M).filter(k=>k.startsWith(rw+':')).map(k=>+k.split(':')[1]).sort((a,b)=>a-b);if(!ps.length)return;
@@ -8069,8 +8070,8 @@ function uxTasksDecorate(){const tk=todayKey(),d=day(tk),ids=new Set(d.tasks.map
   /* phone: hold the ⠿ handle and move */
   let tdrag=null;
   el.addEventListener('touchstart',e=>{const h=e.target.closest&&e.target.closest('.tkh');if(!h||e.touches.length!==1)return;const li=h.closest('.task');tdrag={li,id:li.dataset.id,y0:e.touches[0].clientY};li.classList.add('tdrag');vib(10)},{passive:true});
-  el.addEventListener('touchmove',e=>{if(!tdrag)return;if(e.cancelable)e.preventDefault();const y=e.touches[0].clientY;tdrag.li.style.transform=`translateY(${(y-tdrag.y0)/uiZoom()}px)`;
-    const others=$$('#tasks .task').filter(l=>l!==tdrag.li&&!l.classList.contains('done'));others.forEach(l=>l.classList.remove('dropb','dropa'));const tg=others.find(l=>{const r=l.getBoundingClientRect();return y>=r.top&&y<=r.bottom});if(tg){const r=tg.getBoundingClientRect();tg.classList.add(y>r.top+r.height/2?'dropa':'dropb');tdrag.tg=tg}else tdrag.tg=null},{passive:false});
+  el.addEventListener('touchmove',e=>{if(!tdrag)return;const y=e.touches[0].clientY;tdrag.li.style.transform=`translateY(${(y-tdrag.y0)/uiZoom()}px)`;
+    const others=$$('#tasks .task').filter(l=>l!==tdrag.li&&!l.classList.contains('done'));others.forEach(l=>l.classList.remove('dropb','dropa'));const tg=others.find(l=>{const r=l.getBoundingClientRect();return y>=r.top&&y<=r.bottom});if(tg){const r=tg.getBoundingClientRect();tg.classList.add(y>r.top+r.height/2?'dropa':'dropb');tdrag.tg=tg}else tdrag.tg=null},{passive:true});
   el.addEventListener('touchend',()=>{if(!tdrag)return;const D=tdrag;tdrag=null;D.li.style.transform='';D.li.classList.remove('tdrag');if(D.tg)uxMove(D.id,D.tg.dataset.id,D.tg.classList.contains('dropa'));else $$('#tasks .task').forEach(l=>l.classList.remove('dropb','dropa'))},{passive:true})})();
 function uxMove(id,toId,after){const d=day(todayKey()),a=d.tasks.findIndex(q=>q.id===id);if(a<0||id===toId)return;const [x]=d.tasks.splice(a,1);let b=d.tasks.findIndex(q=>q.id===toId);if(b<0){d.tasks.splice(a,0,x);return}d.tasks.splice(after?b+1:b,0,x);save();renderTasks()}
 

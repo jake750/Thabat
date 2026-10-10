@@ -29,7 +29,8 @@ function qhlBtns(){const img=qhlIsImg();let b=$('#qHlBtn');if(!b){$('#qDark').in
   const end=e=>{const d=QHL.drag;if(!d)return;QHL.drag=null;e.stopImmediatePropagation();d.pv.remove();let a=Math.min(d.y0,d.y1),b=Math.max(d.y0,d.y1);
     if(b-a<.015){a=Math.max(0,d.y0-.028);b=Math.min(1,d.y0+.028)}const k=S.quran.riwaya+':'+(+d.im.dataset.p),M=QLMK();(M[k]=M[k]||[]).push({a:Math.round(a*1000)/1000,b:Math.round(b*1000)/1000,c:QHL.c});save();qMarksDraw()};
   window.addEventListener('pointerup',end,true);window.addEventListener('pointercancel',end,true);
-  ['touchstart','touchmove','touchend','mousedown','mouseup','click','dblclick','contextmenu'].forEach(ev=>window.addEventListener(ev,e=>{if(!inPage(e))return;if(ev==='touchmove'||ev==='contextmenu')e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:false}))}
+  /* 3.12.7: touch listeners sit on the mushaf column, so scrolling elsewhere never waits for them */
+  ['touchstart','touchmove','touchend','mousedown','mouseup','click','dblclick','contextmenu'].forEach(ev=>(ev.startsWith('touch')?($('#mushaf').parentElement||window):window).addEventListener(ev,e=>{if(!inPage(e))return;if(ev==='touchmove'||ev==='contextmenu')e.preventDefault();e.stopImmediatePropagation()},{capture:true,passive:ev!=='touchmove'&&ev!=='contextmenu'?true:false}))}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&QHL.on)qhlToggle(false)});
 /* the marks list also shows highlighted scanned pages of the current riwaya */
 {const _ml=qMarksList;qMarksList=function(){_ml();const M=QLMK(),rw=S.quran.riwaya,ps=Object.keys(M).filter(k=>k.startsWith(rw+':')).map(k=>+k.split(':')[1]).sort((a,b)=>a-b);if(!ps.length)return;

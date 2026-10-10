@@ -127,8 +127,8 @@ function uxTasksDecorate(){const tk=todayKey(),d=day(tk),ids=new Set(d.tasks.map
   /* phone: hold the ⠿ handle and move */
   let tdrag=null;
   el.addEventListener('touchstart',e=>{const h=e.target.closest&&e.target.closest('.tkh');if(!h||e.touches.length!==1)return;const li=h.closest('.task');tdrag={li,id:li.dataset.id,y0:e.touches[0].clientY};li.classList.add('tdrag');vib(10)},{passive:true});
-  el.addEventListener('touchmove',e=>{if(!tdrag)return;if(e.cancelable)e.preventDefault();const y=e.touches[0].clientY;tdrag.li.style.transform=`translateY(${(y-tdrag.y0)/uiZoom()}px)`;
-    const others=$$('#tasks .task').filter(l=>l!==tdrag.li&&!l.classList.contains('done'));others.forEach(l=>l.classList.remove('dropb','dropa'));const tg=others.find(l=>{const r=l.getBoundingClientRect();return y>=r.top&&y<=r.bottom});if(tg){const r=tg.getBoundingClientRect();tg.classList.add(y>r.top+r.height/2?'dropa':'dropb');tdrag.tg=tg}else tdrag.tg=null},{passive:false});
+  el.addEventListener('touchmove',e=>{if(!tdrag)return;const y=e.touches[0].clientY;tdrag.li.style.transform=`translateY(${(y-tdrag.y0)/uiZoom()}px)`;
+    const others=$$('#tasks .task').filter(l=>l!==tdrag.li&&!l.classList.contains('done'));others.forEach(l=>l.classList.remove('dropb','dropa'));const tg=others.find(l=>{const r=l.getBoundingClientRect();return y>=r.top&&y<=r.bottom});if(tg){const r=tg.getBoundingClientRect();tg.classList.add(y>r.top+r.height/2?'dropa':'dropb');tdrag.tg=tg}else tdrag.tg=null},{passive:true});
   el.addEventListener('touchend',()=>{if(!tdrag)return;const D=tdrag;tdrag=null;D.li.style.transform='';D.li.classList.remove('tdrag');if(D.tg)uxMove(D.id,D.tg.dataset.id,D.tg.classList.contains('dropa'));else $$('#tasks .task').forEach(l=>l.classList.remove('dropb','dropa'))},{passive:true})})();
 function uxMove(id,toId,after){const d=day(todayKey()),a=d.tasks.findIndex(q=>q.id===id);if(a<0||id===toId)return;const [x]=d.tasks.splice(a,1);let b=d.tasks.findIndex(q=>q.id===toId);if(b<0){d.tasks.splice(a,0,x);return}d.tasks.splice(after?b+1:b,0,x);save();renderTasks()}
 
