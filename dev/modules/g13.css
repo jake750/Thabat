@@ -1,0 +1,11 @@
+/* ---- v3.11 ---- */
+.lwst{margin-top:10px;font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px}
+.lwst b{color:var(--text)}
+.rcnw{margin-top:4px}
+.stk{margin-top:4px;font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.stk button{background:none;border:1px solid var(--line);border-radius:12px;padding:2px 8px;font-size:11.5px;color:var(--text);cursor:pointer;font-family:inherit}
+.stk button:hover{border-color:var(--accent)}
+.bedt{margin-top:10px;font-size:12.5px;color:var(--muted);text-align:center}
+.ygp{display:block;margin-top:4px;color:var(--muted)}
+.pfb{font-size:13px;color:var(--text);margin:-6px 0 10px}
+.evchip.yago{opacity:.9}
