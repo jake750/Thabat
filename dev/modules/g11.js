@@ -37,7 +37,7 @@ function pdlBind(box,k,d){const find=id=>d.tasks.find(q=>q.id===id),move=(x,p)=>
   box.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{PDL.addP=b.closest('.pdl-s').dataset.p;pdlRender();const i=$('#pdlIn');if(i)i.focus()});
   const inp=$('#pdlIn');if(inp){const add=()=>{const v=inp.value.trim(),p=PDL.addP;if(v){d.tasks.push({id:uid(),text:v,done:false,created:Date.now(),after:p});save()}PDL.addP=v?p:null;renderTasks();if(v)setTimeout(()=>{const n=$('#pdlIn');if(n)n.focus()},0)};
     $('#pdlGo').onclick=add;inp.onkeydown=e=>{if(e.key==='Enter')add();if(e.key==='Escape'){PDL.addP=null;pdlRender()}};inp.onblur=()=>setTimeout(()=>{if(PDL.addP&&!inp.value.trim()&&document.activeElement!==$('#pdlGo')){PDL.addP=null;pdlRender()}},150)}}
-function pdlEnsure(){if($('#pdlCard'))return;const st=$('#v-today .grid .stack');if(!st)return;const c=document.createElement('div');c.className='card pdlcard';c.id='pdlCard';st.prepend(c)}
+function pdlEnsure(){if($('#pdlCard'))return;const st=$('#v-today .grid .stack');if(!st)return;const c=document.createElement('div');c.className='card pdlcard';c.id='pdlCard';const gw=st.querySelector(':scope>.glasswrap');if(gw)gw.after(c);else st.prepend(c)}
 {const _rt=renderTasks;renderTasks=function(){_rt();try{pdlRender()}catch(e){console.error(e)}}}
 {const _rg=renderGlass;renderGlass=function(){_rg();try{pdlRender()}catch(e){console.error(e)}}}
 {const _ta=timerAct;timerAct=function(...a){const r=_ta(...a);try{pdlRender()}catch(e){}return r}}

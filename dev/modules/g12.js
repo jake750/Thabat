@@ -204,4 +204,6 @@ setTimeout(uxNet,1500);
 /* ---- commands and settings for the new pieces ---- */
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'🗑',label:t('tr.t'),run:()=>openTrash(),kw:'trash deleted محذوفات سلة'});L_.push({icon:'➡️',label:t('ux.allTm'),run:()=>{showView('today');uxTomorrow(day(todayKey()).tasks.filter(x=>!x.done).map(x=>x.id))},kw:'tomorrow move غد'});return L_}}
 {const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#openLastT'),!!S.settings.openLast,v=>{S.settings.openLast=v});toggle($('#wide3T'),S.settings.wide3!==false,v=>{S.settings.wide3=v;uxWide()});toggle($('#recapT'),!S.settings.recapOff,v=>{S.settings.recapOff=!v;uxRecap()});const b=$('#trashBtn');if(b)b.onclick=openTrash}catch(e){console.error(e)}}}
+/* the wall card stays first in its column (once, for saved card orders) */
+try{const L_=S.settings.home3;if(L_&&!S.settings.wallTop){const gw=$('#v-today .glasswrap');if(gw){const sib=[...gw.parentElement.children].filter(c=>c.classList.contains('card')),os=sib.map(c=>(L_[cardKey(c)]||{}).o).filter(v=>v!=null);if(os.length){const k=cardKey(gw);(L_[k]=L_[k]||{}).o=Math.min(...os)-1}}}S.settings.wallTop=1}catch(e){console.error(e)}
 try{homeApply();renderTasks()}catch(e){console.error(e)}
