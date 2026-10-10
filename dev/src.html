@@ -2046,6 +2046,11 @@ html.lbpl-on body{overflow:hidden}
 .lbpc{position:relative;z-index:2}
 .lbpc{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px 10px calc(10px + env(safe-area-inset-bottom) + var(--andman,0px));background:linear-gradient(#0000,#000c)}
 .lbpc .btn{color:#fff;border-color:#ffffff33}
+html.android .lbpt{padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)}
+.lbpl.max .lbpc,.lbpl.max .lbpn{display:none}
+.lbpl.max .lbpt{position:absolute;top:0;left:0;right:0;z-index:3;background:none;justify-content:space-between}
+.lbpl.max .lbx{background:#0006}
+html.android .lbpl.max .lbvw{margin-bottom:max(var(--andnav,0px),16px)}
 .lbsp{display:flex;gap:3px;background:#ffffff14;border-radius:20px;padding:3px}
 .lbsp button{border:none;background:none;color:#fffc;font-size:12.5px;padding:6px 8px;border-radius:16px;cursor:pointer;font-family:inherit;min-width:38px}
 .lbsp button.on{background:var(--accent);color:#111}
@@ -2668,7 +2673,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.0';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.1';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
@@ -6485,7 +6490,7 @@ function renderTip(){const el=$('#tipBar');if(!el)return;const seen=S.tipsSeen||
 function openInfo(title,html){$('#infoBox').innerHTML=`<h2 style="font-size:20px">${title}</h2><div class="infob">${html}</div><div class="evact"><span style="flex:1"></span><button class="btn sm pri" id="infoX">${t('ok')}</button></div>`;$('#infoModal').classList.add('on');$('#infoX').onclick=()=>$('#infoModal').classList.remove('on')}
 $('#infoModal').onclick=e=>{if(e.target.id==='infoModal')$('#infoModal').classList.remove('on')};
 function openPrivacy(){openInfo('🔒 '+t('pv.t'),t('pv.body'))}
-const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312'};
+const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312','3.12.1':'chg.312'};
 function openWhatsNew(){openInfo('🎉 '+t('chg.t',APP_VER),t(CHANGES[APP_VER]||'chg.32'))}
 if(PRE_UPD&&!FIRST_RUN&&CHANGES[PRE_UPD.from]!==CHANGES[APP_VER])setTimeout(()=>{if(!$('.modal.on'))openWhatsNew()},2500);
 /* --- 7. error log + bug report --- */
@@ -8392,26 +8397,26 @@ function libItem(id){const all=libCourses().flatMap(c=>libMedia(c).map(x=>({...x
 function libPlay(id){if(!LIB.base){toast(t('lb.off'));libLoad(true);return}const it=libItem(id);if(!it){toast(t('lb.gone'));return}const L_=LIBS();LIB.cur=it;LIB.watch=0;LIB.lastTick=0;
   let ov=$('#libPlayer');if(!ov){ov=document.createElement('div');ov.id='libPlayer';ov.className='lbpl';document.body.append(ov)}ov.classList.add('on');document.documentElement.classList.add('lbpl-on');
   const sp=L_.speed||1,i=it.list.findIndex(x=>x.id===id),prev=it.list[i-1],next=it.list[i+1];
-  ov.innerHTML=`<div class="lbpt"><button class="lbx" id="lbX" aria-label="✕">✕</button><span class="lbpn"><b dir="auto">${esc(libTitle(it.n))}</b><small dir="auto">${esc(it.course.n)}${it.ch?' · '+esc(it.ch):''}</small></span><button class="lbx" id="lbFs" title="⛶">⛶</button></div>
-    <div class="lbvw"><video id="lbV" controls playsinline preload="metadata" ${it.k==='a'?'':'poster=""'}></video></div>
-    <div class="lbpc"><button class="btn sm ghost" id="lbPrev" ${prev?'':'disabled'}>⏮</button><button class="btn sm ghost" id="lbB10">−10</button><div class="lbsp">${[0.75,1,1.25,1.5,1.75,2,2.5,3].map(x=>`<button data-sp="${x}" class="${x===sp?'on':''}">${x}×</button>`).join('')}</div><button class="btn sm ghost" id="lbF10">+10</button><button class="btn sm ghost" id="lbNext" ${next?'':'disabled'}>⏭</button><button class="btn sm" id="lbDone">${(L_.prog[id]||{}).done?'✓ '+t('lb.watched'):t('lb.mark')}</button></div>`;
-  const v=$('#lbV');v.src=libU('/f?id='+id);v.playbackRate=sp;v.defaultPlaybackRate=sp;const p=L_.prog[id];
+  ov.innerHTML=`<div class="lbpt"><button class="lbx" id="lvX" aria-label="✕">✕</button><span class="lbpn"><b dir="auto">${esc(libTitle(it.n))}</b><small dir="auto">${esc(it.course.n)}${it.ch?' · '+esc(it.ch):''}</small></span><button class="lbx" id="lvFs" title="⛶">⛶</button></div>
+    <div class="lbvw"><video id="lvV" controls playsinline preload="metadata" ${it.k==='a'?'':'poster=""'}></video></div>
+    <div class="lbpc"><button class="btn sm ghost" id="lvPrev" ${prev?'':'disabled'}>⏮</button><button class="btn sm ghost" id="lvB10">−10</button><div class="lbsp">${[0.75,1,1.25,1.5,1.75,2,2.5,3].map(x=>`<button data-sp="${x}" class="${x===sp?'on':''}">${x}×</button>`).join('')}</div><button class="btn sm ghost" id="lvF10">+10</button><button class="btn sm ghost" id="lvNext" ${next?'':'disabled'}>⏭</button><button class="btn sm" id="lvDone">${(L_.prog[id]||{}).done?'✓ '+t('lb.watched'):t('lb.mark')}</button></div>`;
+  const v=$('#lvV');if(ANDROID)v.setAttribute('controlsList','nofullscreen');v.src=libU('/f?id='+id);v.playbackRate=sp;v.defaultPlaybackRate=sp;const p=L_.prog[id];
   v.addEventListener('loadedmetadata',()=>{if(p&&!p.done&&p.p>5&&p.p<v.duration-5)v.currentTime=p.p;v.playbackRate=L_.speed||1;v.play().catch(()=>{})},{once:true});
   v.addEventListener('timeupdate',()=>libTick(v));v.addEventListener('pause',()=>libSave(v,true));v.addEventListener('ended',()=>{libSave(v,true,true);if(next&&L_.autoNext!==false)setTimeout(()=>libPlay(next.id),600)});
   v.addEventListener('error',()=>{const e=v.error&&v.error.code;toast(e===4?t('lb.codec'):t('lb.netErr'))});
   ov.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{const x=+b.dataset.sp;v.playbackRate=x;L_.speed=x;ov.querySelectorAll('[data-sp]').forEach(z=>z.classList.toggle('on',z===b));save()});
-  $('#lbB10').onclick=()=>{v.currentTime=Math.max(0,v.currentTime-10)};$('#lbF10').onclick=()=>{v.currentTime=Math.min(v.duration||1e9,v.currentTime+10)};
-  $('#lbPrev').onclick=()=>prev&&(libSave(v,true),libPlay(prev.id));$('#lbNext').onclick=()=>next&&(libSave(v,true),libPlay(next.id));
-  $('#lbDone').onclick=()=>{const P=L_.prog,q=P[id]||(P[id]={p:v.currentTime,d:v.duration||0});q.done=!q.done;q.at=Date.now();q.n=libTitle(it.n);q.c=it.course.n;save();$('#lbDone').textContent=q.done?'✓ '+t('lb.watched'):t('lb.mark')};
-  $('#lbX').onclick=libClose;$('#lbFs').onclick=()=>{const el=ov;if(!document.fullscreenElement&&el.requestFullscreen&&!ANDROID)el.requestFullscreen().catch(()=>{});else if(document.fullscreenElement)document.exitFullscreen();else ov.classList.toggle('max')}}
+  $('#lvB10').onclick=()=>{v.currentTime=Math.max(0,v.currentTime-10)};$('#lvF10').onclick=()=>{v.currentTime=Math.min(v.duration||1e9,v.currentTime+10)};
+  $('#lvPrev').onclick=()=>prev&&(libSave(v,true),libPlay(prev.id));$('#lvNext').onclick=()=>next&&(libSave(v,true),libPlay(next.id));
+  $('#lvDone').onclick=()=>{const P=L_.prog,q=P[id]||(P[id]={p:v.currentTime,d:v.duration||0});q.done=!q.done;q.at=Date.now();q.n=libTitle(it.n);q.c=it.course.n;save();$('#lvDone').textContent=q.done?'✓ '+t('lb.watched'):t('lb.mark')};
+  $('#lvX').onclick=libClose;$('#lvFs').onclick=()=>{const el=ov;if(!document.fullscreenElement&&el.requestFullscreen&&!ANDROID)el.requestFullscreen().catch(()=>{});else if(document.fullscreenElement)document.exitFullscreen();else ov.classList.toggle('max')}}
 function libTick(v){const now=performance.now();if(!v.paused&&LIB.lastTick&&now-LIB.lastTick<3000)LIB.watch+=(now-LIB.lastTick)/1000;LIB.lastTick=v.paused?0:now;if(Date.now()-LIB.lastSave>8000)libSave(v,Date.now()-LIB.lastSave>30000)}
 function libSave(v,persist,ended){const it=LIB.cur;if(!it||!v)return;LIB.lastSave=Date.now();const P=LIBS().prog,p=P[it.id]||(P[it.id]={});p.p=ended?v.duration:v.currentTime;p.d=v.duration||p.d||0;p.at=Date.now();p.n=libTitle(it.n);p.c=it.course.n;if(ended||(p.d&&p.p/p.d>0.92))p.done=true;if(persist)save()}
 function libLog(){const it=LIB.cur,sec=LIB.watch;LIB.watch=0;if(!it||sec<60)return;const k=todayKey(),d=day(k),title=`${it.course.n} — ${libTitle(it.n)}`,mins=Math.round(sec/60);const ex=d.media.find(m=>m.lib===it.id);if(ex){ex.minutes+=mins;ex.at=Date.now()}else d.media.push({id:uid(),type:'lesson',how:it.k==='a'?'listen':'watch',title,minutes:mins,at:Date.now(),counted:false,url:'',from:null,to:null,lib:it.id});save();try{renderMedia()}catch(e){}}
-function libClose(){const ov=$('#libPlayer'),v=$('#lbV');if(v){libSave(v,true);v.pause();v.removeAttribute('src');v.load()}libLog();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});if(ov){ov.classList.remove('on','max');ov.innerHTML=''}document.documentElement.classList.remove('lbpl-on');LIB.cur=null;if(curView()==='lib')renderLib()}
-document.addEventListener('keydown',e=>{const ov=$('#libPlayer');if(!ov||!ov.classList.contains('on'))return;const v=$('#lbV');if(!v||/INPUT|TEXTAREA/.test(e.target.tagName))return;
+function libClose(){const ov=$('#libPlayer'),v=$('#lvV');if(v){libSave(v,true);v.pause();v.removeAttribute('src');v.load()}libLog();if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});if(ov){ov.classList.remove('on','max');ov.innerHTML=''}document.documentElement.classList.remove('lbpl-on');LIB.cur=null;if(curView()==='lib')renderLib()}
+document.addEventListener('keydown',e=>{const ov=$('#libPlayer');if(!ov||!ov.classList.contains('on'))return;const v=$('#lvV');if(!v||/INPUT|TEXTAREA/.test(e.target.tagName))return;
   if(e.key==='Escape'){e.preventDefault();libClose()}else if(e.key===' '&&e.target!==v){e.preventDefault();v.paused?v.play():v.pause()}else if(e.key==='ArrowLeft'||e.key==='ArrowRight'){if(e.target===v)return;e.preventDefault();const back=(e.key==='ArrowLeft')!==(document.documentElement.dir==='rtl');v.currentTime=Math.max(0,v.currentTime+(back?-10:10))}
   else if(e.key===']'||e.key==='['){const L_=[0.75,1,1.25,1.5,1.75,2,2.5,3],i=L_.indexOf(v.playbackRate),n=L_[Math.max(0,Math.min(L_.length-1,(i<0?1:i)+(e.key===']'?1:-1)))];v.playbackRate=n;LIBS().speed=n;$$('#libPlayer [data-sp]').forEach(z=>z.classList.toggle('on',+z.dataset.sp===n))}},true);
-addEventListener('pagehide',()=>{const v=$('#lbV');if(v&&LIB.cur){libSave(v,true);libLog()}});
+addEventListener('pagehide',()=>{const v=$('#lvV');if(v&&LIB.cur){libSave(v,true);libLog()}});
 
 /* setup: folders (on the PC), the pairing code, Tailscale */
 function libCode(){const L_=LIBS();try{return btoa(unescape(encodeURIComponent(JSON.stringify({h:L_.hosts,p:L_.port,t:L_.token,n:L_.name}))))}catch(e){return''}}

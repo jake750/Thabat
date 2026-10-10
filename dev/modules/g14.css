@@ -43,6 +43,11 @@ html.lbpl-on body{overflow:hidden}
 .lbpc{position:relative;z-index:2}
 .lbpc{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px 10px calc(10px + env(safe-area-inset-bottom) + var(--andman,0px));background:linear-gradient(#0000,#000c)}
 .lbpc .btn{color:#fff;border-color:#ffffff33}
+html.android .lbpt{padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)}
+.lbpl.max .lbpc,.lbpl.max .lbpn{display:none}
+.lbpl.max .lbpt{position:absolute;top:0;left:0;right:0;z-index:3;background:none;justify-content:space-between}
+.lbpl.max .lbx{background:#0006}
+html.android .lbpl.max .lbvw{margin-bottom:max(var(--andnav,0px),16px)}
 .lbsp{display:flex;gap:3px;background:#ffffff14;border-radius:20px;padding:3px}
 .lbsp button{border:none;background:none;color:#fffc;font-size:12.5px;padding:6px 8px;border-radius:16px;cursor:pointer;font-family:inherit;min-width:38px}
 .lbsp button.on{background:var(--accent);color:#111}
