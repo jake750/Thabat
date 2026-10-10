@@ -1,0 +1,3 @@
+/* v3.12.6 zoomed mushaf page: opaque, and nothing of the other page or the page bars shows through it */
+.qimg.qzoom{background:var(--paper,#16171b)}
+.spread:has(.qimg.qzoom) .qimg:not(.qzoom),.spread:has(.qimg.qzoom) .qh,.spread:has(.qimg.qzoom) .qf,.spread:has(.qimg.qzoom) .qmark{visibility:hidden}
