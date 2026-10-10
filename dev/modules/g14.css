@@ -53,3 +53,16 @@ html.android .lbpl.max .lbvw{margin-bottom:max(var(--andnav,0px),16px)}
 .lbsp button.on{background:var(--accent);color:#111}
 @media(max-width:700px){.lbl{grid-template-columns:84px minmax(0,1fr) 38px}.lbgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lbsp{order:5;width:100%;justify-content:center;overflow-x:auto}.lbsp button{padding:7px 6px;min-width:0;flex:1}}
 @media(max-width:700px) and (orientation:landscape){.lbpt{padding-top:6px;padding-bottom:6px}.lbsp{width:auto;order:0}}
+
+/* ---- v3.12.3: the mushaf on short screens (a phone turned sideways): the page image fills the space between its header and its buttons ---- */
+@media (max-height:560px) and (min-width:701px){
+  .spread:not(.one){height:auto}
+  .spread:not(.one) .qimg{height:calc(100dvh - 92px);min-height:180px;display:flex;justify-content:center;align-items:center}
+  .spread:not(.one) .qimg img{height:100%;max-height:100%;width:auto;max-width:100%;object-fit:contain}
+  html.qfs .spread:not(.one) .qimg{height:calc(100dvh - 92px)}
+  html.qfs #mushaf{align-items:center}
+  /* full screen sideways: the controls move to the empty sides so they never cover the text */
+  html.qfs .qfsui{right:auto;width:auto;max-width:190px;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:8px;background:none;padding-left:calc(58px + env(safe-area-inset-left,0px))}
+  html.qfs .qfsui .qfstm{position:static;margin:0}
+  html.qfs .qfsui>:first-child{position:fixed;top:calc(max(env(safe-area-inset-top,0px),10px) + 6px);right:calc(12px + env(safe-area-inset-right,0px));left:auto}
+}

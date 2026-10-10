@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.2** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.3** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -133,6 +133,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 ## Known pitfalls (all happened before)
 
 - **One settings key, two meanings.** `S.settings.water` was both the water colour and the water-tracker config; the tracker now lives in `S.settings.waterCfg`; `applyTheme` only accepts a string colour.
+- **Phone turned sideways = a short desktop.** ~820×380 is wider than 700 px, so the desktop layout applies with very little height. `.qimg` had `clamp(380px,…)` while `.spread` was `100dvh-120px`, so pages overflowed; 3.12.3 adds `@media (max-height:560px) and (min-width:701px)` rules (image fills the page box, full-screen controls move to the side columns). Test landscape at 820×380 with `html.android`.
 - **Element ids clash too.** The image viewer already uses `lbX`, `lbPrev`, `lbNext` (and `lbDl`, `lbImg`, `lbN`, `lbT`…); the library player's buttons first used the same ids and its close/prev/next did nothing (3.12.0). Grep for an id before using it; the player now uses `lv*`.
 - **Android status bar.** The WebView draws under it; top controls of full-window overlays need `padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)` on `html.android` (as `.qfsui` and `.lbpt`).
 - **Generic CSS class names clash.** `.hrow` broke the hifz map and `.yh` clashed too. Prefix new classes.
