@@ -154,8 +154,8 @@ setInterval(()=>{if(curView()==='today'&&!document.hidden)try{uxRecap()}catch(e)
 function uxCardMenu(c,btn){const L_=S.settings.home3||(S.settings.home3={}),k=cardKey(c),o=L_[k]||(L_[k]={}),r=btn.getBoundingClientRect();
   const p=qPopAt(`<button data-a="fold">${o.c?'▾ '+t('ux.unfold'):'▴ '+t('ux.fold')}</button><button data-a="up">↑ ${t('ux.up')}</button><button data-a="dn">↓ ${t('ux.down')}</button><button data-a="hide">🙈 ${t('hl3.hide')}</button><button data-a="all">🧩 ${t('hl3.t')}</button>`,r.left+r.width/2,r.bottom-10,'aymenu');
   p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;closePP();
-    if(a==='fold'){o.c=!o.c;save();homeApply()}
-    else if(a==='hide'){o.h=true;save();homeApply();toastAct(t('ux.hidden'),t('undo'),()=>{o.h=false;save();homeApply()})}
+    if(a==='fold'){o.c=!o.c;save();homeApply();uxRebalance()}
+    else if(a==='hide'){o.h=true;save();homeApply();uxRebalance();toastAct(t('ux.hidden'),t('undo'),()=>{o.h=false;save();homeApply();uxRebalance()})}
     else if(a==='all')openHomeLayout();
     else{const sib=[...c.parentElement.children].filter(x=>x.classList.contains('card')&&!x.classList.contains('hhide')).sort((a,b)=>(+a.style.order||0)-(+b.style.order||0)||[...a.parentElement.children].indexOf(a)-[...b.parentElement.children].indexOf(b));
       const i=sib.indexOf(c),j=a==='up'?i-1:i+1;if(j<0||j>=sib.length)return;[sib[i],sib[j]]=[sib[j],sib[i]];sib.forEach((x,n)=>{const kk=cardKey(x);(L_[kk]=L_[kk]||{}).o=n});save();homeApply();c.scrollIntoView({block:'nearest',behavior:'smooth'})}})}
@@ -172,12 +172,21 @@ document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey||AN
 
 /* ---- wide PC windows: tasks beside the timer ---- */
 const UX_DOTS='<svg class="uxdots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false;document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
-  /* the other cards of that column go into their own column, so a long task list leaves no gaps beside it */
-  const st=tc&&tc.parentElement;let col=$('#uxCol');
-  if(on&&st&&st.classList.contains('stack')&&st.id!=='uxCol'){if(!col){[...st.children].forEach((c,i)=>c.dataset.uxi=i);col=document.createElement('div');col.className='stack uxcol';col.id='uxCol';st.prepend(col)}[...st.children].filter(c=>c!==col&&c!==tc&&c.classList.contains('card')).forEach(c=>col.append(c))}
-  else if(!on&&col){const p=col.parentElement;[...col.children].forEach(c=>p.insertBefore(c,col));col.remove();[...p.children].sort((a,b)=>(+a.dataset.uxi||0)-(+b.dataset.uxi||0)).forEach(c=>p.append(c))}
-  try{uxKeyTips()}catch(e){}}
+function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false,was=!!$('#uxCol3');document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
+  if(on&&!was)uxBalance();else if(!on&&was)uxUnbalance();try{uxKeyTips()}catch(e){}}
+/* wide windows: three columns. The wall, the timer and the tasks head their columns; every other card goes, in order, to the shortest column */
+function uxStacks(){return[...$$('#v-today .grid>.stack')].filter(s=>s.id!=='uxCol3')}
+function uxBalance(){const g=$('#v-today .grid'),S0=uxStacks();if(!g||S0.length<2)return;const [a,b]=S0;
+  S0.forEach((s,si)=>[...s.children].forEach((c,i)=>{if(c.dataset.uxp==null){c.dataset.uxp=si;c.dataset.uxi=i}}));
+  let c3=$('#uxCol3');if(!c3){c3=document.createElement('div');c3.className='stack uxcol3';c3.id='uxCol3';g.append(c3)}
+  const cols=[a,b,c3],cards=[a,b].flatMap(s=>[...s.children].filter(c=>c.classList.contains('card'))).sort((x,y)=>(+x.dataset.uxp-+y.dataset.uxp)||((+x.style.order||0)-(+y.style.order||0))||(+x.dataset.uxi-+y.dataset.uxi));
+  const wall=$('#v-today .glasswrap'),timer=$('#tDisp')&&$('#tDisp').closest('.card'),tasks=$('#tasks')&&$('#tasks').closest('.card');
+  [[wall,a],[timer,b],[tasks,c3]].forEach(([c,col])=>{if(c){c.classList.add('uxanchor');col.append(c)}});
+  const rest=cards.filter(c=>c!==wall&&c!==timer&&c!==tasks),tmp=document.createDocumentFragment();rest.forEach(c=>tmp.append(c));
+  rest.forEach(c=>{if(c.classList.contains('hhide')){a.append(c);return}const col=cols.reduce((m,x)=>x.offsetHeight<m.offsetHeight?x:m,cols[0]);col.append(c)})}
+function uxUnbalance(){const S0=uxStacks(),c3=$('#uxCol3');const all=[...S0,c3].filter(Boolean).flatMap(s=>[...s.children]);
+  all.forEach(c=>{c.classList.remove('uxanchor');const t=S0[+c.dataset.uxp];if(t)t.append(c)});S0.forEach(s=>[...s.children].sort((x,y)=>(+x.dataset.uxi||0)-(+y.dataset.uxi||0)).forEach(c=>s.append(c)));if(c3)c3.remove()}
+function uxRebalance(){if($('#uxCol3')){uxUnbalance();uxBalance()}}
 addEventListener('resize',uxWide);{const _al=applyLook2;applyLook2=function(...a){const r=_al(...a);try{uxWide()}catch(e){}return r}}
 try{uxWide()}catch(e){}
 {const _rt=renderToday;renderToday=function(...a){const r=_rt(...a);try{uxWide()}catch(e){}return r}}

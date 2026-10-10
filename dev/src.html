@@ -1948,9 +1948,9 @@ html.tdc #v-today .tipbar{display:none!important}
 #v-today .card.uxfold>h3{margin-bottom:0;cursor:pointer}
 #v-today .card.uxfold{padding-top:12px;padding-bottom:12px}
 /* wide PC: tasks beside the timer */
-html.wide3 #v-today .grid>.stack:nth-child(2){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:18px}
-html.wide3 #v-today .grid>.stack:nth-child(2)>#uxCol{grid-column:1;grid-row:1;min-width:0}
-html.wide3 #v-today .grid>.stack:nth-child(2)>.card.uxtkcard{grid-column:2;grid-row:1;min-width:0}
+html.wide3 #v-today .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:start}
+html.wide3 #v-today .grid>.stack{min-width:0}
+html.wide3 #v-today .grid>.stack>.card.uxanchor{order:-999!important}
 .uxdots{width:18px;height:18px;fill:currentColor;display:block;margin:auto}
 #nxMore{display:grid!important;place-items:center;padding:0!important}
 .card>h3 .uxcm{display:inline-grid;place-items:center}
@@ -2567,7 +2567,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.10.2';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.10.3';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
@@ -6384,7 +6384,7 @@ function renderTip(){const el=$('#tipBar');if(!el)return;const seen=S.tipsSeen||
 function openInfo(title,html){$('#infoBox').innerHTML=`<h2 style="font-size:20px">${title}</h2><div class="infob">${html}</div><div class="evact"><span style="flex:1"></span><button class="btn sm pri" id="infoX">${t('ok')}</button></div>`;$('#infoModal').classList.add('on');$('#infoX').onclick=()=>$('#infoModal').classList.remove('on')}
 $('#infoModal').onclick=e=>{if(e.target.id==='infoModal')$('#infoModal').classList.remove('on')};
 function openPrivacy(){openInfo('🔒 '+t('pv.t'),t('pv.body'))}
-const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310'};
+const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310'};
 function openWhatsNew(){openInfo('🎉 '+t('chg.t',APP_VER),t(CHANGES[APP_VER]||'chg.32'))}
 if(PRE_UPD&&!FIRST_RUN&&CHANGES[PRE_UPD.from]!==CHANGES[APP_VER])setTimeout(()=>{if(!$('.modal.on'))openWhatsNew()},2500);
 /* --- 7. error log + bug report --- */
@@ -7944,8 +7944,8 @@ setInterval(()=>{if(curView()==='today'&&!document.hidden)try{uxRecap()}catch(e)
 function uxCardMenu(c,btn){const L_=S.settings.home3||(S.settings.home3={}),k=cardKey(c),o=L_[k]||(L_[k]={}),r=btn.getBoundingClientRect();
   const p=qPopAt(`<button data-a="fold">${o.c?'▾ '+t('ux.unfold'):'▴ '+t('ux.fold')}</button><button data-a="up">↑ ${t('ux.up')}</button><button data-a="dn">↓ ${t('ux.down')}</button><button data-a="hide">🙈 ${t('hl3.hide')}</button><button data-a="all">🧩 ${t('hl3.t')}</button>`,r.left+r.width/2,r.bottom-10,'aymenu');
   p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;closePP();
-    if(a==='fold'){o.c=!o.c;save();homeApply()}
-    else if(a==='hide'){o.h=true;save();homeApply();toastAct(t('ux.hidden'),t('undo'),()=>{o.h=false;save();homeApply()})}
+    if(a==='fold'){o.c=!o.c;save();homeApply();uxRebalance()}
+    else if(a==='hide'){o.h=true;save();homeApply();uxRebalance();toastAct(t('ux.hidden'),t('undo'),()=>{o.h=false;save();homeApply();uxRebalance()})}
     else if(a==='all')openHomeLayout();
     else{const sib=[...c.parentElement.children].filter(x=>x.classList.contains('card')&&!x.classList.contains('hhide')).sort((a,b)=>(+a.style.order||0)-(+b.style.order||0)||[...a.parentElement.children].indexOf(a)-[...b.parentElement.children].indexOf(b));
       const i=sib.indexOf(c),j=a==='up'?i-1:i+1;if(j<0||j>=sib.length)return;[sib[i],sib[j]]=[sib[j],sib[i]];sib.forEach((x,n)=>{const kk=cardKey(x);(L_[kk]=L_[kk]||{}).o=n});save();homeApply();c.scrollIntoView({block:'nearest',behavior:'smooth'})}})}
@@ -7962,12 +7962,21 @@ document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey||AN
 
 /* ---- wide PC windows: tasks beside the timer ---- */
 const UX_DOTS='<svg class="uxdots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false;document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
-  /* the other cards of that column go into their own column, so a long task list leaves no gaps beside it */
-  const st=tc&&tc.parentElement;let col=$('#uxCol');
-  if(on&&st&&st.classList.contains('stack')&&st.id!=='uxCol'){if(!col){[...st.children].forEach((c,i)=>c.dataset.uxi=i);col=document.createElement('div');col.className='stack uxcol';col.id='uxCol';st.prepend(col)}[...st.children].filter(c=>c!==col&&c!==tc&&c.classList.contains('card')).forEach(c=>col.append(c))}
-  else if(!on&&col){const p=col.parentElement;[...col.children].forEach(c=>p.insertBefore(c,col));col.remove();[...p.children].sort((a,b)=>(+a.dataset.uxi||0)-(+b.dataset.uxi||0)).forEach(c=>p.append(c))}
-  try{uxKeyTips()}catch(e){}}
+function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false,was=!!$('#uxCol3');document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
+  if(on&&!was)uxBalance();else if(!on&&was)uxUnbalance();try{uxKeyTips()}catch(e){}}
+/* wide windows: three columns. The wall, the timer and the tasks head their columns; every other card goes, in order, to the shortest column */
+function uxStacks(){return[...$$('#v-today .grid>.stack')].filter(s=>s.id!=='uxCol3')}
+function uxBalance(){const g=$('#v-today .grid'),S0=uxStacks();if(!g||S0.length<2)return;const [a,b]=S0;
+  S0.forEach((s,si)=>[...s.children].forEach((c,i)=>{if(c.dataset.uxp==null){c.dataset.uxp=si;c.dataset.uxi=i}}));
+  let c3=$('#uxCol3');if(!c3){c3=document.createElement('div');c3.className='stack uxcol3';c3.id='uxCol3';g.append(c3)}
+  const cols=[a,b,c3],cards=[a,b].flatMap(s=>[...s.children].filter(c=>c.classList.contains('card'))).sort((x,y)=>(+x.dataset.uxp-+y.dataset.uxp)||((+x.style.order||0)-(+y.style.order||0))||(+x.dataset.uxi-+y.dataset.uxi));
+  const wall=$('#v-today .glasswrap'),timer=$('#tDisp')&&$('#tDisp').closest('.card'),tasks=$('#tasks')&&$('#tasks').closest('.card');
+  [[wall,a],[timer,b],[tasks,c3]].forEach(([c,col])=>{if(c){c.classList.add('uxanchor');col.append(c)}});
+  const rest=cards.filter(c=>c!==wall&&c!==timer&&c!==tasks),tmp=document.createDocumentFragment();rest.forEach(c=>tmp.append(c));
+  rest.forEach(c=>{if(c.classList.contains('hhide')){a.append(c);return}const col=cols.reduce((m,x)=>x.offsetHeight<m.offsetHeight?x:m,cols[0]);col.append(c)})}
+function uxUnbalance(){const S0=uxStacks(),c3=$('#uxCol3');const all=[...S0,c3].filter(Boolean).flatMap(s=>[...s.children]);
+  all.forEach(c=>{c.classList.remove('uxanchor');const t=S0[+c.dataset.uxp];if(t)t.append(c)});S0.forEach(s=>[...s.children].sort((x,y)=>(+x.dataset.uxi||0)-(+y.dataset.uxi||0)).forEach(c=>s.append(c)));if(c3)c3.remove()}
+function uxRebalance(){if($('#uxCol3')){uxUnbalance();uxBalance()}}
 addEventListener('resize',uxWide);{const _al=applyLook2;applyLook2=function(...a){const r=_al(...a);try{uxWide()}catch(e){}return r}}
 try{uxWide()}catch(e){}
 {const _rt=renderToday;renderToday=function(...a){const r=_rt(...a);try{uxWide()}catch(e){}return r}}

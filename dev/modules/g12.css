@@ -59,9 +59,9 @@
 #v-today .card.uxfold>h3{margin-bottom:0;cursor:pointer}
 #v-today .card.uxfold{padding-top:12px;padding-bottom:12px}
 /* wide PC: tasks beside the timer */
-html.wide3 #v-today .grid>.stack:nth-child(2){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:18px}
-html.wide3 #v-today .grid>.stack:nth-child(2)>#uxCol{grid-column:1;grid-row:1;min-width:0}
-html.wide3 #v-today .grid>.stack:nth-child(2)>.card.uxtkcard{grid-column:2;grid-row:1;min-width:0}
+html.wide3 #v-today .grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:start}
+html.wide3 #v-today .grid>.stack{min-width:0}
+html.wide3 #v-today .grid>.stack>.card.uxanchor{order:-999!important}
 .uxdots{width:18px;height:18px;fill:currentColor;display:block;margin:auto}
 #nxMore{display:grid!important;place-items:center;padding:0!important}
 .card>h3 .uxcm{display:inline-grid;place-items:center}
