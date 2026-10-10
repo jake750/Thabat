@@ -2070,6 +2070,18 @@ html.android .lbpl.max .lbvw{margin-bottom:max(var(--andnav,0px),16px)}
   html.qfs .qfsui .qfstm{position:static;margin:0}
   html.qfs .qfsui>:first-child{position:fixed;top:calc(max(env(safe-area-inset-top,0px),10px) + 6px);right:calc(12px + env(safe-area-inset-right,0px));left:auto}
 }
+/* v3.12.4 compact Quran bar on PC: dropdowns under their buttons */
+@media(min-width:701px){
+.qbar.qbc .qbtop{gap:8px}
+.qbtop .qbpos{flex:0 1 auto;min-width:230px;max-width:380px}
+.qbtop .qbriw{flex:0 1 300px}
+.qbsh.qbpop{background:transparent;display:block}
+.qbsh.qbpop .qbshbox.card{position:absolute;width:340px;border-radius:18px!important;padding:14px!important;box-shadow:0 18px 50px rgba(0,0,0,.45);background:color-mix(in srgb,var(--panel) 94%,transparent)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:qbdrop .14s ease-out}
+#qbTools.qbpop .qbshbox.card{width:420px}
+.qbsh.qbpop .qbshh{margin-bottom:8px}
+@keyframes qbdrop{from{transform:translateY(-6px);opacity:.5}to{transform:none;opacity:1}}
+}
+
 /* image viewer */
 .lbox{position:fixed;inset:0;z-index:90;background:#050506;display:none;touch-action:none;user-select:none;-webkit-user-select:none}
 .lbox.on{display:block}
@@ -2686,7 +2698,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.3';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.12.4';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
@@ -6503,7 +6515,7 @@ function renderTip(){const el=$('#tipBar');if(!el)return;const seen=S.tipsSeen||
 function openInfo(title,html){$('#infoBox').innerHTML=`<h2 style="font-size:20px">${title}</h2><div class="infob">${html}</div><div class="evact"><span style="flex:1"></span><button class="btn sm pri" id="infoX">${t('ok')}</button></div>`;$('#infoModal').classList.add('on');$('#infoX').onclick=()=>$('#infoModal').classList.remove('on')}
 $('#infoModal').onclick=e=>{if(e.target.id==='infoModal')$('#infoModal').classList.remove('on')};
 function openPrivacy(){openInfo('🔒 '+t('pv.t'),t('pv.body'))}
-const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312','3.12.1':'chg.312','3.12.2':'chg.312','3.12.3':'chg.312'};
+const CHANGES={'3.2':'chg.32','3.2.1':'chg.32','3.2.2':'chg.32','3.2.3':'chg.32','3.2.4':'chg.32','3.2.5':'chg.32','3.3.0':'chg.33','3.3.1':'chg.33','3.4.0':'chg.34','3.4.1':'chg.34','3.4.2':'chg.34','3.4.3':'chg.34','3.5.0':'chg.35','3.6.0':'chg.36','3.6.1':'chg.36','3.6.2':'chg.36','3.7.0':'chg.37','3.7.1':'chg.37','3.7.2':'chg.37','3.7.3':'chg.37','3.8.0':'chg.38','3.8.1':'chg.38','3.8.2':'chg.38','3.9.0':'chg.39','3.9.1':'chg.39','3.10.0':'chg.310','3.10.1':'chg.310','3.10.2':'chg.310','3.10.3':'chg.310','3.11.0':'chg.311','3.12.0':'chg.312','3.12.1':'chg.312','3.12.2':'chg.312','3.12.3':'chg.312','3.12.4':'chg.312'};
 function openWhatsNew(){openInfo('🎉 '+t('chg.t',APP_VER),t(CHANGES[APP_VER]||'chg.32'))}
 if(PRE_UPD&&!FIRST_RUN&&CHANGES[PRE_UPD.from]!==CHANGES[APP_VER])setTimeout(()=>{if(!$('.modal.on'))openWhatsNew()},2500);
 /* --- 7. error log + bug report --- */
@@ -7790,7 +7802,7 @@ function qbSheet(id,title){let s=$('#'+id);if(!s){document.body.insertAdjacentHT
 function qbClose(){$$('.qbsh').forEach(s=>s.hidden=true)}
 function qbOpen(id){qbClose();const s=$('#'+id);if(s)s.hidden=false}
 function qbSummary(){const b=$('#qbPos');if(!b)return;const Q=S.quran,p=Math.max(1,Math.min(604,(MOB.matches?Q.pv:0)||Q.view||1));b.querySelector('span').textContent=`${qSurahAt(p).name} · ${t('qx.jz')}${qJuzAt(p)} · ${t('q.pageS')}${p}`}
-function qbLayout(){const bar=$('.qbar');if(!bar)return;if(!QB_ORDER)QB_ORDER=[...bar.children];const mob=MOB.matches;
+function qbLayout(){const bar=$('.qbar');if(!bar)return;if(!QB_ORDER)QB_ORDER=[...bar.children];const mob=true;/* 3.12.4: the compact bar on PC too */
   if(!mob){if(!bar.classList.contains('qbc'))return;QB_ORDER.forEach(e=>bar.append(e));[...$$('#qbTools .qbshb>*')].forEach(e=>{if(!QB_ORDER.includes(e))bar.append(e)});const top=$('#qbTop');if(top)top.remove();bar.classList.remove('qbc');qbClose();return}
   const nav=qbSheet('qbNav',t('qx.nav')),tools=qbSheet('qbTools',t('qx.tools')),nb=nav.querySelector('.qbshb'),tb=tools.querySelector('.qbshb');bar.classList.add('qbc');
   let top=$('#qbTop');if(!top){bar.insertAdjacentHTML('afterbegin',`<div class="qbtop" id="qbTop"><button class="btn sm qbpos" id="qbPos"><span></span><i>▾</i></button><span class="qbriw"></span><button class="btn sm qbmore" id="qbMore" aria-label="${esc(t('qx.tools'))}">⋯</button></div>`);top=$('#qbTop');
@@ -7827,7 +7839,7 @@ try{let ch=false;for(const k in S.days)if(kahfDedupe(S.days[k]))ch=true;if(ch)sa
 /* phone Quran bar: an icon «⋯» drawn centred, and the full-screen button out of the sheet, next to it */
 const QB_DOTS='<svg class="qbdots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>',
   QB_FS='<svg class="qbfsi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
-{const _ql=qbLayout;qbLayout=function(){_ql();const top=$('#qbTop'),more=$('#qbMore'),fs=$('#qFsBtn');if(!top||!more||!fs||!MOB.matches)return;
+{const _ql=qbLayout;qbLayout=function(){_ql();const top=$('#qbTop'),more=$('#qbMore'),fs=$('#qFsBtn');if(!top||!more||!fs)return;
   if(!more.querySelector('.qbdots'))more.innerHTML=QB_DOTS;if(fs.parentElement!==top)top.insertBefore(fs,more);if(!fs.querySelector('.qbfsi'))fs.insertAdjacentHTML('afterbegin',QB_FS);fs.title=t('q.fs');fs.setAttribute('aria-label',t('q.fs'))}}
 
 /* ============ v3.9: the day between the prayers; settings in Ctrl+K; swipe hint; compact Today (preview) ============ */
@@ -8453,6 +8465,13 @@ async function openLibSetup(){const L_=LIBS(),pc=!ANDROID&&!MAC;let roots=L_.roo
 if(!ANDROID&&!MAC)setTimeout(()=>{libFetch(LIB_LOCAL+'/cfg',1500).then(r=>r.ok&&r.json()).then(c=>{if(!c)return;const L_=LIBS();if(JSON.stringify([L_.hosts,L_.token])!==JSON.stringify([c.ips,c.token])){L_.hosts=c.ips||[];L_.token=c.token;L_.name=c.name;L_.roots=c.roots||[];save()}}).catch(()=>{})},4000);
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'🎬',label:t('nav.lib'),run:()=>showView('lib'),kw:'library video courses مكتبة فيديو دورات'});return L_}}
 PGT.lib='nav.lib';try{pgtEnsure()}catch(e){}
+
+/* ============ v3.12.4: the compact Quran bar on PC too — position · riwaya · full screen · ⋯, the sheets open as dropdowns ============ */
+function qbPlace(id){const s=$('#'+id);if(!s)return;const box=s.querySelector('.qbshbox');if(!box)return;s.classList.toggle('qbpop',!MOB.matches);box.style.left=box.style.top='';if(MOB.matches)return;
+  const a=$(id==='qbNav'?'#qbPos':'#qbMore');if(!a)return;const z=uiZoom(),r=a.getBoundingClientRect(),W=innerWidth/z,H=innerHeight/z,w=box.offsetWidth;
+  let left=document.documentElement.dir==='rtl'?r.right/z-w:r.left/z;left=Math.max(8,Math.min(W-w-8,left));box.style.left=left+'px';box.style.top=(r.bottom/z+6)+'px';box.style.maxHeight=Math.max(200,H-r.bottom/z-20)+'px'}
+{const _qo=qbOpen;qbOpen=function(id){_qo(id);try{qbPlace(id)}catch(e){}}}
+addEventListener('resize',()=>{if(!MOB.matches)qbClose()});
 
 /* ============ image viewer: zoom, pan, swipe, download ============ */
 const LB={ids:[],i:0,title:'',s:1,x:0,y:0,w:0,h:0,pts:new Map(),pinch:null,drag:null};

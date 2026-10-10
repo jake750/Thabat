@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.3** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.4** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -33,7 +33,7 @@ Current version: **3.12.3** (`APP_VER` in `dev/src.html`). The Android `versionC
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/release.py` | Build, syntax check, package zips and APK, update the personal copy, print versions |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g14 (g13 + g13b + g13c, css g13 + g13bc; + matching `.css`), demo.js |
+| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g15 (g13 + g13b + g13c, css g13 + g13bc; + matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
 | `dev/mac/` | Everything `release.py` puts into `Thabat-Mac.zip` besides the HTML: `Thabat.command` (launcher), `Create-Shortcut.command` (makes `~/Applications/Thabat.app` with the icon, pointing at that folder), `Thabat.icns` (built from the PNG frames of `Thabat.ico`), the bilingual read-me. `.command` files are stored as executable |
@@ -63,7 +63,7 @@ Current version: **3.12.3** (`APP_VER` in `dev/src.html`). The Android `versionC
 - **Today:** date card | next-prayer card (same height, prayer times inside), then the ayah of the day as its own card.
 - **Settings:** a grouped list with coloured icons (`SETG` in g1.js); a group opens only its cards; search shows matches from all groups. Anything that scrolls to a setting opens its group first.
 - **Summary:** one «🧰 الأدوات» menu (`#btPanel`, grouped, each tool with a description) beside week/month and prev/now/next.
-- **Quran on phone:** one bar (`#qbTop`): position button «سورة · ج · ص» → «انتقل إلى» sheet; riwaya picker; full-screen icon; «⋯» → tools sheet. The PC bar is unchanged. Existing elements are moved, not copied.
+- **Quran bar (phone, and PC since 3.12.4):** one bar (`#qbTop`): position button «سورة · ج · ص» → «انتقل إلى» sheet; riwaya picker; full-screen icon; «⋯» → tools sheet. Existing elements are moved, not copied. On PC the two sheets open as dropdowns under their buttons (`.qbpop`, `qbPlace` in g15).
 - **Notes:** row 1 sections + «⋯» (letters, Obsidian import/export) + «ملاحظة جديدة»; row 2 search.
 - **Calendar:** PC stars sit in the gaps; on phones stars and moons spread evenly over the whole calendar (best-candidate sampling) and never cover a day's text. The day panel shows sleep, pages read and the «يومك بين الصلوات» bar for any day.
 - **Day between the prayers (3.9, g11):** card `#pdlCard`, right after the wall card (`.glasswrap`) in the narrow column. The owner wants the wall card first; `S.settings.wallTop` moved it first once for saved card orders (3.10.2). One row per prayer (after Fajr … after Isha) with tasks whose `after` is that prayer, focus time from sessions, timed events, and for the current period the time left and «ابدأ جلسة». Tasks drag between rows (PC) or tap → `tpMenu` (phone); today's tasks without a prayer show as chips below. No new data fields.
