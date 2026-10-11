@@ -44,6 +44,7 @@ css/v3-15-2-removing-from-folders-on-placed-courses.css
 css/v3-16-audio-in-the-library.css
 css/v3-16-arranging-the-library-arrows-on-every-card.css
 css/v3-17-library-drag-and-drop.css
+css/v3-17-1-library-space-between-a-section-header-t.css
 css/image-viewer.css
 body.html
 js/core.js

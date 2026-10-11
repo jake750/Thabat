@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.17.0** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.17.1** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 **Starting a new chat:** read this file, then «Work queue» (what is next, in order) and «Open items» (unconfirmed or unresolved things). Ask the owner for the keystore password before the first APK of the chat. The last chat (2026-10-10 → 10-11) shipped 3.12.4 → 3.16.0; its decisions are recorded below, item by item.
 
@@ -177,6 +177,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 
 One release per group, each tested at phone and PC sizes and sent as the three files. **Next up, in this order:**
 
+0. **Picked from the 20 «major updates» list (2026-10-11), put first because they are his latest choice (ask whether he wants them before library group 3):** 5 «arrange my day» automatically (place tasks with `est` into the free time of the periods between the prayers by priority, as a proposal he edits; builds on the 3.13 day-in-hours `at`/`est`); 9 transcribe library lessons with Whisper on the PC through the helper (search inside what was said, tap a sentence to jump to its minute; ask before installing whisper.cpp and a model, show their sizes); 10 OCR for scanned PDF books through the helper (Tesseract with Arabic data; search inside them; ask before installing); 15 Android app shortcuts (long press on the icon: new task, start a session, Quran) and a Quick Settings tile — Java (`dev/android/build_win.py`, test on his phone before `--use`).
 1. **Library, group 3:** a nicer MP4 player (look and use — he asked for this explicitly), L3 a note at a minute (saved in Notes; tapping it returns to that moment), L6 picture-in-picture, L9 «watch later» queue across courses. Show 2–3 player mockups first (it is a redesign).
 2. **Library, group 4:** L4 «lesson of the day» auto task (N lessons a week from a chosen course; fixed ids like `kahf-<date>` so two devices do not duplicate it), L5 learning stats (time per course and per book each week) in the Summary.
 3. **Second list (picked 2026-10-11):** 16 nearby mosques map (OpenStreetMap / Overpass); 17 travel detection (>80 km from home suggests qasr and updates times); 18 more tafsirs **from verified sources he chooses** (ask him; never fabricate); 23 Thabat on GitHub Pages, updated with each release, replacing the old job demo; 24 import from Todoist / Google Tasks / TickTick; 25 two-way Google Calendar sync (needs his own OAuth client — explain the Google Cloud steps when you get there); 27 automation API through the helper (add tasks / start the timer from other PC programs); 28 Windows tray icon in the helper (next prayer, quick add); 29 theme editor (colours and fonts, save/share as a file); 31 «share to Thabat» (Android `ACTION_SEND` intent filter) and 33 blocking distracting apps during work/prayer — both need Java (`dev/android/build_win.py`, test on his phone before `--use`).
@@ -201,7 +202,7 @@ One release per group, each tested at phone and PC sizes and sent as the three f
 
 ## Open items
 
-- **The 20 «major updates» list (2026-10-11)** was shown in the widget; he has not picked yet. Numbers: 1 family mode, 2 shared challenges with friends, 3 Quran translations (verified source he picks), 4 phone silent during prayer, 5 auto-arrange my day, 6 AI assistant (his API key), 7 Arabic voice commands, 8 Telegram bot, 9 lesson transcription (Whisper), 10 OCR for scanned books, 11 library on the TV, 12 video subtitles, 13 Wear OS, 14 Health Connect, 15 Android shortcuts/quick tile, 16 floating mini window on Windows, 17 automatic tests before releases, 18 WebDAV/Syncthing sync, 19 live phone↔PC sync, 20 full accessibility.
+- **The 20 «major updates» list (2026-10-11):** he picked 5, 9, 10, 15 (now in the work queue). The full list, for later: 1 family mode, 2 shared challenges with friends, 3 Quran translations (verified source he picks), 4 phone silent during prayer, 5 auto-arrange my day, 6 AI assistant (his API key), 7 Arabic voice commands, 8 Telegram bot, 9 lesson transcription (Whisper), 10 OCR for scanned books, 11 library on the TV, 12 video subtitles, 13 Wear OS, 14 Health Connect, 15 Android shortcuts/quick tile, 16 floating mini window on Windows, 17 automatic tests before releases, 18 WebDAV/Syncthing sync, 19 live phone↔PC sync, 20 full accessibility.
 - Library drag and drop (3.17.0) on the phone was tested only with synthetic touch events; confirm on his phone (long press inside the Android WebView).
 
 - Support e-mail for `SUPPORT_EMAIL` and the contact line in `store/privacy.html`.
