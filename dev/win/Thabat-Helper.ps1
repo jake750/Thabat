@@ -9,6 +9,7 @@
 # itself after 20 minutes without requests. It can also start the video library
 # server (Thabat-Library.ps1), show the folder picker for it, and add Thabat or the
 # library to the Startup folder when you turn that on in Settings.
+# On request it updates Thabat from github.com/jake750/Thabat releases (program files only).
 $ErrorActionPreference = 'SilentlyContinue'
 try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 } catch {}
 $port = 47813
@@ -38,6 +39,7 @@ public static class ThabatFg {
 } catch {}
 
 $global:sched = @()
+$global:restart = $false
 $global:alive = [DateTime]::MinValue
 $global:lastTick = Get-Date
 $global:adhanFile = 'adhan.mp3'
@@ -193,6 +195,46 @@ while ($true) {
       $sd = [Environment]::GetFolderPath('Startup')
       $o = @{ ok = $true; lib = (Test-Path -LiteralPath (Join-Path $sd 'Thabat Library.lnk')); app = (Test-Path -LiteralPath (Join-Path $sd 'Thabat.lnk')) }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes(($o | ConvertTo-Json -Compress)))
+    } elseif ($path -like '/selfupdate*') {
+      # update Thabat from its official releases only (github.com/jake750/Thabat); the address is fixed here,
+      # so a request can never point the helper anywhere else. Program files are replaced (old ones kept as .bak);
+      # your data, the adhan files and the mushaf/tafsir folders are not touched.
+      try {
+        $wc = New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent', 'Thabat/1.0'); $wc.Encoding = [Text.Encoding]::UTF8
+        $rel = $wc.DownloadString('https://api.github.com/repos/jake750/Thabat/releases/latest') | ConvertFrom-Json
+        $asset = $rel.assets | Where-Object { $_.name -eq 'Thabat-Windows.zip' } | Select-Object -First 1
+        $url = [string]$asset.browser_download_url
+        if ($url -notlike 'https://github.com/jake750/Thabat/releases/download/*') { throw 'asset' }
+        $zip = Join-Path $env:TEMP ('thabat_upd_' + [Guid]::NewGuid().ToString('N') + '.zip')
+        $wc2 = New-Object System.Net.WebClient; $wc2.Headers.Add('User-Agent', 'Thabat/1.0'); $wc2.DownloadFile($url, $zip)
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        $za = [IO.Compression.ZipFile]::OpenRead($zip)
+        $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat')
+        $new = @{}
+        foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
+        $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
+        if (-not $new.ContainsKey('Thabat.html')) { throw 'nohtml' }
+        $ver = ''; if ([Text.Encoding]::UTF8.GetString($new['Thabat.html']) -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }
+        $changed = @()
+        foreach ($n in @($new.Keys)) {
+          $dst = Join-Path $PSScriptRoot $n
+          $same = $false
+          if (Test-Path -LiteralPath $dst) { $old = [IO.File]::ReadAllBytes($dst); $same = ($old.Length -eq $new[$n].Length) -and ([Convert]::ToBase64String($old) -eq [Convert]::ToBase64String($new[$n])) }
+          if (-not $same) { if (Test-Path -LiteralPath $dst) { Copy-Item -LiteralPath $dst -Destination ($dst + '.bak') -Force }; [IO.File]::WriteAllBytes($dst, $new[$n]); $changed += $n }
+        }
+        $global:restart = $changed -contains 'Thabat-Helper.ps1'
+        if ($changed -contains 'Thabat-Library.ps1') {
+          # restart the library server only if it is running: ask the old one to stop, start the new one a little later
+          $libUp = $false; try { $tc = New-Object System.Net.Sockets.TcpClient; $tc.Connect('127.0.0.1', 47815); $libUp = $tc.Connected; $tc.Close() } catch {}
+          if ($libUp) {
+            $ld = Join-Path $env:LOCALAPPDATA 'Thabat'; New-Item -ItemType Directory -Force -Path $ld | Out-Null; Set-Content -LiteralPath (Join-Path $ld 'library.stop') -Value '1'
+            $cmd = "Start-Sleep -Seconds 6; & '" + ((Join-Path $PSScriptRoot 'Thabat-Library.ps1') -replace "'", "''") + "'"
+            Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand ' + [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($cmd)))
+          }
+        }
+        $o = @{ ok = $true; ver = $ver; changed = $changed; restart = [bool]$global:restart }
+        Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes(($o | ConvertTo-Json -Compress)))
+      } catch { Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"update"}')) }
     } elseif ($path -like '/ping*') {
       Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes('{"ok":true,"v":1}'))
     } elseif ($path -like '/fg*') {
@@ -330,6 +372,9 @@ while ($true) {
       Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{}'))
     }
   } catch {} finally { $client.Close() }
+  if ($global:restart) { break }
 }
 Lan-Close
 $listener.Stop()
+# after an update that changed this file: start the new helper (the port is free now)
+if ($global:restart) { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + (Join-Path $PSScriptRoot 'Thabat-Helper.ps1') + '"') }

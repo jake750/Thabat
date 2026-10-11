@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.8** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.9** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -36,11 +36,11 @@ Current version: **3.12.8** (`APP_VER` in `dev/src.html`). The Android `versionC
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/release.py` | Build, syntax check, package zips and APK, update the personal copy, print versions |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g16 (g13 + g13b + g13c, css g13 + g13bc, g15 + g15b/g15c css, g16 css; + matching `.css`), demo.js |
+| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g17 (g13 + g13b + g13c, css g13 + g13bc, g15 + g15b/g15c css, g16 css; + matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
 | `dev/mac/` | Everything `release.py` puts into `Thabat-Mac.zip` besides the HTML: `Thabat.command` (launcher), `Create-Shortcut.command` (makes `~/Applications/Thabat.app` with the icon, pointing at that folder), `Thabat.icns` (built from the PNG frames of `Thabat.ico`), the bilingual read-me. `.command` files are stored as executable |
-| `dev/win/` | Everything `release.py` puts into `Thabat-Windows.zip` besides the HTML: `Thabat-Helper.ps1` (loopback helper; 3.12 added `/libstart`, `/libpick`, `/libstartup`, `/appstartup`, `/startupinfo`), `Thabat-Library.ps1` (video library server), `Thabat.bat` (also starts the library when `%LOCALAPPDATA%\Thabat\library.json` exists). The helper keeps its UTF-8 BOM |
+| `dev/win/` | Everything `release.py` puts into `Thabat-Windows.zip` besides the HTML: `Thabat-Helper.ps1` (loopback helper; 3.12 added `/libstart`, `/libpick`, `/libstartup`, `/appstartup`, `/startupinfo`; 3.12.9 added `/selfupdate`), `Thabat-Library.ps1` (video library server), `Thabat.bat` (also starts the library when `%LOCALAPPDATA%\Thabat\library.json` exists). The helper keeps its UTF-8 BOM |
 | `dev/android/` | Java sources, stubs, `res/`, manifest and the Linux build scripts of the Android wrapper |
 | `Thabat/Thabat.html`, `Thabat.html` | Build output (git-ignored) |
 | `Thabat.apk`, `Thabat-Windows.zip`, `Thabat-Mac.zip` | Release outputs (git-ignored; published as GitHub release assets). The zips are also the base for the next release |
@@ -58,6 +58,7 @@ Current version: **3.12.8** (`APP_VER` in `dev/src.html`). The Android `versionC
 - **i18n:** `t(key,…args)` with one Arabic and one English table. Every visible string goes through it. Default is `ar`/RTL.
 - **Theme:** CSS variables (`--bg --panel --line --text --muted --accent --water --gold`) set by `applyTheme()`; `applyLook2()` applies contrast and the interface zoom. Classes on `<html>`: `st-glass` (the glass style), `lite` (performance mode), `lg` (light glass: phones in automatic performance mode), `android`, `mac`, `qfs`/`qfs-one` (full-screen Quran), `mode-light`.
 - **Feature flags:** `THABAT_PLAY` (true only in the Play build), `SUPPORT_EMAIL` (still empty; the privacy page also has a placeholder).
+- **Updates (3.12.9, g17):** with no `S.settings.updUrl`, `updCheck` reads `api.github.com/repos/jake750/Thabat/releases/latest` once a day (skipped in the Play build). Windows: «حدّث الآن» calls the helper's `/selfupdate`, which downloads `Thabat-Windows.zip` from that fixed repo only, replaces the top-level program files (keeps `.bak`; never the adhan mp3s, `mushaf/`, `tafsir/`), restarts the library if it changed and was running, restarts itself if the helper changed, and the app reloads. An older helper (404) or Mac gets the zip link; Android opens the APK link. Test the route with a loopback copy on another port (47823) in a scratch folder.
 - **What's new:** `CHANGES` maps each `APP_VER` to an i18n key (`chg.38` …). The dialog opens after an update only when that key changed, so patch versions reuse the current key. A new feature release adds a new `chg.NN` in both languages.
 
 ## Current design (3.6 → 3.12)
@@ -163,7 +164,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 
 Do these in this order, one release per group, testing each at phone and PC sizes:
 
-0. **Picked on 2026-10-11 (do first, in this order):** ~~2+3~~ done in 3.12.8; then 6: automatic update from GitHub releases (no URL to type; Windows updates itself through the helper; the phone downloads the APK); then 9: split `dev/src.html` into modules joined at build time and reduce stacked wrappers (nothing visible). A second list (items 11–34) was shown the same day; wait for his picks.
+0. **Picked on 2026-10-11 (do first, in this order):** ~~2+3~~ done in 3.12.8; ~~6~~ done in 3.12.9; then 9: split `dev/src.html` into modules joined at build time and reduce stacked wrappers (nothing visible). A second list (items 11–34) was shown the same day; wait for his picks.
 1. **Whiteboard (3.13).** From the 50-list: 1 search inside a board (Ctrl+F, jump to and highlight the text); 2 labels on arrows; 3 a table element (editable rows/columns); 5 export the frames as one multi-page PDF (`jpegPdf` exists for single pages); 8 new templates: Ramadan plan, year-goals tree, memorisation-review map. From the 98-list: 40 layers (show/hide/lock); 41 board background: squares, dots or lines; 42 embed a YouTube video or an audio clip; 46 export PNG with a transparent background. The board code is large (`wb.*` strings, `WB_FONTS`, frames, present mode, minimap, Obsidian Canvas import/export) — read it before adding.
 2. **Larger features (3.14+).** From the 50-list: 11 notes graph (nodes and `[[links]]`); 17 two text riwayat side by side (only the 8 verified text riwayat; numbering differs between them); 26 full Hijri month calendar grid; 29 multi-day events (a bar across days); 38 sync encryption with a passphrase (GitHub only sees ciphertext; think through migration and both devices); 44 time per portfolio work in the Studio (link sessions to a work). From the 98-list: 10 record your recitation and play it after the reciter; 11 guided memorisation plan («جزء عمّ قبل رمضان»: pages per day and tracking); 15 most-read surahs (from `day.quran.pgs`); 16 quiz from your memorised pages («in which surah is this ayah?», verified text only); 19 wird measured in minutes instead of pages; 33 book quotes (a reading log per book with quotes and pages); 55 daily expenses with categories and a monthly budget; 66 a path of seeking knowledge (texts/books by level with progress); 77 saved Today layouts (study/work/Ramadan) switched in one tap; 80 a wall screen (big clock and next prayer for a TV or home PC); 83 setup by lifestyle (student/employee/designer turns on what fits); 88 a printable monthly PDF report; 90 «fresh start»: archive a whole year and keep the archive.
 3. **Weekly calendar view (item 26 of the 31-list).** Two designs were shown: A = seven day columns; B = «your week between the prayers», rows are the prayer periods like the day card, tasks sit in the period of their prayer, drag between days/periods (recommended). **The owner has not chosen yet — ask before building.**
