@@ -13,3 +13,4 @@ Thabat/
 *.zip
 # local tool settings
 .claude/settings.local.json
+dev/src.html

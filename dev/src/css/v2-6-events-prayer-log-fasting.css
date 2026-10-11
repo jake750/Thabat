@@ -1,0 +1,48 @@
+/* v2.6: events, prayer log, fasting */
+.tdev{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;justify-content:flex-end}
+.tdev:empty{display:none}
+.evchip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 10px;border-radius:10px;background:var(--panel);border:1px solid var(--line);max-width:100%;cursor:pointer}
+.evchip i{width:8px;height:8px;border-radius:3px;background:var(--c,var(--accent));flex:none}
+.evchip.big{font-weight:700;font-size:13px;border-color:color-mix(in srgb,var(--c,var(--accent)) 60%,var(--line));background:color-mix(in srgb,var(--c,var(--accent)) 14%,var(--panel))}
+.evchip.fast{border-color:color-mix(in srgb,var(--gold) 50%,var(--line))}
+.evchip .btn{padding:2px 8px;font-size:11px}
+.cevs{display:flex;flex-direction:column;gap:2px;min-width:0;margin-top:2px}
+.cevt{font-size:10px;line-height:1.25;font-weight:700;padding:1px 4px;border-radius:5px;background:color-mix(in srgb,var(--c) 26%,transparent);color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:start}
+.cevd{display:flex;gap:3px;flex-wrap:wrap}.cevd i{width:6px;height:6px;border-radius:2px;background:var(--c)}
+.cfast{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);font-size:10px;opacity:.9}
+.cfast.up{opacity:.4}
+.evsec{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.evbig{font-size:17px;font-weight:800;padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--c) 18%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 50%,var(--line))}
+.evli{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;background:var(--panel2);font-size:13px;cursor:pointer}
+.evli i{width:9px;height:9px;border-radius:3px;background:var(--c);flex:none}
+.evli .tm{color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums;min-width:38px}
+.evli .rp{color:var(--muted);font-size:11px;margin-inline-start:auto}
+.evaddrow{display:flex;gap:6px;flex-wrap:wrap}
+.evbox{width:min(520px,94vw);text-align:start!important}
+.evbox h2{font-size:18px;margin-bottom:12px}
+.evf{display:flex;flex-direction:column;gap:10px}
+.evrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.evrow label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.evcols{display:flex;gap:8px;flex-wrap:wrap}
+.evc{width:26px;height:26px;border-radius:8px;border:2px solid transparent}
+.evc.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg) inset}
+.evf textarea{min-height:70px}
+.evhint{color:var(--accent);font-size:12px}
+.evact{display:flex;gap:8px;margin-top:14px;align-items:center}
+.btn.danger{color:#ff6b6b}
+.plbox{width:min(460px,94vw)}
+.plrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.plrow b{flex:1;text-align:start}.plrow small{color:var(--muted)}
+.plrow .btn.on{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
+.pr{position:relative}.plm{position:absolute;top:2px;inset-inline-end:4px;font-size:9px;font-style:normal;line-height:1}
+.plm.s-on,.plm.s-auto{color:#4ade80}.plm.s-auto{opacity:.55}.plm.s-late{color:#fbbf24}.plm.s-miss{color:#f87171}.plm.s-q{color:var(--muted)}
+.pr.past[data-pk]{cursor:pointer}
+.bpr{display:flex;flex-direction:column;gap:8px}
+.bprow{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:center;font-size:13px}
+.bprow .bar{height:8px;border-radius:6px;background:var(--line);overflow:hidden;display:flex}
+.bprow .bar i{display:block;height:100%}
+.bprow small{color:var(--muted);font-size:11.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bpleg{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}.bpleg span{display:inline-flex;gap:5px;align-items:center}.bpleg i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.audbox{width:min(480px,94vw);text-align:start!important}
+.audli{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.audli b{flex:1}

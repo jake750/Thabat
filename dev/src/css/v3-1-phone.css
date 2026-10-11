@@ -1,0 +1,4 @@
+/* v3.1 phone */
+.lockov{position:fixed;inset:0;z-index:300;background:var(--bg);display:none;align-items:center;justify-content:center}.lockov.on{display:flex}
+.lkin{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(300px,86vw);text-align:center}.lkic{font-size:52px}.lklogo{font-size:26px;font-weight:700;color:var(--accent)}
+.lkin input{font-size:22px;letter-spacing:8px;text-align:center;width:100%}.lkin .btn{width:100%;justify-content:center}.lkin small{color:var(--danger);min-height:18px}.lkf{color:var(--muted);font-size:12px}

@@ -1,0 +1,30 @@
+/* v2.7: today/timer/brief */
+.toast.act{display:flex;align-items:center;gap:12px}.toast.act .btn{padding:4px 10px;font-size:12px}
+.log li .sn{color:var(--text)}.log li input.in{flex:1;padding:4px 8px;font-size:12px}
+.dstr{font-size:12px}
+.plan-btn{font-size:11px;padding:3px 9px;margin-inline-start:auto}
+.catrow em .pl{color:var(--muted);font-style:normal}.catrow.met em{color:#4ade80}
+.dtl{margin-top:14px;width:100%;align-self:stretch}.dtl:empty{display:none}
+.dtl .bar{position:relative;height:16px;border-radius:8px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+.dtl .bar i{position:absolute;top:0;bottom:0;border-radius:3px}
+.dtl .bar .nw{background:var(--text);width:2px!important;opacity:.7}
+.dtl .pts{position:relative;height:28px;font-size:9.5px;color:var(--muted)}
+.dtl .pts span{position:absolute;top:2px;transform:translateX(-50%);white-space:nowrap;text-align:center;line-height:1.2}
+.dtl .pts span:before{content:'';display:block;width:1px;height:5px;background:var(--muted);margin:0 auto 1px;opacity:.6}
+.dtl h4{font-size:11.5px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.gl-week{font-size:12px;color:var(--muted);margin-top:2px}
+.plbox2{width:min(420px,94vw);text-align:start!important}
+.plgrid{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.plgrid label{display:flex;align-items:center;gap:10px;font-size:13px}.plgrid label i{width:10px;height:10px;border-radius:3px}.plgrid label b{flex:1;font-weight:500}.plgrid input{width:80px}
+.wdgoals{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.wdgoals label{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted);gap:3px}.wdgoals input{width:52px;text-align:center;padding:5px 4px}
+.subf{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end;font-size:12px;color:var(--muted)}.subf input{width:64px}.subf input[type=time]{width:110px}
+.hrs{display:flex;align-items:flex-end;gap:2px;height:110px;margin:8px 0 4px}
+.hrs i{flex:1;background:color-mix(in srgb,var(--accent) 35%,var(--panel2));border-radius:3px 3px 0 0;min-height:2px;position:relative}
+.hrs i.top{background:var(--accent)}
+.hrx{display:flex;gap:2px;font-size:9px;color:var(--muted)}.hrx span{flex:1;text-align:center}
+.bhstat{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}.bhstat b{color:var(--text)}
+.bpcorr{font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.7}.bpcorr b{color:var(--text)}
+/* adhkar groups */
+.adxg .chip.on{background:var(--accent);color:var(--onAccent);border-color:var(--accent);font-weight:600}
+.adxg{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;width:100%;padding-bottom:2px;scrollbar-width:none}.adxg[hidden]{display:none}.adxg .chip{flex:none}

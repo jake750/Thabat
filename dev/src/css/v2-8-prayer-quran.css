@@ -1,0 +1,12 @@
+/* v2.8 prayer & quran */
+.pbox .psn{margin-top:6px;font-size:13px}.pbox .psn[hidden]{display:none}.pbox .psn.on{border-color:#4ade80;color:#4ade80}
+.evchip.jm{gap:4px;flex-wrap:wrap}.evchip.jm .btn{padding:2px 7px;font-size:11px}.evchip.jm .btn.on{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
+.khist{margin-top:12px;font-size:12.5px}.khist summary{cursor:pointer;color:var(--muted)}.khist ol{margin:8px 0 0;padding-inline-start:18px;display:flex;flex-direction:column;gap:4px}.khist small{color:var(--muted)}
+.ktarget{margin-top:10px;display:flex;align-items:center;gap:8px;font-size:12.5px;flex-wrap:wrap}.ktarget input{width:150px;padding:4px 8px}
+.hc.weak{box-shadow:inset 0 0 0 1.5px #f87171}
+.hzbar{display:flex;gap:6px;margin:6px 0 10px;flex-wrap:wrap}
+.hzbox{width:min(560px,94vw);text-align:start!important}
+.hzq{font-family:"Q_hafs","IBM Plex Sans Arabic",serif;font-size:23px;line-height:2;margin:10px 0;padding:12px;border-radius:12px;background:var(--panel2)}
+.hzq .nx{display:block;color:var(--muted);font-size:18px;margin-top:6px}
+.hzmeta{font-size:12.5px;color:var(--muted)}
+.hzscore{font-size:12.5px;color:var(--accent);margin-inline-start:auto}

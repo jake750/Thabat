@@ -1,0 +1,2 @@
+/* v3.6.2 phone calendar: a little more room between days for their stars and moon */
+@media(max-width:700px){.cal{gap:8px}}

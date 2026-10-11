@@ -1,0 +1,451 @@
+</style>
+</head>
+<body>
+<div id="aurora"><i></i><i></i><i></i></div>
+<div class="app">
+  <nav class="side">
+    <div class="logo" id="logo" data-t="ثبات">ثبات</div>
+    <button class="navbtn on" data-v="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span data-i18n="nav.today"></span></button>
+    <button class="navbtn" data-v="quran"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg><span data-i18n="nav.quran"></span></button>
+    <button class="navbtn" data-v="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span data-i18n="nav.cal"></span></button>
+    <button class="navbtn" data-v="brief"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span data-i18n="nav.brief"></span></button>
+    <button class="navbtn" data-v="boards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8M8 12h5"/></svg><span data-i18n="nav.boards"></span></button>
+    <button class="navbtn" data-v="lib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg><span data-i18n="nav.lib"></span></button>
+    <div class="grow"></div>
+    <button class="navbtn" data-v="set"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span data-i18n="nav.set"></span></button>
+  </nav>
+
+  <main>
+    <div class="banner" id="permBanner"><span data-i18n="perm.msg"></span><button class="btn sm pri" id="regrant" data-i18n="perm.btn"></button></div>
+
+    <!-- TODAY -->
+    <section class="view on" id="v-today">
+      <div class="top tdtop">
+        <div class="tdhd">
+          <div class="date-h" id="dateH"></div><div class="date-g" id="dateG"></div>
+          <button class="adhkar-btn" id="adhkarBtn"></button>
+        </div>
+        <div class="aydbox" id="aydBox" hidden></div>
+        <div class="tdpr"><div class="prayers" id="prayers"></div><div class="nextline" id="nextLine"></div></div>
+        <div class="tdev" id="todayEv"></div><div class="tipbar" id="tipBar" hidden></div>
+      </div>
+      <div class="grid">
+        <div class="stack">
+          <div class="card glasswrap">
+            <h3 style="width:100%"><span data-i18n="glass.title"></span><button class="btn sm ghost plan-btn" id="planBtn" data-i18n="plan.btn"></button><button class="btn sm ghost wallx" id="wallImg" title="">⤓</button><span id="goalLbl"></span></h3>
+            <div class="gscene" id="gscene"><div class="sky" id="sky"><div class="skystars" id="skyStars"></div><div class="moon" id="moon"></div></div><div class="wall" id="wall"></div><div class="gbadge" id="gbadge"></div></div>
+            <div class="gl-pct" id="glPct">0%</div>
+            <div class="gl-sub" id="glSub"></div>
+            <div class="gl-streak" id="glStreak"></div><div class="gl-week" id="glWeek"></div>
+            <div class="cats" id="catBars"></div><div class="dtl" id="dayTL"></div>
+          </div>
+          <div class="card" id="qCard"></div>
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3><span data-i18n="timer.title"></span><button class="btn sm" id="manualBtn" data-i18n="timer.offline"></button></h3>
+            <div class="timer-disp" id="tDisp">00:00:00</div>
+            <div class="timer-state" id="tState"></div>
+            <div class="brktip" id="brkTip" hidden></div>
+            <div class="chips" id="catChips"></div>
+            <div class="tproj" id="tProj"></div>
+            <div class="row" id="tBtns"></div>
+            <div class="ttools" id="tTools"></div>
+            <div class="pop" id="brkPop">
+              <div class="inline" style="color:var(--muted);font-size:12px" data-i18n="brk.len"></div>
+              <div class="chips" id="brkChips"></div>
+              <div class="inline"><input class="in num" id="brkCustom" type="number" min="1" data-i18n-ph="brk.custom"><button class="btn sm" id="brkCustomGo" data-i18n="brk.go"></button><button class="btn sm" id="brkOpen" data-i18n="brk.open"></button></div>
+            </div>
+            <div class="pop" id="manPop">
+              <div class="form">
+                <input class="in full" id="manNote" data-i18n-ph="man.what">
+                <label><span data-i18n="man.cat"></span><select class="in" id="manCat"></select></label>
+                <label><span data-i18n="man.dur"></span><span class="inline" style="justify-content:flex-start"><input class="in num" id="manH" type="number" min="0" placeholder="0"> <span data-i18n="u.h"></span> <input class="in num" id="manMin" type="number" min="0" max="59" placeholder="0"> <span data-i18n="u.m"></span></span></label>
+                <label><span data-i18n="man.day"></span><input class="in" id="manDate" type="date"></label>
+                <label><span><span data-i18n="man.start"></span> <small data-i18n="opt"></small></span><input class="in" id="manTime" type="time"></label>
+                <div class="acts"><button class="btn sm pri" id="manGo" data-i18n="man.add"></button><button class="btn sm ghost" id="manCancel" data-i18n="cancel"></button></div>
+              </div>
+            </div>
+            <div style="margin-top:14px"><ul class="log" id="sessLog"></ul></div>
+          </div>
+          <div class="card">
+            <h3><span data-i18n="tasks.title"></span><span class="thd"><button class="chip sm ibbtn" id="inbBtn">📥</button><span id="taskCount"></span><button class="chip sm vacbtn" id="vacBtn"></button></span></h3>
+            <div class="addtask"><input class="in" id="taskIn" data-i18n-ph="tasks.ph"><button class="btn dlbtn" id="dlBtn"></button><button class="btn tpbtn" id="tpBtn">🕌</button><button class="btn rcbtn" id="rcBtn" title="">🔁</button><button class="btn pri" id="taskAdd" data-i18n="add"></button></div>
+            <div class="wkfocus" id="wkFocus" hidden></div>
+            <div class="ltopts" id="ltOpts" hidden></div>
+            <div class="vacnote" id="vacNote"></div>
+            <ul class="tasks lts" id="ltList"></ul>
+            <ul class="tasks" id="tasks"></ul>
+            <div class="missed" id="missed"></div>
+          </div>
+          <div class="card">
+            <h3><span data-i18n="media.title"></span><span class="row" style="gap:6px"><button class="btn sm ghost" id="mediaLogBtn" data-i18n="mlog.btn"></button><button class="btn sm" id="mediaAddBtn" data-i18n="media.add"></button></span></h3><div class="learn" id="learnBox"></div>
+            <div class="pop" id="mediaPop" style="margin-top:0;margin-bottom:12px">
+              <div class="form">
+                <div class="full linkrow"><input class="in" id="mUrl" dir="ltr" data-i18n-ph="media.urlPh"><button class="btn sm" id="mFetch" data-i18n="media.fetch"></button></div>
+                <div class="full lstat" id="mStat"></div><div class="full" style="display:flex;justify-content:flex-end;margin-top:-4px"><button class="btn sm ghost" id="mLater" type="button"></button></div>
+                <label class="full"><span data-i18n="media.type"></span><div class="chips" id="mType"></div></label>
+                <label class="full"><span data-i18n="media.how"></span><div class="chips" id="mHow"></div></label>
+                <input class="in full" id="mTitle" data-i18n-ph="media.titlePh">
+                <label class="full"><span data-i18n="media.range"></span><span class="inline" style="justify-content:flex-start;gap:8px;flex-wrap:wrap"><span data-i18n="media.from"></span><input class="in" id="mFrom" dir="ltr" style="width:96px;text-align:center" placeholder="0:00"><span data-i18n="media.to"></span><input class="in" id="mTo" dir="ltr" style="width:96px;text-align:center" placeholder="45:30"><small data-i18n="media.rangeHint" style="color:var(--muted)"></small></span></label>
+                <label><span data-i18n="man.dur"></span><span class="inline" style="justify-content:flex-start"><input class="in num" id="mH" type="number" min="0" placeholder="0"> <span data-i18n="u.h"></span> <input class="in num" id="mM" type="number" min="0" max="59" placeholder="0"> <span data-i18n="u.m"></span></span></label>
+                <label><span data-i18n="man.day"></span><input class="in" id="mDate" type="date"></label>
+                <label class="chk full"><input type="checkbox" id="mCount"><span data-i18n="media.count"></span><select class="in" id="mCat" style="padding:4px 8px"></select></label>
+                <div class="acts"><button class="btn sm pri" id="mGo" data-i18n="add"></button><button class="btn sm ghost" id="mCancel" data-i18n="cancel"></button></div>
+              </div>
+            </div>
+            <ul class="mlist" id="mediaList"></ul>
+          </div>
+          <div class="card">
+            <h3><span data-i18n="sum.title"></span><span style="font-size:11px" data-i18n="opt2"></span></h3>
+            <textarea class="in summary" id="summary" data-i18n-ph="sum.ph"></textarea>
+            <div class="hint" data-i18n="sum.hint"></div>
+            <div class="dnotes" id="todayNotes"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QURAN -->
+    <section class="view" id="v-quran">
+      <div class="qwrap">
+        <div>
+          <div class="qbar">
+            <select class="in" id="qRiw"></select>
+            <select class="in" id="qDiv"></select>
+            <select class="in" id="qSurah"></select>
+            <select class="in" id="qJuz"></select>
+            <label class="inline" style="font-size:12px;color:var(--muted)"><span data-i18n="q.page"></span><input class="in num" id="qPageIn" type="number" min="1" max="604" style="width:76px"></label>
+            <button class="btn sm" id="qGoMine" data-i18n="q.goMine"></button>
+            <button class="btn sm ghost" id="qTfsBtn" data-i18n="q.tafsirBtn"></button><button class="btn sm ghost" id="qListenBtn" data-i18n="q.listenBtn"></button><button class="btn sm ghost" id="rcBtnQ">🎙 <span data-i18n="rc.btn"></span></button><button class="btn sm ghost" id="qHideBtn"></button><button class="btn sm ghost" id="qHideAll" data-i18n="q.revealAll" hidden></button><button class="btn sm ghost" id="qSearchBtn">🔍</button><button class="btn sm ghost" id="qDark"></button>
+            <button class="btn sm ghost" id="qFsBtn"></button>
+          </div>
+          <div class="mushaf" id="mushaf">
+            <button class="qnav" id="qPrevP"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+            <div class="spread" id="spread"></div>
+            <div class="qplayer" id="qPlayer" hidden></div><div class="qfsui" id="qFsUi"><button class="btn sm" id="qFsX">✕ <span data-i18n="q.fsExit"></span></button><span class="qfspg" id="qFsPg"></span><button class="btn sm" id="qFsDark"></button></div>
+            <button class="qnav" id="qNextP"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="card" id="qKhatma"></div>
+          <div class="card" id="qStudy"></div>
+          <div class="card" id="qToday"></div>
+          <div class="card" id="qMap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALENDAR -->
+    <section class="view" id="v-cal">
+      <div class="calhead">
+        <div><div class="ttl" id="calTtl"></div><div class="sub" id="calSub"></div><div class="skycount" id="calCount"></div></div>
+        <div class="row"><button class="btn sm" id="calPrev"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span data-i18n="prev"></span></button><button class="btn sm ghost" id="calLeg" title="?">؟</button><button class="btn sm" id="calToday" data-i18n="nav.today"></button><button class="btn sm" id="calNext"><span data-i18n="next"></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
+      </div>
+      <div class="calwrap">
+        <div><div class="calsky-wrap" id="calSkyWrap"><div class="cal" id="cal"></div><div class="calsky" id="calSky"></div></div></div>
+        <div class="card detail" id="detail"></div>
+      </div>
+    </section>
+
+    <!-- BRIEF -->
+    <section class="view" id="v-brief">
+      <div class="bhead">
+        <div><div class="ttl" id="bTtl"></div><div class="sub" id="bSub"></div></div>
+        <div class="bctl">
+          <button class="btn sm ghost bdbtn" id="bdBtn">🏅</button><button class="btn sm ghost" id="glBtn">🎯 <span data-i18n="gl.t"></span></button><button class="btn sm ghost" id="rvBtn"></button><div class="seg" id="bSeg"><button data-m="week" data-i18n="brief.week"></button><button data-m="month" data-i18n="brief.month"></button></div>
+          <div class="row"><button class="btn sm" id="bPrev"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span data-i18n="prev"></span></button><button class="btn sm" id="bNow" data-i18n="brief.now"></button><button class="btn sm" id="bNext"><span data-i18n="next"></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
+        </div>
+      </div>
+      <div class="tiles" id="bTiles"></div>
+      <div class="bgrid">
+        <div class="card">
+          <h3><span data-i18n="brief.daily"></span><span class="legend" id="bLegend"></span></h3>
+          <div class="chart"><div class="yax" id="bY"></div><div class="plot" id="bPlot"></div></div>
+          <div class="xlab" id="bX"></div>
+          <div class="best" id="bBest"></div>
+        </div>
+        <div class="card">
+          <h3 data-i18n="brief.cats"></h3>
+          <div id="bCats"></div>
+        </div>
+      </div>
+      <div class="card" id="bPray" style="margin-bottom:18px"></div>
+      <div class="card" id="bHours" style="margin-bottom:18px"></div>
+      <div class="card" style="margin-bottom:18px">
+        <h3 data-i18n="media.title"></h3>
+        <div id="bMedia"></div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="brief.quran"></h3>
+        <div id="bQuran"></div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3 data-i18n="brief.adh"></h3>
+        <div id="bAdh"></div>
+      </div>
+    </section>
+
+    <!-- BOARDS -->
+    <section class="view" id="v-boards">
+      <div class="nbar"><div class="seg" id="nbSeg"><button data-k="notes" data-i18n="notes.title"></button><button data-k="boards" data-i18n="notes.boards"></button><button data-k="studio" data-i18n="st.t"></button></div>
+        <div class="ntools" id="nTools"><input class="in" id="nSearch" data-i18n-ph="notes.search"><button class="btn sm" id="nObsIn" data-i18n="obs.import"></button><button class="btn sm ghost" id="nObs" data-i18n="notes.obsidian"></button><button class="btn sm ghost" id="nLetter">✉ <span data-i18n="lt2.t"></span></button><button class="btn sm pri" id="nNew" data-i18n="notes.new"></button></div></div>
+      <div id="notesWrap"><div class="ntags" id="nTags"></div><div class="ngrid" id="notesGrid"></div></div>
+      <div id="studioWrap" class="studio" hidden></div>
+      <div id="boardsWrap">
+      <div class="boardtabs" id="boardTabs"></div>
+      <div class="bwrap" id="bwrap" data-tool="select"><div class="bworld" id="bworld"></div><div class="btbar" id="btbar"></div></div>
+      <input type="file" id="wbImgIn" accept="image/*" multiple hidden>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="v-lib"></section>
+
+    <section class="view" id="v-set">
+      <div class="set">
+        <div class="card"><h3 data-i18n="set.lang"></h3>
+          <div class="field" style="padding:0"><div><label>العربية / English</label></div><select class="in" id="langIn"><option value="ar">العربية</option><option value="en">English</option></select></div>
+          <div class="field" id="digField" style="padding:12px 0 0"><div><label data-i18n="dg.s"></label><small data-i18n="dg.sub"></small></div><button class="sw-toggle" id="digT"></button></div>
+          <div class="field" style="padding:12px 0 0"><div><label data-i18n="set.dict"></label><small data-i18n="set.dictSub"></small></div><select class="in" id="dictLangIn"></select></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.look"></h3>
+          <div class="field" style="padding-top:0"><div><label data-i18n="set.style"></label></div><div class="seg" id="styleSeg"></div></div>
+          <div class="field"><div><label data-i18n="set.perf"></label><small id="perfSub"></small></div><div class="seg" id="perfSeg"></div></div>
+          <div class="field"><div><label data-i18n="set.zoom"></label><small data-i18n="set.zoomSub"></small></div><div class="inline"><input type="range" id="zoomIn" min="0.85" max="1.3" step="0.05" style="width:140px"><span id="zoomV" style="min-width:42px"></span></div></div>
+          <div class="field"><div><label data-i18n="set.hc"></label><small data-i18n="set.hcSub"></small></div><button class="sw-toggle" id="hcT"></button></div>
+          <div class="field"><div><label data-i18n="set.cb"></label><small data-i18n="set.cbSub"></small></div><button class="sw-toggle" id="cbT"></button></div>
+          <div class="field andonly"><div><label data-i18n="set.sw"></label><small data-i18n="set.swSub"></small></div><button class="sw-toggle" id="swT"></button></div>
+          <div class="field noand"><div><label data-i18n="ks.t"></label></div><button class="btn sm" id="ksBtn" data-i18n="ks.show"></button></div>
+          <div class="field"><div><label data-i18n="set.simple"></label><small data-i18n="set.simpleSub"></small></div><button class="sw-toggle" id="simpleT"></button></div>
+          <div class="field"><div><label data-i18n="set.tips"></label><small data-i18n="set.tipsSub"></small></div><button class="sw-toggle" id="tipsT"></button></div>
+          <div class="field" id="tdcRow"><div><label data-i18n="tdc.l"></label><small data-i18n="tdc.s"></small></div><button class="sw-toggle" id="tdcT"></button></div>
+          <div class="field"><div><label data-i18n="ol.l"></label><small data-i18n="ol.s"></small></div><button class="sw-toggle" id="openLastT"></button></div>
+          <div class="field"><div><label data-i18n="wk.l"></label><small data-i18n="wk.s"></small></div><button class="sw-toggle" id="wakeT"></button></div>
+          <div class="field"><div><label data-i18n="cf.l"></label><small data-i18n="cf.s"></small></div><button class="sw-toggle" id="comfyT"></button></div>
+          <div class="field"><div><label data-i18n="nv.t"></label><small data-i18n="nv.sub"></small></div><button class="btn sm" id="navCfgBtn" data-i18n="hl3.arr"></button></div>
+          <div class="field"><div><label data-i18n="uu.t"></label><small data-i18n="uu.s"></small></div><button class="btn sm" id="unusedBtn" data-i18n="trs.b"></button></div>
+          <div class="field"><div><label data-i18n="uh.t"></label><small data-i18n="uh.s"></small></div><button class="btn sm" id="undoHBtn" data-i18n="trs.b"></button></div>
+          <div class="field"><div><label data-i18n="pv3.cmd"></label><small data-i18n="pv3.s"></small></div><button class="btn sm" id="privBtn" data-i18n="pv3.btn"></button></div>
+          <div class="field andonly"><div><label data-i18n="gs.t"></label></div><button class="btn sm" id="gestBtn" data-i18n="trs.b"></button></div>
+          <div class="field noand"><div><label data-i18n="w3.l"></label><small data-i18n="w3.s"></small></div><button class="sw-toggle" id="wide3T"></button></div>
+          <div class="field"><div><label data-i18n="rcp.l"></label><small data-i18n="rcp.s"></small></div><button class="sw-toggle" id="recapT"></button></div>
+          <div class="field"><div><label data-i18n="set.night"></label><small data-i18n="set.nightSub"></small></div><div class="seg" id="nightSeg"></div></div>
+          <div class="field"><div><label data-i18n="set.perfBatt"></label><small data-i18n="set.perfBattSub"></small></div><button class="sw-toggle" id="perfBattT"></button></div>
+          <div class="field"><div><label data-i18n="set.mode"></label></div><div class="seg" id="modeSeg"></div></div>
+          <div class="field" style="display:block"><label data-i18n="set.color"></label><div class="swatches" id="swatches"></div></div>
+          <div class="field" style="margin-top:10px"><div><label data-i18n="set.accent"></label></div><div class="row"><input type="color" id="cAccent"><button class="link" data-reset="accent" data-i18n="set.default"></button></div></div>
+          <div class="field"><div><label data-i18n="set.water"></label></div><div class="row"><input type="color" id="cWater"><button class="link" data-reset="water" data-i18n="set.default"></button></div></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.goalCats"></h3>
+          <div class="field"><div><label data-i18n="set.goal"></label><small data-i18n="set.goalSub"></small></div><div class="inline"><input class="in num" type="number" min="0.5" step="0.5" id="goalIn"> <span data-i18n="set.hours"></span></div></div>
+          <div class="field"><div><label data-i18n="set.goalWd"></label><small data-i18n="set.goalWdSub"></small></div><button class="sw-toggle" id="goalWdT"></button></div>
+          <div class="field" id="goalWdRow"><div></div><div class="wdgoals" id="goalWdIn"></div></div>
+          <div class="field"><div><label data-i18n="set.learnGoal"></label><small data-i18n="set.learnGoalSub"></small></div><div class="inline"><input class="in num" type="number" min="0" step="1" id="learnGoalIn"> <span data-i18n="set.hours"></span></div></div>
+          <div class="field"><div><label data-i18n="set.weekGoal"></label><small data-i18n="set.weekGoalSub"></small></div><div class="inline"><input class="in num" type="number" min="0" step="1" id="weekGoalIn"> <span data-i18n="set.hours"></span></div></div>
+          <div class="field"><div><label data-i18n="set.pomo"></label><small data-i18n="set.pomoSub"></small></div><button class="sw-toggle" id="pomoT"></button></div>
+          <div class="field" id="pomoRow"><div></div><div class="subf"><span data-i18n="pomo.work"></span><input class="in num" type="number" min="5" id="pomoW"><span data-i18n="pomo.brk"></span><input class="in num" type="number" min="1" id="pomoB"><span data-i18n="pomo.long"></span><input class="in num" type="number" min="1" id="pomoL"><span data-i18n="pomo.every"></span><input class="in num" type="number" min="2" id="pomoE"></div></div>
+          <div class="field"><div><label data-i18n="set.idle"></label><small data-i18n="set.idleSub"></small></div><button class="sw-toggle" id="idleT"></button></div>
+          <div class="field" id="idleRow"><div></div><div class="subf"><span data-i18n="idle.from"></span><input class="in" type="time" id="idleF"><span data-i18n="idle.to"></span><input class="in" type="time" id="idleTo"><span data-i18n="idle.after"></span><input class="in num" type="number" min="15" step="15" id="idleM"><span data-i18n="u.m"></span></div></div>
+          <div class="field"><div><label data-i18n="ds3.s"></label><small data-i18n="ds3.sub"></small></div><button class="sw-toggle" id="distrT"></button></div>
+          <div class="field"><div><label data-i18n="mr3.s"></label><small data-i18n="mr3.sub"></small></div><button class="sw-toggle" id="mrevT"></button></div>
+          <div class="field"><div><label data-i18n="pd3.t"></label><small data-i18n="pd3.sub"></small></div><button class="btn sm" id="pjDueBtn" data-i18n="pd3.btn"></button></div>
+          <div class="field"><div><label data-i18n="ics3.s"></label><small data-i18n="ics3.sub"></small></div><button class="btn sm" id="icsImpBtn" data-i18n="ics3.btn"></button></div>
+          <div class="field"><div><label data-i18n="lt3.s"></label><small data-i18n="lt3.sub"></small></div><button class="btn sm" id="lightBtn"></button></div>
+          <div class="field"><div><label data-i18n="set.wr"></label><small data-i18n="set.wrSub"></small></div><div class="inline"><select class="in" id="wrWd"></select><input class="in" type="time" id="wrAt" style="width:110px"><button class="sw-toggle" id="wrT"></button></div></div>
+          <div class="field"><div><label data-i18n="fr.s"></label><small data-i18n="fr.sub"></small></div><div class="inline"><input class="in" id="frName" dir="auto" style="width:120px" placeholder="—"><select class="in" id="frDay"></select></div></div>
+          <div class="field"><div><label data-i18n="frz.s"></label><small data-i18n="frz.sub"></small></div><button class="sw-toggle" id="frzT"></button></div>
+          <div class="field"><div><label data-i18n="ayd.s"></label><small data-i18n="ayd.sub"></small></div><button class="sw-toggle" id="aydT"></button></div>
+          <div class="field"><div><label data-i18n="tm.s"></label><small data-i18n="tm.sSub"></small></div><div class="inline"><input class="in" type="time" id="tmrAt" style="width:110px"><button class="sw-toggle" id="tmrT"></button></div></div>
+          <div class="field"><div><label data-i18n="mx2.s"></label><small data-i18n="mx2.sSub"></small></div><div class="inline"><input class="in num" type="number" min="0" max="18" step="0.5" id="maxH" style="width:70px" placeholder="—"><span data-i18n="set.hours"></span></div></div>
+          <div class="field"><div><label data-i18n="en.s"></label><small data-i18n="en.sSub"></small></div><button class="sw-toggle" id="enT"></button></div>
+          <div class="field"><div><label data-i18n="hb.t"></label><small data-i18n="hb.sSub"></small></div><div class="inline"><button class="btn sm" id="hbEdit" data-i18n="pj.manage2"></button><button class="sw-toggle" id="hbT"></button></div></div>
+          <div class="field"><div><label data-i18n="ics.s"></label><small data-i18n="ics.sSub"></small></div><div class="inline"><input class="in" id="icsUrl" dir="ltr" placeholder="https://calendar.google.com/…/basic.ics" style="width:220px"><button class="btn sm" id="icsNow" data-i18n="ics.now"></button></div></div>
+          <div class="field"><div><label data-i18n="csv.s"></label><small data-i18n="csv.sSub"></small></div><button class="btn sm" id="csvBtn">⤓ CSV</button></div>
+          <div class="field"><div><label data-i18n="set.pj"></label><small data-i18n="set.pjSub"></small></div><button class="btn sm" id="pjManage" data-i18n="set.pjBtn"></button></div>
+          <div class="field"><div><label data-i18n="set.bill"></label><small data-i18n="set.billSub"></small></div><button class="sw-toggle" id="billT"></button></div>
+          <div class="field"><div><label data-i18n="set.est"></label><small data-i18n="set.estSub"></small></div><button class="sw-toggle" id="estT"></button></div>
+          <div class="field"><div><label data-i18n="set.rate"></label><small data-i18n="set.rateSub"></small></div><button class="sw-toggle" id="rateT"></button></div>
+          <div class="field"><div><label data-i18n="set.abrk"></label><small data-i18n="set.abrkSub"></small></div><button class="sw-toggle" id="abrkT"></button></div>
+          <div class="field"><div><label data-i18n="set.water"></label><small data-i18n="set.waterSub"></small></div><div class="inline"><input class="in num" type="number" min="1" max="30" id="waterG" style="width:64px"><button class="sw-toggle" id="waterT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.nzAuto"></label><small data-i18n="set.nzAutoSub"></small></div><button class="sw-toggle" id="nzAutoT"></button></div>
+          <div class="field"><div><label data-i18n="set.stChip"></label><small data-i18n="set.stChipSub"></small></div><button class="sw-toggle" id="stChipT"></button></div>
+          <div class="field" id="fgField"><div><label data-i18n="set.fg"></label><small data-i18n="set.fgSub"></small></div><button class="sw-toggle" id="fgT"></button></div>
+          <div class="field fgbox" id="fgBox" style="display:block"><div class="field" style="border:0;padding:0 0 8px"><div><label data-i18n="set.fgAuto"></label></div><button class="sw-toggle" id="fgAutoT"></button></div><div id="fgRules"></div></div>
+          <div class="field"><div><label data-i18n="set.overBricks"></label><small data-i18n="set.overBricksSub"></small></div><button class="sw-toggle" id="overBricksT"></button></div>
+          <div class="field"><div><label data-i18n="set.balance"></label><small data-i18n="set.balanceSub"></small></div><div class="inline"><span data-i18n="set.after"></span><input class="in num" type="number" min="1" max="20" step="0.5" id="balIn"><span data-i18n="set.hours"></span><button class="sw-toggle" id="balT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.dayStart"></label><small data-i18n="set.dayStartSub"></small></div><select class="in" id="dayStartIn"></select></div>
+          <div class="field" hidden><div><label data-i18n="set.carry"></label><small data-i18n="set.carrySub"></small></div><button class="sw-toggle" id="carryT"></button></div>
+          <div class="field" style="display:block"><label data-i18n="set.cats"></label><div class="catedit" id="catEdit" style="margin-top:10px"></div><button class="btn sm" id="catAdd" style="margin-top:8px" data-i18n="set.catNew"></button></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.prayer"></h3>
+          <div class="field"><div><label data-i18n="set.remind"></label><small data-i18n="set.remindSub"></small></div><div class="inline"><input class="in num" type="number" min="1" max="60" id="remIn"> <span data-i18n="set.minBefore"></span> <button class="sw-toggle" id="remT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.prayPause"></label><small data-i18n="set.prayPauseSub"></small></div><button class="sw-toggle" id="prayPauseT"></button></div>
+          <div class="field"><div><label data-i18n="set.adhan"></label><small data-i18n="set.adhanSub"></small></div><div class="inline"><button class="btn sm ghost" id="adhanTest" data-i18n="set.test"></button><button class="sw-toggle" id="adhanT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.adhanMode"></label><small data-i18n="set.adhanModeSub"></small></div><div class="seg" id="adhanModeSeg"></div></div>
+          <div class="field"><div><label data-i18n="set.adhanVolume"></label></div><div class="adhsub"><input type="range" id="adhanVolIn" min="5" max="100" step="5"><span class="vv" id="adhanVolV"></span></div></div>
+          <div class="field"><div><label data-i18n="set.fajrAdhan"></label><small data-i18n="set.fajrAdhanSub"></small></div><div class="adhsub"><span class="fjname" id="fajrName"></span><button class="btn sm ghost" id="fajrTest" hidden>▶</button><button class="btn sm" id="fajrPick" data-i18n="set.fajrPick"></button><button class="btn sm ghost" id="fajrClr" data-i18n="set.fajrClear" hidden></button><input type="file" id="fajrFile" accept="audio/*,.mp3,.m4a,.ogg,.wav,.aac" hidden></div></div>
+          <div class="field"><div><label data-i18n="set.unlogged"></label><small data-i18n="set.unloggedSub"></small></div><div class="seg" id="unlogSeg"></div></div>
+          <div class="field"><div><label data-i18n="set.fastWhite"></label><small data-i18n="set.fastWhiteSub"></small></div><button class="sw-toggle" id="fastWhiteT"></button></div>
+          <div class="field"><div><label data-i18n="set.fastMT"></label></div><button class="sw-toggle" id="fastMTT"></button></div>
+          <div class="field"><div><label data-i18n="set.fastAt"></label><small data-i18n="set.fastAtSub"></small></div><input class="in" type="time" id="fastAtIn" style="width:120px"></div>
+          <div id="w3Box">
+          <div class="field"><div><label data-i18n="end.s"></label><small data-i18n="end.sub"></small></div><div class="inline"><input class="in num" type="number" min="5" max="60" step="5" id="endMin" style="width:64px"><span data-i18n="u.m"></span><button class="sw-toggle" id="endT"></button></div></div>
+          <div class="field"><div><label data-i18n="fri.lastS"></label><small data-i18n="fri.lastSub"></small></div><button class="sw-toggle" id="friLastT"></button></div>
+          <div class="field"><div><label data-i18n="fri.salS"></label><small data-i18n="fri.salSub"></small></div><button class="sw-toggle" id="friSalT"></button></div>
+          <div class="field"><div><label data-i18n="ny.s"></label><small data-i18n="ny.sub"></small></div><button class="sw-toggle" id="nyT"></button></div>
+          <div class="field"><div><label data-i18n="trv.s"></label><small data-i18n="trv.sub"></small></div><div class="inline"><input class="in" type="date" id="trvUntil" style="width:150px"><button class="sw-toggle" id="trvT"></button></div></div>
+          <div class="field" style="flex-wrap:wrap"><div><label data-i18n="adp.s"></label><small data-i18n="adp.sub"></small></div><div class="adpbox" id="adhPerBox"></div></div>
+          </div>
+          <div class="field"><div><label data-i18n="set.jumua"></label><small data-i18n="set.jumuaSub"></small></div><button class="sw-toggle" id="jumuaT"></button></div>
+          <div class="field"><div><label data-i18n="set.qiyam"></label><small data-i18n="set.qiyamSub"></small></div><div class="inline"><select class="in" id="qiyamOff"></select><button class="sw-toggle" id="qiyamT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.suhoor"></label><small data-i18n="set.suhoorSub"></small></div><div class="inline"><input class="in num" type="number" min="10" max="120" step="5" id="suhoorM" style="width:70px"><span data-i18n="u.m"></span><button class="sw-toggle" id="suhoorT"></button></div></div>
+          <div class="field"><div><label data-i18n="wt2.t"></label></div><div class="row" id="worshipTools" style="gap:6px;flex-wrap:wrap"></div></div>
+          <div class="field"><div><label data-i18n="dw2.duhaS"></label><small data-i18n="dw2.duhaSub"></small></div><div class="inline"><input class="in num" type="number" min="15" max="240" step="5" id="duhaM" style="width:70px"><span data-i18n="u.m"></span><button class="sw-toggle" id="duhaT"></button></div></div>
+          <div class="field"><div><label data-i18n="dw2.witrS"></label><small data-i18n="dw2.witrSub"></small></div><div class="inline"><input class="in" type="time" id="witrAt" style="width:110px"><button class="sw-toggle" id="witrT"></button></div></div>
+          <div class="field"><div><label data-i18n="aa.s"></label><small data-i18n="aa.sub"></small></div><button class="sw-toggle" id="aaT"></button></div>
+          <div class="field"><div><label data-i18n="set.qiyamLog"></label><small data-i18n="set.qiyamLogSub"></small></div><button class="sw-toggle" id="qiyamLogT"></button></div>
+          <div class="field"><div><label data-i18n="set.muhasaba"></label><small data-i18n="set.muhasabaSub"></small></div><div class="inline"><input class="in" type="time" id="mhAt" style="width:110px"><button class="sw-toggle" id="mhT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.sleepAdh"></label><small data-i18n="set.sleepAdhSub"></small></div><div class="inline"><input class="in" type="time" id="slAt" style="width:110px"><button class="sw-toggle" id="slT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.virt"></label><small data-i18n="set.virtSub"></small></div><button class="sw-toggle" id="virtT"></button></div>
+          <div class="field"><div><label data-i18n="set.tsb"></label><small data-i18n="set.tsbSub"></small></div><button class="btn sm" id="tsbEdit" data-i18n="set.tsbEdit"></button></div>
+          <div class="field"><div><label data-i18n="set.adhExtra"></label><small data-i18n="set.adhExtraSub"></small></div><button class="sw-toggle" id="adhExtraT"></button></div>
+          <div class="field"><div><label data-i18n="set.prayQuiet"></label><small data-i18n="set.prayQuietSub"></small></div><button class="sw-toggle" id="prayQuietT"></button></div>
+          <div class="field andonly"><div><label data-i18n="set.adhanVol"></label><small data-i18n="set.adhanVolSub"></small></div><button class="sw-toggle" id="adhanVolT"></button></div>
+          <div class="field"><div><label data-i18n="set.atTime"></label></div><button class="sw-toggle" id="atT"></button></div>
+          <div class="field"><div><label data-i18n="set.loc"></label><small id="locNow"></small></div><button class="btn sm" id="locChange" data-i18n="set.locChange"></button></div>
+          <div class="field"><div><label data-i18n="set.src"></label></div><select class="in" id="srcIn"></select></div>
+          <div class="field calcOnly"><div><label data-i18n="set.method"></label></div><select class="in" id="methodIn"></select></div>
+          <div class="field calcOnly"><div><label data-i18n="set.city"></label></div><select class="in" id="cityIn"></select></div>
+          <div class="field" id="customLoc"><div><label data-i18n="set.coords"></label></div><div class="inline"><input class="in" style="width:100px" id="latIn" data-i18n-ph="lat"><input class="in" style="width:100px" id="lngIn" data-i18n-ph="lng"></div></div>
+          <div class="field calcOnly"><div><label data-i18n="set.angles"></label><small data-i18n="set.anglesSub"></small></div><div class="inline"><input class="in num" type="number" step="0.5" id="fajrA">°<input class="in num" type="number" step="0.5" id="ishaA">°</div></div>
+          <div class="field" style="display:block"><label data-i18n="set.offs"></label><small data-i18n="set.offsSub" style="color:var(--muted)"></small><div class="offs" id="offs" style="margin-top:10px"></div></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.quran"></h3>
+          <div class="field"><div><label data-i18n="set.riwaya"></label></div><select class="in" id="qRiwSet"></select></div>
+          <div class="field"><div><label data-i18n="set.div"></label><small data-i18n="set.divSub"></small></div><select class="in" id="qDivSet"></select></div>
+          <div class="field"><div><label data-i18n="cm.t"></label><small data-i18n="cm.setSub"></small></div><button class="btn sm" id="cmBtn" data-i18n="cm.open"></button></div>
+          <div class="field"><div><label data-i18n="et.s"></label><small data-i18n="et.sub"></small></div><button class="sw-toggle" id="qEdgeT"></button></div>
+          <div class="field"><div><label data-i18n="ql.s"></label><small data-i18n="ql.sub"></small></div><button class="sw-toggle" id="qlT"></button></div>
+          <div class="field"><div><label data-i18n="tr.t"></label><small data-i18n="tr.setSub"></small></div><div class="inline"><button class="btn sm" id="tarOpenBtn" data-i18n="tr.open"></button><button class="sw-toggle" id="tarChipT"></button></div></div>
+          <div class="field"><div><label data-i18n="qft.s"></label><small data-i18n="qft.sub"></small></div><button class="sw-toggle" id="qftT"></button></div>
+          <div class="field"><div><label data-i18n="set.topics"></label><small data-i18n="set.topicsSub"></small></div><button class="sw-toggle" id="topicsT"></button></div>
+          <div class="field"><div><label data-i18n="set.qSmart"></label><small data-i18n="set.qSmartSub"></small></div><button class="sw-toggle" id="qSmartT"></button></div>
+          <div class="field"><div><label data-i18n="set.wird"></label><small data-i18n="set.wirdSub"></small></div><div class="inline"><input class="in num" type="number" min="1" max="604" id="qWirdIn"> <span data-i18n="set.pages"></span></div></div>
+          <div class="field"><div><label data-i18n="set.review"></label><small data-i18n="set.reviewSub"></small></div><div class="inline"><input class="in num" type="number" min="1" max="604" id="qRevIn"> <span data-i18n="set.pages"></span></div></div>
+          <div class="field"><div><label data-i18n="mlk.l"></label><small data-i18n="mlk.s"></small></div><button class="sw-toggle" id="mulkT"></button></div>
+          <div class="field"><div><label data-i18n="set.remRead"></label></div><div class="inline"><span data-i18n="set.after"></span><input class="in num" type="number" min="0" max="240" id="qRemRA"><span data-i18n="set.minAfter"></span><select class="in" id="qRemRP"></select><button class="sw-toggle" id="qRemRT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.remHifz"></label></div><div class="inline"><span data-i18n="set.after"></span><input class="in num" type="number" min="0" max="240" id="qRemHA"><span data-i18n="set.minAfter"></span><select class="in" id="qRemHP"></select><button class="sw-toggle" id="qRemHT"></button></div></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.adh"></h3>
+          <div class="field"><div><label data-i18n="set.adhRem"></label><small data-i18n="set.adhRemSub"></small></div><button class="sw-toggle" id="adhRemT"></button></div>
+          <div class="field"><div><label data-i18n="adh.m"></label></div><div class="inline"><input class="in num" type="number" min="0" max="300" id="adhRemM"><span data-i18n="set.afterFajr"></span></div></div>
+          <div class="field"><div><label data-i18n="adh.e"></label></div><div class="inline"><input class="in num" type="number" min="0" max="300" id="adhRemE"><span data-i18n="set.afterAsr"></span></div></div>
+          <div class="field"><div><label data-i18n="set.tour"></label><small data-i18n="set.tourSub"></small></div><button class="btn sm" id="tourAgain" data-i18n="tour.again"></button></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.hijri"></h3>
+          <div class="field"><div><label data-i18n="set.hijriAdj"></label><small data-i18n="set.hijriSub"></small></div><div class="inline"><button class="btn sm" id="hMinus">−</button><span id="hAdj" style="min-width:30px;text-align:center"></span><button class="btn sm" id="hPlus">+</button></div></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.privT"></h3>
+          <div class="field"><div><label data-i18n="set.lock"></label><small id="lockSub"></small></div><div class="inline"><select class="in" id="lockAfter"></select><button class="sw-toggle" id="lockT"></button></div></div>
+          <div class="field" id="pcnField"><div><label data-i18n="pcn.s"></label><small data-i18n="pcn.sub"></small></div><button class="sw-toggle" id="pcnT"></button></div>
+          <div class="field andonly"><div><label data-i18n="and.s"></label><small data-i18n="and.sub"></small></div><select class="in" id="andOffSel"></select></div>
+          <div class="field andonly"><div><label data-i18n="set.tn"></label><small data-i18n="set.tnSub"></small></div><button class="sw-toggle" id="tnT"></button></div>
+          <div class="field andonly"><div><label data-i18n="set.wn"></label><small data-i18n="set.wnSub"></small></div><button class="sw-toggle" id="wnT"></button></div>
+          <div class="field andonly"><div><label data-i18n="set.dnd"></label><small data-i18n="set.dndSub"></small> <small id="dndSt" style="color:var(--accent)"></small></div><div class="inline"><input class="in num" id="dndMin" type="number" min="5" max="90" style="width:64px"><span data-i18n="u.m"></span><button class="sw-toggle" id="dndT"></button></div></div>
+        </div>
+        <div class="card"><h3 data-i18n="hh3.set"></h3>
+          <div class="field"><div><label data-i18n="mv3.s"></label><small data-i18n="mv3.sub"></small></div><div class="inline"><input class="in num" type="number" min="20" max="120" step="5" id="mvMin" style="width:64px"><span data-i18n="u.m"></span><button class="sw-toggle" id="mvT"></button></div></div>
+          <div class="field"><div><label data-i18n="ey3.s"></label><small data-i18n="ey3.sub"></small></div><button class="sw-toggle" id="eyT"></button></div>
+          <div class="field"><div><label data-i18n="sl3.s"></label><small data-i18n="sl3.sub"></small></div><button class="sw-toggle" id="slaT"></button></div>
+          <div class="field" style="flex-wrap:wrap"><div><label data-i18n="ml3.s"></label><small data-i18n="ml3.sub"></small></div><div class="inline"><input class="in" type="time" id="ml_b" style="width:110px"><input class="in" type="time" id="ml_l" style="width:110px"><input class="in" type="time" id="ml_d" style="width:110px"><button class="sw-toggle" id="mlT"></button></div></div>
+          <div class="field"><div><label data-i18n="wx3.s"></label><small data-i18n="wx3.sub"></small></div><button class="sw-toggle" id="wxwT"></button></div>
+          <div class="field"><div><label data-i18n="vb3.s"></label><small data-i18n="vb3.sub"></small></div><select class="in" id="vibSel"></select></div>
+          <div class="field"><div><label data-i18n="hl3.t"></label><small data-i18n="hl3.sub"></small></div><button class="btn sm" id="homeLayBtn" data-i18n="hl3.btn"></button></div>
+          <div class="field"><div><label data-i18n="ln3.t"></label><small data-i18n="ln3.sub"></small></div><button class="btn sm" id="lanBtn" data-i18n="ln3.btn"></button></div>
+          <div class="field"><div><label data-i18n="db3.s"></label><small data-i18n="db3.sub"></small></div><button class="btn sm" id="drvBtn" data-i18n="db3.btn"></button></div>
+        </div>
+        <div class="card"><h3 data-i18n="ab.t"></h3>
+          <div class="field"><div><label id="aboutV"></label></div><div class="row"><button class="btn sm ghost" id="wnBtn" data-i18n="ab.new"></button><button class="btn sm ghost" id="pvBtn" data-i18n="pv.t"></button></div></div>
+          <div class="field"><div><label data-i18n="bug.t"></label><small data-i18n="bug.sub"></small></div><button class="btn sm" id="bugBtn" data-i18n="bug.btn"></button></div>
+          <div class="field"><div><label data-i18n="hl.t"></label><small data-i18n="hl.sub"></small></div><div class="row"><button class="btn sm" id="hlBtn" data-i18n="hl.btn"></button><button class="btn sm ghost" id="cfBtn"></button></div></div>
+          <div class="field"><div><label data-i18n="upd.t"></label><small data-i18n="upd.sub"></small></div><div class="inline"><input class="in" id="updUrl" dir="ltr" placeholder="GitHub" style="width:220px"><button class="btn sm" id="updNow" data-i18n="upd.check"></button></div></div>
+          <div class="field"><div><label data-i18n="bk.wk"></label><small data-i18n="bk.wkSub"></small></div><button class="btn sm" id="wkBkNow" data-i18n="bk.now"></button></div>
+        </div>
+        <div class="card"><h3 data-i18n="set.backup"></h3>
+          <div class="field" style="display:block"><div class="syncbox" id="syncBox"></div></div>
+          <div class="field"><div><label data-i18n="set.auto"></label><small data-i18n="set.autoSub"></small></div><span style="color:var(--ok);font-size:12px" data-i18n="set.on"></span></div>
+          <div class="field"><div><label data-i18n="trs.l"></label><small data-i18n="trs.s"></small></div><button class="btn sm" id="trashBtn" data-i18n="trs.b"></button></div>
+          <div class="field noand"><div><label data-i18n="set.folder"></label><small id="folderInfo"></small></div><button class="btn sm" id="pickFolder" data-i18n="set.pick"></button></div>
+          <div class="field"><div><label data-i18n="set.io"></label></div><div class="row"><button class="btn sm" id="exportBtn" data-i18n="set.export"></button><label class="btn sm" style="cursor:pointer"><span data-i18n="set.import"></span><input type="file" id="importIn" accept=".json" hidden></label></div></div>
+          <div class="field" style="display:block"><div class="bkhead"><div><label data-i18n="bk.title"></label><small data-i18n="bk.sub"></small></div><button class="btn sm" id="bkNow" data-i18n="bk.now"></button></div><div id="bkList" class="bklist"></div></div>
+          <div class="field"><div><label data-i18n="set.sound"></label></div><div class="inline"><button class="btn sm" id="testSound" data-i18n="set.test"></button><button class="sw-toggle" id="soundT"></button></div></div>
+          <div class="field"><div><label data-i18n="set.ytKey"></label><small><span data-i18n="set.ytKeySub"></span> <a href="https://developers.google.com/youtube/v3/getting-started" target="_blank" rel="noopener" style="color:var(--accent)" data-i18n="set.ytKeyHow"></a></small></div><input class="in" id="ytKeyIn" dir="ltr" style="width:220px" placeholder="AIza…"></div>
+          <div class="field noand"><div><label data-i18n="set.notif"></label><small data-i18n="set.notifSub"></small></div><button class="btn sm" id="notifBtn"></button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<div class="celebrate" id="celebrate"><div class="cnight"></div><div class="ctext"><div class="cstar"><svg viewBox="0 0 64 64" width="64" height="64"><defs><mask id="cmk"><rect width="64" height="64" fill="#fff"/><circle cx="22" cy="26" r="24" fill="#000"/></mask></defs><circle cx="32" cy="32" r="24" fill="#fff3c4" mask="url(#cmk)"/></svg></div><h2 id="celT"></h2><p id="celP"></p><small id="celB"></small></div></div>
+<div class="praymodal" id="prayModal"><div class="pbox"><div class="pic" id="pIc"></div><small id="pSub"></small><h2 id="pT"></h2><p id="pP"></p><button class="btn pri" id="pDone"></button><button class="btn ghost pmute" id="pMute" hidden></button><button class="btn ghost psn" id="pSunnah" hidden></button><button class="btn ghost plater" id="pLater"></button><div class="pdua" id="pDua" hidden><h4 id="pDuaT"></h4><div class="pdsal"><button class="btn sm" id="pSal"></button><small id="pSalN"></small></div><p class="pdtx" id="pDuaTx" dir="rtl"></p><p class="pden" id="pDuaEn" hidden></p><small class="pdsrc" id="pDuaSrc"></small></div><small class="pnote" id="pNote"></small></div></div>
+<div class="lbox" id="lbox"><div class="lbstage" id="lbStage"><img id="lbImg" alt=""></div>
+  <div class="lbbar"><button id="lbX" title="Esc">✕</button><span class="lbcount" id="lbN"></span><span class="tt" id="lbT"></span><button id="lbOut">−</button><button id="lbIn">＋</button><button id="lbFit">⤢</button><button id="lbDl">⬇</button></div>
+  <button class="lbnav lbprev" id="lbPrev">‹</button><button class="lbnav lbnext" id="lbNext">›</button></div>
+<div class="modal" id="cmdk"><div class="box cmdbox"><input id="cmdIn" dir="auto" autocomplete="off"><div class="cmdres" id="cmdRes"></div><div class="cmdhint" id="cmdHint"></div></div></div>
+<div class="modal" id="rvModal"><div class="box rvbox" id="rvBox"></div></div>
+<div class="modal" id="crModal"><div class="box crbox" id="crBox"></div></div>
+<div class="modal" id="pinModal"><div class="box pinbox" id="pinBox"></div></div>
+<div class="modal" id="tsModal"><div class="box tsbox" id="tsBox"></div></div>
+<div class="modal" id="stEdModal"><div class="box stedbox" id="stEdBox"></div></div>
+<div class="modal" id="fcModal"><div class="box fcbox" id="fcBox"></div></div>
+<div class="lockov" id="lockOv"></div>
+<div class="modal" id="rvmModal"><div class="box rvmbox" id="rvmBox"></div></div>
+<button class="fab" id="fab" aria-label="+">＋</button>
+<div class="modal" id="wcModal"><div class="box wcbox" id="wcBox"></div></div>
+<div class="modal" id="infoModal"><div class="box infobox" id="infoBox"></div></div>
+<div class="modal" id="rcModal"><div class="box rcbox" id="rcBox"></div></div>
+<div class="rcpill" id="rcPill" hidden></div>
+<div class="modal" id="bdModal"><div class="box bdbox" id="bdBox"></div></div>
+<div class="modal" id="ltrModal"><div class="box ltrbox" id="ltrBox"></div></div>
+<div class="modal" id="ibModal"><div class="box ibbox" id="ibBox"></div></div>
+<div class="modal" id="wrModal"><div class="box wrbox" id="wrBox"></div></div>
+<div class="modal" id="glModal"><div class="box glbox" id="glBox"></div></div>
+<div class="modal" id="pjModal"><div class="box pjbox" id="pjBox"></div></div>
+<div class="deepov" id="deepOv"><div class="dpin"><div class="dpcat" id="dpCat"></div><div class="dpwrap"><svg viewBox="0 0 300 300"><circle cx="150" cy="150" r="130" class="dpbg"/><circle cx="150" cy="150" r="130" class="dpfg" id="dpRing"/></svg><div class="dpclk" id="dpClk">00:00</div></div><div class="dptask" id="dpTask" dir="auto"></div><div class="dpdone" id="dpDone" hidden><span data-i18n="dw.done"></span><button class="btn sm" id="dpMore" data-i18n="dw.more"></button></div><div class="dpbtns"><button class="btn ghost" id="dpNoise"></button><button class="btn ghost" id="dpBrk">☕ <span data-i18n="dw.brk"></span></button><button class="btn" id="dpExit">✕ <span data-i18n="dw.exit"></span></button></div></div></div>
+<div class="modal" id="mhModal"><div class="box mhbox" id="mhBox"></div></div>
+<div class="modal" id="snModal"><div class="box snbox" id="snBox"></div></div>
+<div class="modal" id="hzModal"><div class="box hzbox" id="hzBox"></div></div>
+<div class="modal" id="planModal"><div class="box plbox2" id="planBox"></div></div>
+<div class="modal" id="evModal"><div class="box evbox" id="evBox"></div></div>
+<div class="modal" id="plModal"><div class="box plbox" id="plBox"></div></div>
+<div class="modal" id="audModal"><div class="box audbox" id="audBox"></div></div>
+<div class="modal" id="setupModal"><div class="box setbox" id="setupBox"></div></div>
+<div class="modal" id="noteModal"><div class="box notebox" id="noteBox"></div></div>
+<div class="modal" id="ltModal"><div class="box ltbox" id="ltBox"></div></div>
+<div class="modal" id="dayModal"><div class="box daybox"><h2 id="dmT"></h2><div id="dmBody"></div></div></div>
+<div class="modal" id="modal"><div class="box"><div class="ic" id="mIc"></div><h2 id="mT"></h2><p id="mP"></p><button class="btn pri" id="mOk" data-i18n="ok"></button></div></div>
+<div class="sheet" id="tfsSheet"><div class="sheet-box tfsbox">
+  <div class="sheet-head"><div class="tfst"><b id="tfsT"></b><small id="tfsSub"></small></div>
+    <button class="btn sm ghost" id="tfsPrev" data-i18n="q.prevAyah"></button><button class="btn sm ghost" id="tfsNext" data-i18n="q.nextAyah"></button>
+    <button class="btn sm ghost" id="tfsPlay" title="▶">▶</button><button class="btn sm ghost" id="tfsNote" data-i18n="q.tdb"></button><button class="btn sm ghost" id="tfsBoard" data-i18n="q.toBoard"></button><button class="btn sm ghost" id="tfsAm">A−</button><button class="btn sm ghost" id="tfsAp">A+</button><button class="btn sm ghost" id="tfsCopy" data-i18n="q.copyTfs"></button><button class="iconx" id="tfsClose">✕</button></div>
+  <div class="seg tfsseg" id="tfsSeg"></div><div class="sheet-body" id="tfsBody"></div></div></div>
+<div class="sheet" id="adhSheet"><div class="sheet-box">
+  <div class="sheet-head">
+    <div class="seg" id="adhSeg"><button data-k="m" data-i18n="adh.m"></button><button data-k="e" data-i18n="adh.e"></button><button data-k="d" data-i18n="adh.d"></button><button data-k="x" data-i18n="adh.x"></button></div>
+    <div class="adxg" id="adhXg" hidden></div>
+    <div class="prog"><div class="minibar"><i id="adhBar"></i></div><span id="adhProg"></span></div>
+    <button class="btn sm ghost" id="adhFocusBtn"></button><button class="btn sm ghost" id="adhReset" data-i18n="adh.reset"></button>
+    <button class="iconx" id="adhClose">✕</button>
+  </div>
+  <div class="sheet-body" id="adhList"></div>
+</div></div>
+
+<div class="sheet" id="mlogSheet"><div class="sheet-box mlbox">
+  <div class="sheet-head"><div class="seg mltabs" id="mlTabs"><button data-k="log" data-i18n="mlog.title"></button><button data-k="later" data-i18n="ml.later"></button></div><span class="mlsum" id="mlogSum"></span><input class="in" id="mlogQ" style="width:170px" data-i18n-ph="mlog.search"><button class="iconx" id="mlogClose">✕</button></div>
+  <div class="sheet-body" id="mlogBody"></div>
+</div></div>
+
+<script>

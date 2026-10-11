@@ -1,0 +1,21 @@
+/* v2.9 notes */
+.ntags{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.ntags:empty{display:none}
+.ntags .chip.on{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
+.netools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:4px 0 6px}
+.netools .seg button{padding:5px 10px;font-size:12px}
+.netb{display:flex;gap:4px;flex-wrap:wrap}.netb .btn{padding:4px 9px;font-size:12px;min-width:30px}
+.netb .btn.rec{color:#f87171;border-color:#f87171}
+.neprev{min-height:180px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);line-height:1.9;font-size:15px;overflow-wrap:anywhere}
+.neprev .nh1{font-size:20px;font-weight:800;margin:6px 0 2px}.neprev .nh2{font-size:17px;font-weight:700;margin:6px 0 2px}.neprev .nh3{font-size:15px;font-weight:700;color:var(--accent)}
+.neprev ul,.neprev ol{padding-inline-start:22px;margin:2px 0}.neprev ul.nchk{list-style:none;padding-inline-start:2px}
+.neprev .nchk li{display:flex;gap:8px;align-items:flex-start}.neprev .nchk li.dn span{text-decoration:line-through;color:var(--muted)}
+.neprev .nchk input{width:17px;height:17px;margin-top:7px;accent-color:var(--accent);flex:none}
+.neprev .nbr{height:.6em}.neprev code{background:var(--panel);padding:1px 5px;border-radius:5px;font-size:.9em}
+.nlink{color:var(--accent);text-decoration:underline dotted;cursor:pointer}.ntag{color:var(--accent);cursor:pointer;font-weight:600}
+.neauds{display:flex;flex-direction:column;gap:6px;margin-top:8px}.neauds:empty{display:none}
+.neaud{display:flex;align-items:center;gap:8px}.neaud audio{flex:1;height:36px;min-width:0}.neaud small{color:var(--muted);font-size:11.5px}
+.netpl{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.netpl .chip{cursor:pointer}.netpl .chip i{font-style:normal;opacity:.6;margin-inline-start:4px}
+.ncard.nlocked .nbody{align-items:center;justify-content:center;min-height:90px;text-align:center}
+.nbadge{margin-inline-start:6px}
+#pinModal{z-index:75}.pinbox{width:min(340px,92vw)}.pinbox input{font-size:22px;letter-spacing:8px;text-align:center;width:100%;margin:10px 0}

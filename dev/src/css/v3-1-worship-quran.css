@@ -1,0 +1,12 @@
+/* v3.1 worship & quran */
+.pbox .plater{margin-top:6px}
+.tsbox{width:min(420px,94vw);text-align:center!important;user-select:none;-webkit-user-select:none}
+.tsring{width:220px;height:220px;border-radius:50%;margin:18px auto;display:grid;place-items:center;font-size:56px;font-weight:800;color:var(--accent);border:10px solid color-mix(in srgb,var(--accent) 25%,transparent);cursor:pointer;touch-action:manipulation}
+.tsring.done{border-color:#4ade80;color:#4ade80}
+.tslist{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.mhbox{width:min(520px,94vw);text-align:start!important}.mhrow{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:14px}.mhrow b{flex:1}.mhbox textarea{min-height:56px;width:100%;margin-top:4px}
+.mhbox .ok{color:#4ade80}.mhbox .no{color:#f87171}
+.qpb.sm{font-size:12px;padding:0 8px}
+.snbox{width:min(640px,94vw);text-align:start!important;max-height:86vh;overflow:auto}
+.snsec{margin-top:12px}.snsec h4{font-size:13px;color:var(--muted);margin-bottom:6px}.snitem{padding:8px 10px;border-radius:10px;background:var(--panel2);margin-bottom:6px;font-size:13.5px;cursor:pointer}.snitem small{color:var(--muted)}
+.snitem .ay{font-family:"Q_hafs","IBM Plex Sans Arabic",serif;font-size:17px;line-height:1.9;display:block}

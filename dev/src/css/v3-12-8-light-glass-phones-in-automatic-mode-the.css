@@ -1,0 +1,3 @@
+/* v3.12.8 light glass (phones in automatic mode): the background blobs stay still — same colours, no running animation */
+html.lg #aurora i{animation:none!important;will-change:auto!important}
+

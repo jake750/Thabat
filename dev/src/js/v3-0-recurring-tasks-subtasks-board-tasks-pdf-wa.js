@@ -1,0 +1,75 @@
+/* ============ v3.0: recurring tasks, subtasks, board → tasks, PDF, watch later, timestamped notes, learning goal, courses ============ */
+/* recurring tasks */
+function RC(){return S.recur||(S.recur=[])}
+function rcMatch(r,k){const d=keyToDate(k);if(r.start&&k<r.start)return false;if(r.rule==='daily')return true;if(r.rule==='wd')return(r.days||[]).includes(d.getDay());if(r.rule==='monthly')return d.getDate()===r.dom;return false}
+function rcDesc(r){return r.rule==='daily'?t('rc.daily'):r.rule==='monthly'?t('rc.monthlyN',r.dom):(r.days||[]).map(i=>L().days[i]).join('، ')}
+function ensureRecur(k){k=k||todayKey();const d=day(k);let add=0;RC().forEach(r=>{if(rcMatch(r,k)&&!d.tasks.some(x=>x.recurId===r.id)){d.tasks.push({id:uid(),text:r.text,done:false,created:Date.now(),recurId:r.id});add++}});if(add)save()}
+{const _rtd=renderToday;renderToday=function(){try{ensureRecur()}catch(e){}_rtd()}}
+$('#rcBtn').title=t('rc.title');
+$('#rcBtn').onclick=()=>{const b=$('#rcBtn'),r=b.getBoundingClientRect(),txt=$('#taskIn').value.trim(),wd=keyToDate(todayKey()).getDay(),sel=new Set([wd]);
+  const p=qPopAt(`<div class="aymh"><b>🔁 ${t('rc.title')}</b></div>${txt?`<button data-r="daily">${t('rc.daily')}</button><button data-r="wd1">${t('rc.weekly',L().days[wd])}</button><div class="wdch">${[1,2,3,4,5,6,0].map(i=>`<button data-d="${i}" class="${i===wd?'on':''}">${L().days[i].slice(0,LANG==='ar'?7:3)}</button>`).join('')}</div><button data-r="wd">${t('rc.days')}</button><button data-r="monthly">${t('rc.monthlyN',keyToDate(todayKey()).getDate())}</button>`:`<div style="padding:6px 10px;font-size:12px;color:var(--muted)">${t('rc.typeFirst')}</div>`}${RC().length?`<div class="aymh" style="margin-top:6px">${t('rc.list')}</div>`+RC().map(x=>`<button data-x="${x.id}">✕ ${esc(x.text)} <small>(${esc(rcDesc(x))})</small></button>`).join(''):''}`,r.left+r.width/2,r.bottom,'aymenu rcpop');
+  p.querySelectorAll('[data-d]').forEach(x=>x.onclick=e=>{e.stopPropagation();const i=+x.dataset.d;if(sel.has(i))sel.delete(i);else sel.add(i);x.classList.toggle('on')});
+  p.querySelectorAll('[data-r]').forEach(x=>x.onclick=()=>{const k=x.dataset.r,rule={id:uid(),text:txt,start:todayKey()};if(k==='daily')rule.rule='daily';else if(k==='monthly'){rule.rule='monthly';rule.dom=keyToDate(todayKey()).getDate()}else{rule.rule='wd';rule.days=k==='wd1'?[wd]:[...sel]}if(rule.rule==='wd'&&!rule.days.length)return;
+    RC().push(rule);$('#taskIn').value='';closePP();ensureRecur();save();renderTasks();toast(t('rc.saved',rcDesc(rule)))});
+  p.querySelectorAll('[data-x]').forEach(x=>x.onclick=()=>{S.recur=RC().filter(q=>q.id!==x.dataset.x);const d=day(todayKey());d.tasks=d.tasks.filter(q=>!(q.recurId===x.dataset.x&&!q.done));save();closePP();renderTasks();toast(t('rc.removed'))})};
+/* subtasks */
+{const _rtk=renderTasks;renderTasks=function(){_rtk();const d=day(todayKey());$$('#tasks .task').forEach(li=>{const x=d.tasks.find(q=>q.id===li.dataset.id);if(!x)return;const tb=li.querySelector('.tb'),del=li.querySelector('.del');if(!tb||!del)return;
+  const subs=x.subs||[];if(subs.length){const dn=subs.filter(q=>q.done).length;tb.insertAdjacentHTML('beforeend',`<ul class="subt">${subs.map(q=>`<li class="${q.done?'done':''}"><input type="checkbox" data-st="${q.id}" ${q.done?'checked':''}><span dir="auto">${esc(q.text)}</span><button data-sx="${q.id}">✕</button></li>`).join('')}</ul>`);const tx=tb.querySelector('.tx');if(tx)tx.insertAdjacentHTML('afterend',`<span class="subp">${dn}/${subs.length}</span>`)}
+  if(!x.done){del.insertAdjacentHTML('beforebegin',`<button class="sadd" title="${esc(t('st.add'))}">＋</button>`);li.querySelector('.sadd').onclick=()=>{let ul=tb.querySelector('.subt');if(!ul){tb.insertAdjacentHTML('beforeend','<ul class="subt"></ul>');ul=tb.querySelector('.subt')}if(ul.querySelector('input.in'))return;ul.insertAdjacentHTML('beforeend',`<li><input class="in" dir="auto" placeholder="${esc(t('st.ph'))}"></li>`);const inp=ul.querySelector('input.in');inp.focus();
+    const done=()=>{const v=inp.value.trim();if(v){x.subs=x.subs||[];x.subs.push({id:uid(),text:v,done:false});save()}renderTasks();if(v)setTimeout(()=>{const nl=$(`#tasks .task[data-id="${x.id}"] .sadd`);if(nl)nl.click()},0)};inp.onkeydown=e=>{if(e.key==='Enter')done();if(e.key==='Escape'){inp.value='';done()}};inp.onblur=()=>{if(!inp.value.trim()){renderTasks()}}}}
+  tb.querySelectorAll('[data-st]').forEach(c=>c.onchange=()=>{const q=x.subs.find(z=>z.id===c.dataset.st);q.done=c.checked;if(x.subs.every(z=>z.done)&&!x.done){x.done=true;x.doneAt=Date.now();chimeSoft();toast(t('st.allDone'))}save();renderTasks()});
+  tb.querySelectorAll('[data-sx]').forEach(c=>c.onclick=()=>{x.subs=x.subs.filter(z=>z.id!==c.dataset.sx);if(!x.subs.length)delete x.subs;save();renderTasks()})})}}
+/* whiteboard → today's tasks */
+function wbToTasks(list){const d=day(todayKey());list.forEach(s=>{const v=s.split('\n')[0].trim().slice(0,200);if(v)d.tasks.push({id:uid(),text:v,done:false,created:Date.now()})});save();renderTasks();toast(t('wb.toTaskDone',list.length))}
+/* minimal one-page PDF around a JPEG */
+function jpegPdf(dataUrl,iw,ih,pw,ph){const bin=atob(dataUrl.split(',')[1]),img=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)img[i]=bin.charCodeAt(i);
+  const enc=new TextEncoder(),parts=[],offs=[];let len=0;const push=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};const obj=(n,body)=>{offs[n]=len;push(`${n} 0 obj\n${body}\nendobj\n`)};
+  pw=Math.round(pw);ph=Math.round(ph);push('%PDF-1.4\n');obj(1,'<</Type/Catalog/Pages 2 0 R>>');obj(2,'<</Type/Pages/Kids[3 0 R]/Count 1>>');obj(3,`<</Type/Page/Parent 2 0 R/MediaBox[0 0 ${pw} ${ph}]/Resources<</XObject<</Im0 4 0 R>>>>/Contents 5 0 R>>`);
+  offs[4]=len;push(`4 0 obj\n<</Type/XObject/Subtype/Image/Width ${iw}/Height ${ih}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${img.length}>>\nstream\n`);push(img);push('\nendstream\nendobj\n');
+  const cs=`q ${pw} 0 0 ${ph} 0 0 cm /Im0 Do Q`;obj(5,`<</Length ${cs.length}>>\nstream\n${cs}\nendstream`);
+  const xr=len;let x='xref\n0 6\n0000000000 65535 f \n';for(let i=1;i<=5;i++)x+=String(offs[i]).padStart(10,'0')+' 00000 n \n';push(x+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF`);
+  const out=new Uint8Array(len);let o=0;parts.forEach(p=>{out.set(p,o);o+=p.length});return out}
+/* watch later */
+function LATER(){return S.later||(S.later=[])}
+let mlTab='log';
+function mlSetTab(k){mlTab=k;$$('#mlTabs button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));$('#mlogQ').hidden=k!=='log';if(k==='later')renderLater();else renderMlog()}
+$$('#mlTabs button').forEach(b=>b.onclick=()=>mlSetTab(b.dataset.k));
+{const ob=$('#mediaLogBtn').onclick;$('#mediaLogBtn').onclick=()=>{ob();mlSetTab('log')}}
+function laterAdd(url,title){url=String(url||'').trim();if(!/^https?:\/\//.test(url)){toast(t('media.badUrl'));return false}if(LATER().some(x=>mKey(x.url)===mKey(url))){toast(t('ml.dup'));return false}LATER().unshift({id:uid(),url,title:title||'',at:Date.now()});save();return true}
+function renderLater(){const L_=LATER();$('#mlogSum').textContent=L_.length?t('ml.n',L_.length):'';
+  $('#mlogBody').innerHTML=`<div class="mnf" style="display:flex;gap:6px"><input class="in" id="lAdd" dir="ltr" placeholder="${esc(t('ml.ph'))}" style="flex:1"><button class="btn sm pri" id="lGo">${t('add')}</button></div>`+(L_.length?L_.map(x=>`<div class="mlrow"><span class="mic">⏱</span><div class="mlt"><b dir="auto">${esc(x.title||x.url)}</b><small dir="ltr" style="text-align:start">${esc(x.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60))}</small><small>${gShort(new Date(x.at))}</small></div><div class="mlact"><button class="btn sm pri" data-lo="${x.id}">▶ ${t('mlog.open')}</button><button class="btn sm ghost" data-ll="${x.id}" title="${esc(t('ml.log'))}">＋</button><button class="btn sm ghost" data-lx="${x.id}">✕</button></div></div>`).join(''):`<div class="empty">${t('ml.empty')}</div>`);
+  const go=async()=>{const u=$('#lAdd').value.trim();if(!u)return;let title='';try{const r=await resolveLink(u);title=r.title||''}catch(e){}if(laterAdd(u,title)){renderLater();toast(t('ml.added'))}};$('#lGo').onclick=go;$('#lAdd').onkeydown=e=>{if(e.key==='Enter')go()};
+  $$('#mlogBody [data-lo]').forEach(b=>b.onclick=()=>{const x=LATER().find(q=>q.id===b.dataset.lo);if(x)openExt(x.url)});
+  $$('#mlogBody [data-lx]').forEach(b=>b.onclick=()=>{S.later=LATER().filter(q=>q.id!==b.dataset.lx);save();renderLater()});
+  $$('#mlogBody [data-ll]').forEach(b=>b.onclick=()=>{const x=LATER().find(q=>q.id===b.dataset.ll);if(!x)return;$('#mlogSheet').classList.remove('on');if(curView()!=='today')showView('today');const p=$('#mediaPop');if(!p.classList.contains('on'))$('#mediaAddBtn').click();$('#mUrl').value=x.url;doFetchLink();S.later=LATER().filter(q=>q.id!==x.id);save();setTimeout(()=>p.scrollIntoView({block:'center',behavior:'smooth'}),60)})}
+$('#mLater').textContent='⏱ '+t('ml.save');$('#mLater').onclick=()=>{const u=$('#mUrl').value.trim();if(laterAdd(u,$('#mTitle').value.trim())){toast(t('ml.added'));$('#mediaAddBtn').click()}};
+/* timestamped notes inside the media log */
+function MN(){return S.mnotes||(S.mnotes={})}
+{const _rml=renderMlog;renderMlog=function(){_rml();const all=mlogGroups(),q=mlogQ.trim().toLowerCase(),L_=q?all.filter(g=>(g.title+' '+g.url).toLowerCase().includes(q)):all;
+  $$('#mlogBody .mlrow').forEach((row,i)=>{const g=L_[i];if(!g)return;const notes=MN()[g.key]||[];const act=row.querySelector('.mlact');if(act)act.insertAdjacentHTML('afterbegin',`<button class="btn sm ghost" data-mn="${i}" title="${esc(t('mn.t'))}">📝${notes.length?' '+notes.length:''}</button>`);
+    const b=row.querySelector('[data-mn]');if(b)b.onclick=()=>{let box=row.querySelector('.mlnotes');if(box){box.remove();return}row.insertAdjacentHTML('beforeend','<div class="mlnotes"></div>');box=row.querySelector('.mlnotes');
+      const draw=()=>{const N=(MN()[g.key]||[]).slice().sort((a,b)=>a.t-b.t);box.innerHTML=N.map((n,j)=>`<div class="mn"><a data-tm="${n.t}" dir="ltr">${fmtTC(n.t)}</a><span dir="auto" style="flex:1">${esc(n.text)}</span><button class="btn sm ghost" data-mnx="${n.at}">✕</button></div>`).join('')+`<div class="mnf"><input class="in tm" dir="ltr" value="${fmtTC(g.pos||0)}"><input class="in" dir="auto" placeholder="${esc(t('mn.ph'))}" style="flex:1"><button class="btn sm pri">${t('add')}</button></div>`;
+        box.querySelectorAll('[data-tm]').forEach(a=>a.onclick=()=>{if(g.url)openExt(mContUrl(g.url,+a.dataset.tm))});
+        box.querySelectorAll('[data-mnx]').forEach(x=>x.onclick=()=>{MN()[g.key]=(MN()[g.key]||[]).filter(n=>String(n.at)!==x.dataset.mnx);save();draw()});
+        const [ti,xi]=box.querySelectorAll('.mnf input'),add=()=>{const v=xi.value.trim();if(!v)return;const tt=parseTC(ti.value)||0;(MN()[g.key]=MN()[g.key]||[]).push({t:tt,text:v,at:Date.now()});save();draw();setTimeout(()=>{const nx=box.querySelectorAll('.mnf input')[1];if(nx)nx.focus()},0)};box.querySelector('.mnf .btn').onclick=add;xi.onkeydown=e=>{if(e.key==='Enter')add()}};draw();box.querySelectorAll('.mnf input')[1].focus()}})}}
+/* weekly learning goal & courses */
+function COURSES(){return S.courses||(S.courses=[])}
+function learnWeekMin(){return periodKeys('week',keyToDate(todayKey())).reduce((a,k)=>a+((S.days[k]&&S.days[k].media)||[]).reduce((b,m)=>b+(m.minutes||0),0),0)}
+function renderLearn(){const box=$('#learnBox');if(!box)return;const g=+(S.settings.learnGoal||0),C=COURSES();let h='';
+  if(g){const m=learnWeekMin();h+=`<div class="lrow"><b>📚 ${t('lg.week')}</b><div class="bar"><i style="width:${Math.min(100,m/(g*60)*100)}%"></i></div><small>${fmtHM(m*6e4)} / ${g}${t('u.h')}</small></div>`}
+  h+=C.map(c=>`<div class="lrow"><b dir="auto" title="${esc(c.name)}">🎓 ${esc(c.name)}</b><div class="bar"><i style="width:${c.total?Math.min(100,c.done/c.total*100):0}%"></i></div><small>${c.done}/${c.total||'?'}</small><button class="btn sm" data-cp="${c.id}">+1</button>${c.url?`<button class="btn sm ghost" data-co="${c.id}">▶</button>`:''}<button class="btn sm ghost" data-ce="${c.id}">✎</button></div>`).join('');
+  h+=`<div class="lrow" style="justify-content:flex-end"><button class="btn sm ghost" id="crAdd">＋ ${t('cr.add')}</button></div>`;box.innerHTML=h;
+  box.querySelectorAll('[data-cp]').forEach(b=>b.onclick=()=>{const c=C.find(x=>x.id===b.dataset.cp);c.done=Math.min(c.total||1e9,c.done+1);c.last=todayKey();save();renderLearn();if(c.total&&c.done>=c.total)alertUser(t('cr.doneT'),t('cr.doneB',c.name),ICON_BOOK);else toast(t('cr.plus',c.name,c.done,c.total||'?'))});
+  box.querySelectorAll('[data-co]').forEach(b=>b.onclick=()=>{const c=C.find(x=>x.id===b.dataset.co);if(c)openExt(c.url)});
+  box.querySelectorAll('[data-ce]').forEach(b=>b.onclick=()=>openCourse(b.dataset.ce));$('#crAdd').onclick=()=>openCourse(null)}
+function openCourse(id){const c=id?COURSES().find(x=>x.id===id):{name:'',total:'',done:0,url:''};$('#crBox').innerHTML=`<h2 style="font-size:18px">${t(id?'cr.edit':'cr.new')}</h2><div class="evf"><input class="in" id="crN" dir="auto" placeholder="${esc(t('cr.name'))}" value="${esc(c.name)}">
+  <div class="evrow"><label><span>${t('cr.total')}</span><input class="in num" id="crT" type="number" min="1" value="${c.total||''}"></label><label><span>${t('cr.doneN')}</span><input class="in num" id="crD" type="number" min="0" value="${c.done||0}"></label></div>
+  <input class="in" id="crU" dir="ltr" placeholder="${esc(t('cr.url'))}" value="${esc(c.url||'')}"></div>
+  <div class="evact">${id?`<button class="btn sm ghost danger" id="crDel">${t('del')}</button>`:''}<span style="flex:1"></span><button class="btn sm ghost" id="crX">${t('ev.cancel')}</button><button class="btn sm pri" id="crOk">${t('ev.save')}</button></div>`;
+  $('#crModal').classList.add('on');setTimeout(()=>$('#crN').focus(),50);$('#crX').onclick=()=>$('#crModal').classList.remove('on');
+  $('#crOk').onclick=()=>{const n=$('#crN').value.trim();if(!n){$('#crN').focus();return}const rec={id:id||uid(),name:n,total:Math.max(0,+$('#crT').value||0),done:Math.max(0,+$('#crD').value||0),url:/^https?:\/\//.test($('#crU').value.trim())?$('#crU').value.trim():''};const i=COURSES().findIndex(x=>x.id===rec.id);if(i>=0)S.courses[i]=Object.assign(S.courses[i],rec);else COURSES().push(rec);save();$('#crModal').classList.remove('on');renderLearn()};
+  const dl=$('#crDel');if(dl)dl.onclick=()=>{if(!confirm(t('cr.delQ',c.name)))return;S.courses=COURSES().filter(x=>x.id!==id);save();$('#crModal').classList.remove('on');renderLearn()}}
+$('#crModal').onclick=e=>{if(e.target.id==='crModal')$('#crModal').classList.remove('on')};
+{const _rm=renderMedia;renderMedia=function(){_rm();try{renderLearn()}catch(e){}}}
+function renderV30Set(){const i=$('#learnGoalIn');if(!i)return;i.value=S.settings.learnGoal||'';i.onchange=e=>{S.settings.learnGoal=Math.max(0,+e.target.value||0);save();renderLearn()}}
+{const _rs4=renderSettings;renderSettings=function(){_rs4();try{renderV30Set()}catch(e){}}}

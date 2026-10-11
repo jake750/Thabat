@@ -1,0 +1,17 @@
+/* v3.1 palette, night, review */
+.helpbtn.gsbtn{inset-inline-end:48px;font-size:12px}.helpbtn.gsbtn[hidden]{display:none}
+@media(max-width:700px){.helpbtn.gsbtn{inset-inline-end:38px}}
+#cmdk{z-index:80;align-items:start;padding-top:9vh}
+.cmdbox{width:min(620px,94vw);padding:0!important;overflow:hidden;text-align:start!important}
+.cmdbox input{width:100%;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:16px 18px;font-size:16px;background:transparent}
+.cmdres{max-height:min(60vh,520px);overflow:auto;padding:6px}
+.cmdres .grp{font-size:11px;color:var(--muted);padding:8px 10px 4px}
+.cmdres .it{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;font-size:13.5px}
+.cmdres .it.on{background:color-mix(in srgb,var(--accent) 16%,var(--panel2))}
+.cmdres .it i{font-style:normal;width:22px;text-align:center;flex:none}.cmdres .it span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cmdres .it small{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.cmdhint{font-size:11px;color:var(--muted);padding:8px 14px;border-top:1px solid var(--line);display:flex;gap:14px}
+html.nightred::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:2147483000;background:rgba(255,72,0,.13);mix-blend-mode:multiply}
+.navbtn[data-v=set]{position:relative}.navbtn .sydot2{position:absolute;top:6px;inset-inline-end:14px;width:7px;height:7px;border-radius:50%;background:#4ade80}.navbtn .sydot2.busy{background:var(--accent);animation:pulse 1s infinite}.navbtn .sydot2.err{background:#f87171}
+@keyframes pulse{50%{opacity:.3}}
+.rvbox{width:min(520px,94vw);text-align:start!important}.rvbox img{width:100%;border-radius:12px;margin:10px 0;border:1px solid var(--line);background:var(--panel2);min-height:120px}
+.wallx{font-size:11px;padding:3px 9px}

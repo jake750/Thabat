@@ -1,0 +1,28 @@
+/* v3.2.3 Today header layout */
+#v-today .tdtop{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"hd ayd pr" "ev ev ev" "tip tip tip";align-items:center;column-gap:28px;row-gap:12px;padding-inline-end:64px;margin-bottom:22px;flex-wrap:nowrap}
+#v-today .tdhd{grid-area:hd;align-self:start}
+#v-today .tdpr{grid-area:pr;align-self:start;display:flex;flex-direction:column;align-items:center}
+#v-today .tdpr .nextline{text-align:center}
+#v-today .aydbox{grid-area:ayd;justify-self:center;align-self:center;width:fit-content;max-width:min(100%,620px);margin:0;padding:10px 22px 9px;text-align:center;align-items:center;gap:2px;border-radius:16px;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--panel)),var(--panel));border-color:color-mix(in srgb,var(--accent) 22%,var(--line));transition:border-color .15s}
+#v-today .aydbox:hover{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+#v-today .aydbox[hidden]{display:none}
+.aydl{font-style:normal;font-size:10.5px;letter-spacing:.3px;color:var(--muted)}
+#v-today .aydt{font-size:20px;line-height:1.9;text-wrap:balance}
+#v-today .aydbox.long .aydt{font-size:17.5px}
+#v-today .aydbox.xlong .aydt{font-size:15.5px;line-height:1.85}
+#v-today .tdev{grid-area:ev;margin:0;justify-content:flex-start}
+#v-today .tipbar{grid-area:tip;margin:0}
+@media (max-width:1180px) and (min-width:701px){#v-today .tdtop{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"hd pr" "ayd ayd" "ev ev" "tip tip"}#v-today .tdpr{justify-self:end}}
+@media (max-width:700px){
+  #v-today .tdtop{grid-template-columns:minmax(0,1fr);grid-template-areas:"hd" "pr" "ayd" "ev" "tip";padding-inline-end:0;row-gap:10px;margin-bottom:14px}
+  #v-today .tdhd{padding-inline-end:70px}
+  #v-today .tdpr{align-items:stretch}#v-today .tdpr .nextline{text-align:center}
+  #v-today .aydbox{max-width:100%;padding:8px 16px}
+  #v-today .aydt{font-size:18px}#v-today .aydbox.long .aydt{font-size:16px}#v-today .aydbox.xlong .aydt{font-size:14.5px}
+  #v-today .tdev{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  #v-today .tdev:empty{display:none}
+  #v-today .tdev .evchip{min-height:34px;justify-content:flex-start}
+  #v-today .tdev .evchip.jm,#v-today .tdev .evchip.big,#v-today .tdev .evchip.wide{grid-column:1/-1;justify-content:center}
+}
+@media (min-width:1720px){#v-today .tdtop{padding-inline-end:0}}
+html.android .app{height:calc(var(--apph,100%) - var(--andnav,0px))}
