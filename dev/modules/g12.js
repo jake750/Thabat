@@ -172,7 +172,7 @@ document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey||AN
 
 /* ---- wide PC windows: tasks beside the timer ---- */
 const UX_DOTS='<svg class="uxdots" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
-function uxWide(){const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false,was=!!$('#uxCol3');document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
+function uxWide(){if(MOB.matches&&!document.getElementById('uxCol3')){document.documentElement.classList.remove('wide3');return}/* 3.12.8: phones never get three columns; skip reading innerWidth, which forces a full layout */const w=innerWidth/(uiZoom()||1),on=!MOB.matches&&w>=1450&&S.settings.wide3!==false,was=!!$('#uxCol3');document.documentElement.classList.toggle('wide3',on);const tc=$('#tasks')&&$('#tasks').closest('.card');if(tc)tc.classList.add('uxtkcard');
   if(on&&!was)uxBalance();else if(!on&&was)uxUnbalance();try{uxKeyTips()}catch(e){}}
 /* wide windows: three columns. The wall, the timer and the tasks head their columns; every other card goes, in order, to the shortest column */
 function uxStacks(){return[...$$('#v-today .grid>.stack')].filter(s=>s.id!=='uxCol3')}

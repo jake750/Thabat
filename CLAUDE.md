@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.12.7** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.12.8** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 ## Working with the owner
 
@@ -36,7 +36,7 @@ Current version: **3.12.7** (`APP_VER` in `dev/src.html`). The Android `versionC
 | `dev/build.py` | Writes `Thabat/Thabat.html` from `src.html` |
 | `dev/release.py` | Build, syntax check, package zips and APK, update the personal copy, print versions |
 | `dev/lib.py` | Patch helper class `P` (see below) |
-| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g15 (g13 + g13b + g13c, css g13 + g13bc, g15 + g15b/g15c css; + matching `.css`), demo.js |
+| `dev/modules/` | Modules already merged into `src.html`, kept for reference: c1–c9, d1–d5, e1–e2, f1–f3, g1–g16 (g13 + g13b + g13c, css g13 + g13bc, g15 + g15b/g15c css, g16 css; + matching `.css`), demo.js |
 | `dev/tlchk.sh` | Checks a new module for top-level name collisions |
 | `dev/src_vNNN.html` | Local backups before each patch (git-ignored) |
 | `dev/mac/` | Everything `release.py` puts into `Thabat-Mac.zip` besides the HTML: `Thabat.command` (launcher), `Create-Shortcut.command` (makes `~/Applications/Thabat.app` with the icon, pointing at that folder), `Thabat.icns` (built from the PNG frames of `Thabat.ico`), the bilingual read-me. `.command` files are stored as executable |
@@ -151,7 +151,8 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 - **Interface zoom.** The size setting sets `body.style.zoom`; the app height is divided by `--uiz`, and popups divide screen coordinates by `uiZoom()`. Test at 125%.
 - **Popups that load content later** must re-fit: `qPopAt` uses a MutationObserver plus ResizeObserver (`ppFit`).
 - **Non-passive touch listeners make phone scrolling wait for JavaScript.** Never put `{passive:false}` touch listeners on `window`/`document`; attach them to the smallest element that needs them (3.12.7 moved the notes drag to the notes root, the Quran highlighter to the mushaf column, and made the ⠿ task drag passive since `.tkh` has `touch-action:none`).
-- **Phones and animation.** Never animate registered custom properties on `<html>` for phones (it restyles every element each frame). Light glass moves only `#aurora` blobs with `transform`; card edges get a static sheen.
+- **Reading `innerWidth`/layout right after a render forces a full layout.** `uxWide` (run after every `renderToday`) read `innerWidth` on phones too and doubled `renderToday` (23 → 11 ms); 3.12.8 returns early on `MOB.matches`. Measure startup with `performance.mark` at each `/* ====` module in a temporary copy of the build (delete it after).
+- **Phones and animation.** Never animate registered custom properties on `<html>` for phones (it restyles every element each frame). Light glass keeps the `#aurora` blobs still since 3.12.8 (owner's pick); card edges get a static sheen.
 - **Android bottom bar.** Insets are measured natively; the old automatic +32 px lift is reset to 0 on phones where `ANDNAV` reports them (`andLiftMigrate`). The manual setting stays as a fallback.
 - **PC height.** `pcFit()` sets `--pch` to the visible height for Edge app windows.
 - **Synced duplicates.** Tasks created automatically on two devices need a fixed id (al-Kahf uses `kahf-<date>`) or they duplicate after sync.
@@ -162,6 +163,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 
 Do these in this order, one release per group, testing each at phone and PC sizes:
 
+0. **Picked on 2026-10-11 (do first, in this order):** ~~2+3~~ done in 3.12.8; then 6: automatic update from GitHub releases (no URL to type; Windows updates itself through the helper; the phone downloads the APK); then 9: split `dev/src.html` into modules joined at build time and reduce stacked wrappers (nothing visible). A second list (items 11–34) was shown the same day; wait for his picks.
 1. **Whiteboard (3.13).** From the 50-list: 1 search inside a board (Ctrl+F, jump to and highlight the text); 2 labels on arrows; 3 a table element (editable rows/columns); 5 export the frames as one multi-page PDF (`jpegPdf` exists for single pages); 8 new templates: Ramadan plan, year-goals tree, memorisation-review map. From the 98-list: 40 layers (show/hide/lock); 41 board background: squares, dots or lines; 42 embed a YouTube video or an audio clip; 46 export PNG with a transparent background. The board code is large (`wb.*` strings, `WB_FONTS`, frames, present mode, minimap, Obsidian Canvas import/export) — read it before adding.
 2. **Larger features (3.14+).** From the 50-list: 11 notes graph (nodes and `[[links]]`); 17 two text riwayat side by side (only the 8 verified text riwayat; numbering differs between them); 26 full Hijri month calendar grid; 29 multi-day events (a bar across days); 38 sync encryption with a passphrase (GitHub only sees ciphertext; think through migration and both devices); 44 time per portfolio work in the Studio (link sessions to a work). From the 98-list: 10 record your recitation and play it after the reciter; 11 guided memorisation plan («جزء عمّ قبل رمضان»: pages per day and tracking); 15 most-read surahs (from `day.quran.pgs`); 16 quiz from your memorised pages («in which surah is this ayah?», verified text only); 19 wird measured in minutes instead of pages; 33 book quotes (a reading log per book with quotes and pages); 55 daily expenses with categories and a monthly budget; 66 a path of seeking knowledge (texts/books by level with progress); 77 saved Today layouts (study/work/Ramadan) switched in one tap; 80 a wall screen (big clock and next prayer for a TV or home PC); 83 setup by lifestyle (student/employee/designer turns on what fits); 88 a printable monthly PDF report; 90 «fresh start»: archive a whole year and keep the archive.
 3. **Weekly calendar view (item 26 of the 31-list).** Two designs were shown: A = seven day columns; B = «your week between the prayers», rows are the prayer periods like the day card, tasks sit in the period of their prayer, drag between days/periods (recommended). **The owner has not chosen yet — ask before building.**

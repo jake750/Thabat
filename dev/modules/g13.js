@@ -67,4 +67,4 @@ function periodFocus(keys){const tot={};PDL_P.forEach(p=>tot[p]=0);keys.forEach(
 {const _c=corr;corr=function(){const out=_c();try{const tk=todayKey(),A=[],B=[];for(let i=1;i<=60;i++){const k=dKey(addDays(keyToDate(tk),-i));if(!S.days[k])continue;const s=plStatus(k,'fajr'),w=totals(k).tot/36e5;if(s==='on'||s==='auto')A.push(w);else if(s==='late'||s==='miss')B.push(w)}
   if(A.length>=4&&B.length>=4){const a=A.reduce((x,y)=>x+y,0)/A.length,b=B.reduce((x,y)=>x+y,0)/B.length;if(b>0.2&&a/b>=1.15)out.unshift(t('fj.corr',Math.round(a/b*10)/10))}}catch(e){}return out}}
 {const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#mulkT'),S.settings.mulk!==false,v=>{S.settings.mulk=v;if(v)ensureMulk();renderTasks()});toggle($('#wakeT'),S.settings.wakeWork!==false,v=>{S.settings.wakeWork=v;wakeSync()})}catch(e){console.error(e)}}}
-try{ensureMulk();renderTasks();renderTodayEv()}catch(e){console.error(e)}
+try{ensureMulk();renderTodayEv()}catch(e){console.error(e)}/* 3.12.8: the task list is drawn once, by renderToday at the end of start-up */

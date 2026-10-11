@@ -7,4 +7,5 @@ function nxLayout(){const bar=$('#v-boards .nbar'),tools=$('#nTools'),seg=$('#nb
     new MutationObserver(()=>{act.hidden=tools.hidden}).observe(tools,{attributes:true,attributeFilter:['hidden']})}
   if(nw.parentElement!==act)act.append(nw);act.hidden=tools.hidden;NX_MORE.forEach(([id])=>{const b=$('#'+id);if(b)b.classList.add('nxhid')})}
 {const _sv=showView;showView=function(n,...a){const r=_sv(n,...a);try{if(n==='boards')nxLayout()}catch(e){console.error(e)}return r}}
-try{nxLayout()}catch(e){}
+/* 3.12.8: the notes toolbar is arranged when the browser is idle, not before the first paint */
+if(curView()==='boards')try{nxLayout()}catch(e){}else(window.requestIdleCallback||setTimeout)(()=>{try{nxLayout()}catch(e){}},{timeout:1500})
