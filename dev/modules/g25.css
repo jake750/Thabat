@@ -1,0 +1,15 @@
+/* v3.18 library path, back/forward */
+#v-lib .lpath{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:6px;margin:0 0 12px;padding:6px;border:1px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--panel) 88%,transparent);backdrop-filter:blur(10px)}
+#v-lib .lpnav{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:17px;cursor:pointer}
+#v-lib .lpnav:disabled{opacity:.3;cursor:default}
+#v-lib .lpnav:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}
+#v-lib .lpsegs{flex:1;min-width:0;display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;white-space:nowrap}
+#v-lib .lpsegs::-webkit-scrollbar{display:none}
+#v-lib .lpseg{flex:none;max-width:240px;overflow:hidden;text-overflow:ellipsis;padding:7px 10px;border-radius:9px;border:1px solid transparent;background:transparent;color:var(--muted);font:inherit;font-size:14px}
+#v-lib button.lpseg{cursor:pointer}
+#v-lib button.lpseg:hover{color:var(--text);background:color-mix(in srgb,var(--text) 7%,transparent)}
+#v-lib .lpseg.cur{color:var(--text);font-weight:700}
+#v-lib .lpsep{flex:none;color:var(--muted);opacity:.6}
+#v-lib .lpath .ldover{outline:2px dashed var(--accent);outline-offset:0;transform:none;background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--text)}
+html.lite #v-lib .lpath{backdrop-filter:none;background:var(--panel)}
+@media(max-width:700px){#v-lib .lpath{margin-bottom:10px;padding:4px}#v-lib .lpnav{width:38px;height:38px}#v-lib .lpseg{max-width:160px;padding:8px}}

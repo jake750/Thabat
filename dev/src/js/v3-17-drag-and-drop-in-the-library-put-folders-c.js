@@ -52,7 +52,7 @@ function ldLift(s,x,y){LDND.drag=s;LDND.over=null;s.el.classList.add('ldsrc');tr
   document.body.insertAdjacentHTML('beforeend',`<div class="ldghost" id="ldGhost" dir="auto">${s.t==='sf'||s.t==='af'?'📁':s.t==='r'?'🎧':'🎬'} ${esc(ldName(s))}</div>`);const gh=$('#ldGhost');gh.style.left=(x/uiZoom())+'px';gh.style.top=(y/uiZoom())+'px';LDND.pt=[x,y];
   document.addEventListener('touchmove',ldTouchMove,{passive:false});document.addEventListener('touchend',ldTouchEnd);document.addEventListener('touchcancel',ldTouchEnd);
   /* scroll the page when the finger rests near the top or bottom */
-  LDND.scr=setInterval(()=>{const m=$('main'),p=LDND.pt;if(!m||!p)return;const h=innerHeight;if(p[1]<90)m.scrollTop-=14;else if(p[1]>h-110)m.scrollTop+=14},30)}
+  LDND.scr=setInterval(()=>{const m=$('main'),p=LDND.pt;if(!m||!p)return;const h=innerHeight;if(p[1]<90&&!(LDND.over&&LDND.over.el.closest('#lpath')))m.scrollTop-=14;else if(p[1]>h-110)m.scrollTop+=14},30)}
 document.addEventListener('touchstart',e=>{if(LORD.on||LDND.drag||e.touches.length>1)return;const s=ldSource(e.target);if(!s||e.target.closest('button,input,select,a'))return;const p=e.touches[0],x0=p.clientX,y0=p.clientY;clearTimeout(LDND.timer);
   const cancel=ev=>{const q=ev.touches&&ev.touches[0];if(ev.type!=='touchmove'||!q||Math.hypot(q.clientX-x0,q.clientY-y0)>10){clearTimeout(LDND.timer);s.el.removeEventListener('touchmove',cancel);s.el.removeEventListener('touchend',cancel)}};
   s.el.addEventListener('touchmove',cancel,{passive:true});s.el.addEventListener('touchend',cancel,{passive:true});

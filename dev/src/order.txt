@@ -45,6 +45,7 @@ css/v3-16-audio-in-the-library.css
 css/v3-16-arranging-the-library-arrows-on-every-card.css
 css/v3-17-library-drag-and-drop.css
 css/v3-17-1-library-space-between-a-section-header-t.css
+css/v3-18-library-path-back-forward.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -140,6 +141,7 @@ js/v3-15-2-removing-things-put-in-a-folder-by-mista.js
 js/v3-16-audio-in-the-library-your-recordings-recit.js
 js/v3-16-your-own-order-in-the-library-folders-cour.js
 js/v3-17-drag-and-drop-in-the-library-put-folders-c.js
+js/v3-18-library-rename-lessons-and-pc-courses-show.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
