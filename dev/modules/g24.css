@@ -1,0 +1,6 @@
+/* v3.17 library drag and drop */
+#v-lib .ldable{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#v-lib .ldsrc{opacity:.45}
+#v-lib .ldover{outline:3px dashed var(--accent);outline-offset:3px;transform:scale(1.02);transition:transform .12s}
+#v-lib #lshUp.ldover,#v-lib #auUp.ldover{transform:none;background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.ldghost{position:fixed;z-index:9999;pointer-events:none;transform:translate(-50%,-130%);max-width:70vw;padding:8px 14px;border-radius:999px;background:var(--panel);color:var(--text);border:1px solid var(--accent);box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
