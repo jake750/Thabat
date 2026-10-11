@@ -1,0 +1,9 @@
+/* v3.16 arranging the library: arrows on every card, drag on PC */
+.lordon .lorditem{position:relative;cursor:grab;outline:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:2px}
+.lordon .lorditem.lorddrag{opacity:.45}
+.lordon .lorditem.lordover{outline:2px solid var(--accent)}
+.lordbtns{position:absolute;z-index:6;top:50%;transform:translateY(-50%);inset-inline:4px;display:flex;justify-content:space-between;pointer-events:none}
+.lordbtns button{pointer-events:auto;width:34px;height:34px;border-radius:50%;border:none;background:var(--accent);color:var(--onAccent,#111);font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+.lordbtns button[disabled]{opacity:.25;cursor:default}
+.lordon .aurow .lordbtns,.lordon .lbl .lordbtns{inset-inline:auto 6px;gap:4px;justify-content:flex-end}.lordon .aurow .lordbtns button,.lordon .lbl .lordbtns button{width:28px;height:28px;font-size:15px}
+.lordv .lordbtns{inset-inline:auto 10px;flex-direction:column;gap:6px;justify-content:center}

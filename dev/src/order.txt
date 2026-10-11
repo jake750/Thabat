@@ -41,6 +41,8 @@ css/v3-14-library-shelves-your-folders-course-cards.css
 css/v3-15-books-the-pdf-reader-and-the-books-shelf.css
 css/v3-15-1-folder-cards-bigger-than-the-course-card.css
 css/v3-15-2-removing-from-folders-on-placed-courses.css
+css/v3-16-audio-in-the-library.css
+css/v3-16-arranging-the-library-arrows-on-every-card.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -133,6 +135,8 @@ js/v3-13-the-day-in-hours-your-day-between-the-pray.js
 js/v3-14-library-shelves-your-own-folders-inside-th.js
 js/v3-15-books-a-pdf-reader-in-the-library-pdf-js-3.js
 js/v3-15-2-removing-things-put-in-a-folder-by-mista.js
+js/v3-16-audio-in-the-library-your-recordings-recit.js
+js/v3-16-your-own-order-in-the-library-folders-cour.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

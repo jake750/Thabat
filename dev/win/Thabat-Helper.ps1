@@ -1,7 +1,7 @@
 ﻿# Thabat helper: a tiny local bridge so the app (opened from a file) can read
 # public mosque data from mawaqit.net and, if enabled in settings, the name of
 # the program in front (active-app detection), and audio of YouTube/SoundCloud
-# links you choose to keep (via yt-dlp, fetched once on request). It only listens on this computer
+# links you choose to keep (via yt-dlp, fetched once on request). It can also list a playlist's items (/ytlist) so the app downloads them one by one. It only listens on this computer
 # (127.0.0.1) — except while you use "transfer over the local network" in
 # Settings, when it also accepts /lan/ requests with a one-time code for up to
 # 15 minutes — only forwards requests to https://mawaqit.net/ (and Quran audio
@@ -303,6 +303,28 @@ while ($true) {
         Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}'))
       } catch {
         Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))
+      }
+    } elseif ($path -match '^/ytlist\?u=(.+)$') {
+      # the contents of a playlist (SoundCloud set or YouTube list) without downloading anything: title, and each item's address, name and length
+      $url = [Uri]::UnescapeDataString($matches[1])
+      $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
+      if ($url -notmatch '^https://((www|m|music|on)\.)?(youtube\.com|youtu\.be|soundcloud\.com)/[A-Za-z0-9_\-\./\?=&%:]+$') {
+        Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"forbidden"}'))
+      } elseif (-not (Test-Path $exe)) {
+        Send-Response $stream '428 Precondition Required' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))
+      } else {
+        $info = Join-Path $env:TEMP ('thabat_list_' + [Guid]::NewGuid().ToString('N') + '.txt')
+        try { & $exe '--flat-playlist' '--simulate' '--no-warnings' '--playlist-end' '500' '--print-to-file' '%(playlist_title)s|||%(url)s|||%(title)s|||%(duration)s' $info $url 2>$null | Out-Null } catch {}
+        $items = @(); $ptitle = ''
+        if (Test-Path $info) {
+          foreach ($ln in (Get-Content -LiteralPath $info -Encoding UTF8)) {
+            $p = $ln -split '\|\|\|'
+            if ($p.Count -ge 4 -and $p[1] -match '^https://') { if (-not $ptitle -and $p[0] -ne 'NA') { $ptitle = $p[0] }; $d = 0; [void][double]::TryParse($p[3], [ref]$d); $items += ,@{ u = $p[1]; t = $(if ($p[2] -ne 'NA') { $p[2] } else { '' }); d = [int]$d } }
+          }
+          Remove-Item -LiteralPath $info -ErrorAction SilentlyContinue
+        }
+        if ($items.Count -eq 0) { Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"list"}')) }
+        else { Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes((@{ ok = $true; title = $ptitle; items = $items } | ConvertTo-Json -Depth 4 -Compress))) }
       }
     } elseif ($path -match '^/yt\?u=(.+)$') {
       # download the audio of one YouTube / SoundCloud link (only those sites)

@@ -1,0 +1,18 @@
+/* v3.16 audio in the library */
+.auadd{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 6px}.auadd .in{flex:1;min-width:180px}
+.aulist{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.aurow{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:12px;border:1px solid transparent;transition:background .15s}
+.aurow:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
+.aurow.on{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.aupp{flex:none;width:38px;height:38px;border-radius:50%;border:none;background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent);font-size:14px;cursor:pointer}
+.aurow.on .aupp{background:var(--accent);color:var(--onAccent,#111)}
+.aut{flex:1;min-width:0;display:flex;flex-direction:column;cursor:pointer}.aut b{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.aut small{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aurow .lshm[disabled]{opacity:.25;cursor:default}
+.aucard .lshfcv{aspect-ratio:2.2/1}
+.aucard .lshfcb.auplay{opacity:1;background:var(--accent);color:var(--onAccent,#111);width:40px;height:40px;border-radius:50%;font-size:15px;top:auto;bottom:12px;inset-inline-end:12px}
+.auli{max-height:45vh;overflow:auto;display:flex;flex-direction:column;gap:2px;margin:6px 0;border:1px solid var(--line);border-radius:10px;padding:4px}
+.aulr{display:flex;align-items:center;gap:8px;padding:5px 6px;font-size:13px;cursor:pointer;border-radius:8px}.aulr:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
+.aulr span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.aulr small{color:var(--muted);font-size:11px;white-space:nowrap}
+.auprog{margin-top:10px}.auprog small{display:block;margin-top:6px;font-size:12.5px;line-height:1.7}
+@media(max-width:700px){.aucard .lshfcv{aspect-ratio:2.6/1}}
+
