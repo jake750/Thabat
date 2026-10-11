@@ -2,7 +2,7 @@
 
 Thabat is a prayer-centred productivity app by Fourat Bouchaa (فرات بوشاعة), credited as **jake750_**.
 It plans the day around the five prayers: prayer times and adhan, a Quran reader, a work timer, tasks, calendar, health and notes.
-Current version: **3.18.0** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
+Current version: **3.18.1** (`APP_VER` in `dev/src.html`). The Android `versionCode` is still 32 and must be bumped before any Play upload.
 
 **Starting a new chat:** read this file, then «Work queue» (what is next, in order) and «Open items» (unconfirmed or unresolved things). Ask the owner for the keystore password before the first APK of the chat. The last chat (2026-10-10 → 10-11) shipped 3.12.4 → 3.16.0; its decisions are recorded below, item by item.
 
@@ -155,7 +155,7 @@ Published at https://claude.ai/artifact/CSQQYksYKEch1bv2puJfzv. To rebuild it, s
 - **Element ids clash too.** The image viewer already uses `lbX`, `lbPrev`, `lbNext` (and `lbDl`, `lbImg`, `lbN`, `lbT`…); the library player's buttons first used the same ids and its close/prev/next did nothing (3.12.0). Grep for an id before using it; the player now uses `lv*`.
 - **Android status bar.** The WebView draws under it; top controls of full-window overlays need `padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)` on `html.android` (as `.qfsui` and `.lbpt`).
 - **Generic CSS class names clash.** `.hrow` broke the hifz map and `.yh` clashed too. Prefix new classes.
-- **Grid overflow on phones.** Use `minmax(0,1fr)` and `min-width:0` on inputs.
+- **Grid overflow on phones.** Use `minmax(0,1fr)` and `min-width:0` on inputs. It happened again in 3.18.1: `.calwrap` was `1fr`, and a library lesson logged in «ما شاهدته وسمعته» with a long name without spaces (`Motion_Foundation_…mp4`) widened the day panel, so the whole phone calendar grew to ~550 px and scrolled sideways. Any column holding user text needs `minmax(0,1fr)`, `min-width:0` on the children and `overflow-wrap:anywhere`.
 - **Text on a coloured fill must stay readable.** Calendar days with ≥45% fill get class `fl`.
 - **Lite mode must not kill essential motion.** Mushaf page turns keep a 0.28 s transition.
 - **`.btn` beats `[hidden]`.** Buttons with `hidden` still show when a rule sets `display`; add `[hidden]{display:none!important}` for the container you style.
