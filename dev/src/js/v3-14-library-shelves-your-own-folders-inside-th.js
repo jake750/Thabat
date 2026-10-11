@@ -49,7 +49,7 @@ function lshFolderView(id){const f=lshGet(id);if(!f){LIB.open=null;return lshTop
   const linked=own.filter(o=>o.r.t==='d').map(o=>{const c=o.n;return lshCard('d',c.id,c.n,{...libCourseProg(c),pct:(()=>{const q=libCourseProg(c);return q.n?Math.round(q.done/q.n*100):0})()})}).join('');
   const singles=own.filter(o=>o.r.t==='m').map(o=>lshRow(o.n,P,id)).join('');
   /* a course folder lists all its lessons in order, with chapter headings; a plain folder shows cards */
-  if(f.course&&list.length){let lastCh=null;const rows=list.map(x=>{const ch=x.ch!==lastCh?(lastCh=x.ch,x.ch?`<div class="lbch" dir="auto">${esc(x.ch)}</div>`:''):'';return ch+lshRow({...x,ch:''},P,own.some(o=>o.r.id===x.id)?id:'')}).join('');
+  if(f.course&&list.length){let lastCh=null;const rows=list.map(x=>{const ch=x.ch!==lastCh?(lastCh=x.ch,x.ch?`<div class="lbch" dir="auto">${esc(x.ch)}</div>`:''):'';return ch+lshRow({...x,ch:''},P,id)}).join('');
     return crumbs+acts+head+(kids.some(k=>!k.course)?`<div class="lshfs">${kids.filter(k=>!k.course).map(lshFolderTile).join('')}</div>`:'')+`<div class="lbles">${rows}</div>`}
   return crumbs+acts+head+sub+(linked?`<div class="lshgrid">${linked}</div>`:'')+(singles?`<div class="lbles">${singles}</div>`:'')+(!kids.length&&!own.length?`<p class="muted lshhint">${t('lsh.empty')}</p>`:'')}
 function lshSearch(q){const P=LIBS().prog,s=q.toLowerCase(),all=libCourses().flatMap(c=>libMedia(c).map(x=>({...x,ch:c.n+(x.ch?' › '+x.ch:'')}))),
