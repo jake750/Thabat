@@ -107,7 +107,7 @@ function auListDialog(u,j){const items=j.items||[],title=j.title||t('au.newP'),h
     $('#infoX').textContent=t('ok');$('#infoX').onclick=()=>{$('#infoModal').classList.remove('on');if(pid)LIB.open='au:p:'+pid;renderLib()};const ui=$('#auUrl');if(ui)ui.value='';renderLib()}}
 /* the library: an «audio» shelf on the home, and its own pages */
 function auShelfHTML(){const A=AUD(),n=RCL().length;const cards=[...A.pl.slice(0,3).map(p=>auCard('p',p)),...auKids(null).slice(0,3-Math.min(3,A.pl.length)).map(f=>auCard('f',f))];
-  return`<div class="lshh"><h4 class="lbfh">🎧 ${t('au.t')}</h4><button class="btn sm" id="auOpen">${t('au.open',n)}</button></div>${cards.length?`<div class="lshfs">${cards.join('')}</div>`:`<p class="muted lshhint">${t('au.homeHint')}</p>`}`}
+  return`<div class="lshh"><h4 class="lbfh">🎧 ${t('au.t')}</h4><button class="btn sm pri" id="auOpen">🎙 ${t('rc.btn')} (${n})</button></div>${cards.length?`<div class="lshfs">${cards.join('')}</div>`:`<p class="muted lshhint">${t('au.homeHint')}</p>`}`}
 {const _top=lshTop;lshTop=function(){const h=_top(),i=h.indexOf('<div class="lshh"><h4 class="lbfh">💻');const a=auShelfHTML();return i<0?h+a:h.slice(0,i)+a+h.slice(i)}}
 {const _bb=lshBindBody;lshBindBody=function(b){_bb(b);if(!b)return;const o=$('#auOpen');if(o)o.onclick=()=>{LIB.open='au:';AUX.q='';renderLib();$('main').scrollTop=0};if(!String(LIB.open||'').startsWith('au:'))try{auBind(b)}catch(e){console.error(e)}}}
 {const _rl=renderLib;renderLib=function(){if(!String(LIB.open||'').startsWith('au:'))return _rl();

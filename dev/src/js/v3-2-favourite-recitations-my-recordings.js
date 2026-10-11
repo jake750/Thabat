@@ -43,7 +43,7 @@ async function rcFromUrl(u){if(!/^https:\/\/((www|m|music)\.)?(youtube\.com|yout
       const blob=await r.blob(),src=/soundcloud/i.test(u)?'SoundCloud':'YouTube';await rcSave(blob,{title:m.title||u,reciter:m.uploader||'',dur:Math.round(+m.duration||0)||undefined,url:u,src,ext:m.ext});renderRecits();rcUI();rcSt('✓ '+t('rc.done'))}
     catch(e){rcSt('⚠ '+t('rc.fail'))}finally{const g=$('#rcGet');if(g)g.disabled=false}};run()}
 $('#rcModal').onclick=e=>{if(e.target.id==='rcModal'){$('#rcModal').classList.remove('on');rcUI()}};
-$('#rcBtnQ').onclick=openRecits;
+{const _rb=$('#rcBtnQ');if(_rb)_rb.onclick=openRecits}/* 3.16.1: the button moved to the library */
 {const _cc5=cmdCommands;cmdCommands=function(){const c=(icon,label,run,kw)=>({icon,label,run,kw:kw||''});return _cc5().concat([c('🎙',t('rc.t'),openRecits,'recitation tilawa تلاوات تسجيلات')])}}
 /* notes: the tag bar is gone; a tag inside a note searches for it instead */
 renderNTags=function(){const b=$('#nTags');if(b)b.innerHTML='';nTag=null};
