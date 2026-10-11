@@ -36,6 +36,7 @@ css/v3-12-4-compact-quran-bar-on-pc-dropdowns-under.css
 css/v3-12-5-full-screen-mushaf-on-pc-the-controls-le.css
 css/v3-12-6-zoomed-mushaf-page-opaque-and-nothing-of.css
 css/v3-12-8-light-glass-phones-in-automatic-mode-the.css
+css/v3-13-the-day-in-hours-three-views-of-your-day-b.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -124,6 +125,7 @@ js/v3-11-mulk-before-sleep-prayer-delay-reasons-fle.js
 js/v3-12-video-library-videos-and-project-files-kep.js
 js/v3-12-4-the-compact-quran-bar-on-pc-too-position.js
 js/v3-12-9-updates-straight-from-the-github-release.js
+js/v3-13-the-day-in-hours-your-day-between-the-pray.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
