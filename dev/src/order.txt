@@ -39,6 +39,7 @@ css/v3-12-8-light-glass-phones-in-automatic-mode-the.css
 css/v3-13-the-day-in-hours-three-views-of-your-day-b.css
 css/v3-14-library-shelves-your-folders-course-cards.css
 css/v3-15-books-the-pdf-reader-and-the-books-shelf.css
+css/v3-15-1-folder-cards-bigger-than-the-course-card.css
 css/image-viewer.css
 body.html
 js/core.js
