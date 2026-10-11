@@ -57,8 +57,8 @@ function lshSearch(q){const P=LIBS().prog,s=q.toLowerCase(),all=libCourses().fla
     ${vids.length?`<div class="lbles">${vids.map(x=>lshRow(x,P)).join('')}</div>`:''}${files.length?`<h4 class="lbfh">📎 ${t('lb.files')}</h4><div class="lbfs">${files.map(f=>`<div class="lbf"><span dir="auto">${esc(f.n)}<small>${esc(f.ch||'')} · ${fmtSz(f.s)}</small></span></div>`).join('')}</div>`:''}`}
 /* the page: the original head and the PC-course view stay; the home, folders and search are new */
 {const _rl=renderLib;renderLib=function(){const isPc=LIB.open&&!String(LIB.open).startsWith('f:');if(isPc){_rl();lshPcCourseExtras();return}
-  _rl();const box=$('#libBox');if(!box||!LIBS().token&&!LIB.tree)return;const head=box.querySelector('.lbhead');if(!head)return;
-  if(!(LIB.tree||[]).length&&!LSH().length)return; // the original empty state (setup help) stays
+  _rl();const box=$('#libBox');if(!box||!LIBS().token&&!LIB.tree&&!bkLocal().length)return;const head=box.querySelector('.lbhead');if(!head)return;
+  if(!(LIB.tree||[]).length&&!LSH().length&&!bkLocal().length)return; // the original empty state (setup help) stays
   [...box.children].forEach(c=>{if(c!==head)c.remove()});
   head.insertAdjacentHTML('afterend',`<div class="lshsearch"><input class="in" id="lshQ" type="search" dir="auto" placeholder="🔍 ${esc(t('lsh.search'))}" value="${esc(LIBX.q)}"></div><div id="lshBody">${LIBX.q.trim()?lshSearch(LIBX.q.trim()):LIB.open?lshFolderView(String(LIB.open).slice(2)):lshTop()}</div>`);
   lshBind(box)}}

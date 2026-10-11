@@ -14,3 +14,4 @@ Thabat/
 # local tool settings
 .claude/settings.local.json
 dev/src.html
+/pdfjs/

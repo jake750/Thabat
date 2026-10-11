@@ -211,16 +211,17 @@ while ($true) {
         $za = [IO.Compression.ZipFile]::OpenRead($zip)
         $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat')
         $new = @{}
-        foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
+        foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
         $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
         if (-not $new.ContainsKey('Thabat.html')) { throw 'nohtml' }
         $ver = ''; if ([Text.Encoding]::UTF8.GetString($new['Thabat.html']) -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }
         $changed = @()
         foreach ($n in @($new.Keys)) {
-          $dst = Join-Path $PSScriptRoot $n
+          $dst = Join-Path $PSScriptRoot ($n -replace '/', '\'); $sub = $n -like 'pdfjs/*'
+          if ($sub) { New-Item -ItemType Directory -Force -Path (Split-Path $dst) | Out-Null }
           $same = $false
           if (Test-Path -LiteralPath $dst) { $old = [IO.File]::ReadAllBytes($dst); $same = ($old.Length -eq $new[$n].Length) -and ([Convert]::ToBase64String($old) -eq [Convert]::ToBase64String($new[$n])) }
-          if (-not $same) { if (Test-Path -LiteralPath $dst) { Copy-Item -LiteralPath $dst -Destination ($dst + '.bak') -Force }; [IO.File]::WriteAllBytes($dst, $new[$n]); $changed += $n }
+          if (-not $same) { if ((Test-Path -LiteralPath $dst) -and -not $sub) { Copy-Item -LiteralPath $dst -Destination ($dst + '.bak') -Force }; [IO.File]::WriteAllBytes($dst, $new[$n]); $changed += $n }
         }
         $global:restart = $changed -contains 'Thabat-Helper.ps1'
         if ($changed -contains 'Thabat-Library.ps1') {

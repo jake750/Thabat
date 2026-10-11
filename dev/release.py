@@ -12,7 +12,8 @@ What it does:
      Thabat/Thabat.html swapped in (mushaf/, tafsir/, launchers are kept);
      the files in dev/mac/ (launchers, icon, read-me) replace or join the Mac zip,
      and the files in dev/win/ (helper, library server, Thabat.bat) the Windows zip
-  4. Thabat.apk: android/base.apk with assets/www/Thabat.html swapped in,
+     and dev/vendor/pdfjs/ (pdf.js, loaded only when a book opens) goes to Thabat/pdfjs/ in both
+  4. Thabat.apk: android/base.apk with assets/www/Thabat.html swapped in (and assets/www/pdfjs/ added),
      zipaligned and signed with android/thabat-signing.keystore (alias thabat)
   5. copies the build into the owner's personal copy, after backing it up
      as Thabat.html.bak (nothing else in that folder is touched)
@@ -29,6 +30,7 @@ SDK_BT = os.path.expanduser(r'~\AppData\Local\Android\Sdk\build-tools\35.0.1')
 JDK = os.path.expanduser(r'~\.jdks\temurin-24.0.2\bin')
 KEYSTORE = os.path.join(ROOT, 'android', 'thabat-signing.keystore')
 BASE_APK = os.path.join(ROOT, 'android', 'base.apk')
+VENDOR = os.path.join(ROOT, 'dev', 'vendor', 'pdfjs')
 
 
 def run(cmd, **kw):
@@ -68,6 +70,27 @@ def put_files(path, folder, prefix):
     os.replace(tmp, path)
 
 
+def put_tree(path, folder, prefix):
+    """Replace or add every file under folder (recursively) in the zip under prefix."""
+    new = {}
+    for dp, _, fs in os.walk(folder):
+        for n in fs:
+            src = os.path.join(dp, n)
+            new[prefix + os.path.relpath(src, folder).replace(os.sep, '/')] = src
+    tmp = path + '.tmp'
+    with zipfile.ZipFile(path) as zi, zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as zo:
+        for it in zi.infolist():
+            if it.filename not in new:
+                zo.writestr(it, zi.read(it), compress_type=it.compress_type)
+        for name, src in sorted(new.items()):
+            it = zipfile.ZipInfo(name, date_time=time.localtime(os.path.getmtime(src))[:6])
+            it.create_system = 3
+            it.external_attr = 0o100644 << 16
+            it.compress_type = zipfile.ZIP_DEFLATED
+            zo.writestr(it, open(src, 'rb').read())
+    os.replace(tmp, path)
+
+
 def ver_in(data):
     m = re.search(rb"APP_VER='([^']*)'", data)
     return m.group(1).decode() if m else '?'
@@ -91,11 +114,15 @@ def main():
         swap(prev, z, 'Thabat/Thabat.html', html)
     put_files('Thabat-Mac.zip', os.path.join(ROOT, 'dev', 'mac'), 'Thabat/')
     put_files('Thabat-Windows.zip', os.path.join(ROOT, 'dev', 'win'), 'Thabat/')
+    # third-party files loaded on demand (pdf.js for the book reader) sit beside Thabat.html
+    for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
+        put_tree(z, VENDOR, 'Thabat/pdfjs/')
     if not no_apk:
         if not os.environ.get('THABAT_KS_PASS'):
             sys.exit('Set THABAT_KS_PASS (ask the owner) or pass --no-apk')
         u, a = os.path.join(tmp, 'u.apk'), os.path.join(tmp, 'a.apk')
         swap(BASE_APK, u, 'assets/www/Thabat.html', html, drop_meta=True)
+        put_tree(u, VENDOR, 'assets/www/pdfjs/')
         run([os.path.join(SDK_BT, 'zipalign.exe'), '-f', '-p', '4', u, a])
         env = dict(os.environ, PATH=JDK + os.pathsep + os.environ['PATH'])
         signer = os.path.join(SDK_BT, 'lib', 'apksigner.jar')
@@ -107,7 +134,9 @@ def main():
     if os.path.exists(PERSONAL):
         shutil.copy(PERSONAL, PERSONAL + '.bak')
         shutil.copy(HTML, PERSONAL)
-        print('personal copy updated (old one in Thabat.html.bak)')
+        # the pdf.js folder beside it (program files only; the owner's data is never touched)
+        shutil.copytree(VENDOR, os.path.join(os.path.dirname(PERSONAL), 'pdfjs'), dirs_exist_ok=True)
+        print('personal copy updated (old one in Thabat.html.bak, pdfjs/ refreshed)')
     print('versions:')
     print('  Thabat.html        ', ver_in(html))
     for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
