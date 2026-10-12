@@ -15,3 +15,6 @@ Thabat/
 .claude/settings.local.json
 dev/src.html
 /pdfjs/
+# mushaf/tafsir copies for local previews
+/mushaf/
+/tafsir/
