@@ -1,0 +1,7 @@
+/* v3.27 lesson of the day, learning stats */
+.tklib{border:1px solid var(--line);background:transparent;color:var(--accent);border-radius:999px;padding:2px 10px;font:inherit;font-size:12px;cursor:pointer;margin-inline-start:6px;min-height:26px}
+.lodp{margin:0 0 8px;font-size:12.5px;line-height:1.6}
+.lodd{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}.lodd button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:10px;padding:6px 9px;font:inherit;font-size:12.5px;cursor:pointer;min-height:34px}.lodd button.on{background:var(--accent);color:var(--onAccent,#111);border-color:var(--accent)}
+.lsh{font-size:12px;color:var(--muted);margin:10px 0 4px}
+.lsr .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+

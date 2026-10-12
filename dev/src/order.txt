@@ -61,6 +61,7 @@ css/v3-23-arrange-my-day.css
 css/v3-24-lesson-transcription-player-side-panel-is.css
 css/v3-25-book-search-and-ocr.css
 css/v3-26-reminders-and-android-settings.css
+css/v3-27-lesson-of-the-day-learning-stats.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -166,6 +167,7 @@ js/v3-23-arrange-my-day-today-s-untimed-tasks-are-p.js
 js/v3-24-lesson-transcription-whisper-cpp-on-the-pc.js
 js/v3-25-search-inside-books-and-reading-scanned-pa.js
 js/v3-26-android-and-reminders-task-reminders-with.js
+js/v3-27-library-group-4-lesson-of-the-day-tasks-fr.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
