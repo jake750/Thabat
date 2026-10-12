@@ -149,6 +149,7 @@ js/v3-17-drag-and-drop-in-the-library-put-folders-c.js
 js/v3-18-library-rename-lessons-and-pc-courses-show.js
 js/v3-19-the-new-library-player-our-own-controls-ov.js
 js/v3-20-1-language-switch-reloads-names-for-icon-b.js
+js/v3-20-2-keeping-your-data-safe-two-windows-stay.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
