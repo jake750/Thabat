@@ -16,4 +16,7 @@
     <string name="w4_desc">المهمة التي تعمل عليها الآن مع زرّ إنجاز</string>
     <string name="w5_name">آية اليوم</string>
     <string name="w5_desc">آية مختارة كل يوم</string>
+    <string name="sc_task">مهمة جديدة</string>
+    <string name="tile_label">ثبات · جلسة</string>
+    <string name="tile_running">جلسة تعمل</string>
 </resources>

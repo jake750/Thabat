@@ -25,4 +25,9 @@
             <extra android:name="open" android:value="quran"/>
         </intent>
     </shortcut>
+    <shortcut android:shortcutId="task" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_task" android:shortcutLongLabel="@string/sc_task">
+        <intent android:action="tn.thabat.app.SC_TASK" android:targetPackage="tn.thabat.app" android:targetClass="tn.thabat.app.MainActivity">
+            <extra android:name="open" android:value="task"/>
+        </intent>
+    </shortcut>
 </shortcuts>

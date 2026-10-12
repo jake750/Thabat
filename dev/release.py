@@ -131,6 +131,17 @@ def main():
         cert = run(['java', '-jar', signer, 'verify', '--print-certs', 'Thabat.apk'], env=env)
         assert 'cf19fc4a36f04e0ec75c825cce5f99491390c7065c48070ae7156302d04722f0' in cert, 'APK signed with an unexpected key'
         print('APK signed with the Thabat key')
+        # a test APK from a new Java shell (dev/android/build_win.py -> android/base-next.apk), for the owner to try before --use
+        nxt = os.path.join(ROOT, 'android', 'base-next.apk')
+        if '--test-shell' in sys.argv and os.path.exists(nxt):
+            u2, a2 = os.path.join(tmp, 'u2.apk'), os.path.join(tmp, 'a2.apk')
+            swap(nxt, u2, 'assets/www/Thabat.html', html, drop_meta=True)
+            put_tree(u2, VENDOR, 'assets/www/pdfjs/')
+            run([os.path.join(SDK_BT, 'zipalign.exe'), '-f', '-p', '4', u2, a2])
+            run(['java', '-jar', signer, 'sign', '--ks', KEYSTORE, '--ks-pass', 'env:THABAT_KS_PASS', '--key-pass', 'env:THABAT_KS_PASS',
+                 '--ks-key-alias', 'thabat', '--min-sdk-version', '26', '--v4-signing-enabled', 'false', '--out', 'Thabat-Android-Test.apk', a2], env=env)
+            assert 'cf19fc4a36f04e0ec75c825cce5f99491390c7065c48070ae7156302d04722f0' in run(['java', '-jar', signer, 'verify', '--print-certs', 'Thabat-Android-Test.apk'], env=env)
+            print('test APK (new shell) signed: Thabat-Android-Test.apk')
     if os.path.exists(PERSONAL):
         shutil.copy(PERSONAL, PERSONAL + '.bak')
         shutil.copy(HTML, PERSONAL)

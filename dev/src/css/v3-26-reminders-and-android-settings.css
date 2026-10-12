@@ -1,0 +1,6 @@
+/* v3.26 reminders and Android settings */
+.trem{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:999px;padding:1px 8px;margin-inline-start:4px;white-space:nowrap}
+.remq{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}.remq button{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:34px}.remq button:hover{border-color:var(--accent)}
+.remrow{display:flex;gap:6px}.remrow .in{flex:1;min-width:0}
+.wkopts{display:flex;gap:6px;flex-wrap:wrap}.wkopts[hidden]{display:none!important}.wkopts select{flex:1 1 30%;min-width:0}
+
