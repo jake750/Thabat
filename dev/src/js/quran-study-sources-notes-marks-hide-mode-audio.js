@@ -73,7 +73,7 @@ function renderQStudy(){const box=$('#qStudy');if(!box)return;const Q=S.quran,go
    <div class="qst"><div class="qstl"><span>${t('q.tfsWird')}</span><b>${Math.min(got,999)} / ${goal}</b></div><div class="minibar"><i style="width:${Math.min(100,got/goal*100)}%"></i></div></div>
    <div class="row" style="flex-wrap:wrap;gap:6px;margin-top:10px">${L_?`<button class="btn sm pri" id="qsCont">↩ ${t('q.tfsCont',qSurahName(L_.s),L_.a)}</button>`:''}<button class="btn sm" id="qsPage">📖 ${t('q.tfsPage')}</button><button class="btn sm ghost" id="qsGoal">🎯 ${t('q.tfsGoalBtn')}</button></div>
    ${queue.length?`<div class="qsq"><div><b>📚 ${t('q.hifzTfs')}</b><small>${t('q.hifzTfsSub',queue[0],queue.length)}</small></div><div class="row"><button class="btn sm" id="qsQGo">${t('q.read')}</button><button class="btn sm ghost" id="qsQDone">✓</button></div></div>`:''}
-   <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap"><button class="btn sm ghost" id="qsMarks">🎨 ${t('q.marksT')} (${nm})</button><button class="btn sm ghost" id="qsSearch">🔍 ${t('q.searchT')}</button></div>`;
+   <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap"><button class="btn sm ghost" id="qsMarks">🎨 ${t('q.marksT')} (${nm})</button><button class="btn sm ghost" id="qsSearch">🔍 ${t('q.searchT')}</button><button class="btn sm ghost" id="qsDua">🤲 ${t('kd.t')}</button></div>`;
   const c=$('#qsCont');if(c)c.onclick=()=>{TF.src=L_.src||TF.src;openTafsir(L_.s,L_.a)};
   $('#qsPage').onclick=()=>qTfsForPage(S.quran.pv||S.quran.view||1);$('#qsMarks').onclick=qMarksList;$('#qsSearch').onclick=qSearchOpen;
   $('#qsGoal').onclick=()=>{const v=prompt(t('q.tfsGoalQ'),goal);if(v&&+v>0){Q.tfsGoal=Math.round(+v);save();renderQStudy()}};
