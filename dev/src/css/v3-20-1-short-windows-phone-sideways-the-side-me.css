@@ -1,0 +1,2 @@
+/* v3.20.1 short windows (phone sideways): the side menu fits the height */
+@media(min-width:701px) and (max-height:600px){nav.side.flt{padding:6px 0!important;gap:6px;overflow-y:auto;scrollbar-width:none;justify-content:flex-start}nav.side.flt::-webkit-scrollbar{display:none}nav.side.flt .logo{display:none}nav.side.flt .navpill{gap:2px;padding:4px!important}nav.side.flt .navpill .navbtn{width:52px;padding:7px 0}nav.side.flt .navpill .navbtn span{display:none}nav.side.flt .navset{width:44px!important;height:44px}nav.side .langbtn,nav.side .grow{display:none}}

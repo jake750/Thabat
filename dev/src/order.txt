@@ -48,6 +48,9 @@ css/v3-17-1-library-space-between-a-section-header-t.css
 css/v3-18-library-path-back-forward.css
 css/v3-18-1-calendar-the-column-never-grows-past-the.css
 css/v3-19-the-new-library-player.css
+css/v3-20-1-light-mode-accent-coloured-text-uses-a-d.css
+css/v3-20-1-short-windows-phone-sideways-the-side-me.css
+css/v3-20-1-phones-every-small-control-gets-an-invis.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -145,6 +148,7 @@ js/v3-16-your-own-order-in-the-library-folders-cour.js
 js/v3-17-drag-and-drop-in-the-library-put-folders-c.js
 js/v3-18-library-rename-lessons-and-pc-courses-show.js
 js/v3-19-the-new-library-player-our-own-controls-ov.js
+js/v3-20-1-language-switch-reloads-names-for-icon-b.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
