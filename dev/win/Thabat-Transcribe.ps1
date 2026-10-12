@@ -2,7 +2,7 @@
 # Started by the library server (Thabat-Library.ps1). Works through %LOCALAPPDATA%\Thabat\tr\queue.txt one lesson at a time:
 # the sound is taken out with ffmpeg, whisper.cpp writes the text with its times, and the result is kept as tr\<id>.json.
 # With -Install it downloads whisper.cpp (official GitHub release) and the chosen speech model instead.
-param([string]$Dir, [switch]$Install, [switch]$InstallOcr, [string]$Model = 'small')
+param([string]$Dir, [switch]$Install, [switch]$InstallOcr, [string]$Model = 'small', [string]$Convert, [string]$In)
 $ErrorActionPreference = 'SilentlyContinue'
 if (-not $Dir) { $Dir = Join-Path $env:LOCALAPPDATA 'Thabat' }
 $tr = Join-Path $Dir 'tr'; New-Item -ItemType Directory -Force -Path $tr | Out-Null
@@ -11,6 +11,38 @@ $exe = Join-Path $wdir 'Release\whisper-cli.exe'
 $models = @{ small = 'ggml-small.bin'; medium = 'ggml-medium-q5_0.bin' }
 $utf8 = New-Object Text.UTF8Encoding($false)
 function Put($file, $obj) { [IO.File]::WriteAllText($file, ($obj | ConvertTo-Json -Compress -Depth 6), $utf8) }
+
+if ($Convert) {
+  # 3.29: a video in a format the browser cannot play made into an MP4 once (h264 and aac/mp3 are copied, which is quick; anything else is re-encoded), kept in conv\<id>.mp4
+  $cv = Join-Path $Dir 'conv'; New-Item -ItemType Directory -Force -Path $cv | Out-Null
+  $id = $Convert -replace '[^A-Za-z0-9_\-]', ''; $st = Join-Path $cv "$id.st"; $part = Join-Path $cv "$id.part.mp4"; $out = Join-Path $cv "$id.mp4"; $prog = Join-Path $cv "$id.prog"; $pidf = Join-Path $cv "$id.pid"
+  [IO.File]::WriteAllText($pidf, [string]$PID, $utf8)
+  try {
+    # conversions not watched for 60 days are removed, and the oldest ones while the folder is over 30 GB
+    Get-ChildItem -LiteralPath $cv -Filter '*.mp4' | Where-Object { $_.LastAccessTime -lt (Get-Date).AddDays(-60) } | Remove-Item -ErrorAction SilentlyContinue
+    $all = @(Get-ChildItem -LiteralPath $cv -Filter '*.mp4' | Sort-Object LastWriteTime); $sum = [double](($all | Measure-Object Length -Sum).Sum)
+    foreach ($f in $all) { if ($sum -le 30GB) { break }; $sum -= $f.Length; Remove-Item -LiteralPath $f.FullName -ErrorAction SilentlyContinue }
+    Put $st @{ s = 'run'; p = 0 }
+    $info = $null; try { $info = (& ffprobe -v error -show_entries 'stream=codec_type,codec_name:format=duration' -of json "$In" 2>$null | Out-String) | ConvertFrom-Json } catch {}
+    $dur = 0; $vc = ''; $ac = ''
+    if ($info) { $dur = [double]$info.format.duration; $vs = @($info.streams | Where-Object { $_.codec_type -eq 'video' }); $as = @($info.streams | Where-Object { $_.codec_type -eq 'audio' }); if ($vs.Count) { $vc = [string]$vs[0].codec_name }; if ($as.Count) { $ac = [string]$as[0].codec_name } }
+    $fa = @('-y', '-hide_banner', '-loglevel', 'error', '-i', $In, '-map', '0:v:0?', '-map', '0:a:0?', '-sn', '-dn')
+    if ($vc -eq 'h264') { $fa += @('-c:v', 'copy') } else { $fa += @('-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2') }
+    if ($ac -eq 'aac' -or $ac -eq 'mp3') { $fa += @('-c:a', 'copy') } else { $fa += @('-c:a', 'aac', '-b:a', '160k', '-ac', '2') }
+    $fa += @('-movflags', '+faststart', '-progress', $prog, '-nostats', $part)
+    $p = Start-Process -FilePath 'ffmpeg' -ArgumentList (($fa | ForEach-Object { '"' + $_ + '"' }) -join ' ') -WindowStyle Hidden -PassThru; $null = $p.Handle
+    while (-not $p.HasExited) {
+      Start-Sleep -Milliseconds 1000
+      if (Test-Path -LiteralPath (Join-Path $cv "$id.cancel")) { try { $p.Kill() } catch {}; Start-Sleep -Milliseconds 500; Remove-Item -LiteralPath (Join-Path $cv "$id.cancel"), $part, $st -ErrorAction SilentlyContinue; exit }
+      $pc = 0; try { $m = @(Get-Content -LiteralPath $prog -Tail 14 -ErrorAction SilentlyContinue | Where-Object { $_ -match '^out_time_(us|ms)=\d+' }); if ($m.Count -and $dur -gt 0) { $pc = [Math]::Min(99, [Math]::Round(([double]($m[-1].Split('=')[1]) / 1e6) / $dur * 100)) } } catch {}
+      Put $st @{ s = 'run'; p = $pc; copy = ($vc -eq 'h264') }
+    }
+    $p.WaitForExit()
+    if ($p.ExitCode -eq 0 -and (Test-Path -LiteralPath $part) -and (Get-Item -LiteralPath $part).Length -gt 1000) { Move-Item -LiteralPath $part -Destination $out -Force; Put $st @{ s = 'ok'; p = 100 } }
+    else { Remove-Item -LiteralPath $part -ErrorAction SilentlyContinue; Put $st @{ s = 'err'; p = 0 } }
+  } catch { Put $st @{ s = 'err'; p = 0 } } finally { Remove-Item -LiteralPath $prog, $pidf -ErrorAction SilentlyContinue }
+  exit
+}
 
 if ($InstallOcr) {
   # Tesseract (UB-Mannheim build, official GitHub) installed for this user only, then the Arabic data from tesseract-ocr/tessdata_best

@@ -190,8 +190,34 @@ while ($true) {
       try {
         Add-Type -AssemblyName System.Windows.Forms
         $owner = New-Object System.Windows.Forms.Form; $owner.TopMost = $true; $owner.ShowInTaskbar = $false; $owner.WindowState = 'Minimized'; $owner.Show(); $owner.Hide()
-        $dlg = New-Object System.Windows.Forms.FolderBrowserDialog; $dlg.ShowNewFolderButton = $false
-        if ($dlg.ShowDialog($owner) -eq [System.Windows.Forms.DialogResult]::OK) { $picked = $dlg.SelectedPath }
+        # 3.29: the modern Explorer folder dialog (IFileOpenDialog with FOS_PICKFOLDERS); the old small tree only if that fails
+        $done = $false
+        try {
+          if (-not ('ThabatFolderPick' -as [type])) { Add-Type -TypeDefinition @'
+using System; using System.Runtime.InteropServices;
+public static class ThabatFolderPick {
+  [ComImport, Guid("DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7")] class FOD {}
+  [ComImport, Guid("43826D1E-E718-42EE-BC55-A1E261C37BFE"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+  interface IShellItem { void BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv); void GetParent(out IShellItem i); void GetDisplayName(uint sigdn, [MarshalAs(UnmanagedType.LPWStr)] out string name); void GetAttributes(uint m, out uint a); void Compare(IShellItem i, uint h, out int o); }
+  [ComImport, Guid("42f85136-db7e-439c-85f1-e4075d135fc8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+  interface IFileDialog {
+    [PreserveSig] int Show(IntPtr parent); void SetFileTypes(uint c, IntPtr f); void SetFileTypeIndex(uint i); void GetFileTypeIndex(out uint i); void Advise(IntPtr p, out uint c); void Unadvise(uint c);
+    void SetOptions(uint o); void GetOptions(out uint o); void SetDefaultFolder(IShellItem i); void SetFolder(IShellItem i); void GetFolder(out IShellItem i); void GetCurrentSelection(out IShellItem i);
+    void SetFileName([MarshalAs(UnmanagedType.LPWStr)] string n); void GetFileName([MarshalAs(UnmanagedType.LPWStr)] out string n); void SetTitle([MarshalAs(UnmanagedType.LPWStr)] string t);
+    void SetOkButtonLabel([MarshalAs(UnmanagedType.LPWStr)] string t); void SetFileNameLabel([MarshalAs(UnmanagedType.LPWStr)] string t); void GetResult(out IShellItem i); }
+  public static string Pick(IntPtr owner, string title, string ok) {
+    IFileDialog d = (IFileDialog)new FOD(); uint o; d.GetOptions(out o); d.SetOptions(o | 0x20 | 0x40 | 0x800);
+    if (title != null) d.SetTitle(title); if (ok != null) d.SetOkButtonLabel(ok);
+    if (d.Show(owner) != 0) return ""; IShellItem it; d.GetResult(out it); string p; it.GetDisplayName(0x80058000, out p); return p ?? "";
+  }
+}
+'@ }
+          $picked = [ThabatFolderPick]::Pick($owner.Handle, 'ثبات · اختر مجلدًا للمكتبة', 'اختر هذا المجلد'); $done = $true
+        } catch {}
+        if (-not $done) {
+          $dlg = New-Object System.Windows.Forms.FolderBrowserDialog; $dlg.ShowNewFolderButton = $false
+          if ($dlg.ShowDialog($owner) -eq [System.Windows.Forms.DialogResult]::OK) { $picked = $dlg.SelectedPath }
+        }
         $owner.Dispose()
       } catch {}
       Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes((@{ ok = $true; path = $picked } | ConvertTo-Json -Compress)))

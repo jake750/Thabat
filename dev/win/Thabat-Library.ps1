@@ -85,7 +85,7 @@ $handler = {
         if ($full -eq $root -or $full.StartsWith($root + '\', [StringComparison]::OrdinalIgnoreCase)) { return $full } } catch {}
       return $null
     }
-    $vid = @('mp4', 'm4v', 'webm', 'mkv', 'mov'); $aud = @('mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav')
+    $vid = @('mp4', 'm4v', 'webm', 'mkv', 'mov', 'avi', 'wmv', 'flv', 'mpg', 'mpeg', 'ts', 'm2ts', 'mts', '3gp', 'ogv', 'vob', 'f4v', 'asf', 'divx', 'rmvb'); $aud = @('mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav')
     if ($route -eq '/list') {
       $count = 0
       function Walk($ri, $root, $dirPath, $depth) {
@@ -211,6 +211,33 @@ $handler = {
       }
       Fail '404 Not Found' 'route'; return
     }
+    # 3.29: videos the browser cannot play (AVI, WMV, FLV, MPEG, MKV with HEVC...) are made into an MP4 once with ffmpeg (Thabat-Transcribe.ps1 -Convert) and kept in conv\
+    if ($route -like '/cv/*') {
+      $cvd = Join-Path (Split-Path $cfgFile) 'conv'; New-Item -ItemType Directory -Force -Path $cvd | Out-Null
+      $sid = ([string]$q['id']) -replace '[^A-Za-z0-9_\-]', ''
+      if (-not $sid) { Fail '400 Bad Request' 'id'; return }
+      $ff = [bool](Get-Command ffmpeg -ErrorAction SilentlyContinue)
+      $stf = Join-Path $cvd "$sid.st"; $o = @{ s = 'none'; p = 0 }
+      if (Test-Path -LiteralPath (Join-Path $cvd "$sid.mp4")) { $o = @{ s = 'ok'; p = 100 } }
+      elseif (Test-Path -LiteralPath $stf) {
+        try { $o = [IO.File]::ReadAllText($stf) | ConvertFrom-Json } catch {}
+        if ($o.s -eq 'run') { $pidf = Join-Path $cvd "$sid.pid"; $alive = $false; if (Test-Path -LiteralPath $pidf) { $w = [int](Get-Content -LiteralPath $pidf); if ($w -and (Get-Process -Id $w -ErrorAction SilentlyContinue)) { $alive = $true } }
+          if (-not $alive -and ((Get-Date) - (Get-Item -LiteralPath $stf).LastWriteTime).TotalSeconds -gt 20) { $o = @{ s = 'err'; p = 0 } } }
+      }
+      if ($route -eq '/cv/state') { Json @{ ok = $true; ff = $ff; st = $o }; return }
+      if ($route -eq '/cv/start') {
+        if ($o.s -ne 'ok' -and $o.s -ne 'run') {
+          if (-not $ff) { Fail '428 Precondition Required' 'ffmpeg'; return }
+          $full = Resolve $sid; if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
+          [IO.File]::WriteAllText($stf, '{"s":"run","p":0}', $utf8)
+          Start-Process powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$(Split-Path $cfgFile)`"", '-Convert', $sid, '-In', "`"$full`"")
+          $o = @{ s = 'run'; p = 0 }
+        }
+        Json @{ ok = $true; ff = $ff; st = $o }; return
+      }
+      if ($route -eq '/cv/cancel') { [IO.File]::WriteAllText((Join-Path $cvd "$sid.cancel"), '1', $utf8); Json @{ ok = $true }; return }
+      Fail '404 Not Found' 'route'; return
+    }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
       if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
@@ -219,9 +246,10 @@ $handler = {
       Json @{ ok = $true }; return
     }
     if ($route -eq '/f') {
-      $full = Resolve $q['id']; if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
+      if ($q['cv'] -eq '1') { $full = Join-Path (Join-Path (Split-Path $cfgFile) 'conv') ((([string]$q['id']) -replace '[^A-Za-z0-9_\-]', '') + '.mp4') } else { $full = Resolve $q['id'] }
+      if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
       $fi = New-Object IO.FileInfo $full; $len = $fi.Length; $e = $fi.Extension.TrimStart('.').ToLower()
-      $types = @{ mp4 = 'video/mp4'; m4v = 'video/mp4'; mov = 'video/mp4'; webm = 'video/webm'; mkv = 'video/webm'; mp3 = 'audio/mpeg'; m4a = 'audio/mp4'; aac = 'audio/aac'; ogg = 'audio/ogg'; opus = 'audio/ogg'; wav = 'audio/wav'; pdf = 'application/pdf'; png = 'image/png'; jpg = 'image/jpeg'; jpeg = 'image/jpeg'; gif = 'image/gif'; txt = 'text/plain; charset=utf-8'; md = 'text/plain; charset=utf-8' }
+      $types = @{ mp4 = 'video/mp4'; m4v = 'video/mp4'; mov = 'video/mp4'; webm = 'video/webm'; mkv = 'video/webm'; ogv = 'video/ogg'; mp3 = 'audio/mpeg'; m4a = 'audio/mp4'; aac = 'audio/aac'; ogg = 'audio/ogg'; opus = 'audio/ogg'; wav = 'audio/wav'; pdf = 'application/pdf'; png = 'image/png'; jpg = 'image/jpeg'; jpeg = 'image/jpeg'; gif = 'image/gif'; txt = 'text/plain; charset=utf-8'; md = 'text/plain; charset=utf-8' }
       $type = $types[$e]; if (-not $type) { $type = 'application/octet-stream' }
       $start = [int64]0; $end = [int64]($len - 1); $status = '200 OK'; $extra = "Accept-Ranges: bytes`r`n"
       if ($hd['range'] -match 'bytes=(\d*)-(\d*)') {

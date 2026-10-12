@@ -95,8 +95,7 @@ function lshItemMenu(anchor,ref,inFolder){const opts=lshFolderPick();const p=lsh
 function lshFolderMenu(anchor,f){const p=lshMenu(anchor,`<button data-a="ren">✏ ${t('lsh.rename')}</button><button data-a="move">📂 ${t('lsh.move')}</button><button data-a="cover">🖼 ${t('lsh.cover')}</button><button data-a="rate">★ ${t('lsh.rate')}</button><button data-a="del">🗑 ${t('lsh.delete')}</button>`);
   p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{closePP();const a=b.dataset.a;
     if(a==='ren'){const n=prompt(t('lsh.folderName'),f.n);if(n&&n.trim()){f.n=n.trim();save();renderLib()}}
-    else if(a==='move'){const bad=new Set(),walk=id=>{bad.add(id);lshKids(id).forEach(k=>walk(k.id))};walk(f.id);const q=lshMenu(anchor,`<div class="aymh">${t('lsh.move')}</div><button data-to="">🏠 ${t('lsh.mine')}</button>${lshFolderPick().filter(o=>!bad.has(o.f.id)).map(o=>`<button data-to="${o.f.id}">📁 <span dir="auto">${esc(o.p)}</span></button>`).join('')}`);
-      q.querySelectorAll('[data-to]').forEach(x=>x.onclick=()=>{closePP();f.parent=x.dataset.to||null;save();renderLib()})}
+    else if(a==='move'){fpMoveFolder(f)}
     else if(a==='cover')lshCoverPick(f.id);else if(a==='rate')lshRate(anchor,f.id);
     else if(a==='del'){if(!confirm(t('lsh.delQ',f.n)))return;const sh=LSH();lshKids(f.id).forEach(k=>k.parent=f.parent||null);sh.splice(sh.indexOf(f),1);save();LIB.open=f.parent?'f:'+f.parent:null;renderLib()}})}
 /* the PC course page gets the same tools: add to a folder, cover, stars and a note */

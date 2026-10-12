@@ -63,6 +63,8 @@ css/v3-25-book-search-and-ocr.css
 css/v3-26-reminders-and-android-settings.css
 css/v3-27-lesson-of-the-day-learning-stats.css
 css/v3-28-tasks.css
+css/v3-29-book-reader-page-turn-mode-zoom-covers-fin.css
+css/v3-29-library-format-conversion-player-list-scop.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -170,6 +172,8 @@ js/v3-25-search-inside-books-and-reading-scanned-pa.js
 js/v3-26-android-and-reminders-task-reminders-with.js
 js/v3-27-library-group-4-lesson-of-the-day-tasks-fr.js
 js/v3-28-tasks-priority-links-to-a-lesson-book-note.js
+js/v3-29-the-book-reader-pc-books-load-only-the-pag.js
+js/v3-29-the-library-other-video-formats-made-into.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
