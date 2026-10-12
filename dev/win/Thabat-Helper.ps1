@@ -226,7 +226,7 @@ while ($true) {
         $wc2 = New-Object System.Net.WebClient; $wc2.Headers.Add('User-Agent', 'Thabat/1.0'); $wc2.DownloadFile($url, $zip)
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         $za = [IO.Compression.ZipFile]::OpenRead($zip)
-        $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat')
+        $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat')
         $new = @{}
         foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
         $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue

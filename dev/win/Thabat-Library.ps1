@@ -10,6 +10,7 @@ $cfgFile = Join-Path $dir 'library.json'
 $thumbDir = Join-Path $dir 'thumbs'
 New-Item -ItemType Directory -Force -Path $thumbDir | Out-Null
 $stopFile = Join-Path $dir 'library.stop'
+$trScript = Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) 'Thabat-Transcribe.ps1'
 Remove-Item -LiteralPath $stopFile -ErrorAction SilentlyContinue
 
 # config: a random token on first run, the chosen folders, the port
@@ -29,7 +30,7 @@ $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::An
 try { $listener.Start() } catch { exit }   # already running
 
 $handler = {
-  param($client, $cfgFile, $thumbDir)
+  param($client, $cfgFile, $thumbDir, $trScript)
   $ErrorActionPreference = 'SilentlyContinue'
   $utf8 = New-Object Text.UTF8Encoding($false)
   try {
@@ -111,6 +112,70 @@ $handler = {
       }
       if (Test-Path -LiteralPath $tf) { Send '200 OK' 'image/jpeg' ([IO.File]::ReadAllBytes($tf)) "Cache-Control: max-age=86400`r`n" } else { Fail '404 Not Found' 'none' }; return
     }
+    # 3.24: lesson transcription (whisper.cpp through Thabat-Transcribe.ps1, one lesson at a time); the text stays on this PC in tr\
+    if ($route -like '/tr/*') {
+      $base = Split-Path $cfgFile; $trDir = Join-Path $base 'tr'; New-Item -ItemType Directory -Force -Path $trDir | Out-Null
+      $wd = Join-Path $base 'whisper'
+      $inst = @{ exe = (Test-Path -LiteralPath (Join-Path $wd 'Release\whisper-cli.exe')); small = (Test-Path -LiteralPath (Join-Path $wd 'models\ggml-small.bin')); medium = (Test-Path -LiteralPath (Join-Path $wd 'models\ggml-medium-q5_0.bin')); ff = [bool](Get-Command ffmpeg -ErrorAction SilentlyContinue) }
+      $qf = Join-Path $trDir 'queue.txt'
+      $TQ = @(); if (Test-Path -LiteralPath $qf) { $TQ = @([IO.File]::ReadAllLines($qf, $utf8) | Where-Object { $_ -match '\|' }) }
+      $sid = ([string]$q['id']) -replace '[^A-Za-z0-9_\-]', ''
+      $pf = Join-Path $trDir 'worker.pid'; $alive = $false
+      if (Test-Path -LiteralPath $pf) { $o = [int](Get-Content -LiteralPath $pf); if ($o -and (Get-Process -Id $o -ErrorAction SilentlyContinue)) { $alive = $true } }
+      if ($route -eq '/tr/state') {
+        $out = @{}
+        foreach ($i in @(([string]$q['ids']) -split ',')) { $i = $i -replace '[^A-Za-z0-9_\-]', ''; if (-not $i) { continue }
+          $o = @{ done = (Test-Path -LiteralPath (Join-Path $trDir "$i.json")); pos = -1 }
+          $stf = Join-Path $trDir "$i.st"; if (Test-Path -LiteralPath $stf) { try { $o.st = [IO.File]::ReadAllText($stf) | ConvertFrom-Json } catch {} }
+          for ($k = 0; $k -lt $TQ.Count; $k++) { if (($TQ[$k] -split '\|', 2)[0] -eq $i) { $o.pos = $k; break } }
+          $out[$i] = $o }
+        $ist = $null; $isf = Join-Path $trDir 'install.st'; if (Test-Path -LiteralPath $isf) { try { $ist = [IO.File]::ReadAllText($isf) | ConvertFrom-Json } catch {} }
+        Json @{ ok = $true; inst = $inst; install = $ist; items = $out; queue = $TQ.Count; busy = $alive }; return
+      }
+      if ($route -eq '/tr/get') { $f = Join-Path $trDir "$sid.json"; if ($sid -and (Test-Path -LiteralPath $f)) { Send '200 OK' 'application/json; charset=utf-8' ([IO.File]::ReadAllBytes($f)) '' } else { Fail '404 Not Found' 'none' }; return }
+      if ($route -eq '/tr/start') {
+        $m = [string]$q['m']; if ($m -ne 'medium') { $m = 'small' }; $l = [string]$q['l']; if ($l -notmatch '^(auto|ar|en|fr)$') { $l = 'auto' }
+        $add = @()
+        foreach ($i in @(([string]$q['ids']) -split ',')) { $i = $i -replace '[^A-Za-z0-9_\-]', ''; if (-not $i) { continue }
+          $full = Resolve $i; if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { continue }
+          if (@($TQ | Where-Object { ($_ -split '\|', 2)[0] -eq $i }).Count) { continue }
+          $add += "$i|$m|$l|$full"; [IO.File]::WriteAllText((Join-Path $trDir "$i.st"), '{"s":"wait","p":0}', $utf8) }
+        if ($add.Count) { [IO.File]::AppendAllLines($qf, [string[]]$add, $utf8) }
+        if (-not $alive -and $inst.exe -and $inst.ff -and ($inst.small -or $inst.medium) -and (Test-Path -LiteralPath $trScript)) { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$base`"") }
+        Json @{ ok = $true; added = $add.Count; inst = $inst }; return
+      }
+      if ($route -eq '/tr/cancel') {
+        if ($sid) {
+          if ($alive -and $TQ.Count -and ($TQ[0] -split '\|', 2)[0] -eq $sid) { [IO.File]::WriteAllText((Join-Path $trDir "$sid.cancel"), '1', $utf8) }
+          else { [IO.File]::WriteAllLines($qf, [string[]]@($TQ | Where-Object { ($_ -split '\|', 2)[0] -ne $sid }), $utf8); Remove-Item -LiteralPath (Join-Path $trDir "$sid.st") -ErrorAction SilentlyContinue }
+        }
+        Json @{ ok = $true }; return
+      }
+      if ($route -eq '/tr/del') { if ($sid) { Remove-Item -LiteralPath (Join-Path $trDir "$sid.json"), (Join-Path $trDir "$sid.st") -ErrorAction SilentlyContinue }; Json @{ ok = $true }; return }
+      if ($route -eq '/tr/install') {
+        if (-not $local) { Fail '403 Forbidden' 'local'; return }
+        if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
+        $m = [string]$q['m']; if ($m -ne 'medium') { $m = 'small' }
+        [IO.File]::WriteAllText((Join-Path $trDir 'install.st'), '{"s":"run","w":"start"}', $utf8)
+        Start-Process powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$base`"", '-Install', '-Model', $m)
+        Json @{ ok = $true }; return
+      }
+      if ($route -eq '/tr/search') {
+        # words are compared without diacritics, tatweel, or the different alef / taa marbuta / alef maqsura forms
+        $A = [string][char]0x0627
+        function Nrm([string]$x) { $x = [regex]::Replace($x, '[ً-ٰٟـ]', ''); $x = [regex]::Replace($x, '[آأإٱ]', $A); $x = $x.Replace([string][char]0x0629, [string][char]0x0647).Replace([string][char]0x0649, [string][char]0x064A); return $x.ToLowerInvariant() }
+        $needle = Nrm ([string]$q['q']); $hits = @()
+        if ($needle.Length -ge 2) {
+          foreach ($f in (Get-ChildItem -LiteralPath $trDir -Filter '*.json' | Sort-Object LastWriteTime -Descending)) {
+            if ($hits.Count -ge 80) { break }
+            try { $j = [IO.File]::ReadAllText($f.FullName, [Text.Encoding]::UTF8) | ConvertFrom-Json } catch { continue }
+            $n = 0; foreach ($sg in $j.segs) { if ((Nrm ([string]$sg[2])).Contains($needle)) { $hits += , @{ id = $j.id; f = $sg[0]; x = $sg[2] }; $n++; if ($n -ge 6 -or $hits.Count -ge 80) { break } } }
+          }
+        }
+        Json @{ ok = $true; hits = @($hits) }; return
+      }
+      Fail '404 Not Found' 'route'; return
+    }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
       if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
@@ -152,7 +217,7 @@ while ($true) {
   if ($listener.Pending()) {
     $c = $listener.AcceptTcpClient()
     $ps = [powershell]::Create(); $ps.RunspacePool = $pool
-    [void]$ps.AddScript($handler).AddArgument($c).AddArgument($cfgFile).AddArgument($thumbDir)
+    [void]$ps.AddScript($handler).AddArgument($c).AddArgument($cfgFile).AddArgument($thumbDir).AddArgument($trScript)
     [void]$jobs.Add(@($ps, $ps.BeginInvoke()))
   } else { Start-Sleep -Milliseconds 40 }
   for ($i = $jobs.Count - 1; $i -ge 0; $i--) { if ($jobs[$i][1].IsCompleted) { try { [void]$jobs[$i][0].EndInvoke($jobs[$i][1]) } catch {}; $jobs[$i][0].Dispose(); $jobs.RemoveAt($i) } }

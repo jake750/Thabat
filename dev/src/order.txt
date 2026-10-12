@@ -58,6 +58,7 @@ css/v3-22-library-select-several-items-and-move-them.css
 css/v3-22-1-layout-pass-calendar-cells-on-phones-the.css
 css/v3-22-1-layout-pass-in-arrange-a-lesson-row-s-ow.css
 css/v3-23-arrange-my-day.css
+css/v3-24-lesson-transcription-player-side-panel-is.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -160,6 +161,7 @@ js/v3-20-2-keeping-your-data-safe-two-windows-stay.js
 js/v3-21-the-recordings-pill-gets-previous-next-and.js
 js/v3-22-select-several-things-in-the-library-and-m.js
 js/v3-23-arrange-my-day-today-s-untimed-tasks-are-p.js
+js/v3-24-lesson-transcription-whisper-cpp-on-the-pc.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

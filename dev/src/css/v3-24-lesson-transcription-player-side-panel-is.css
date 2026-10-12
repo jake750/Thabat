@@ -1,0 +1,18 @@
+/* v3.24 lesson transcription (player side panel is dark in both themes) */
+.trxbox{padding:14px 10px;color:#eee;font-size:13.5px;line-height:1.6;display:flex;flex-direction:column;gap:10px}
+.trxbox p{margin:0}.trxsm{color:#fff9;font-size:12.5px}.trxerr{color:#ff9a8a}
+.trxprog{height:6px;border-radius:99px;background:#ffffff1a;overflow:hidden}.trxprog i{display:block;height:100%;background:var(--accent);transition:width .4s}
+.trxprog i.ind{width:35%;animation:trxind 1.4s ease-in-out infinite}@keyframes trxind{0%{margin-inline-start:-35%}100%{margin-inline-start:100%}}
+.trxrow{display:flex;align-items:center;gap:10px;justify-content:space-between}.trxrow select{max-width:60%;min-height:36px;background:#ffffff12;color:#fff;border-color:#ffffff26}
+.trxseg{display:flex;gap:4px;background:#ffffff12;border-radius:10px;padding:3px}.trxseg button{border:0;background:none;color:#fffc;border-radius:8px;padding:7px 12px;font:inherit;font-size:13px;cursor:pointer;min-height:34px}.trxseg button.on{background:var(--accent);color:#111}.trxseg button[disabled]{opacity:.4;cursor:default}
+.trxlink{background:none;border:0;color:var(--accent);font:inherit;font-size:12.5px;cursor:pointer;text-align:start;padding:0}
+.trxgo{border-style:solid;border-color:var(--accent);color:var(--accent)}
+.trxtop{display:flex;gap:6px;padding:8px;align-items:center}.trxtop .in{flex:1;min-width:0;min-height:36px;background:#ffffff12;color:#fff;border-color:#ffffff26}
+.trxlist{display:flex;flex-direction:column;gap:2px;padding:0 6px 10px;overflow:auto;max-height:100%}
+.trxs{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:start;text-align:start;background:none;border:0;color:#ddd;padding:7px 8px;border-radius:9px;font:inherit;font-size:14px;line-height:1.55;cursor:pointer}
+.trxs:hover{background:#ffffff0f}.trxs.on{background:color-mix(in srgb,var(--accent) 22%,transparent);color:#fff}.trxs[hidden]{display:none}
+.trxt{color:var(--accent);font-size:12px;font-variant-numeric:tabular-nums;padding-top:2px}.trxx{overflow-wrap:anywhere}
+.trxhits{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.trxh{display:flex;flex-direction:column;gap:3px;text-align:start;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);font:inherit;cursor:pointer}
+.trxh b{font-size:14px}.trxh>span{font-size:13px;color:var(--muted);overflow-wrap:anywhere}.trxh i{font-style:normal;color:var(--accent);margin-inline-end:4px}
+
