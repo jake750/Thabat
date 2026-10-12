@@ -53,5 +53,9 @@ async function bkxOcrRun(lang){if(BKX.run)return;BKX.run=true;BKX.stop=false;con
 /* the button in the reader's bar */
 {const _b=bkBuild;bkBuild=async function(...a){const r=await _b(...a);try{const ls=$('#bkLs');if(ls&&!$('#bkSr')){ls.insertAdjacentHTML('beforebegin',`<button class="bkb" id="bkSr" title="${esc(t('bkx.t'))}" aria-label="${esc(t('bkx.t'))}">🔍</button>`);$('#bkSr').onclick=()=>{const p=$('#bkPanel');if(!p.hidden&&p.querySelector('#bkxQ')){p.hidden=true;return}bkxOpen()}}}catch(e){console.error(e)}return r}}
 {const _c=bkClose;bkClose=function(...a){BKX.stop=true;return _c(...a)}}
+/* 3.25.1: night reading for books like the mushaf's: warm dark paper; text pages inverted, scanned pages inverted with a little more contrast for their greyish paper */
+function bkNiIcon(){return BK.night==='night'?'☀':BK.night==='sepia'?'☾':'📜'}
+function bkNiNext(){return t(BK.night==='night'?'sp.light':BK.night==='sepia'?'sp.dark':'sp.sepia')}
+{const _b=bkBuild;bkBuild=async function(...a){const r=await _b(...a);try{await bkxLoad();const sc=await bkxIsScanned();const v=$('#bkV');if(v)v.classList.toggle('scan',!!sc)}catch(e){}return r}}
 document.addEventListener('keydown',e=>{if(BK.doc&&$('#bkReader.on')&&(e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'){e.preventDefault();e.stopPropagation();bkxOpen()}},true);
 
