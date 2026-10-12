@@ -65,6 +65,7 @@ css/v3-27-lesson-of-the-day-learning-stats.css
 css/v3-28-tasks.css
 css/v3-29-book-reader-page-turn-mode-zoom-covers-fin.css
 css/v3-29-library-format-conversion-player-list-scop.css
+css/v3-30-mosques-from-openstreetmap-mawaqit-link-ca.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -174,6 +175,7 @@ js/v3-27-library-group-4-lesson-of-the-day-tasks-fr.js
 js/v3-28-tasks-priority-links-to-a-lesson-book-note.js
 js/v3-29-the-book-reader-pc-books-load-only-the-pag.js
 js/v3-29-the-library-other-video-formats-made-into.js
+js/v3-30-finding-your-mosque-without-mawaqit-s-sear.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
