@@ -107,6 +107,12 @@ def main():
     open(js, 'w', encoding='utf-8').write(max(re.findall(r'<script>(.*?)</script>', s, re.S), key=len))
     run(['node', '--check', js])
     print('syntax OK')
+    # a second «function foo» silently replaces the first (hNum, 3.28.0): refuse to package one
+    import collections
+    dup = {k: v for k, v in collections.Counter(re.findall(r'(?:^|[;{}\n])\s*(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*\(', s)).items() if v > 1}
+    if dup:
+        sys.exit('FAILED: functions declared more than once: ' + ', '.join(sorted(dup)))
+    print('no duplicate functions')
     html = open(HTML, 'rb').read()
     for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
         prev = os.path.join(tmp, z)
