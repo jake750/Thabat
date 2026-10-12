@@ -1,0 +1,15 @@
+/* v3.23 arrange my day */
+#infoBox.arrbox{max-width:640px}
+.arrp{margin:0 0 10px;line-height:1.6}
+.arro{display:flex;flex-wrap:wrap;gap:8px 14px;margin:0 0 12px;font-size:13px;color:var(--muted)}.arro label{display:flex;align-items:center;gap:6px}.arro select{padding:4px 8px;min-height:34px}
+.arrl{display:flex;flex-direction:column;gap:4px;max-height:min(52vh,460px);overflow:auto;padding-inline-end:4px}
+.arrg{margin:10px 0 2px;font-size:14px}.arrg small{color:var(--muted);margin-inline-start:6px}
+.arrr{display:grid;grid-template-columns:auto 104px 96px minmax(0,1fr);gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:10px}
+.arrr input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}.arrr .in{min-height:36px;padding:4px 8px;min-width:0}
+.arrt{min-width:0;overflow-wrap:anywhere;font-size:14px}
+.arrr:has(input[type=checkbox]:not(:checked)){opacity:.5}
+.arrleft{margin-top:12px;font-size:13px}.arrleft>div{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.arra{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#arrBtn{margin-inline-start:auto;font-size:12.5px;min-height:32px;padding:4px 10px}
+@media (max-width:700px){.arrl{max-height:none;overflow:visible}.arrr{grid-template-columns:auto 100px minmax(0,1fr)}.arrr .arrt{grid-column:1/-1;padding-inline-start:28px}}
+
