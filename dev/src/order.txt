@@ -55,6 +55,8 @@ css/v3-21-recordings-pill-a-grip-and-a-place-of-its.css
 css/v3-21-watched-listened-filter.css
 css/v3-21-library-the-folder-dock-while-dragging.css
 css/v3-22-library-select-several-items-and-move-them.css
+css/v3-22-1-layout-pass-calendar-cells-on-phones-the.css
+css/v3-22-1-layout-pass-in-arrange-a-lesson-row-s-ow.css
 css/image-viewer.css
 body.html
 js/core.js

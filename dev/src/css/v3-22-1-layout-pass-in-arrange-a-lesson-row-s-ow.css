@@ -1,0 +1,8 @@
+/* v3.22.1 layout pass: in «⇅ arrange» a lesson row's own buttons (watched, ⋯) step aside for the ↑ ↓ arrows instead of sitting under them */
+.lordon :is(.lbl,.aurow).lorditem>:is(.lshm,.lshdone,.lbdone,.lshunl){visibility:hidden;pointer-events:none}
+.lordon :is(.lbl,.aurow).lorditem{padding-inline-end:76px}
+.lordon .aurow .lordbtns,.lordon .lbl .lordbtns{flex-direction:row}
+.lordon .lorditem :is(.auplay,.lshfcb,.lshgo,.lshunl,.bkacts){visibility:hidden;pointer-events:none}
+/* select menus never wider than their card */
+.card select.in,.field select.in{max-width:100%;min-width:0}
+
