@@ -22,7 +22,7 @@ function renderGallery(kind){const L_=ST()[kind].filter(x=>!STAG||(x.tags||[]).i
   const lk=$('#stLink');if(lk)lk.onclick=()=>{const it={id:uid(),url:'',title:'',tags:[],date:todayKey(),at:Date.now()};ST().insp.unshift(it);save();stEdit('insp',it.id,true)};
   $$('#stBody .stcard').forEach(c=>{const x=ST()[kind].find(q=>q.id===c.dataset.id);const im=c.querySelector('img');if(im)nImg(x.img).then(d=>{if(d)im.src=d});
     c.onclick=e=>{if(e.target.closest('.sted')){stEdit(kind,x.id);return}if(x.img){const imgs=L_.filter(q=>q.img);lbOpen(imgs.map(q=>q.img),imgs.indexOf(x),x.title||'')}else if(x.url)openExt(x.url)}})}
-function openExt(u){if(ANDROID&&window.ThabatAndroid.openUrl)window.ThabatAndroid.openUrl(u);else window.open(u,'_blank')}
+/* 3.20: openExt is defined once (v2.5, with noopener) */
 document.addEventListener('paste',async e=>{if(curView()!=='boards'||nbMode!=='studio')return;const tab=stTab();if(tab!=='pf'&&tab!=='insp'&&tab!=='pal')return;const tg=e.target;if(tg&&(/INPUT|TEXTAREA/.test(tg.tagName)||tg.isContentEditable))return;
   const files=[...(e.clipboardData&&e.clipboardData.files||[])].filter(f=>/^image\//.test(f.type));if(!files.length)return;e.preventDefault();if(tab==='pal'){palFromFile(files[0]);return}await stAddFiles(tab,files)});
 function stEdit(kind,id,isNew){const x=ST()[kind].find(q=>q.id===id);if(!x)return;

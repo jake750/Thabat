@@ -53,16 +53,23 @@ $handler = {
     function Json($o) { Send '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes(($o | ConvertTo-Json -Depth 30 -Compress))) '' }
     function Fail($st, $e) { Send $st 'application/json' ($utf8.GetBytes('{"error":"' + $e + '"}')) '' }
     if ($method -eq 'OPTIONS') { Send '204 No Content' 'text/plain' $null ''; return }
+    # 3.20: refuse web pages (Thabat runs from a file or the Android app, never from a website)
+    if ([string]$hd['origin'] -match '^https?://') { Fail '403 Forbidden' 'origin'; return }
+    # the routes that only this PC may use (/cfg, /roots, /open) also need the helper's secret key
+    $hkey = ''; try { $hkey = ([IO.File]::ReadAllText((Join-Path (Split-Path $cfgFile) 'helper.key'))).Trim() } catch {}
+    $kOk = ($hkey -and $q['k'] -eq $hkey)
     $cfg = [IO.File]::ReadAllText($cfgFile, [Text.Encoding]::UTF8) | ConvertFrom-Json
     $roots = @($cfg.roots)
     if ($route -eq '/ping') { Json @{ ok = $true; v = 1; name = $env:COMPUTERNAME; auth = ($q['t'] -eq $cfg.token) }; return }
     if ($route -eq '/cfg') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
+      if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
       $ips = @([System.Net.Dns]::GetHostAddresses([System.Net.Dns]::GetHostName()) | Where-Object { $_.AddressFamily -eq 'InterNetwork' -and -not $_.ToString().StartsWith('127.') -and -not $_.ToString().StartsWith('169.254.') } | ForEach-Object { $_.ToString() })
       Json @{ ok = $true; token = $cfg.token; port = 47815; roots = $roots; ips = $ips; name = $env:COMPUTERNAME }; return
     }
     if ($route -eq '/roots') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
+      if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
       $d = $q['d'].Replace('-', '+').Replace('_', '/'); while ($d.Length % 4) { $d += '=' }
       $list = @([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($d)) | ConvertFrom-Json) | Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Container) }
       $cfg | Add-Member -NotePropertyName roots -NotePropertyValue @($list) -Force
@@ -106,6 +113,7 @@ $handler = {
     }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
+      if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
       $full = Resolve $q['id']; if (-not $full) { Fail '404 Not Found' 'path'; return }
       if ($q['folder'] -eq '1' -and -not (Test-Path -LiteralPath $full -PathType Container)) { Start-Process explorer.exe -ArgumentList ('/select,"' + $full + '"') } else { Start-Process -FilePath $full }
       Json @{ ok = $true }; return

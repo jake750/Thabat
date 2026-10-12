@@ -15,6 +15,14 @@ try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::
 $port = 47813
 $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, $port)
 try { $listener.Start() } catch { exit }   # already running
+# 3.20: a secret key, so only Thabat itself (opened from its folder) can use the helper — not a website open in the browser.
+# It lives in %LOCALAPPDATA%\Thabat\helper.key and is copied into thabat-key.js beside Thabat.html (web pages cannot read that file).
+$kdir = Join-Path $env:LOCALAPPDATA 'Thabat'; New-Item -ItemType Directory -Force -Path $kdir | Out-Null
+$kfile = Join-Path $kdir 'helper.key'; $global:hkey = ''
+try { $global:hkey = ([IO.File]::ReadAllText($kfile)).Trim() } catch {}
+if ($global:hkey -notmatch '^[0-9a-f]{32}$') { $kb = New-Object byte[] 16; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($kb); $global:hkey = -join ($kb | ForEach-Object { $_.ToString('x2') }); [IO.File]::WriteAllText($kfile, $global:hkey) }
+$kjs = Join-Path $PSScriptRoot 'thabat-key.js'; $kwant = "window.THABAT_KEY='$($global:hkey)';"
+try { if (-not (Test-Path -LiteralPath $kjs) -or ([IO.File]::ReadAllText($kjs)) -ne $kwant) { [IO.File]::WriteAllText($kjs, $kwant) } } catch {}
 $last = Get-Date
 $global:lan = $null; $global:lanCode = ''; $global:lanUntil = Get-Date
 $global:blob = @{ pc = @{}; ph = @{} }; $global:blobN = @{ pc = 0; ph = 0 }
@@ -129,12 +137,21 @@ while ($true) {
     $stream = $client.GetStream()
     $reader = New-Object System.IO.StreamReader($stream, [Text.Encoding]::ASCII)
     $line = $reader.ReadLine()
-    while ($true) { $h = $reader.ReadLine(); if ($h -eq $null -or $h -eq '') { break } }
+    $org = ''
+    while ($true) { $h = $reader.ReadLine(); if ($h -eq $null -or $h -eq '') { break }; if ($h -match '^Origin:\s*(.*)$') { $org = $matches[1].Trim() } }
     $parts = "$line" -split ' '
     $method = $parts[0]; $path = $parts[1]
+    # the key travels as k=…; take it out so the routes below see the same paths as before
+    $kOk = ($global:hkey -and "$path" -match '[?&]k=([0-9a-f]{32})(&|$)' -and $matches[1] -eq $global:hkey)
+    $path = [regex]::Replace([string]$path, '([?&])k=[0-9a-f]{32}(&?)', { param($m) if ($m.Groups[2].Value) { $m.Groups[1].Value } else { '' } })
     $utf8 = New-Object System.Text.UTF8Encoding($false)
     if ($method -eq 'OPTIONS') {
       Send-Response $stream '204 No Content' 'text/plain' ([byte[]]@())
+    } elseif (-not $isLan -and $org -match '^https?://') {
+      # a web page (not Thabat, which runs from a file) is calling: refuse
+      Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"origin"}'))
+    } elseif (-not $isLan -and -not $kOk -and $path -notmatch '^/(ping|alive)(\?|$)') {
+      Send-Response $stream '401 Unauthorized' 'application/json' ($utf8.GetBytes('{"error":"key"}'))
     } elseif ($isLan) {
       # requests from the phone on the same network: only /lan/ with the one-time code
       $q = @{}; if ($path -match '\?(.*)$') { foreach ($kv in ($matches[1] -split '&')) { $a = $kv -split '=', 2; if ($a.Count -eq 2) { $q[$a[0]] = $a[1] } } }

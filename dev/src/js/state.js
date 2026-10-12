@@ -14,7 +14,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.19.0';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.20.0';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
