@@ -1,26 +1,41 @@
 ثبات — نسخة الماك
 ==================
 
+الطريقة الأسهل (دون أي تحذير من الماك) — يُنصح بها
+- افتح «Terminal» (من Spotlight: اكتب Terminal).
+- الصق هذا السطر واضغط Enter:
+
+  curl -fsSL https://raw.githubusercontent.com/jake750/Thabat/main/dev/mac/install.sh | bash
+
+- ينزّل آخر إصدار من صفحة ثبات على GitHub إلى المجلد ~/Thabat، ويضيف Thabat.app بأيقونة ثبات
+  إلى مجلد تطبيقاتك (Launchpad و Spotlight)، ثم يفتحه.
+- للتحديث لاحقًا: شغّل السطر نفسه مرة أخرى (أو اضغط «تحديث» داخل ثبات فيعطيك السطر).
+
+لماذا يظهر تحذير «Apple could not verify… Not Opened»؟
+- الماك يمنع أي ملف من الإنترنت لم يوقّعه مطوّر مسجّل لدى Apple (التسجيل مدفوع). ثبات آمن ومفتوح المصدر.
+- الملفات التي تنزل بالسطر أعلاه لا تحمل علامة «من الإنترنت»، لذلك لا يظهر التحذير.
+
+إن فتحت الملفات من هذا الملف المضغوط مباشرة (macOS 15 فما بعد)
+1. انقر مرتين على Create-Shortcut.command، فيظهر التحذير: اضغط «Done» (لا تضغط Move to Trash).
+2. افتح إعدادات النظام ← «الخصوصية والأمان» (Privacy & Security) وانزل إلى الأسفل.
+3. ستجد سطرًا عن Create-Shortcut.command وزر «Open Anyway» (افتح على أي حال): اضغطه وأدخل كلمة سر الماك.
+4. كرّر الأمر نفسه مع Thabat.command إن ظهر التحذير له.
+   (في الإصدارات الأقدم من macOS يكفي: زر الفأرة الأيمن على الملف ← «فتح» ← «فتح».)
+   أو أزل العلامة عن المجلد كله من Terminal (اسحب المجلد إلى النافذة بعد كتابة الأمر):
+   xattr -dr com.apple.quarantine <مجلد ثبات>
+
 التشغيل
-- انقر مرتين على Thabat.command.
-- في أول مرة قد يرفض الماك فتحه لأنه من مطوّر غير معروف:
-  انقر عليه بزر الفأرة الأيمن ← «فتح» ← «فتح» مرة أخرى. بعدها يفتح بنقرتين عادي.
+- افتح Thabat.app من Launchpad، أو انقر مرتين على Thabat.command.
 - يفتح التطبيق في نافذة مستقلة على Chrome أو Edge أو Brave إن وُجد أحدها، وإلا على Safari.
   (يُنصح بـ Chrome أو Edge: يدعمان الحفظ في مجلد والنافذة المستقلة.)
 - لا تفرّق الملفات: أبقِ Thabat.html ومجلدَي mushaf و tafsir بجانب Thabat.command.
-
-اختصار بأيقونة ثبات
-- انقر مرتين على Create-Shortcut.command (في أول مرة: زر الفأرة الأيمن ← «فتح» ← «فتح»).
-- يضيف Thabat.app بأيقونة ثبات إلى مجلد تطبيقاتك (~/Applications)، فيظهر في Launchpad وSpotlight،
-  ويمكنك سحبه إلى Dock.
-- يفتح التطبيقُ ثباتَ من هذا المجلد، فإن نقلت المجلد شغّل Create-Shortcut.command مرة أخرى.
+- إن نقلت المجلد شغّل Create-Shortcut.command مرة أخرى.
 
 ما يعمل
 - المواقيت والأذان (ما دامت النافذة مفتوحة)، المصحف والتفسير، الورد والحفظ والمراجعة،
-  المهام والمؤقّت والتقويم والملخّص والملاحظات، والمزامنة مع الهاتف عبر GitHub.
+  المهام والمؤقّت والتقويم والملخّص والملاحظات، والمكتبة (مشاهدة دروس الحاسوب)، والمزامنة مع الهاتف عبر GitHub.
 
 ما لا يوجد في نسخة الماك
-- البحث عن المساجد في Mawaqit (تُحسب المواقيت فلكياً حسب مدينتك).
 - تحميل التلاوات من روابط يوتيوب، والنقل عبر الشبكة المحلية، والتقويم الخارجي بالرابط،
   ورصد البرنامج النشط، وإشعارات الحاسوب والتطبيق مغلق.
   هذه تحتاج «المساعد» الخاص بويندوز، لذلك أُخفيت من النسخة.
@@ -31,13 +46,29 @@
 ------------------------------------------------------------
 
 Thabat — macOS
-- Double-click Thabat.command. The first time, right-click it → Open → Open (macOS blocks unknown developers).
-- It opens in its own window in Chrome, Edge, Brave or Chromium, otherwise in Safari.
+
+Easiest (no macOS warning) — recommended
+- Open Terminal and paste:
+
+  curl -fsSL https://raw.githubusercontent.com/jake750/Thabat/main/dev/mac/install.sh | bash
+
+- It downloads the latest release from Thabat's GitHub page into ~/Thabat, adds Thabat.app to your
+  Applications folder and opens it. Run the same line again to update (or press «Update» inside Thabat).
+
+Why «Apple could not verify… Not Opened»?
+- macOS blocks files from the internet that are not signed by a paid Apple developer account.
+  Files fetched with the line above carry no "downloaded" mark, so no warning appears.
+
+If you open the files from this zip (macOS 15 and later)
+1. Double-click Create-Shortcut.command; on the warning press «Done» (not Move to Trash).
+2. Open System Settings → Privacy & Security and scroll down.
+3. Press «Open Anyway» next to Create-Shortcut.command and enter your Mac password.
+4. Do the same for Thabat.command if it is blocked too.
+   (Older macOS: right-click the file → Open → Open.)
+   Or clear the mark on the whole folder in Terminal: xattr -dr com.apple.quarantine <Thabat folder>
+
 - Keep Thabat.html and the mushaf and tafsir folders next to Thabat.command.
-- For an app with the Thabat icon, double-click Create-Shortcut.command (the first time: right-click → Open).
-  It adds Thabat.app to ~/Applications, so it shows in Launchpad and Spotlight and can be kept in the Dock.
-  If you move this folder, run Create-Shortcut.command again.
-- Not available on the Mac (they need the Windows helper): Mawaqit mosque search, link downloads,
-  LAN transfer, external calendar by URL, active-app detection, notifications while closed.
+- Not available on the Mac (they need the Windows helper): link downloads, LAN transfer,
+  external calendar by URL, active-app detection, notifications while closed.
 - Sync with your phone through GitHub works.
 Created by jake750_. See LICENSE.txt.

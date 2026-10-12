@@ -1,0 +1,5 @@
+/* v3.31.1 macOS install command */
+.machow{padding-inline-start:20px;line-height:1.9;margin:6px 0}
+.maccmd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0;padding:10px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--text) 5%,transparent)}
+.maccmd code{flex:1;min-width:0;font-size:12.5px;overflow-wrap:anywhere;user-select:all}
+

@@ -68,6 +68,7 @@ css/v3-29-library-format-conversion-player-list-scop.css
 css/v3-30-mosques-from-openstreetmap-mawaqit-link-ca.css
 css/v3-30-1-reader-icons-and-the-highlight-bar.css
 css/v3-31-khatm-du-a-root-search.css
+css/v3-31-1-macos-install-command.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -181,6 +182,7 @@ js/v3-30-finding-your-mosque-without-mawaqit-s-sear.js
 js/v3-30-1-the-book-reader-line-icons-instead-of-em.js
 js/v3-31-data-quranic-roots-derived-from-the-qurani.js
 js/v3-31-khatm-du-a-options-after-a-completed-khatm.js
+js/v3-31-1-macos-install-and-update-with-one-termin.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
