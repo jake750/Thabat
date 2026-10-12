@@ -2,7 +2,7 @@
 # Started by the library server (Thabat-Library.ps1). Works through %LOCALAPPDATA%\Thabat\tr\queue.txt one lesson at a time:
 # the sound is taken out with ffmpeg, whisper.cpp writes the text with its times, and the result is kept as tr\<id>.json.
 # With -Install it downloads whisper.cpp (official GitHub release) and the chosen speech model instead.
-param([string]$Dir, [switch]$Install, [string]$Model = 'small')
+param([string]$Dir, [switch]$Install, [switch]$InstallOcr, [string]$Model = 'small')
 $ErrorActionPreference = 'SilentlyContinue'
 if (-not $Dir) { $Dir = Join-Path $env:LOCALAPPDATA 'Thabat' }
 $tr = Join-Path $Dir 'tr'; New-Item -ItemType Directory -Force -Path $tr | Out-Null
@@ -11,6 +11,35 @@ $exe = Join-Path $wdir 'Release\whisper-cli.exe'
 $models = @{ small = 'ggml-small.bin'; medium = 'ggml-medium-q5_0.bin' }
 $utf8 = New-Object Text.UTF8Encoding($false)
 function Put($file, $obj) { [IO.File]::WriteAllText($file, ($obj | ConvertTo-Json -Compress -Depth 6), $utf8) }
+
+if ($InstallOcr) {
+  # Tesseract (UB-Mannheim build, official GitHub) installed for this user only, then the Arabic data from tesseract-ocr/tessdata_best
+  $st = Join-Path $tr 'ocrinstall.st'
+  try {
+    Put $st @{ s = 'run'; w = 'tesseract' }
+    $la = Split-Path $Dir; $home2 = Join-Path $la 'Programs\Tesseract-OCR'
+    if (-not (Test-Path -LiteralPath (Join-Path $home2 'tesseract.exe'))) {
+      $rel = Invoke-RestMethod -Uri 'https://api.github.com/repos/UB-Mannheim/tesseract/releases/latest' -Headers @{ 'User-Agent' = 'Thabat' }
+      $asset = $rel.assets | Where-Object { $_.name -like 'tesseract-ocr-w64-setup-*.exe' } | Select-Object -First 1
+      if (-not $asset) { throw 'asset' }
+      $setup = Join-Path $env:TEMP $asset.name
+      (New-Object Net.WebClient).DownloadFile($asset.browser_download_url, $setup)
+      $env:__COMPAT_LAYER = 'RunAsInvoker'
+      $p = Start-Process -FilePath $setup -ArgumentList @('/S') -PassThru; [void]$p.WaitForExit(600000)
+      $env:__COMPAT_LAYER = $null
+      Remove-Item -LiteralPath $setup -ErrorAction SilentlyContinue
+    }
+    $td = Join-Path $home2 'tessdata'
+    if (-not (Test-Path -LiteralPath (Join-Path $td 'ara.traineddata'))) {
+      Put $st @{ s = 'run'; w = 'ara' }
+      (New-Object Net.WebClient).DownloadFile('https://github.com/tesseract-ocr/tessdata_best/raw/main/ara.traineddata', (Join-Path $td 'ara.traineddata.part'))
+      Move-Item -LiteralPath (Join-Path $td 'ara.traineddata.part') -Destination (Join-Path $td 'ara.traineddata') -Force
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $home2 'tesseract.exe'))) { throw 'install' }
+    Put $st @{ s = 'done' }
+  } catch { Put $st @{ s = 'err' } }
+  exit
+}
 
 if ($Install) {
   $st = Join-Path $tr 'install.st'

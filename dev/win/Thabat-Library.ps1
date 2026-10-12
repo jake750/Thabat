@@ -176,6 +176,41 @@ $handler = {
       }
       Fail '404 Not Found' 'route'; return
     }
+    # 3.25: reading the text of scanned book pages (Tesseract with Arabic data); the page image is sent, the text comes back, nothing is kept here
+    if ($route -like '/ocr*') {
+      $base = Split-Path $cfgFile; $la = Split-Path $base
+      $tx = $null
+      foreach ($c in @((Join-Path $la 'Programs\Tesseract-OCR\tesseract.exe'), 'C:\Program Files\Tesseract-OCR\tesseract.exe', 'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe')) { if (-not $tx -and (Test-Path -LiteralPath $c)) { $tx = $c } }
+      if (-not $tx) { $g = Get-Command tesseract -ErrorAction SilentlyContinue; if ($g) { $tx = $g.Source } }
+      $langs = @(); if ($tx) { $langs = @(Get-ChildItem -LiteralPath (Join-Path (Split-Path $tx) 'tessdata') -Filter '*.traineddata' -ErrorAction SilentlyContinue | ForEach-Object { $_.BaseName }) }
+      if ($route -eq '/ocr/state') {
+        $ist = $null; $isf = Join-Path (Join-Path $base 'tr') 'ocrinstall.st'; if (Test-Path -LiteralPath $isf) { try { $ist = [IO.File]::ReadAllText($isf) | ConvertFrom-Json } catch {} }
+        Json @{ ok = $true; inst = [bool]$tx; langs = @($langs); install = $ist }; return
+      }
+      if ($route -eq '/ocr/install') {
+        if (-not $local) { Fail '403 Forbidden' 'local'; return }
+        if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
+        New-Item -ItemType Directory -Force -Path (Join-Path $base 'tr') | Out-Null
+        [IO.File]::WriteAllText((Join-Path (Join-Path $base 'tr') 'ocrinstall.st'), '{"s":"run"}', $utf8)
+        Start-Process powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$base`"", '-InstallOcr')
+        Json @{ ok = $true }; return
+      }
+      if ($route -eq '/ocr' -and $method -eq 'POST') {
+        if (-not $tx) { Fail '428 Precondition Required' 'setup'; return }
+        $len = [int]$hd['content-length']; if ($len -le 0 -or $len -gt 15000000) { Fail '400 Bad Request' 'size'; return }
+        $buf = New-Object byte[] $len; $got = 0; while ($got -lt $len) { $r = $s.Read($buf, $got, $len - $got); if ($r -le 0) { break }; $got += $r }
+        $want = @(([string]$q['l']) -split '\+' | Where-Object { $langs -contains $_ }); if (-not $want.Count) { $want = @(@('ara', 'eng') | Where-Object { $langs -contains $_ }) }; if (-not $want.Count) { $want = @('eng') }
+        $tmp = Join-Path $env:TEMP ('thabat_ocr_' + [Guid]::NewGuid().ToString('N'))
+        try {
+          [IO.File]::WriteAllBytes("$tmp.png", $buf)
+          & $tx "$tmp.png" $tmp -l ($want -join '+') --psm 3 2>$null | Out-Null
+          $text = ''; if (Test-Path -LiteralPath "$tmp.txt") { $text = [IO.File]::ReadAllText("$tmp.txt", [Text.Encoding]::UTF8) }
+          Json @{ ok = $true; text = $text; l = ($want -join '+') }
+        } finally { Remove-Item -LiteralPath "$tmp.png", "$tmp.txt" -ErrorAction SilentlyContinue }
+        return
+      }
+      Fail '404 Not Found' 'route'; return
+    }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
       if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }

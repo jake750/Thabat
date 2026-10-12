@@ -49,7 +49,9 @@ function trxFollow(){const v=$('#lvV');if(!v||v._trx)return;v._trx=1;v.addEventL
   for(const b of bs){if(+b.dataset.f<=ms)cur=b;else break}
   const was=list.querySelector('.trxs.on');if(was!==cur){if(was)was.classList.remove('on');if(cur){cur.classList.add('on');if(!list.matches(':hover')&&!TRX.q){const r=cur.getBoundingClientRect(),R=list.getBoundingClientRect();if(r.top<R.top||r.bottom>R.bottom)list.scrollTop+=r.top-R.top-R.height/3}}}})}
 /* words are compared without diacritics, tatweel or the different alef / taa marbuta / alef maqsura forms */
-function lshNorm(x){return String(x||'').replace(/[ً-ٰٟـ]/g,'').replace(/[آأإٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase()}
+/* the same normalisation, remembering where each kept character came from (to show the original text around a match) */
+function lshNormMap(x){x=String(x||'');const map=[];let n='';for(let i=0;i<x.length;i++){const c=lshNorm(x[i]);if(!c)continue;for(const ch of c){n+=ch;map.push(i)}}return{n,map}}
+function lshNorm(x){return String(x||'').replace(/[ً-ٰٟـ]/g,'').replace(/[آأإٱ]/g,'ا').replace(/ة/g,'ه').replace(/[ىیي]/g,'ي').replace(/[ھہ]/g,'ه').replace(/ک/g,'ك').toLowerCase()}
 /* library search: what was said in the lessons */
 {const _ls=lshSearch;lshSearch=function(q,...a){const h=_ls(q,...a);if(!LIB.base||q.length<2)return h;clearTimeout(TRX.st);TRX.st=setTimeout(()=>trxHits(q),350);return h+`<div id="trxHits"></div>`}}
 async function trxHits(q){let j=null;try{const r=await libFetch(libU('/tr/search?q='+encodeURIComponent(q)),8000);if(r.ok)j=await r.json()}catch(e){}const box=$('#trxHits');if(!box||!j||!(j.hits||[]).length||(LIBX.q||'').trim()!==q)return;
