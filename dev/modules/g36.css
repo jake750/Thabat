@@ -1,0 +1,11 @@
+/* v3.28 tasks */
+.tpri{font-size:11px;border-radius:999px;padding:1px 7px;margin-inline-end:4px;white-space:nowrap}
+.tpri,.tcd,.trem,.tklib{align-self:flex-start;width:fit-content;max-width:100%}.tpri.hi{color:#fff;background:#d64545}.tpri.lo{color:var(--muted);border:1px solid var(--line)}
+html.mode-light .tpri.hi{background:#b42318}
+.prirow{display:flex;align-items:center;gap:4px;padding:6px 8px;flex-wrap:wrap}.prirow span{font-size:12px;color:var(--muted);margin-inline-end:4px}.prirow button{flex:1;border:1px solid var(--line);background:transparent;color:var(--text);border-radius:9px;padding:6px 8px;font:inherit;font-size:12.5px;cursor:pointer;min-height:34px}.prirow button.on{background:var(--accent);color:var(--onAccent,#111);border-color:var(--accent)}
+.lnkpop{width:min(340px,92vw)}.lnkl{display:flex;flex-direction:column;gap:2px;max-height:min(50vh,360px);overflow:auto;margin-top:6px}.lnkl button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:start;background:none;border:0;border-radius:9px;padding:8px;color:var(--text);font:inherit;cursor:pointer}.lnkl button:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}.lnkl small{color:var(--muted);font-size:11.5px;overflow-wrap:anywhere}
+.tcd{font-size:11.5px;margin-inline-start:6px;white-space:nowrap}.tcd.soon{color:var(--accent)}.tcd.now{color:#fff;background:#16a34a;border-radius:999px;padding:1px 8px}.tcd:empty{display:none}
+#infoBox.arcbox{max-width:620px}.arcbar{display:flex;gap:8px;margin-bottom:6px}.arcbar .in{min-width:0}.arcbar input{flex:1}.arcl{display:flex;flex-direction:column;gap:2px;max-height:min(60vh,520px);overflow:auto}
+.arch{font-size:12px;color:var(--muted);margin:10px 0 2px}.arci{display:flex;justify-content:space-between;gap:10px;text-align:start;background:none;border:0;border-bottom:1px solid var(--line);padding:8px 4px;color:var(--text);font:inherit;cursor:pointer}.arci span{min-width:0;overflow-wrap:anywhere}.arci small{color:var(--muted);flex:none}
+@media (max-width:700px){.arcl{max-height:none;overflow:visible}}
+.ptplpop{width:min(380px,92vw)}.ptplr{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;font-size:13px}.ptplr textarea{min-height:52px;resize:vertical}
