@@ -17,7 +17,7 @@ function lordScopes(){const o=String(LIB.open||''),out=[];
   else if(o==='au:'){$$('#lshBody > .lshfs').forEach(g=>{const c=g.querySelector('[data-ao]');if(c)out.push({el:g,scope:c.dataset.ao.startsWith('p:')?'apl':'ak:root'})})}
   else if(o.startsWith('au:f:')){const fid=o.slice(5);$$('#lshBody > .lshfs').forEach(g=>out.push({el:g,scope:'ak:'+fid}));$$('#lshBody > .aulist').forEach(g=>out.push({el:g,scope:'aitems:'+fid}))}
   return out}
-const lordId=el=>el.dataset.folder||(el.dataset.card&&el.dataset.card.split(':')[1])||(el.dataset.ao&&el.dataset.ao.split(':')[1])||el.dataset.play||el.dataset.rid;
+function lordId(el){return el.dataset.folder||(el.dataset.card&&el.dataset.card.split(':')[1])||(el.dataset.ao&&el.dataset.ao.split(':')[1])||el.dataset.play||el.dataset.rid}
 function lordSave(scope,ids){const L_=LIBS();L_.ord=L_.ord||{};
   if(scope.startsWith('items:')){const f=lshGet(scope.slice(6));if(f){const pos=new Map(ids.map((id,i)=>[id,i]));const seen=f.items.filter(r=>pos.has(r.id)).sort((a,b)=>pos.get(a.id)-pos.get(b.id));let k=0;f.items=f.items.map(r=>pos.has(r.id)?seen[k++]:r)}}
   else if(scope.startsWith('aitems:')){const f=auF(scope.slice(7));if(f){const pos=new Map(ids.map((id,i)=>[id,i]));const seen=f.items.filter(id=>pos.has(id)).sort((a,b)=>pos.get(a)-pos.get(b));let k=0;f.items=f.items.map(id=>pos.has(id)?seen[k++]:id)}}

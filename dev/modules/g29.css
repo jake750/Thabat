@@ -1,0 +1,27 @@
+/* v3.21 recordings pill: ⏮ ⏭, a grip, and a place of its own after dragging */
+.rcpill{touch-action:none;user-select:none;-webkit-user-select:none}
+.rcpill .rcpgrip{flex:none;color:var(--muted);cursor:grab;font-size:14px;padding:0 2px}
+.rcpill.rcpdrag{cursor:grabbing;box-shadow:0 14px 36px #0008;opacity:.95}
+.rcpill.rcpfree{bottom:auto;inset-inline-start:auto;right:auto}
+.rcpill .rcppp{background:var(--accent)!important;color:#111!important}
+.rcpill .rcpctl button:not(.rcppp){background:none;color:inherit}
+.rcpill button[disabled]{opacity:.35}
+.rcpill .rcpctl{flex:none;display:flex;gap:6px;overflow:visible;min-width:auto}
+.rcpill .rcpt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;cursor:pointer}
+@media (max-width:700px){.rcpill{max-width:calc(100vw - 24px)}.rcpill button{width:34px;height:34px}}
+/* v3.21 «watched & listened» filter */
+.mfbar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px}
+.mfbar button{flex:1 1 auto;min-height:34px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:12.5px;cursor:pointer}
+.mfbar button small{color:var(--muted);font-size:11px}
+.mfbar button.on{background:color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent)}
+.mfp{font-size:12px}
+#mlogBody>.mfbar{margin:0 0 10px}
+/* v3.21 library: the folder dock while dragging */
+.lddock{position:fixed;z-index:9998;left:50%;bottom:16px;transform:translateX(-50%);width:min(560px,calc(100vw - 32px));max-height:34vh;overflow:auto;padding:10px;border-radius:14px;background:var(--panel);border:1px solid var(--accent);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.lddock>small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.lddock>div{display:flex;flex-wrap:wrap;gap:6px}
+.lddi{padding:8px 12px;border-radius:999px;border:1px solid var(--line);font-size:13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lddi.ldover{outline:2px dashed var(--accent);background:color-mix(in srgb,var(--accent) 25%,transparent)}
+@media (max-width:700px){.lddock{bottom:96px}}
+#v-lib .lbf.ldable{cursor:grab}
+#v-lib .lxfs .lshm{flex:none}

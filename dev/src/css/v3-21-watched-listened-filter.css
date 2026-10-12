@@ -1,0 +1,7 @@
+/* v3.21 «watched & listened» filter */
+.mfbar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px}
+.mfbar button{flex:1 1 auto;min-height:34px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:12.5px;cursor:pointer}
+.mfbar button small{color:var(--muted);font-size:11px}
+.mfbar button.on{background:color-mix(in srgb,var(--accent) 22%,transparent);border-color:var(--accent)}
+.mfp{font-size:12px}
+#mlogBody>.mfbar{margin:0 0 10px}

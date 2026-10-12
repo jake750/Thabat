@@ -51,6 +51,9 @@ css/v3-19-the-new-library-player.css
 css/v3-20-1-light-mode-accent-coloured-text-uses-a-d.css
 css/v3-20-1-short-windows-phone-sideways-the-side-me.css
 css/v3-20-1-phones-every-small-control-gets-an-invis.css
+css/v3-21-recordings-pill-a-grip-and-a-place-of-its.css
+css/v3-21-watched-listened-filter.css
+css/v3-21-library-the-folder-dock-while-dragging.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -150,6 +153,7 @@ js/v3-18-library-rename-lessons-and-pc-courses-show.js
 js/v3-19-the-new-library-player-our-own-controls-ov.js
 js/v3-20-1-language-switch-reloads-names-for-icon-b.js
 js/v3-20-2-keeping-your-data-safe-two-windows-stay.js
+js/v3-21-the-recordings-pill-gets-previous-next-and.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

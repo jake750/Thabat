@@ -1,0 +1,11 @@
+/* v3.21 recordings pill: ⏮ ⏭, a grip, and a place of its own after dragging */
+.rcpill{touch-action:none;user-select:none;-webkit-user-select:none}
+.rcpill .rcpgrip{flex:none;color:var(--muted);cursor:grab;font-size:14px;padding:0 2px}
+.rcpill.rcpdrag{cursor:grabbing;box-shadow:0 14px 36px #0008;opacity:.95}
+.rcpill.rcpfree{bottom:auto;inset-inline-start:auto;right:auto}
+.rcpill .rcppp{background:var(--accent)!important;color:#111!important}
+.rcpill .rcpctl button:not(.rcppp){background:none;color:inherit}
+.rcpill button[disabled]{opacity:.35}
+.rcpill .rcpctl{flex:none;display:flex;gap:6px;overflow:visible;min-width:auto}
+.rcpill .rcpt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;cursor:pointer}
+@media (max-width:700px){.rcpill{max-width:calc(100vw - 24px)}.rcpill button{width:34px;height:34px}}
