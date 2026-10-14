@@ -1,0 +1,19 @@
+/* v3.45: board shapes library, ornaments, symbols, crop */
+.wbxpop{max-width:min(340px,92vw)}
+.wbxsec{font-size:11.5px;color:var(--muted);margin:6px 2px 4px}
+.wbxsec:first-child{margin-top:0}
+.wbshp.wbxg{grid-template-columns:repeat(6,38px)}
+.wbxsym{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.wbxsym button{min-height:42px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);font-family:"Amiri","Noto Naskh Arabic",serif;font-size:22px;cursor:pointer;line-height:1}
+.wbxsym button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+#infoBox.wbxbox{width:min(720px,96vw)}
+.wbxcw{position:relative;display:block;max-width:100%;margin:0 auto;user-select:none;touch-action:none;line-height:0;width:fit-content}
+.wbxcw img{display:block;max-width:100%;max-height:58vh;object-fit:contain}
+.wbxcr{position:absolute;box-shadow:0 0 0 9999px rgba(0,0,0,.55);outline:2px solid #fff;cursor:move;touch-action:none}
+.wbxcw{overflow:hidden}
+.wbxcr i{position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;border:2px solid var(--accent)}
+.wbxcr i::after{content:"";position:absolute;inset:-12px}
+.wbxcr i[data-h=nw]{left:-9px;top:-9px;cursor:nwse-resize}.wbxcr i[data-h=ne]{right:-9px;top:-9px;cursor:nesw-resize}.wbxcr i[data-h=sw]{left:-9px;bottom:-9px;cursor:nesw-resize}.wbxcr i[data-h=se]{right:-9px;bottom:-9px;cursor:nwse-resize}
+.wbxasp{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+@media(max-width:700px){.wbshp.wbxg{grid-template-columns:repeat(5,38px)}}
+
