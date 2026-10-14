@@ -104,7 +104,7 @@ def main():
     s = open(HTML, encoding='utf-8').read()
     tmp = tempfile.mkdtemp()
     js = os.path.join(tmp, 'main.js')
-    open(js, 'w', encoding='utf-8').write(max(re.findall(r'<script>(.*?)</script>', s, re.S), key=len))
+    open(js, 'w', encoding='utf-8').write(max(re.findall(r'<script[^>]*>(.*?)</script>', s, re.S), key=len))
     run(['node', '--check', js])
     print('syntax OK')
     # a second «function foo» silently replaces the first (hNum, 3.28.0): refuse to package one

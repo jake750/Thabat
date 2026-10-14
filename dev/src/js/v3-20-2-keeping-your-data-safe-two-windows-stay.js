@@ -3,7 +3,7 @@
 function stCount(o){let d=0,tk=0;const D=(o&&o.days)||{};for(const k in D){d++;tk+=((D[k]&&D[k].tasks)||[]).length}return{d,tk,n:((o&&o.notes)||[]).length}}
 function stLess(b,a){return b.d<a.d||b.tk<a.tk||b.n<a.n}
 /* another Thabat window (or tab) saved: take its newer data instead of overwriting it later with ours */
-window.addEventListener('storage',e=>{if(e.key!==KEY||!e.newValue)return;try{const o=JSON.parse(e.newValue);if(!o||!o.days||!o.settings)return;if((o._savedAt||0)<=(S._savedAt||0))return;
+window.addEventListener('storage',e=>{if(e.key!==KEY||!e.newValue)return;try{const o=JSON.parse(e.newValue);if(!o||!o.days||!o.settings||o._slim)return;if((o._savedAt||0)<=(S._savedAt||0))return;
   clearTimeout(lsT);lsT=null;S=o;if(S.settings.lang&&S.settings.lang!==LANG){LANG=S.settings.lang;try{applyI18n()}catch(x){}}try{renderAll()}catch(x){}}catch(x){}});
 /* speed: within one drawing of Today, prayer times are computed once per day (they were computed ~39 times) and «your day between the prayers» is drawn once (it was drawn twice) */
 let RT_PASS=null;
