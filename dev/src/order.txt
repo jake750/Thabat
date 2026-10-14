@@ -76,6 +76,7 @@ css/v3-38.css
 css/v3-39-settings-on-two-levels.css
 css/v3-40-share-thabat.css
 css/v3-40-2-calendar-cells-see-through-a-little-on-p.css
+css/v3-41-notes-folders-editor-contents-highlights-w.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -198,6 +199,7 @@ js/v3-37-lighter-file-root-data-on-demand-dead-code.js
 js/v3-38-switch-off-the-parts-you-do-not-use-and-th.js
 js/v3-39-settings-on-two-levels-each-large-card-sho.js
 js/v3-40-share-thabat-the-one-file-windows-setup-th.js
+js/v3-41-notes-folders-inside-the-notes-page-nested.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
