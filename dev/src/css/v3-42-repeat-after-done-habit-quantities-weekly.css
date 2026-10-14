@@ -1,0 +1,24 @@
+/* v3.42: repeat after done, habit quantities, weekly goals per category */
+.rcaft{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 10px;font-size:13px}
+.rcaft .in{width:64px;min-height:34px}
+.hbinc{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-wrap:wrap}
+.hbinc span{flex:1;font-size:12.5px;color:var(--muted)}
+.hbinc button{min-width:44px;min-height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel2,var(--panel));color:var(--text);font:inherit;cursor:pointer}
+.hbchip.part{background-image:linear-gradient(90deg,color-mix(in srgb,#22c55e 22%,transparent) var(--hp,0%),transparent var(--hp,0%))}
+html[dir=rtl] .hbchip.part{background-image:linear-gradient(270deg,color-mix(in srgb,#22c55e 22%,transparent) var(--hp,0%),transparent var(--hp,0%))}
+.cwg{display:flex;flex-direction:column;gap:6px;margin-top:8px;min-width:0;width:100%;align-self:stretch;box-sizing:border-box;text-align:start}
+.cwgh{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.cwgh .link{min-width:32px;min-height:32px}
+.cwgr{display:grid;grid-template-columns:minmax(0,90px) minmax(0,1fr) auto;align-items:center;gap:8px;font-size:12.5px;min-width:0}
+.cwgr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cwgr .bar{height:6px;border-radius:4px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}
+.cwgr .bar i{display:block;height:100%;border-radius:4px}
+.cwgr em{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cwgr.met em{color:var(--accent)}
+.cwgset{display:flex;flex-direction:column;gap:8px}
+.cwgset label{display:grid;grid-template-columns:12px minmax(0,1fr) auto 76px auto;align-items:center;gap:8px;font-size:14px;min-width:0}
+.cwgset label span[dir]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cwgset small{color:var(--muted);font-size:12px}
+.cwgset .dot{width:10px;height:10px;border-radius:50%}
+.cwgset .in{width:76px;min-height:38px}
+
