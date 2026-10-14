@@ -1,7 +1,7 @@
 /* ============ v3.32: calendar day panel — tick past tasks, Quran for any day, edit and delete sessions; mushaf filter fix ============ */
 /* a page image pre-filtered for one reading light (paper/night) must not stay when the light changes */
 function qPreFix(){const r=S.quran.riwaya;$$('#spread .qimg img[data-p].pre').forEach(im=>{im.classList.remove('pre');const f=qFilterOf(im);if((im.dataset.pf||'')===f){im.classList.add('pre');return}delete im.dataset.pf;qLoadImg(im,+im.dataset.p,r)})}
-{const _rq=renderQuran;renderQuran=function(...a){const r=_rq(...a);try{qPreFix()}catch(e){}return r}}
+{hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(...a){try{qPreFix()}catch(e){}})}
 
 /* tasks of any past day can be ticked or unticked */
 function dtToggle(k,id){const d=S.days[k],x=d&&d.tasks.find(q=>q.id===id);if(!x)return;x.done=!x.done;x.doneAt=x.done?(k===todayKey()?Date.now():keyToDate(k).getTime()+20*36e5):null;save();if(x.done)chimeSoft();renderCal();if(k===todayKey())renderTasks()}

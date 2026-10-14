@@ -34,7 +34,7 @@ function nightApply(){const m=nightMode(),pt=prayerTimes(new Date()),now=Date.no
 setInterval(nightApply,6e4);setTimeout(nightApply,500);
 /* sync status dot on the settings button */
 function syDot(){const nb=$('.navbtn[data-v=set]');if(!nb)return;let d=nb.querySelector('.sydot2');if(!SY.token){if(d)d.remove();return}if(!d){d=document.createElement('i');d.className='sydot2';nb.append(d)}d.className='sydot2 '+(SY.state==='busy'?'busy':SY.state==='err'?'err':'');d.title=SY.state==='err'?SY.err||'':SY.last?t('sync.last',fmtT(SY.last)):''}
-{const _rsy=renderSync;renderSync=function(){_rsy();syDot()}}setTimeout(syDot,1500);
+{hookFn('renderSync',()=>renderSync,f=>{renderSync=f},'post',function(){syDot()})}setTimeout(syDot,1500);
 setInterval(()=>{if(SY.token&&!document.hidden&&!syBusy)syncNow()},10*6e4);
 /* canvas helpers */
 function cvBase(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d'),cs=getComputedStyle(document.documentElement);const col=v=>cs.getPropertyValue(v).trim();return{c,x,bg:col('--bg')||'#0f1115',panel:col('--panel')||'#171a21',text:col('--text')||'#eee',muted:col('--muted')||'#999',accent:col('--accent')||'#fddb00',line:col('--line')||'#333'}}
@@ -77,4 +77,4 @@ async function openReview(mode){RV.mode=mode||RV.mode;$('#rvModal').classList.ad
 $('#rvModal').onclick=e=>{if(e.target.id==='rvModal')$('#rvModal').classList.remove('on')};
 $('#rvBtn').textContent='📜 '+t('rv.btn');$('#rvBtn').onclick=()=>openReview(bMode==='week'?'month':'month');
 function renderV31Set(){const m=nightMode();$('#nightSeg').innerHTML=[['off','set.night.off'],['auto','set.night.auto'],['on','set.night.on']].map(([k,l])=>`<button data-k="${k}" class="${m===k?'on':''}">${t(l)}</button>`).join('');$$('#nightSeg button').forEach(b=>b.onclick=()=>{S.settings.night=b.dataset.k;save();nightApply();renderV31Set()})}
-{const _rs5=renderSettings;renderSettings=function(){_rs5();try{renderV31Set()}catch(e){}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV31Set()}catch(e){}})}

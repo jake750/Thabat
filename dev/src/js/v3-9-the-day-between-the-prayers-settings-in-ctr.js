@@ -38,10 +38,10 @@ function pdlBind(box,k,d){const find=id=>d.tasks.find(q=>q.id===id),move=(x,p)=>
   const inp=$('#pdlIn');if(inp){const add=()=>{const v=inp.value.trim(),p=PDL.addP;if(v){d.tasks.push({id:uid(),text:v,done:false,created:Date.now(),after:p});save()}PDL.addP=v?p:null;renderTasks();if(v)setTimeout(()=>{const n=$('#pdlIn');if(n)n.focus()},0)};
     $('#pdlGo').onclick=add;inp.onkeydown=e=>{if(e.key==='Enter')add();if(e.key==='Escape'){PDL.addP=null;pdlRender()}};inp.onblur=()=>setTimeout(()=>{if(PDL.addP&&!inp.value.trim()&&document.activeElement!==$('#pdlGo')){PDL.addP=null;pdlRender()}},150)}}
 function pdlEnsure(){if($('#pdlCard'))return;const st=$('#v-today .grid .stack');if(!st)return;const c=document.createElement('div');c.className='card pdlcard';c.id='pdlCard';const gw=st.querySelector(':scope>.glasswrap');if(gw)gw.after(c);else st.prepend(c)}
-{const _rt=renderTasks;renderTasks=function(){_rt();try{pdlRender()}catch(e){console.error(e)}}}
-{const _rg=renderGlass;renderGlass=function(){_rg();try{pdlRender()}catch(e){console.error(e)}}}
-{const _ta=timerAct;timerAct=function(...a){const r=_ta(...a);try{pdlRender()}catch(e){}return r}}
-{const _ri=applyI18n;applyI18n=function(){_ri();try{pdlRender()}catch(e){}}}
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(){try{pdlRender()}catch(e){console.error(e)}})}
+{hookFn('renderGlass',()=>renderGlass,f=>{renderGlass=f},'post',function(){try{pdlRender()}catch(e){console.error(e)}})}
+{hookFn('timerAct',()=>timerAct,f=>{timerAct=f},'post',function(...a){try{pdlRender()}catch(e){}})}
+{hookFn('applyI18n',()=>applyI18n,f=>{applyI18n=f},'post',function(){try{pdlRender()}catch(e){}})}
 setInterval(()=>{if(curView()==='today'&&!document.hidden&&!(document.activeElement&&document.activeElement.id==='pdlIn'))pdlRender()},6e4);
 try{pdlEnsure();pdlRender();if(typeof homeApply==='function')homeApply()}catch(e){console.error(e)}
 
@@ -66,12 +66,12 @@ function cmdSetHits(q){const Q=AR_NORM(q.trim());if(Q.length<2)return[];const ou
 
 /* ---- PC: the shortcut number in each page button's tooltip ---- */
 function navKeyTips(){$$('nav.side .navpill .navbtn').forEach((b,i)=>{const sp=b.querySelector('span'),n=sp?sp.textContent.trim():'';if(n)b.title=MOB.matches?n:n+'  ('+(i+1)+')'})}
-{const _ai=applyI18n;applyI18n=function(){_ai();try{navKeyTips()}catch(e){}}}
+{hookFn('applyI18n',()=>applyI18n,f=>{applyI18n=f},'post',function(){try{navKeyTips()}catch(e){}})}
 try{navKeyTips()}catch(e){}
 
 /* ---- compact Today (on by default): one header card, the full ayah, chips in one row; on PC date | ayah | prayers ---- */
 function tdcApply(){const on=S.settings.tdCompact!==false;document.documentElement.classList.toggle('tdc',on);const ev=$('#todayEv');if(ev)ev.classList.toggle('scrollx',on&&MOB.matches)}
-{const _at=applyTheme;applyTheme=function(...a){const r=_at(...a);try{tdcApply()}catch(e){}return r}}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#tdcT'),S.settings.tdCompact!==false,v=>{S.settings.tdCompact=v;tdcApply()})}catch(e){console.error(e)}}}
+{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(...a){try{tdcApply()}catch(e){}})}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{toggle($('#tdcT'),S.settings.tdCompact!==false,v=>{S.settings.tdCompact=v;tdcApply()})}catch(e){console.error(e)}})}
 try{tdcApply()}catch(e){}
 

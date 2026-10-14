@@ -12,7 +12,7 @@ function auPlaced(){const s=new Set();AUD().f.forEach(f=>(f.items||[]).forEach(i
 /* playing: a queue (a playlist, a folder or a list) that «next» follows */
 function auPlay(ids,start,shuffle){let q=ids.filter(auRec);if(!q.length)return;if(shuffle){q=q.slice();for(let i=q.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[q[i],q[j]]=[q[j],q[i]]}}RCX.queue=q;RCX.auto=true;rcPlay(start&&q.includes(start)?start:q[0])}
 {const _rn=rcNext;rcNext=function(){const q=RCX.queue;if(q&&q.length){const i=q.indexOf(RCX.cur);if(i>=0&&i<q.length-1){rcPlay(q[i+1]);return}if(i===q.length-1){RCX.queue=null;rcUI();return}}return _rn()}}
-{const _ru=rcUI;rcUI=function(){_ru();try{$$('#libBox .aurow').forEach(r=>{const on=r.dataset.rid===RCX.cur,b=r.querySelector('.aupp');r.classList.toggle('on',on);if(b)b.textContent=on&&RCX.el&&!RCX.el.paused?'⏸':'▶'})}catch(e){}}}
+{hookFn('rcUI',()=>rcUI,f=>{rcUI=f},'post',function(){try{$$('#libBox .aurow').forEach(r=>{const on=r.dataset.rid===RCX.cur,b=r.querySelector('.aupp');r.classList.toggle('on',on);if(b)b.textContent=on&&RCX.el&&!RCX.el.paused?'⏸':'▶'})}catch(e){}})}
 /* a recording row */
 function auRow(r,ctx,i,n){const P=ctx&&ctx.startsWith('p:');return`<div class="aurow${RCX.cur===r.id?' on':''}" data-rid="${r.id}"><button class="aupp" data-aplay="${r.id}">${RCX.cur===r.id&&RCX.el&&!RCX.el.paused?'⏸':'▶'}</button><span class="aut"><b dir="auto">${esc(r.title)}</b><small dir="auto">${[r.reciter,r.dur?rcFmt(r.dur):'',r.size?(r.size/1048576).toFixed(1)+' MB':'',r.src].filter(Boolean).map(esc).join(' · ')}</small></span>
   ${P?`<button class="lshm" data-up="${i}" ${i?'':'disabled'} aria-label="↑">↑</button><button class="lshm" data-dn="${i}" ${i<n-1?'':'disabled'} aria-label="↓">↓</button>`:''}<button class="lshm" data-am="${r.id}" aria-label="⋯">⋯</button></div>`}
@@ -114,5 +114,5 @@ function auShelfHTML(){const A=AUD(),n=RCL().length;const cards=[...A.pl.slice(0
   const v=$('#v-lib');if(!v)return;let box=$('#libBox');if(!box){box=document.createElement('div');box.id='libBox';v.append(box)}
   box.innerHTML=`<div id="lshBody">${auView()}</div>`;try{auBind(box)}catch(e){console.error(e)}}}
 /* the old «my recitations» window points to the library */
-{const _rr=renderRecits;renderRecits=function(){_rr();const h=$('#rcBox h2');if(h&&!$('#rcToLib'))h.insertAdjacentHTML('afterend',`<button class="btn sm" id="rcToLib" style="float:inline-end;margin-top:-34px">🎧 ${t('au.inLib')}</button>`);const b=$('#rcToLib');if(b)b.onclick=()=>{$('#rcModal').classList.remove('on');LIB.open='au:';showView('lib')}}}
+{hookFn('renderRecits',()=>renderRecits,f=>{renderRecits=f},'post',function(){const h=$('#rcBox h2');if(h&&!$('#rcToLib'))h.insertAdjacentHTML('afterend',`<button class="btn sm" id="rcToLib" style="float:inline-end;margin-top:-34px">🎧 ${t('au.inLib')}</button>`);const b=$('#rcToLib');if(b)b.onclick=()=>{$('#rcModal').classList.remove('on');LIB.open='au:';showView('lib')}})}
 

@@ -16,11 +16,11 @@ document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey)return
 /* 29. drag tasks between calendar days */
 {const _rd=renderDetail;renderDetail=function(k){_rd(k);try{const d=S.days[k];$$('#detail li.dtask').forEach(li=>{const b=li.querySelector('[data-pp]');if(!b||!d)return;li.draggable=true;li.title=t('dd.tip');li.ondragstart=e=>{e.dataTransfer.setData('text/plain',JSON.stringify({k,id:b.dataset.pp}));li.classList.add('drag')};li.ondragend=()=>li.classList.remove('drag')})}catch(e){}}}
 function moveTask(from,id,to){if(from===to)return;const a=S.days[from],x=a&&a.tasks.find(q=>q.id===id);if(!x)return;a.tasks=a.tasks.filter(q=>q!==x);day(to).tasks.push(x);save();renderCal();renderDetail(selKey);if(from===todayKey()||to===todayKey())renderTasks();toastAct(t('dd.moved',dayLabel(to)),t('undo'),()=>{day(to).tasks=day(to).tasks.filter(q=>q!==x);day(from).tasks.push(x);save();renderCal();renderDetail(selKey);renderTasks()},8000)}
-{const _rc=renderCal;renderCal=function(){_rc();$$('#cal .cell[data-k]').forEach(c=>{c.ondragover=e=>{e.preventDefault();c.classList.add('dropon')};c.ondragleave=()=>c.classList.remove('dropon');c.ondrop=e=>{e.preventDefault();c.classList.remove('dropon');try{const o=JSON.parse(e.dataTransfer.getData('text/plain'));moveTask(o.k,o.id,c.dataset.k)}catch(x){}}})}}
+{hookFn('renderCal',()=>renderCal,f=>{renderCal=f},'post',function(){$$('#cal .cell[data-k]').forEach(c=>{c.ondragover=e=>{e.preventDefault();c.classList.add('dropon')};c.ondragleave=()=>c.classList.remove('dropon');c.ondrop=e=>{e.preventDefault();c.classList.remove('dropon');try{const o=JSON.parse(e.dataTransfer.getData('text/plain'));moveTask(o.k,o.id,c.dataset.k)}catch(x){}}})})}
 /* 30. global undo / redo */
 const UNDO={st:[],rd:[],last:null,busy:false,t:null};
 function undoSnap(){if(UNDO.busy)return;clearTimeout(UNDO.t);UNDO.t=setTimeout(()=>{const j=JSON.stringify(S);if(j===UNDO.last)return;if(UNDO.last)UNDO.st.push(UNDO.last);if(UNDO.st.length>15)UNDO.st.shift();UNDO.last=j;UNDO.rd=[]},900)}
-{const _sv2=save;save=function(){_sv2();undoSnap()}}
+{hookFn('save',()=>save,f=>{save=f},'post',function(){undoSnap()})}
 setTimeout(()=>{UNDO.last=JSON.stringify(S)},3000);
 function undoGo(redo){const from=redo?UNDO.rd:UNDO.st,to=redo?UNDO.st:UNDO.rd;if(!from.length){toast(t(redo?'un.noRedo':'un.none'));return}to.push(UNDO.last);const j=from.pop();UNDO.busy=true;S=JSON.parse(j);UNDO.last=j;save();renderAll();UNDO.busy=false;toast(t(redo?'un.redone':'un.done'))}
 document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.key.toLowerCase()!=='z')return;const tg=e.target;if(tg&&(/INPUT|TEXTAREA/.test(tg.tagName)||tg.isContentEditable))return;if(curView()==='boards'&&nbMode==='boards')return;e.preventDefault();undoGo(e.shiftKey)});
@@ -44,5 +44,5 @@ const PG_TIPS={quran:['pg.q1','pg.q2','pg.q3'],cal:['pg.c1','pg.c2','pg.c3'],bri
   sec.insertAdjacentHTML('afterbegin',`<div class="pgtip"><b>💡 ${t('pg.t.'+v)}</b><ul>${PG_TIPS[v].map(k=>`<li>${t(k)}</li>`).join('')}</ul><button class="btn sm" data-pgx>${t('pg.ok')}</button></div>`);sec.querySelector('[data-pgx]').onclick=e=>{seen[v]=1;save();e.target.closest('.pgtip').remove()}}catch(e){}}}
 function renderV39Set(){const st=S.settings;toggle($('#hcT'),!!st.hc,v=>{st.hc=v;setTimeout(applyLook2,0)});toggle($('#cbT'),!!st.cb,v=>{st.cb=v;setTimeout(applyLook2,0)});toggle($('#swT'),!st.noSwipe,v=>{st.noSwipe=!v});
   const z=$('#zoomIn');z.value=st.zoom||1;$('#zoomV').textContent=Math.round((st.zoom||1)*100)+'%';z.oninput=()=>{$('#zoomV').textContent=Math.round(z.value*100)+'%'};z.onchange=()=>{st.zoom=+z.value;save();applyLook2()};$('#ksBtn').onclick=openKeys}
-{const _rs14=renderSettings;renderSettings=function(){_rs14();try{renderV39Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV39Set()}catch(e){console.error(e)}})}
 

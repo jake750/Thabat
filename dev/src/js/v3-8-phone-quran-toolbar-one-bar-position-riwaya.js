@@ -18,7 +18,7 @@ function qbLayout(){const bar=$('.qbar');if(!bar)return;if(!QB_ORDER)QB_ORDER=[.
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#qbTools .qbtool');if(b)setTimeout(qbClose,0);if(e.target.closest&&e.target.closest('#qbNav select,#qbNav input'))return},true);
 ['change'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.closest&&e.target.closest('#qbNav')&&e.target.tagName==='SELECT')setTimeout(qbClose,50)},true));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')qbClose()});
-{const _rq=renderQuran;renderQuran=function(){_rq();try{qbLayout();qbSummary()}catch(e){console.error(e)}}}
-{const _qbu=qBarUpdate;qBarUpdate=function(...a){const r=_qbu(...a);try{qbSummary()}catch(e){}return r}}
+{hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(){try{qbLayout();qbSummary()}catch(e){console.error(e)}})}
+{hookFn('qBarUpdate',()=>qBarUpdate,f=>{qBarUpdate=f},'post',function(...a){try{qbSummary()}catch(e){}})}
 MOB.addEventListener&&MOB.addEventListener('change',()=>{try{qbLayout()}catch(e){}});
 

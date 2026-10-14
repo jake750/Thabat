@@ -19,7 +19,7 @@ function bkIcons(){bkSetIco('bkX','x');bkSetIco('bkZo','minus',t('bk2.zoomOut'))
   bkSetIco('bkHl','pen',t('bk.hl'));bkSetIco('bkBm','mark',t('bk.bm'));bkSetIco('bkNt','note',t('bk.note'));bkSetIco('bkSr','search',t('bkx.t'));bkSetIco('bkLs','list',t('bk.list'));bkSetIco('bk2More','more',t('bk2.menu'));
   const f=bkMode()==='flip';bkSetIco('bk2Md',f?'book':'scroll',t(f?'bk3.mFlip':'bk3.mScroll')+' — '+t(f?'bk2.toScroll':'bk2.toFlip'));bkSetIco('bk2Pv','left');bkSetIco('bk2Nx','right');
   const ni=$('#bkNi');if(ni)ni.classList.toggle('on',!!n)}
-{const _m=bkModeBtn;bkModeBtn=function(...a){const r=_m(...a);try{bkIcons()}catch(e){}return r}}
+{hookFn('bkModeBtn',()=>bkModeBtn,f=>{bkModeBtn=f},'post',function(...a){try{bkIcons()}catch(e){}})}
 /* highlights: every change can be undone (the bar button, the floating bar while highlighting, Ctrl+Z) */
 const BKH={snap:{},undo:[]};
 {const _d=bkDrawHl;bkDrawHl=function(n,...a){try{const r=BKS()[BK.key];if(r){const cur=JSON.stringify(r.hl[n]||[]),k=BK.key+'|'+n;if(BKH.snap[k]!=null&&BKH.snap[k]!==cur&&!BKH.busy){BKH.undo.push({key:BK.key,n,prev:BKH.snap[k]});if(BKH.undo.length>80)BKH.undo.shift()}BKH.snap[k]=cur}}catch(e){}const r=_d(n,...a);bkHlBar();return r}}
@@ -58,4 +58,4 @@ bkNightPaint=async function(c,pg,vp){try{if(typeof bkxLoad==='function'){await b
   x.restore();if(PT.ring&&PT.ring.length)bkRingPaint(x,o,PT.ring);o.width=o.height=0};
 /* after the reader is built: icons, the highlight bar, the night button repaints its icon */
 {const _b=bkBuild;bkBuild=async function(...a){const r=await _b(...a);try{bkIcons();const ni=$('#bkNi');if(ni)ni.addEventListener('click',()=>setTimeout(bkIcons,0));const hl=$('#bkHl');if(hl)hl.addEventListener('click',()=>setTimeout(bkHlBar,0))}catch(e){console.error(e)}return r}}
-{const _c=bkClose;bkClose=function(...a){const b=$('#bk3Hl');if(b)b.remove();return _c(...a)}}
+{hookFn('bkClose',()=>bkClose,f=>{bkClose=f},'pre',function(...a){const b=$('#bk3Hl');if(b)b.remove()})}

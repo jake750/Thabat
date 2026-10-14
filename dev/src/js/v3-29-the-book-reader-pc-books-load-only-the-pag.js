@@ -130,7 +130,7 @@ bkBind=function(root){if(!root)return;const all=bkAll(),find=k=>all.find(b=>b.ke
   root.querySelectorAll('[data-bkf]').forEach(x=>x.onclick=()=>{BK2.filter=x.dataset.bkf;renderLib()});
   root.querySelectorAll('[data-book]').forEach(c=>c.onclick=e=>{if(e.target.closest('[data-bkm],[data-lxrm]'))return;const b=find(c.dataset.book);if(b)bkOpen(b)});
   root.querySelectorAll('[data-bkm]').forEach(x=>x.onclick=e=>{e.stopPropagation();bkMenu(x,x.dataset.bkm)})};
-{const _rl=renderLib;renderLib=function(...a){const r=_rl(...a);try{setTimeout(bkCovers,50)}catch(e){}return r}}
+{hookFn('renderLib',()=>renderLib,f=>{renderLib=f},'post',function(...a){try{setTimeout(bkCovers,50)}catch(e){}})}
 /* the reader: new buttons, gestures and keys */
 {const _b=bkBuild;bkBuild=async function(ov,startPg,...x){const r=await _b(ov,startPg,...x);try{const v=$('#bkV');if(!v)return r;v.classList.add('nx');
   BK.dir=await bkDirOf();const st=BKS()[BK.key];if(st&&!st.dir)st.dir=BK.dir;
@@ -171,5 +171,5 @@ addEventListener('keydown',e=>{if(!BK.doc||!$('#bkReader.on')||/INPUT|TEXTAREA|S
   if((e.ctrlKey||e.metaKey)&&(k==='='||k==='+'||k==='-'||k==='0')){e.preventDefault();e.stopPropagation();bkZoomTo(k==='0'?1:BK.zoom*(k==='-'?1/1.2:1.2));return}
   if(bkMode()!=='flip')return;let d=0;if(k==='ArrowLeft')d=rtl?1:-1;else if(k==='ArrowRight')d=rtl?-1:1;else if(k==='PageDown'||k===' '||(k==='ArrowDown'&&BK.zoom<=1.01))d=1;else if(k==='PageUp'||(k==='ArrowUp'&&BK.zoom<=1.01))d=-1;else if(k==='Home'){e.preventDefault();e.stopPropagation();bkGoPage(1);return}else if(k==='End'){e.preventDefault();e.stopPropagation();bkGoPage(BK.pages.length);return}
   if(d){e.preventDefault();e.stopPropagation();bkStep(d)}},true);
-{const _c=bkClose;bkClose=function(...a){BK2.q.clear();BK2.tasks.forEach(tk=>{try{tk.cancel()}catch(e){}});BK2.tasks.clear();BK2.act=0;bkAskDone._k=null;return _c(...a)}}
+{hookFn('bkClose',()=>bkClose,f=>{bkClose=f},'pre',function(...a){BK2.q.clear();BK2.tasks.forEach(tk=>{try{tk.cancel()}catch(e){}});BK2.tasks.clear();BK2.act=0;bkAskDone._k=null})}
 

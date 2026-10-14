@@ -28,5 +28,5 @@ function andOffApply(){document.documentElement.style.setProperty('--andman',(+S
 andOffApply();
 function renderV44Set(){const st=S.settings,se=$('#andOffSel');if(se){se.innerHTML=[0,12,24,36,48,64].map(v=>`<option value="${v}" ${(+st.andOff||0)===v?'selected':''}>${v?'+'+v:t('and.auto')}</option>`).join('');se.onchange=()=>{st.andOff=+se.value;save();andOffApply()}}
   const qt=$('#qftT');if(qt)toggle(qt,st.qfsTime!==false,v=>{st.qfsTime=v})}
-{const _rs18=renderSettings;renderSettings=function(){_rs18();try{renderV44Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV44Set()}catch(e){console.error(e)}})}
 

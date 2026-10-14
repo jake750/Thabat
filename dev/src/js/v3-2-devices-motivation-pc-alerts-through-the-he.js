@@ -13,7 +13,7 @@ setInterval(()=>{pcnAlive();pcnPush()},45e3);setTimeout(()=>pcnPush(true),6000);
 function weekShareText(){const keys=periodKeys('week',keyToDate(todayKey())).filter(k=>k<=todayKey()),st=periodStats(keys),pr=onTimePct(keys),f=S.settings.friend||'';
   return[(f?t('fr.hi',f)+'\n':'')+t('fr.head'),'⏱ '+t('fr.hours',fmtHM(st.tot)),'⭐ '+t('fr.gold',st.gold,st.elapsed),'✅ '+t('fr.tasks',st.tasksDone,st.tasksAll),pr!=null?'🕌 '+t('fr.pray',pr):'','📖 '+t('fr.quran',st.q.read),(REV()[keys[0]]&&REV()[keys[0]].focus||[]).length?'🎯 '+t('fr.focus')+' '+REV()[keys[0]].focus.join('، '):'','— '+t('app')].filter(Boolean).join('\n')}
 function shareWeek(){const tx=weekShareText();if(ANDROID&&window.ThabatAndroid.share){window.ThabatAndroid.share(t('fr.title'),tx);return}if(navigator.share){navigator.share({text:tx}).catch(()=>copyTxt(tx));return}copyTxt(tx)}
-{const _rb9=renderBrief;renderBrief=function(){_rb9();try{if(bMode==='week'&&!$('#frBtn')){$('#rvBtn').insertAdjacentHTML('afterend',`<button class="btn sm ghost" id="frBtn">↗ ${t('fr.btn')}</button>`);$('#frBtn').onclick=shareWeek}else if(bMode!=='week'){const x=$('#frBtn');if(x)x.remove()}}catch(e){}}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{if(bMode==='week'&&!$('#frBtn')){$('#rvBtn').insertAdjacentHTML('afterend',`<button class="btn sm ghost" id="frBtn">↗ ${t('fr.btn')}</button>`);$('#frBtn').onclick=shareWeek}else if(bMode!=='week'){const x=$('#frBtn');if(x)x.remove()}}catch(e){}})}
 setInterval(()=>{const f=S.settings.friend;if(!f||!S.settings.friendDay)return;const k=todayKey(),d=keyToDate(k);if(d.getDay()!==+S.settings.friendDay||new Date().getHours()<20)return;const dd=day(k);if(dd.frAsk)return;dd.frAsk=1;save();toastAct(t('fr.remind',f),t('fr.btn'),shareWeek,30000)},6e4);
 /* 92. Ramadan badge */
 BADGES.push({id:'ramadan',ic:'🌙',g:'w',tiers:[10,20,30],v:()=>{const by={};Object.keys(S.days).forEach(k=>{try{const h=hNum(keyToDate(k));if(h.m!==9)return;const d=S.days[k];if(d.fast||qWirdDone(d.quran))by[h.y]=(by[h.y]||0)+1}catch(e){}});return Math.max(0,...Object.values(by))},u:'days'});
@@ -22,7 +22,7 @@ const AYD=['26:62','94:5','13:28','65:3','2:152','39:53','3:139','2:186','20:114
 function aydRef(){const n=Math.floor(keyToDate(todayKey()).getTime()/864e5);return AYD[(n*7)%AYD.length]}
 async function renderAyd(){const el=$('#aydBox');if(!el)return;if(S.settings.aydOff){el.hidden=true;return}try{await qLoadPack('hafs')}catch(e){el.hidden=true;return}const [s,a]=aydRef().split(':').map(Number),tx=qAyahText(s,a,'hafs');if(!tx){el.hidden=true;return}
   el.hidden=false;el.classList.toggle('long',tx.length>110);el.classList.toggle('xlong',tx.length>220);el.innerHTML=`<em class="aydl">${t('ayd.s')}</em><span class="aydt" dir="rtl">${esc(tx)}</span><small>﴿ ${esc(qSurahName(s))} ${a} ﴾</small>`;el.onclick=()=>qGoAyah(s,a)}
-{const _rtd4=renderToday;renderToday=function(){_rtd4();if(!renderToday._ayd||renderToday._ayd!==todayKey()){renderToday._ayd=todayKey();setTimeout(renderAyd,400)}}}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){if(!renderToday._ayd||renderToday._ayd!==todayKey()){renderToday._ayd=todayKey();setTimeout(renderAyd,400)}})}
 /* 94. end-of-month celebration */
 setTimeout(()=>{try{const k=todayKey(),mk=k.slice(0,7);if(!S.setupDone||S.moCel===mk)return;const pm=new Date(keyToDate(k).getFullYear(),keyToDate(k).getMonth()-1,1),keys=periodKeys('month',pm);if(!keys.some(x=>S.days[x]&&(S.days[x].sessions||[]).length)){S.moCel=mk;save();return}
   S.moCel=mk;save();const st=periodStats(keys);celebrate('🎉 '+t('mc.t',L().months[pm.getMonth()]),t('mc.b',fmtHM(st.tot),st.gold,st.tasksDone,st.q.read),t('mc.c'))}catch(e){}},9000);
@@ -39,11 +39,11 @@ setTimeout(applyDigits,500);
 /* 98. travel: time zone changed */
 setTimeout(()=>{try{const tz=Intl.DateTimeFormat().resolvedOptions().timeZone,off=new Date().getTimezoneOffset(),st=S.settings;if(!st.tzLast){st.tzLast={tz,off};save();return}if(st.tzLast.tz!==tz||st.tzLast.off!==off){const was=st.tzLast.tz;st.tzLast={tz,off};save();toastAct(t('tv.t',tz),t('tv.go'),()=>{showView('set');setTimeout(()=>{const b=$('#locChange');if(b)b.click()},300)},25000)}}catch(e){}},5000);
 /* 100. beta tag */
-{const _rv=renderV38Set;renderV38Set=function(){_rv();if(BETA){const a=$('#aboutV');if(a)a.insertAdjacentHTML('beforeend',` <span class="betatag">${t('beta.tag')}</span>`)}}}
+{hookFn('renderV38Set',()=>renderV38Set,f=>{renderV38Set=f},'post',function(){if(BETA){const a=$('#aboutV');if(a)a.insertAdjacentHTML('beforeend',` <span class="betatag">${t('beta.tag')}</span>`)}})}
 function renderV43Set(){const st=S.settings;$('#pcnField').hidden=ANDROID;toggle($('#pcnT'),!!st.pcNotif,v=>{st.pcNotif=v;PCN_LAST='';setTimeout(()=>{if(v)pcnPush(true);else fetch(HELPER+'/sched?d=',{cache:'no-store'}).catch(()=>{})},0)});
   const fi=$('#frName');fi.value=st.friend||'';fi.onchange=()=>{st.friend=fi.value.trim();save()};const fd=$('#frDay');fd.innerHTML=`<option value="">—</option>`+L().days.map((d,i)=>`<option value="${i}" ${String(st.friendDay)===String(i)?'selected':''}>${d}</option>`).join('');fd.onchange=()=>{st.friendDay=fd.value;save()};
   toggle($('#aydT'),!st.aydOff,v=>{st.aydOff=!v;setTimeout(renderAyd,0)});toggle($('#frzT'),st.freeze!==false,v=>{st.freeze=v});$('#digField').hidden=LANG!=='ar';toggle($('#digT'),!!st.arDigits,v=>{st.arDigits=v;setTimeout(()=>{applyDigits();if(!v)renderAll()},0)})}
-{const _rs17=renderSettings;renderSettings=function(){_rs17();try{renderV43Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV43Set()}catch(e){console.error(e)}})}
 
 /* v3.2.3 Android: size the app to the real visible area so the bottom bar never hides under the phone's buttons */
 function andFit(){if(!document.documentElement.classList.contains('android'))return;const h=window.innerHeight;if(h>200)document.documentElement.style.setProperty('--apph',h+'px')}

@@ -18,7 +18,7 @@ function qhlToggle(on){QHL.on=on==null?!QHL.on:on;if(QHL.on&&!qhlIsImg())QHL.on=
 function qhlBtns(){const img=qhlIsImg();let b=$('#qHlBtn');if(!b){$('#qDark').insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="qHlBtn" title="${esc(t('hl.mode'))}">🖍</button>`);b=$('#qHlBtn');b.onclick=()=>qhlToggle()}
   let f=$('#qFsHl');if(!f){$('#qFsDark').insertAdjacentHTML('beforebegin',`<button class="btn sm" id="qFsHl" title="${esc(t('hl.mode'))}">🖍</button>`);f=$('#qFsHl');f.onclick=e=>{e.stopPropagation();qhlToggle()}}
   b.hidden=f.hidden=!img;if(!img&&QHL.on)qhlToggle(false)}
-{const _rq=renderQuran;renderQuran=function(){_rq();try{qhlBtns();$('#mushaf').classList.toggle('qhl-on',QHL.on);qhlBar()}catch(e){console.error(e)}}}
+{hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(){try{qhlBtns();$('#mushaf').classList.toggle('qhl-on',QHL.on);qhlBar()}catch(e){console.error(e)}})}
 {const inPage=e=>QHL.on&&e.target&&e.target.closest&&e.target.closest('#spread')&&!e.target.closest('#qHlBar');
   const imgAt=(x,y)=>[...$$('#spread img[data-p]')].find(im=>{const r=im.getBoundingClientRect();return r.width>0&&x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom});
   const fy=(im,y)=>{const r=im.getBoundingClientRect();return Math.max(0,Math.min(1,(y-r.top)/r.height))};
@@ -52,6 +52,6 @@ setInterval(()=>{const fs=document.documentElement.classList.contains('qfs');if(
   const ps=qVisPages(),k=ps.join(',');if(k!==QRD.key){QRD.key=k;QRD.t0=Date.now();QRD.done=false}
   else if(!QRD.done&&Date.now()-QRD.t0>=QRD_MS){QRD.done=true;qReadMark(ps)}qrdUi()},1000);
 function qPgsLine(k){const g=qPgsOf(k);return g.length?t('rd.line',rangesStr(g),g.length):''}
-{const _rqs=renderQSide;renderQSide=function(){_rqs();try{const b=$('#qToday'),l=qPgsLine(todayKey());if(b&&l&&!b.querySelector('.qrdl'))b.insertAdjacentHTML('beforeend',`<div class="qrdl">📖 ${l}</div>`)}catch(e){}}}
+{hookFn('renderQSide',()=>renderQSide,f=>{renderQSide=f},'post',function(){try{const b=$('#qToday'),l=qPgsLine(todayKey());if(b&&l&&!b.querySelector('.qrdl'))b.insertAdjacentHTML('beforeend',`<div class="qrdl">📖 ${l}</div>`)}catch(e){}})}
 {const _rd=renderDetail;renderDetail=function(k){_rd(k);try{const l=qPgsLine(k),mb=$('#detail .minibar');if(l&&mb)mb.insertAdjacentHTML('afterend',`<div class="sec qrdsec"><b>📖 ${t('rd.day')}</b><div class="qrdl">${l}</div></div>`)}catch(e){}}}
 

@@ -4,7 +4,7 @@ function RC(){return S.recur||(S.recur=[])}
 function rcMatch(r,k){const d=keyToDate(k);if(r.start&&k<r.start)return false;if(r.rule==='daily')return true;if(r.rule==='wd')return(r.days||[]).includes(d.getDay());if(r.rule==='monthly')return d.getDate()===r.dom;return false}
 function rcDesc(r){return r.rule==='daily'?t('rc.daily'):r.rule==='monthly'?t('rc.monthlyN',r.dom):(r.days||[]).map(i=>L().days[i]).join('، ')}
 function ensureRecur(k){k=k||todayKey();const d=day(k);let add=0;RC().forEach(r=>{if(rcMatch(r,k)&&!d.tasks.some(x=>x.recurId===r.id)){d.tasks.push({id:uid(),text:r.text,done:false,created:Date.now(),recurId:r.id});add++}});if(add)save()}
-{const _rtd=renderToday;renderToday=function(){try{ensureRecur()}catch(e){}_rtd()}}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'pre',function(){try{ensureRecur()}catch(e){}})}
 $('#rcBtn').title=t('rc.title');
 $('#rcBtn').onclick=()=>{const b=$('#rcBtn'),r=b.getBoundingClientRect(),txt=$('#taskIn').value.trim(),wd=keyToDate(todayKey()).getDay(),sel=new Set([wd]);
   const p=qPopAt(`<div class="aymh"><b>🔁 ${t('rc.title')}</b></div>${txt?`<button data-r="daily">${t('rc.daily')}</button><button data-r="wd1">${t('rc.weekly',L().days[wd])}</button><div class="wdch">${[1,2,3,4,5,6,0].map(i=>`<button data-d="${i}" class="${i===wd?'on':''}">${L().days[i].slice(0,LANG==='ar'?7:3)}</button>`).join('')}</div><button data-r="wd">${t('rc.days')}</button><button data-r="monthly">${t('rc.monthlyN',keyToDate(todayKey()).getDate())}</button>`:`<div style="padding:6px 10px;font-size:12px;color:var(--muted)">${t('rc.typeFirst')}</div>`}${RC().length?`<div class="aymh" style="margin-top:6px">${t('rc.list')}</div>`+RC().map(x=>`<button data-x="${x.id}">✕ ${esc(x.text)} <small>(${esc(rcDesc(x))})</small></button>`).join(''):''}`,r.left+r.width/2,r.bottom,'aymenu rcpop');
@@ -70,6 +70,6 @@ function openCourse(id){const c=id?COURSES().find(x=>x.id===id):{name:'',total:'
   $('#crOk').onclick=()=>{const n=$('#crN').value.trim();if(!n){$('#crN').focus();return}const rec={id:id||uid(),name:n,total:Math.max(0,+$('#crT').value||0),done:Math.max(0,+$('#crD').value||0),url:/^https?:\/\//.test($('#crU').value.trim())?$('#crU').value.trim():''};const i=COURSES().findIndex(x=>x.id===rec.id);if(i>=0)S.courses[i]=Object.assign(S.courses[i],rec);else COURSES().push(rec);save();$('#crModal').classList.remove('on');renderLearn()};
   const dl=$('#crDel');if(dl)dl.onclick=()=>{if(!confirm(t('cr.delQ',c.name)))return;S.courses=COURSES().filter(x=>x.id!==id);save();$('#crModal').classList.remove('on');renderLearn()}}
 $('#crModal').onclick=e=>{if(e.target.id==='crModal')$('#crModal').classList.remove('on')};
-{const _rm=renderMedia;renderMedia=function(){_rm();try{renderLearn()}catch(e){}}}
+{hookFn('renderMedia',()=>renderMedia,f=>{renderMedia=f},'post',function(){try{renderLearn()}catch(e){}})}
 function renderV30Set(){const i=$('#learnGoalIn');if(!i)return;i.value=S.settings.learnGoal||'';i.onchange=e=>{S.settings.learnGoal=Math.max(0,+e.target.value||0);save();renderLearn()}}
-{const _rs4=renderSettings;renderSettings=function(){_rs4();try{renderV30Set()}catch(e){}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV30Set()}catch(e){}})}

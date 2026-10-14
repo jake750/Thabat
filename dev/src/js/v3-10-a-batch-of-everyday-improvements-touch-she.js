@@ -102,7 +102,7 @@ function uxSelBar(){const card=$('#tasks')&&$('#tasks').closest('.card');if(!car
 function uxTmBtn(){const ms=$('#missed');if(!ms)return;let b=$('#uxTmAll');const d=day(todayKey()),tm=dKey(addDays(keyToDate(todayKey()),1)),n=d.tasks.filter(x=>!x.done&&!(x.pp||[]).some(q=>q.k===tm)).length;
   if(!b){b=document.createElement('button');b.id='uxTmAll';b.className='btn sm ghost uxtmall';ms.before(b);b.onclick=()=>{const L_=day(todayKey()).tasks.filter(x=>!x.done).map(x=>x.id);uxTomorrow(L_)}}
   b.hidden=!n;b.textContent='➡️ '+t('ux.allTm');b.title=t('ux.allTmT',n)}
-{const _rt=renderTasks;renderTasks=function(){_rt();try{uxTasksDecorate()}catch(e){console.error(e)}}}
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(){try{uxTasksDecorate()}catch(e){console.error(e)}})}
 function uxTasksDecorate(){const tk=todayKey(),d=day(tk),ids=new Set(d.tasks.map(x=>x.id));[...UXT.sel].forEach(id=>{if(!ids.has(id))UXT.sel.delete(id)});
   $$('#tasks .task').forEach(li=>{const id=li.dataset.id,x=d.tasks.find(q=>q.id===id);if(!x)return;
     const del=li.querySelector('.del');if(del)del.onclick=()=>{const r=uxDelTask(tk,id);save();renderTasks();if(r)uxUndoDel(tk,[r])};
@@ -147,7 +147,7 @@ function uxRecap(){const old=$('#uxRecap');const k=todayKey(),pt=prayerTimes(key
   let c=old;if(!c){c=document.createElement('div');c.id='uxRecap';c.className='card uxrecap';const top=$('#v-today .tdtop');if(top)top.after(c);else return}c.innerHTML=html;
   c.querySelector('.uxrc-x').onclick=()=>{try{localStorage.setItem('thabat.recapX',k)}catch(e){}c.remove()};
   const mv=c.querySelector('.uxrc-tm');if(mv)mv.onclick=()=>{uxTomorrow(day(k).tasks.filter(x=>!x.done).map(x=>x.id));uxRecap()}}
-{const _rt=renderTasks;renderTasks=function(){_rt();try{uxRecap()}catch(e){console.error(e)}}}
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(){try{uxRecap()}catch(e){console.error(e)}})}
 setInterval(()=>{if(curView()==='today'&&!document.hidden)try{uxRecap()}catch(e){}},5*6e4);
 
 /* ---- a «⋯» menu on every Today card: fold, move, hide ---- */
@@ -161,9 +161,9 @@ function uxCardMenu(c,btn){const L_=S.settings.home3||(S.settings.home3={}),k=ca
       const i=sib.indexOf(c),j=a==='up'?i-1:i+1;if(j<0||j>=sib.length)return;[sib[i],sib[j]]=[sib[j],sib[i]];sib.forEach((x,n)=>{const kk=cardKey(x);(L_[kk]=L_[kk]||{}).o=n});save();homeApply();c.scrollIntoView({block:'nearest',behavior:'smooth'})}})}
 function uxCardBtns(){homeCards().forEach(c=>{const h=c.querySelector(':scope>h3');if(!h)return;let b=h.querySelector(':scope>.uxcm');if(!b){b=document.createElement('button');b.className='uxcm';b.type='button';b.innerHTML=UX_DOTS;b.setAttribute('aria-label',t('ux.cardMenu'));h.append(b);
     b.onclick=e=>{e.stopPropagation();uxCardMenu(c,b)}}b.title=t('ux.cardMenu')})}
-{const _ha=homeApply;homeApply=function(){_ha();try{const L_=S.settings.home3||{};homeCards().forEach(c=>{const o=L_[cardKey(c)]||{};c.classList.toggle('uxfold',!!o.c)});uxCardBtns()}catch(e){console.error(e)}}}
+{hookFn('homeApply',()=>homeApply,f=>{homeApply=f},'post',function(){try{const L_=S.settings.home3||{};homeCards().forEach(c=>{const o=L_[cardKey(c)]||{};c.classList.toggle('uxfold',!!o.c)});uxCardBtns()}catch(e){console.error(e)}})}
 document.addEventListener('click',e=>{const h=e.target.closest&&e.target.closest('#v-today .card.uxfold>h3');if(!h||e.target.closest('button,a,input'))return;const c=h.parentElement,L_=S.settings.home3||{},o=L_[cardKey(c)];if(o){o.c=false;save();homeApply()}});
-{const _rp=pdlRender;pdlRender=function(){_rp();try{uxCardBtns()}catch(e){}}}
+{hookFn('pdlRender',()=>pdlRender,f=>{pdlRender=f},'post',function(){try{uxCardBtns()}catch(e){}})}
 
 /* ---- PC: Ctrl + / Ctrl − / Ctrl 0 change the interface size ---- */
 document.addEventListener('keydown',e=>{if(!(e.ctrlKey||e.metaKey)||e.altKey||ANDROID)return;const k=e.key;let z=+(S.settings.zoom||1);
@@ -187,12 +187,12 @@ function uxBalance(){const g=$('#v-today .grid'),S0=uxStacks();if(!g||S0.length<
 function uxUnbalance(){const S0=uxStacks(),c3=$('#uxCol3');const all=[...S0,c3].filter(Boolean).flatMap(s=>[...s.children]);
   all.forEach(c=>{c.classList.remove('uxanchor');const t=S0[+c.dataset.uxp];if(t)t.append(c)});S0.forEach(s=>[...s.children].sort((x,y)=>(+x.dataset.uxi||0)-(+y.dataset.uxi||0)).forEach(c=>s.append(c)));if(c3)c3.remove()}
 function uxRebalance(){if($('#uxCol3')){uxUnbalance();uxBalance()}}
-addEventListener('resize',uxWide);{const _al=applyLook2;applyLook2=function(...a){const r=_al(...a);try{uxWide()}catch(e){}return r}}
+addEventListener('resize',uxWide);{hookFn('applyLook2',()=>applyLook2,f=>{applyLook2=f},'post',function(...a){try{uxWide()}catch(e){}})}
 try{uxWide()}catch(e){}
-{const _rt=renderToday;renderToday=function(...a){const r=_rt(...a);try{uxWide()}catch(e){}return r}}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(...a){try{uxWide()}catch(e){}})}
 /* the notes «⋯» button: a drawn icon, centred in any font */
 function uxDotsFix(){const b=$('#nxMore');if(b&&!b.querySelector('.uxdots'))b.innerHTML=UX_DOTS}
-{const _rb=renderBoardsView;renderBoardsView=function(...a){const r=_rb(...a);try{uxDotsFix()}catch(e){}return r}}
+{hookFn('renderBoardsView',()=>renderBoardsView,f=>{renderBoardsView=f},'post',function(...a){try{uxDotsFix()}catch(e){}})}
 setTimeout(()=>{try{uxDotsFix()}catch(e){}},900);
 
 /* ---- PC: each button shows its keyboard shortcut ---- */
@@ -201,8 +201,8 @@ function uxKeyTips(){if(MOB.matches)return;const set=(el,l,k)=>{if(el)el.title=l
   set($('#taskIn'),t('tasks.ph'),'A');set($('#taskAdd'),t('add'),'A');set($('#inbBtn'),t('ib.t'),'I');
   $$('#tTools button').forEach(b=>{if(/deep|عميق/i.test(b.textContent))set(b,b.textContent.trim(),'D')});
   $$('#v-boards button').forEach(b=>{if(b.textContent.trim()===t('notes.new')||b.textContent.trim().endsWith(t('notes.new')))set(b,t('notes.new'),'N')})}
-{const _rb=renderTimerBtns;renderTimerBtns=function(){_rb();try{uxKeyTips()}catch(e){}}}
-{const _rtt=renderTTools;renderTTools=function(...a){const r=_rtt(...a);try{uxKeyTips()}catch(e){}return r}}
+{hookFn('renderTimerBtns',()=>renderTimerBtns,f=>{renderTimerBtns=f},'post',function(){try{uxKeyTips()}catch(e){}})}
+{hookFn('renderTTools',()=>renderTTools,f=>{renderTTools=f},'post',function(...a){try{uxKeyTips()}catch(e){}})}
 setTimeout(()=>{try{uxKeyTips()}catch(e){}},1200);
 
 /* ---- offline: say that changes are kept and will sync later ---- */
@@ -212,7 +212,7 @@ setTimeout(uxNet,1500);
 
 /* ---- commands and settings for the new pieces ---- */
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'🗑',label:t('tr.t'),run:()=>openTrash(),kw:'trash deleted محذوفات سلة'});L_.push({icon:'➡️',label:t('ux.allTm'),run:()=>{showView('today');uxTomorrow(day(todayKey()).tasks.filter(x=>!x.done).map(x=>x.id))},kw:'tomorrow move غد'});return L_}}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#openLastT'),!!S.settings.openLast,v=>{S.settings.openLast=v});toggle($('#wide3T'),S.settings.wide3!==false,v=>{S.settings.wide3=v;uxWide()});toggle($('#recapT'),!S.settings.recapOff,v=>{S.settings.recapOff=!v;uxRecap()});const b=$('#trashBtn');if(b)b.onclick=openTrash}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{toggle($('#openLastT'),!!S.settings.openLast,v=>{S.settings.openLast=v});toggle($('#wide3T'),S.settings.wide3!==false,v=>{S.settings.wide3=v;uxWide()});toggle($('#recapT'),!S.settings.recapOff,v=>{S.settings.recapOff=!v;uxRecap()});const b=$('#trashBtn');if(b)b.onclick=openTrash}catch(e){console.error(e)}})}
 /* the wall card stays first in its column (once, for saved card orders) */
 try{const L_=S.settings.home3;if(L_&&!S.settings.wallTop){const gw=$('#v-today .glasswrap');if(gw){const sib=[...gw.parentElement.children].filter(c=>c.classList.contains('card')),os=sib.map(c=>(L_[cardKey(c)]||{}).o).filter(v=>v!=null);if(os.length){const k=cardKey(gw);(L_[k]=L_[k]||{}).o=Math.min(...os)-1}}}S.settings.wallTop=1}catch(e){console.error(e)}
 try{homeApply();renderTasks()}catch(e){console.error(e)}

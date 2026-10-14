@@ -6,7 +6,7 @@ function ensureCredit(){try{
     if(!cr||!cr.textContent.includes(CREDIT_NAME)||!cr.querySelector('.crlogo')){if(cr)cr.remove();row.insertAdjacentHTML('beforebegin',`<div class="field" id="creditRow"><div>${creditHTML(true)}<small><span dir="ltr">© ${new Date().getFullYear()} ${CREDIT_NAME}</span> — ${t("cr.rights")}</small></div></div>`)}}
   const sv=$('#v-set');if(sv){let f=$('#creditFoot');if(!f||!f.textContent.includes(CREDIT_NAME)){if(f)f.remove();sv.insertAdjacentHTML('beforeend',`<div class="creditfoot" id="creditFoot">${creditHTML()}</div>`)}}
 }catch(e){}}
-{const _rs19=renderSettings;renderSettings=function(){_rs19();ensureCredit()}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){ensureCredit()})}
 setTimeout(ensureCredit,800);setInterval(()=>{if(curView()==='set')ensureCredit()},15000);
 /* Android bottom bar: default lift (adjustable in Settings) + live diagnostics */
 if(ANDROID&&S.settings.andOff===undefined){S.settings.andOff=32;save()}

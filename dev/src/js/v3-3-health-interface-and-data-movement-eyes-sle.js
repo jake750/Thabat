@@ -51,7 +51,7 @@ function wxPush(){if(!ANDROID||!window.ThabatAndroid.widgetX)return;try{const k=
   const js=JSON.stringify(o);if(js===wxPush._l)return;wxPush._l=js;window.ThabatAndroid.widgetX(js)}catch(e){}}
 function wxTakeDone(){if(!ANDROID||!window.ThabatAndroid.takeWx)return;try{const L_=JSON.parse(window.ThabatAndroid.takeWx()||'[]');let n=0;L_.forEach(e=>{const d=S.days[e.k];const x=d&&d.tasks.find(q=>q.id===e.id);if(x&&!x.done){x.done=true;x.doneAt=e.at||Date.now();n++}});if(n){save();renderTasks();toast(t('wg3.done',n))}}catch(e){}}
 {const _tp=window.thabatPoll;window.thabatPoll=()=>{try{_tp&&_tp()}catch(e){}wxTakeDone();wxPush()}}
-{const _rt4=renderTasks;renderTasks=function(){_rt4();setTimeout(wxPush,200)}}
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(){setTimeout(wxPush,200)})}
 if(ANDROID){setTimeout(()=>{wxTakeDone();wxPush()},2500);setInterval(wxPush,5*6e4);setTimeout(()=>{qLoadPack('hafs').then(wxPush).catch(()=>{})},5000)}
 {const _to=thabatOpen;thabatOpen=function(o){if(String(o).startsWith('ayah:')){const [s,a]=String(o).slice(5).split(':').map(Number);qLoadPack('hafs').catch(()=>{}).then(()=>qGoAyah(s,a));return}return _to(o)}}
 /* 78. arrange and hide the home cards */
@@ -64,7 +64,7 @@ function openHomeLayout(){const L_=S.settings.home3||(S.settings.home3={}),cs=ho
   const rows=()=>[...$$('.hlist .hlrow')];const persist=()=>{rows().forEach((r,i)=>{const o=L_[r.dataset.k]||(L_[r.dataset.k]={});o.o=i});save();homeApply()};
   $$('.hlist .hlrow').forEach(r=>{r.querySelector('[data-up]').onclick=()=>{const p=r.previousElementSibling;if(p)p.before(r);persist()};r.querySelector('[data-dn]').onclick=()=>{const n=r.nextElementSibling;if(n)n.after(r);persist()};r.querySelector('[data-hd]').onclick=()=>{const o=L_[r.dataset.k]||(L_[r.dataset.k]={});o.h=!o.h;save();homeApply();openHomeLayout()}});
   $('#hlReset').onclick=()=>{S.settings.home3={};save();homeApply();openHomeLayout()}}
-{const _rtd5=renderToday;renderToday=function(){_rtd5();homeApply()}}setTimeout(homeApply,600);
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){homeApply()})}setTimeout(homeApply,600);
 /* 79. three more themes */
 Object.assign(COLORS,{masjid:{n:{ar:'مسجدي',en:'Masjid'},d:'#34d399',l:'#047857',sh:158},desert:{n:{ar:'صحراوي',en:'Desert'},d:'#e0b07a',l:'#9a6a2f',sh:32},night:{n:{ar:'ليلي',en:'Night'},d:'#a5b4fc',l:'#4f46e5',sh:232}});
 /* 87. swipe a task: towards the start = done, towards the end = tomorrow */
@@ -112,7 +112,7 @@ async function storyImg(kind){try{await document.fonts.ready}catch(e){}const W=1
 /* 92. send a backup to Google Drive (or anywhere) through the share sheet */
 async function shareBackup(){const js=JSON.stringify(S),name='thabat-backup-'+todayKey()+'.json';try{if(ANDROID&&window.ThabatAndroid.saveFile){window.ThabatAndroid.saveFile(name,'application/json',btoa(unescape(encodeURIComponent(js))));toast(t('db3.saved'));return}const f=new File([js],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return}}catch(e){}saveBytes(name,'application/json',new TextEncoder().encode(js));toast(t('db3.pc'))}
 /* brief buttons for the stories */
-{const _rbS=renderBrief;renderBrief=function(){_rbS();try{if(!$('#stBtn')){const a=$('#bdBtn');if(a)a.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="stBtn">📸</button>`);const b=$('#stBtn');if(b)b.onclick=e=>{const r=b.getBoundingClientRect();const p=qPopAt(`<div class="aymh">📸 ${t('st3.t')}</div><button data-st="week">${t('st3.week')}</button><button data-st="year">${t('st3.yearB')}</button>`,r.left+r.width/2,r.bottom-8,'aymenu');p.querySelectorAll('[data-st]').forEach(x=>x.onclick=()=>{closePP();storyImg(x.dataset.st)})}}}catch(e){}}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{if(!$('#stBtn')){const a=$('#bdBtn');if(a)a.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="stBtn">📸</button>`);const b=$('#stBtn');if(b)b.onclick=e=>{const r=b.getBoundingClientRect();const p=qPopAt(`<div class="aymh">📸 ${t('st3.t')}</div><button data-st="week">${t('st3.week')}</button><button data-st="year">${t('st3.yearB')}</button>`,r.left+r.width/2,r.bottom-8,'aymenu');p.querySelectorAll('[data-st]').forEach(x=>x.onclick=()=>{closePP();storyImg(x.dataset.st)})}}}catch(e){}})}
 /* settings for this block */
 function renderD4Set(){const H=HL(),st=S.settings;
   const tg=(id,get,set)=>{const e=$(id);if(e)toggle(e,get(),set)};tg('#mvT',()=>!!H.move,v=>{H.move=v});tg('#eyT',()=>!!H.eye,v=>{H.eye=v});tg('#mlT',()=>!!H.meals.on,v=>{H.meals.on=v;if(ANDROID)setTimeout(androidSchedule,100)});tg('#wxwT',()=>st.wxWater!==false,v=>{st.wxWater=v});tg('#slaT',()=>st.sleepAsk!==false,v=>{st.sleepAsk=v});
@@ -120,5 +120,5 @@ function renderD4Set(){const H=HL(),st=S.settings;
   ['b','l','d'].forEach(k=>{const e=$('#ml_'+k);if(e){e.value=H.meals[k]||'';e.onchange=()=>{H.meals[k]=e.value;save();if(ANDROID)setTimeout(androidSchedule,100)}}});
   const vp=$('#vibSel');if(vp){vp.innerHTML=['normal','soft','strong','off'].map(k=>`<option value="${k}" ${H.vibP===k?'selected':''}>${t('vb3.'+k)}</option>`).join('');vp.onchange=()=>{H.vibP=vp.value;save();vibT('pray')}}
   const b1=$('#homeLayBtn');if(b1)b1.onclick=openHomeLayout;const b2=$('#lanBtn');if(b2)b2.onclick=openLan;const b3=$('#drvBtn');if(b3)b3.onclick=shareBackup}
-{const _rs23=renderSettings;renderSettings=function(){_rs23();try{renderD4Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderD4Set()}catch(e){console.error(e)}})}
 

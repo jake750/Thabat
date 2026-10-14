@@ -101,6 +101,6 @@ $('#glBtn').onclick=()=>openGoals(bMode==='month'?'month':'month');
     else if(keys[0]<=todayKey())h+=`<div class="card bwr"><h3><span>📝 ${t('wr.t')}</span><button class="btn sm" data-wropen>${t('wr.start')}</button></h3></div>`}
   if(!h)return;$('#bTiles').insertAdjacentHTML('afterend',`<div class="bplan" id="bPlan">${h}</div>`);const P=$('#bPlan');bindGoals(P);const go=P.querySelector('[data-glopen]');if(go)go.onclick=()=>{GL.per=null;openGoals('month')};const wo=P.querySelector('[data-wropen]');if(wo)wo.onclick=()=>openWeekReview(keys[0])}catch(e){console.error(e)}}}
 function renderV34Set(){const C=wrCfg(),st=S.settings;toggle($('#wrT'),C.on,v=>{st.wreview=Object.assign(wrCfg(),{on:v})});const sel=$('#wrWd');sel.innerHTML=L().days.map((d,i)=>`<option value="${i}" ${i===C.wd?'selected':''}>${d}</option>`).join('');sel.onchange=()=>{st.wreview=Object.assign(wrCfg(),{wd:+sel.value});save()};$('#wrAt').value=C.at;$('#wrAt').onchange=e=>{st.wreview=Object.assign(wrCfg(),{at:e.target.value||'21:00'});save()}}
-{const _rs8=renderSettings;renderSettings=function(){_rs8();try{renderV34Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV34Set()}catch(e){console.error(e)}})}
 renderInbBtn();
 

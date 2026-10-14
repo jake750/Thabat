@@ -33,13 +33,13 @@ function sgRender(){const v=$('#v-set'),set=v&&v.querySelector('.set');if(!set)r
 function sgApply(){const v=$('#v-set'),list=$('#sgList'),bar=$('#sgBar');if(!v||!list)return;const q=(($('#setQ')||{}).value||'').trim(),G=SG.cur&&sgAll().flat().find(g=>g.k===SG.cur),mode=q?'search':G?'group':'list';
   v.dataset.sg=mode;list.hidden=mode!=='list';bar.hidden=mode!=='group';if(G)bar.querySelector('b').textContent=sgTitle(G);
   setCards().forEach(c=>{const off=mode==='list'||(mode==='group'&&!G.cards.includes(sgKey(c)));c.classList.toggle('sgoff',off);if(mode==='group'&&!off)c.classList.remove('fold')})}
-{const _a=applySetFold;applySetFold=function(){_a();try{sgApply()}catch(e){}}}
-{const _r=renderSettings;renderSettings=function(){_r();try{sgRender()}catch(e){console.error(e)}}}
+{hookFn('applySetFold',()=>applySetFold,f=>{applySetFold=f},'post',function(){try{sgApply()}catch(e){}})}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{sgRender()}catch(e){console.error(e)}})}
 /* anything that scrolls to a setting opens its group first */
 {const _siv=Element.prototype.scrollIntoView;Element.prototype.scrollIntoView=function(...a){try{const c=this.closest&&this.closest('#v-set .card:not(.sgsec)');if(c&&c.classList.contains('sgoff')){const k=sgKey(c),g=sgAll().flat().find(x=>x.cards.includes(k));if(g){SG.cur=g.k;sgApply()}}}catch(e){}return _siv.apply(this,a)}}
 {const _sv=showView;showView=function(n,...a){const was=curView();if(n==='set'&&was!=='set')SG.cur=null;const r=_sv(n,...a);try{pgtEnsure();if(n==='today')tdLayout();if(n==='set')sgApply()}catch(e){console.error(e)}return r}}
-{const _ai=applyI18n;applyI18n=function(){_ai();try{pgtEnsure()}catch(e){}}}
-{const _rt=renderToday;renderToday=function(){_rt();try{tdLayout()}catch(e){}}}
+{hookFn('applyI18n',()=>applyI18n,f=>{applyI18n=f},'post',function(){try{pgtEnsure()}catch(e){}})}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){try{tdLayout()}catch(e){}})}
 try{pgtEnsure();tdLayout()}catch(e){console.error(e)}
 
 /* ---- popups re-fit the screen whenever their content grows (e.g. the ayah list of a scanned page loads after the popup opens) ---- */

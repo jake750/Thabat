@@ -124,5 +124,5 @@ function lshPicker(f){const cs=libCourses(),has=new Set((f.items||[]).map(r=>r.i
   $('#lshPOk').onclick=()=>{const refs=$$('#infoBox [data-ref]').filter(x=>x.checked).map(x=>{const [tt,id]=x.dataset.ref.split(':');return{t:tt,id}});const keep=(f.items||[]).filter(r=>!libFind(r.id));f.items=keep.concat(refs);save();$('#infoModal').classList.remove('on');renderLib()}}
 /* playing from a shelf folder: «previous» and «next» follow the folder */
 {const _li=libItem;libItem=function(id){const it=_li(id);if(!it||!LIBX.ctx)return it;const f=lshGet(LIBX.ctx);if(!f)return it;const list=lshMedia(f.id);if(!list.some(x=>x.id===id))return it;return{...it,list:list.map(x=>({...x,course:{n:f.n,id:'f:'+f.id}})),course:{...it.course,n:f.n}}}}
-{const _lc=libClose;libClose=function(){_lc();LIBX.ctx=null}}
+{hookFn('libClose',()=>libClose,f=>{libClose=f},'post',function(){LIBX.ctx=null})}
 

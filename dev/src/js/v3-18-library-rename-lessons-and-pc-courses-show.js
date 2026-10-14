@@ -16,7 +16,7 @@ function lrnPaint(){const box=$('#v-lib');if(!box)return;const meta=LIBS().meta|
 const LRN={next:null};
 {const _im=lshItemMenu;lshItemMenu=function(anchor,ref,inF){LRN.next=ref;try{return _im(anchor,ref,inF)}finally{LRN.next=null}}}
 {const _m=lshMenu;lshMenu=function(a,html){const r=LRN.next;LRN.next=null;if(r&&(r.t==='m'||r.t==='d')&&libFind(r.id))html=`<button data-lrn="1">✏ ${t('lsh.rename')}</button>`+html;const p=_m(a,html);const b=p&&p.querySelector('[data-lrn]');if(b)b.onclick=()=>{closePP();lrnAsk(r.id)};return p}}
-{const _pe=lshPcCourseExtras;lshPcCourseExtras=function(){_pe();const b=$('#lshPcM');if(b&&!b.dataset.lrn){b.dataset.lrn=1;const h=b.onclick;b.onclick=e=>{LRN.next={t:'d',id:LIB.open};h(e)}}}}
+{hookFn('lshPcCourseExtras',()=>lshPcCourseExtras,f=>{lshPcCourseExtras=f},'post',function(){const b=$('#lshPcM');if(b&&!b.dataset.lrn){b.dataset.lrn=1;const h=b.onclick;b.onclick=e=>{LRN.next={t:'d',id:LIB.open};h(e)}}})}
 /* back / forward: every change of LIB.open is a step */
 const LNAV={back:[],fwd:[],cur:undefined,jump:false};
 function lnavGo(d){const from=d<0?LNAV.back:LNAV.fwd,to=d<0?LNAV.fwd:LNAV.back;if(!from.length)return;to.push(LNAV.cur||'');const o=from.pop();LNAV.jump=true;LIB.open=o||null;LIBX.q='';try{renderLib()}finally{LNAV.jump=false}const m=$('main');if(m)m.scrollTop=0}

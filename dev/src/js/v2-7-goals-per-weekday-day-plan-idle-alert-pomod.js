@@ -56,7 +56,7 @@ function renderBriefExtra(){const keys=periodKeys(bMode,bAnchor),tk=todayKey(),s
     box.innerHTML=`<h3><span>${t('bh.title')}</span><span style="font-size:13px;color:var(--muted)">${ord.length?t('bh.best',ord.sort((a,b)=>a-b).map(h=>pad(h)+':00').join('، ')):''}</span></h3>`+(mx>0?`<div class="hrs">${H.map((v,i)=>`<i class="${ord.includes(i)?'top':''}" style="height:${Math.max(2,v/mx*100)}%" title="${pad(i)}:00 · ${fmtHM(v)}"></i>`).join('')}</div><div class="hrx">${H.map((_,i)=>`<span>${i%3===0?i:''}</span>`).join('')}</div>`:`<div class="empty" style="padding:6px 0">${t('bh.none')}</div>`)+`<div class="bhstat"><span>😵 ${t('bh.dist')}: <b>${dist}</b></span>${pomo?`<span>🍅 ${t('bh.pomo')}: <b>${pomo}</b></span>`:''}<span>✎ ${t('bh.notes')}: <b>${notes}</b></span></div>`}
   const bp=$('#bPray');if(bp){const ks=keys.filter(k=>k<=tk&&k>=plSince()&&k<tk);const good=[],other=[];ks.forEach(k=>{const all=PRAYERS.every(p=>['on','auto'].includes(plStatus(k,p)));(all?good:other).push(totals(k).tot)});
     if(good.length&&other.length){const av=a=>a.reduce((x,y)=>x+y,0)/a.length;bp.insertAdjacentHTML('beforeend',`<div class="bpcorr">${t('bp.corr',`<b>${fmtHM(av(good))}</b>`,`<b>${fmtHM(av(other))}</b>`,good.length,other.length)}</div>`)}}}
-{const _rb2=renderBrief;renderBrief=function(){_rb2();try{renderBriefExtra()}catch(e){console.error(e)}}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{renderBriefExtra()}catch(e){console.error(e)}})}
 /* settings for this block */
 function renderV27Set(){const st=S.settings;
   toggle($('#goalWdT'),!!st.goalWd,v=>{st.goalWd=v?Array(7).fill(null).map(()=>st.goalHours):null;setTimeout(()=>{renderV27Set();wdApply()},0)});
@@ -67,5 +67,5 @@ function renderV27Set(){const st=S.settings;
   const I=idleCfg();toggle($('#idleT'),I.on,v=>{st.idle=Object.assign(idleCfg(),{on:v});setTimeout(renderV27Set,0)});$('#idleRow').hidden=!I.on;
   [['#idleF','from'],['#idleTo','to'],['#idleM','min']].forEach(([id,f])=>{$(id).value=I[f];$(id).onchange=e=>{st.idle=Object.assign(idleCfg(),{[f]:f==='min'?Math.max(15,+e.target.value||60):e.target.value||I[f]});save()}})}
 function wdApply(){const tk=todayKey();for(const k in S.days){if(k>=tk&&!S.days[k].goalManual)S.days[k].goal=wdGoal(k)}save();renderGlass()}
-{const _rs2=renderSettings;renderSettings=function(){_rs2();try{renderV27Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV27Set()}catch(e){console.error(e)}})}
 

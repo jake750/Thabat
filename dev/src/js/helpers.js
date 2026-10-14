@@ -1,6 +1,15 @@
 /* ============ helpers ============ */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+/* hooks: code that runs before/after a function, kept in flat lists instead of wrappers stacked one inside another.
+   hookFn('name',()=>name,f=>{name=f},'pre'|'post',fn). Order is the order of registration (later 'pre' hooks run first,
+   later 'post' hooks run last, exactly like nested wrappers). If something else replaced the function since, a new layer starts.
+   hookFn.R[name] lists them for debugging; .prev holds an older layer. */
+function hookFn(name,get,set,when,fn){const R=hookFn.R||(hookFn.R={});let H=R[name];
+  if(!H||get()!==H.disp){const L={name,base:get(),pre:[],post:[],prev:H||null};
+    L.disp=function(...a){for(const f of L.pre)f.apply(this,a);const r=L.base.apply(this,a);for(const f of L.post)f.apply(this,a);return r};
+    R[name]=H=L;set(L.disp)}
+  if(when==='pre')H.pre.unshift(fn);else H.post.push(fn)}
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const pad=n=>String(n).padStart(2,'0');
 const ICON_TRASH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>';

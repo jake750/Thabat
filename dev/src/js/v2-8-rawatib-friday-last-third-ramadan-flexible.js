@@ -37,7 +37,7 @@ setInterval(prayExtraCheck,6e4);setTimeout(prayExtraCheck,6000);setInterval(()=>
 /* flexible wird: finish the khatma by a date */
 function daysBetween(a,b){return Math.round((keyToDate(b)-keyToDate(a))/864e5)}
 function qAutoWird(){const Q=S.quran;if(!Q.target)return;const tk=todayKey();if(Q.wirdCalc===tk)return;const left=Math.max(0,604-qCovered(Q.page)+(qDay(tk).read||0)),days=Math.max(1,daysBetween(tk,Q.target)+1);Q.wird=Math.max(1,Math.ceil(left/days));Q.wirdCalc=tk;save()}
-{const _rqa=renderQAll;renderQAll=function(){qAutoWird();_rqa()}}
+{hookFn('renderQAll',()=>renderQAll,f=>{renderQAll=f},'pre',function(){qAutoWird()})}
 {const _rqs=renderQSide;renderQSide=function(){qAutoWird();_rqs();const box=$('#qKhatma'),Q=S.quran;if(!box)return;
   box.insertAdjacentHTML('beforeend',`<div class="ktarget"><span>🎯 ${t('kt.lbl')}</span><input class="in" type="date" id="qTarget" min="${todayKey()}" value="${Q.target||''}">${Q.target?`<small style="color:var(--accent)">${t('kt.need',Q.wird,daysBetween(todayKey(),Q.target)+1)}</small><button class="link" id="qTargetX">✕</button>`:''}</div>`+(Q.khatmas.length?`<details class="khist"><summary>${t('kh.title',Q.khatmas.length)}</summary><ol>${Q.khatmas.map((x,i)=>`<li><b>${t('kh.n',i+1)}</b> <small>${x.start?gShort(keyToDate(x.start))+' → ':''}${gStr(keyToDate(x.end))}${x.start?' · '+t('kh.days',daysBetween(x.start,x.end)+1):''}</small></li>`).join('')}</ol></details>`:''));
   $('#qTarget').onchange=e=>{Q.target=e.target.value||null;Q.wirdCalc=null;if(!Q.target)delete Q.target;save();renderQAll()};const x=$('#qTargetX');if(x)x.onclick=()=>{delete Q.target;Q.wirdCalc=null;save();renderQAll()}}}
@@ -78,4 +78,4 @@ function renderV28Set(){const st=S.settings;toggle($('#jumuaT'),jumuaOn(),v=>{st
   const R=ramCfg();toggle($('#suhoorT'),R.suhoor,v=>{st.ramadan=Object.assign(ramCfg(),{suhoor:v});if(ANDROID)setTimeout(androidSchedule,0)});$('#suhoorM').value=R.min;$('#suhoorM').onchange=e=>{st.ramadan=Object.assign(ramCfg(),{min:Math.max(10,+e.target.value||45)});save();if(ANDROID)androidSchedule()};
   toggle($('#qSmartT'),qSmart(),v=>{S.quran.smart=v});
   const wi=$('#qWirdIn');if(wi){wi.disabled=!!S.quran.target;wi.title=S.quran.target?t('kt.lock'):''}}
-{const _rs3=renderSettings;renderSettings=function(){_rs3();try{renderV28Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV28Set()}catch(e){console.error(e)}})}

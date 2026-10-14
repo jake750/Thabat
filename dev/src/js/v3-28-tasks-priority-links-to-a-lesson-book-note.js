@@ -25,9 +25,9 @@ function linkPickNote(anchor,k,x){const N=NOTES().slice().sort((a,b)=>(b.updated
   if(!x.done&&x.bk)h+=`<button class="tklib" data-bkp="${esc(x.id)}">📖 ${t('lnk.book')}</button>`;
   if(x.note&&NOTES().some(n=>n.id===x.note))h+=`<button class="tklib" data-ntp="${esc(x.id)}">📝 ${t('lnk.noteBtn')}</button>`;
   if(!x.done&&x.at&&!x.rec){h+=`<span class="tcd" data-tid="${esc(x.id)}"></span>`}}catch(e){}return h}}
-{const _rt=renderTasks;renderTasks=function(...a){const r=_rt(...a);try{const d=day(todayKey());
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(...a){try{const d=day(todayKey());
   $$('#tasks [data-bkp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.bkp),bk=x&&bkAll().find(z=>z.key===x.bk);if(bk)bkOpen(bk);else toast(t('lb.off'))});
-  $$('#tasks [data-ntp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.ntp);if(x&&x.note)openNote(x.note)});tcdTick()}catch(e){}return r}}
+  $$('#tasks [data-ntp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.ntp);if(x&&x.note)openNote(x.note)});tcdTick()}catch(e){}})}
 /* a lesson's «⋯»: a task for this lesson today */
 {const _im=lshItemMenu;lshItemMenu=function(anchor,ref,...a){const r=_im(anchor,ref,...a);try{const p=$('#ppPop');if(p&&ref&&ref.t==='m'){const b=document.createElement('button');b.innerHTML=`☑ ${t('lnk.taskFor')}`;b.onclick=()=>{closePP();const n=libFind(ref.id);day(todayKey()).tasks.push({id:uid(),text:'🎬 '+(lrnName(ref.id)||(n?libTitle(n.n):'')),done:false,created:Date.now(),lib:ref.id});save();renderTasks();toast(t('lnk.taskAdded'))};p.prepend(b)}}catch(e){}return r}}
 /* a note line → a task (the line where the cursor is, or the selected text) */
@@ -46,15 +46,15 @@ function openArchive(){const all=[];for(const k in S.days)((S.days[k]||{}).tasks
     $('#arcL').innerHTML=L_.slice(0,400).map(o=>{const h=o.k!==last?(last=o.k,`<div class="arch">${esc(dayLabel(o.k))} · ${hijri(keyToDate(o.k)).day} ${esc(hijri(keyToDate(o.k)).month)}</div>`):'';return h+`<button class="arci" data-k="${o.k}"><span dir="auto">✓ ${esc(o.x.text)}</span>${o.x.doneAt?`<small>${fmtT(o.x.doneAt)}</small>`:''}</button>`}).join('')||`<p class="muted">${t('lsh.noHits')}</p>`;
     $$('#arcL [data-k]').forEach(b=>b.onclick=()=>{$('#infoModal').classList.remove('on');selKey=b.dataset.k;showView('cal')})};
   $('#arcQ').oninput=draw;$('#arcP').onchange=draw;draw();$('#infoBox').classList.add('arcbox')}
-{const _rc=renderCtxBar;renderCtxBar=function(...a){const r=_rc(...a);try{const bar=$('#ctxBar');if(bar&&!bar.querySelector('#arcBtn')){bar.insertAdjacentHTML('beforeend',`<button class="chip" id="arcBtn" title="${esc(t('arc.t'))}">📦 ${t('arc.short')}</button>`);$('#arcBtn').onclick=openArchive}}catch(e){}return r}}
+{hookFn('renderCtxBar',()=>renderCtxBar,f=>{renderCtxBar=f},'post',function(...a){try{const bar=$('#ctxBar');if(bar&&!bar.querySelector('#arcBtn')){bar.insertAdjacentHTML('beforeend',`<button class="chip" id="arcBtn" title="${esc(t('arc.t'))}">📦 ${t('arc.short')}</button>`);$('#arcBtn').onclick=openArchive}}catch(e){}})}
 /* ---------- task templates per prayer period (11): added each day with a fixed id ---------- */
 function PTPL(){return S.settings.ptpl||(S.settings.ptpl={})}
 function ensurePtpl(){try{const k=todayKey(),d=day(k),T=PTPL();let ch=false;PDL_P.forEach(p=>(T[p]||[]).forEach(txt=>{const id='ptpl-'+p+'-'+bkHash(txt)+'-'+k;if(!d.tasks.some(x=>x.id===id)){d.tasks.push({id,text:txt,done:false,created:Date.now(),after:p,auto:'ptpl'});ch=true}}));if(ch)save()}catch(e){}}
 function ptplPop(anchor){const T=PTPL(),r=anchor.getBoundingClientRect();
   const p=qPopAt(`<div class="aymh">📋 ${t('ptpl.t')}</div><p class="muted lodp">${t('ptpl.sub')}</p>${PDL_P.map(q=>`<label class="ptplr"><b>${esc(tpaLabel(q))}</b><textarea class="in" rows="2" dir="auto" data-p="${q}" placeholder="${esc(t('ptpl.ph'))}">${esc((T[q]||[]).join('\n'))}</textarea></label>`).join('')}<div class="pdlt-act"><button class="btn sm pri" id="ptplOk">${t('pdl.save')}</button></div>`,r.left+r.width/2,r.bottom-6,'aymenu pdltm ptplpop');
   p.querySelector('#ptplOk').onclick=()=>{const N={};p.querySelectorAll('textarea[data-p]').forEach(ta=>{const L_=ta.value.split('\n').map(s=>s.trim()).filter(Boolean).slice(0,12);if(L_.length)N[ta.dataset.p]=L_});S.settings.ptpl=N;closePP();ensurePtpl();save();renderTasks();toast(t('ptpl.saved'))}}
-{const _pr=pdlRender;pdlRender=function(...a){const r=_pr(...a);try{const h=$('#pdlCard h3');if(h&&!h.querySelector('#ptplBtn')){const before=h.querySelector('#arrBtn')||h.querySelector('.pdl-hint')||h.lastElementChild;before.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="ptplBtn" title="${esc(t('ptpl.t'))}" aria-label="${esc(t('ptpl.t'))}">📋</button>`);$('#ptplBtn').onclick=e=>{e.stopPropagation();ptplPop(e.currentTarget)}}}catch(e){}return r}}
-{const _rtd=renderToday;renderToday=function(...a){try{ensurePtpl()}catch(e){}return _rtd(...a)}}
+{hookFn('pdlRender',()=>pdlRender,f=>{pdlRender=f},'post',function(...a){try{const h=$('#pdlCard h3');if(h&&!h.querySelector('#ptplBtn')){const before=h.querySelector('#arrBtn')||h.querySelector('.pdl-hint')||h.lastElementChild;before.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="ptplBtn" title="${esc(t('ptpl.t'))}" aria-label="${esc(t('ptpl.t'))}">📋</button>`);$('#ptplBtn').onclick=e=>{e.stopPropagation();ptplPop(e.currentTarget)}}}catch(e){}})}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'pre',function(...a){try{ensurePtpl()}catch(e){}})}
 /* ---------- Hijri repeats (12): «every 13th of the Hijri month», «every year on 1 Ramadan» ---------- */
 /* hNum (numeric Hijri day/month/year, cached) already exists in the dates module */
 {const _m=rcMatch;rcMatch=function(r,k){if(r.rule==='hm'||r.rule==='hy'){if(r.start&&k<r.start)return false;const h=hNum(keyToDate(k));return r.rule==='hm'?h.d===r.hd:(h.m===r.hm&&h.d===r.hd)}return _m(r,k)}}

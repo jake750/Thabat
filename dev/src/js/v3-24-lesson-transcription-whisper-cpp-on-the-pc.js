@@ -6,8 +6,8 @@ async function trxState(ids){try{const r=await libFetch(libU('/tr/state?ids='+id
 async function trxGet(id){if(TRX.cache[id])return TRX.cache[id];try{const r=await libFetch(libU('/tr/get?id='+id),10000);if(!r.ok)return null;const j=await r.json();if(j&&j.segs)TRX.cache[id]=j;return j}catch(e){return null}}
 const trxTC=ms=>fmtTC(Math.floor(ms/1000));
 /* the tab in the player */
-{const _b=lpvBuild;lpvBuild=function(...a){const r=_b(...a);try{const tabs=$('#libPlayer .lpvtabs');if(tabs&&!tabs.querySelector('[data-tab="tr"]')){tabs.insertAdjacentHTML('beforeend',`<button data-tab="tr" role="tab">${t('trx.tab')}</button>`);tabs.querySelector('[data-tab="tr"]').onclick=()=>{LPV.tab='tr';lpvSide()}}}catch(e){console.error(e)}return r}}
-{const _s=lpvSide;lpvSide=function(...a){const r=_s(...a);try{const b=$('#libPlayer .lpvtabs [data-tab="tr"]');if(b){b.textContent=t('trx.tab');b.classList.toggle('on',LPV.tab==='tr');b.setAttribute('aria-selected',LPV.tab==='tr')}if(LPV.tab==='tr')trxPaint();else clearTimeout(TRX.poll)}catch(e){console.error(e)}return r}}
+{hookFn('lpvBuild',()=>lpvBuild,f=>{lpvBuild=f},'post',function(...a){try{const tabs=$('#libPlayer .lpvtabs');if(tabs&&!tabs.querySelector('[data-tab="tr"]')){tabs.insertAdjacentHTML('beforeend',`<button data-tab="tr" role="tab">${t('trx.tab')}</button>`);tabs.querySelector('[data-tab="tr"]').onclick=()=>{LPV.tab='tr';lpvSide()}}}catch(e){console.error(e)}})}
+{hookFn('lpvSide',()=>lpvSide,f=>{lpvSide=f},'post',function(...a){try{const b=$('#libPlayer .lpvtabs [data-tab="tr"]');if(b){b.textContent=t('trx.tab');b.classList.toggle('on',LPV.tab==='tr');b.setAttribute('aria-selected',LPV.tab==='tr')}if(LPV.tab==='tr')trxPaint();else clearTimeout(TRX.poll)}catch(e){console.error(e)}})}
 async function trxPaint(){const body=$('#lpvBody'),it=LIB.cur;if(!body||!it||LPV.tab!=='tr')return;const id=it.id;clearTimeout(TRX.poll);
   if(!TRX.cache[id])body.innerHTML=`<p class="lpvempty">${t('trx.loading')}</p>`;
   const st=TRX.cache[id]?null:await trxState([id]);if(LPV.tab!=='tr'||!LIB.cur||LIB.cur.id!==id)return;

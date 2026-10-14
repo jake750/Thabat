@@ -8,5 +8,5 @@ function a11yPass2(){try{
 {let T=0;new MutationObserver(()=>{clearTimeout(T);T=setTimeout(a11yPass2,400)}).observe(document.body,{childList:true,subtree:true})}
 setTimeout(a11yPass2,1500);
 /* the Summary «🧰 Tools» menu is built once: keep its texts in the current language */
-{const _bp=btPanel;btPanel=function(...a){const r=_bp(...a);try{const tb=$('#btTools');if(tb){const sp=tb.querySelector('span');if(sp)sp.textContent='🧰 '+t('bt.t');$$('#btPanel .btgrp').forEach(g=>{const b=g.querySelector(':scope > b');if(b)b.textContent=t('bt.g.'+g.dataset.g)});Object.entries(BT_INFO).forEach(([id,k])=>{const s=document.querySelector('#btPanel #'+id+' > small');if(s)s.textContent=t(k)})}}catch(e){}return r}}
+{hookFn('btPanel',()=>btPanel,f=>{btPanel=f},'post',function(...a){try{const tb=$('#btTools');if(tb){const sp=tb.querySelector('span');if(sp)sp.textContent='🧰 '+t('bt.t');$$('#btPanel .btgrp').forEach(g=>{const b=g.querySelector(':scope > b');if(b)b.textContent=t('bt.g.'+g.dataset.g)});Object.entries(BT_INFO).forEach(([id,k])=>{const s=document.querySelector('#btPanel #'+id+' > small');if(s)s.textContent=t(k)})}}catch(e){}})}
 

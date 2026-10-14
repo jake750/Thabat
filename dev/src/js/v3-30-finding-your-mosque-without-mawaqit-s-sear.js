@@ -107,5 +107,5 @@ function icsBoxPaint(){const box=$('#icsBox');if(!box)return;const L=icsList();
     if(L.some(c=>icsNormUrl(c.u)===u)){toast(t('ics.dup'));return}L.push({u,n:$('#icsN').value.trim()||('📅 '+(L.length+1)),c:ICS_COLS[(L.length+1)%ICS_COLS.length]});save();icsBoxPaint();icsSync(true)};
   $('#icsHow').onclick=icsHow}
 function icsHow(){openInfo('📅 '+t('ics.howT'),`<ol class="icshow">${[1,2,3,4,5].map(i=>`<li>${t('ics.h'+i)}</li>`).join('')}</ol><p class="muted">${t('ics.hNote')}</p><button class="btn sm" id="icsGo">↗ ${t('ics.open')}</button>`);const g=$('#icsGo');if(g)g.onclick=()=>openExt('https://calendar.google.com/calendar/r/settings')}
-{const _r=renderV41Set;renderV41Set=function(...a){const r=_r(...a);try{const iu=$('#icsUrl');if(iu){const f=iu.closest('.field');iu.hidden=true;if(f&&!$('#icsBox'))f.insertAdjacentHTML('afterend',`<div id="icsBox" class="icsbox"></div>`);$('#icsNow').onclick=()=>icsSync(true)}icsBoxPaint()}catch(e){console.error(e)}return r}}
+{hookFn('renderV41Set',()=>renderV41Set,f=>{renderV41Set=f},'post',function(...a){try{const iu=$('#icsUrl');if(iu){const f=iu.closest('.field');iu.hidden=true;if(f&&!$('#icsBox'))f.insertAdjacentHTML('afterend',`<div id="icsBox" class="icsbox"></div>`);$('#icsNow').onclick=()=>icsSync(true)}icsBoxPaint()}catch(e){console.error(e)}})}
 

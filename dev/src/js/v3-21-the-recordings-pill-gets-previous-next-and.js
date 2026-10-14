@@ -24,7 +24,7 @@ function rcPillPlace(){const pill=$('#rcPill'),p=rcPillPos();if(!pill||pill.hidd
   pill.addEventListener('dblclick',e=>{if(e.target.closest('button'))return;try{localStorage.removeItem('thabat.rcPill')}catch(_){}rcPillPlace()});
   addEventListener('resize',()=>rcPillPlace())}}
 /* the full player window gets ⏮ ⏭ too */
-{const _rr=renderRecits;renderRecits=function(...x){const r=_rr(...x);try{const pp=$('#rcbPP');if(pp&&!$('#rcbPrev')){pp.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="rcbPrev" aria-label="${esc(t('rcp.prev'))}" title="${esc(t('rcp.prev'))}">⏮</button>`);pp.insertAdjacentHTML('afterend',`<button class="btn sm ghost" id="rcbNext" aria-label="${esc(t('rcp.next'))}" title="${esc(t('rcp.next'))}">⏭</button>`);$('#rcbPrev').onclick=()=>rcStep(-1);$('#rcbNext').onclick=()=>rcStep(1)}}catch(e){console.error(e)}return r}}
+{hookFn('renderRecits',()=>renderRecits,f=>{renderRecits=f},'post',function(...x){try{const pp=$('#rcbPP');if(pp&&!$('#rcbPrev')){pp.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="rcbPrev" aria-label="${esc(t('rcp.prev'))}" title="${esc(t('rcp.prev'))}">⏮</button>`);pp.insertAdjacentHTML('afterend',`<button class="btn sm ghost" id="rcbNext" aria-label="${esc(t('rcp.next'))}" title="${esc(t('rcp.next'))}">⏭</button>`);$('#rcbPrev').onclick=()=>rcStep(-1);$('#rcbNext').onclick=()=>rcStep(1)}}catch(e){console.error(e)}})}
 try{if('mediaSession' in navigator){navigator.mediaSession.setActionHandler('previoustrack',()=>{if(RCX.cur)rcStep(-1)});navigator.mediaSession.setActionHandler('nexttrack',()=>{if(RCX.cur)rcStep(1)})}}catch(e){}
 
 /* ---- «watched & listened»: all / counted toward productivity / not counted ---- */
@@ -79,8 +79,8 @@ function lxDock(){const s=LDND.drag;if(!s||$('#ldDock'))return;let opts=[];
   opts=opts.filter(o=>ldOk(s,{k:o.k,id:o.id})).sort((a,b)=>a.n.localeCompare(b.n));if(!opts.length)return;
   document.body.insertAdjacentHTML('beforeend',`<div class="lddock" id="ldDock"><small>${t('lx.dock')}</small><div>${opts.map(o=>`<span class="lddi" data-dock="${o.k}:${o.id}" dir="auto">${o.i} ${esc(o.n)}</span>`).join('')}</div></div>`)}
 {const _t=ldTarget;ldTarget=function(el){const d=el&&el.closest&&el.closest('#ldDock [data-dock]');if(d){const i=d.dataset.dock.indexOf(':');return{k:d.dataset.dock.slice(0,i),id:d.dataset.dock.slice(i+1),el:d}}return _t(el)}}
-{const _c=ldClear;ldClear=function(...x){const k=$('#ldDock');if(k)k.remove();return _c(...x)}}
-{const _l=ldLift;ldLift=function(...x){const r=_l(...x);try{lxDock()}catch(e){}return r}}
+{hookFn('ldClear',()=>ldClear,f=>{ldClear=f},'pre',function(...x){const k=$('#ldDock');if(k)k.remove()})}
+{hookFn('ldLift',()=>ldLift,f=>{ldLift=f},'post',function(...x){try{lxDock()}catch(e){}})}
 document.addEventListener('dragstart',()=>{if(LDND.drag&&!LORD.on)setTimeout(()=>{try{lxDock()}catch(e){}},0)});
 /* «⇅ arrange»: books and files inside a folder, and the lessons of a PC course */
 {const _sc=lordScopes;lordScopes=function(){const out=_sc(),o=String(LIB.open||'');
@@ -94,6 +94,6 @@ document.addEventListener('dragstart',()=>{if(LDND.drag&&!LORD.on)setTimeout(()=
     const mine=new Set(sorted.filter(k=>k.k==='v'||k.k==='a').map(k=>k.id)),seq=ids.filter(id=>mine.has(id));if(seq.length){let i=0;L_.order[n.id]=sorted.map(k=>mine.has(k.id)?seq[i++]:k.id)}sorted.forEach(k=>{if(k.k==='d')walk(k)})};
   walk(c);save()}}
 /* a PC lesson stays in its chapter (its folder on the PC): no arrow across a chapter heading */
-{const _ld=lordDecorate;lordDecorate=function(...x){const r=_ld(...x);try{const o=String(LIB.open||'');if(o&&!o.startsWith('f:')&&!o.startsWith('au:'))$$('#libBox > .lbles > .lorditem').forEach(c=>{const p=c.previousElementSibling,n=c.nextElementSibling;if(!p||p.classList.contains('lbch'))c.querySelector('[data-lmv="-1"]').disabled=true;if(!n||n.classList.contains('lbch'))c.querySelector('[data-lmv="1"]').disabled=true})}catch(e){console.error(e)}return r}}
+{hookFn('lordDecorate',()=>lordDecorate,f=>{lordDecorate=f},'post',function(...x){try{const o=String(LIB.open||'');if(o&&!o.startsWith('f:')&&!o.startsWith('au:'))$$('#libBox > .lbles > .lorditem').forEach(c=>{const p=c.previousElementSibling,n=c.nextElementSibling;if(!p||p.classList.contains('lbch'))c.querySelector('[data-lmv="-1"]').disabled=true;if(!n||n.classList.contains('lbch'))c.querySelector('[data-lmv="1"]').disabled=true})}catch(e){console.error(e)}})}
 {const _b=lordButton;lordButton=function(){const r=_b();try{const o=String(LIB.open||'');if(o&&!o.startsWith('f:')&&!o.startsWith('au:')&&!$('#lordBtn')&&$$('#libBox > .lbles .lbl').length>1){const host=$('#libBox .lbbar .lbpr');if(host){host.insertAdjacentHTML('beforebegin',`<button class="btn sm ${LORD.on?'pri':'ghost'}" id="lordBtn">⇅ ${LORD.on?t('lsh.done'):t('lord.btn')}</button>`);$('#lordBtn').onclick=e=>{e.stopPropagation();LORD.on=!LORD.on;if(LORD.on)toast(t('lord.tip'));renderLib()}}}}catch(e){console.error(e)}return r}}
 

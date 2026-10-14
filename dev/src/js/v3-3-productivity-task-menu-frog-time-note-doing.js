@@ -90,5 +90,5 @@ function openYearGoals(){const L_=YG(),now=new Date(),frac=(now.getMonth()+now.g
 /* settings */
 function renderD3Set(){const st=S.settings;const a=$('#distrT');if(a)toggle(a,st.distrOn!==false,v=>{st.distrOn=v});const b=$('#mrevT');if(b)toggle(b,st.mrevOn!==false,v=>{st.mrevOn=v});
   const ib=$('#icsImpBtn');if(ib)ib.onclick=icsImport;const pb=$('#pjDueBtn');if(pb)pb.onclick=openPjDue;const lb=$('#lightBtn');if(lb){lb.textContent=(S.days[todayKey()]||{}).light?t('lt3.off2'):t('lt3.on2');lb.onclick=()=>{lightToggle();renderD3Set()}}}
-{const _rs22=renderSettings;renderSettings=function(){_rs22();try{renderD3Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderD3Set()}catch(e){console.error(e)}})}
 

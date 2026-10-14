@@ -25,18 +25,18 @@ document.addEventListener('mousedown',e=>{const P=$('#btPanel');if(P&&!P.hidden&
 document.addEventListener('touchstart',e=>{const P=$('#btPanel');if(P&&!P.hidden&&!P.contains(e.target)&&!e.target.closest('#btTools'))btToggle(false)},{capture:true,passive:true});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')btToggle(false)});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#btPanel .btitem');if(b)setTimeout(()=>btToggle(false),0)},true);
-{const _rb=renderBrief;renderBrief=function(){_rb();try{btSort()}catch(e){console.error(e)}}}
-{const _sv=showView;showView=function(...a){try{btToggle(false)}catch(e){}return _sv(...a)}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{btSort()}catch(e){console.error(e)}})}
+{hookFn('showView',()=>showView,f=>{showView=f},'pre',function(...a){try{btToggle(false)}catch(e){}})}
 window.addEventListener('resize',()=>{const P=$('#btPanel');if(P&&!P.hidden)btToggle(true)});
 /* light glass: on phones in automatic performance mode, keep the moving lights without live blur */
 function lgApply(){const st=S.settings;document.documentElement.classList.toggle('lg',st.style==='glass'&&isLite()&&perfGet()==='auto')}
-{const _at=applyTheme;applyTheme=function(...a){const r=_at(...a);try{lgApply()}catch(e){}return r}}
+{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(...a){try{lgApply()}catch(e){}})}
 try{lgApply()}catch(e){}
 
 /* the interface size setting zooms the body; keep the app exactly as tall as the window */
 function uizSync(){document.documentElement.style.setProperty('--uiz',uiZoom())}
-{const _at2=applyTheme;applyTheme=function(...a){const r=_at2(...a);try{uizSync()}catch(e){}return r}}
-{const _al=applyLook2;applyLook2=function(...a){const r=_al(...a);try{uizSync();pcFit()}catch(e){}return r}}
+{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(...a){try{uizSync()}catch(e){}})}
+{hookFn('applyLook2',()=>applyLook2,f=>{applyLook2=f},'post',function(...a){try{uizSync();pcFit()}catch(e){}})}
 try{uizSync()}catch(e){}
 /* Android: the old automatic +32px bottom lift is not needed where the native insets are measured */
 function andLiftMigrate(){const N=window.ANDNAV;if(!ANDROID||S.migrAnd0||+S.settings.andOff!==32||!N)return false;if(!((+N.nb||0)>0||(+N.fix||0)>0))return false;S.settings.andOff=0;S.migrAnd0=1;save();andOffApply();return true}
@@ -62,7 +62,7 @@ if(ANDROID){let n=0;const iv=setInterval(()=>{if(andLiftMigrate()||++n>20)clearI
 /* ---- «your day between the prayers» bar for any day in the calendar panel; labels of close prayers no longer overlap ---- */
 function dtlLabels(box){const ps=box&&box.querySelectorAll('.pts span');if(!ps||!ps.length)return;const L_=[...ps].map(s=>({s,r:s.getBoundingClientRect()})).sort((a,b)=>a.r.left-b.r.left);let lo=false;
   for(let i=1;i<L_.length;i++){const p=L_[i-1],c=L_[i];if(!p.s.classList.contains('lo')&&c.r.left<p.r.right+4){c.s.classList.add('lo');lo=true}}box.classList.toggle('dtl2',lo)}
-{const _r=renderDayTL;renderDayTL=function(){_r();try{dtlLabels($('#dayTL'))}catch(e){}}}
+{hookFn('renderDayTL',()=>renderDayTL,f=>{renderDayTL=f},'post',function(){try{dtlLabels($('#dayTL'))}catch(e){}})}
 function dayTLFor(k,box){const real=$('#dayTL'),tk=todayKey;if(real)real.id='dayTL__real';box.id='dayTL';try{todayKey=()=>k;renderDayTL()}catch(e){console.error(e)}finally{todayKey=tk;box.removeAttribute('id');if(real)real.id='dayTL'}}
 {const _rd=renderDetail;renderDetail=function(k){_rd(k);try{if(k>todayKey())return;const mb=$('#detail .minibar');if(!mb)return;const b=document.createElement('div');b.className='dtl dtlcal';mb.after(b);dayTLFor(k,b)}catch(e){console.error(e)}}}
 

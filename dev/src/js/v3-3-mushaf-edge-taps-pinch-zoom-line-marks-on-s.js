@@ -22,7 +22,7 @@ function qzReset(){QZ.s=1;QZ.x=0;QZ.y=0;$$('#spread .qimg').forEach(e=>{e.style.
   m.addEventListener('touchend',e=>{if(P&&e.touches.length<2){P=null;if(QZ.s<1.05)qzReset();e.stopImmediatePropagation()}if(pan&&!e.touches.length){pan=null;e.stopImmediatePropagation()}},{passive:true,capture:true});
   /* desktop: ctrl + wheel */
   m.addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const el=qzEl();if(!el)return;const r=el.parentElement.getBoundingClientRect(),cx=e.clientX-r.left,cy=e.clientY-r.top,s=Math.max(1,Math.min(4,QZ.s*(e.deltaY<0?1.15:1/1.15))),k=s/QZ.s;QZ.x=cx-(cx-QZ.x)*k;QZ.y=cy-(cy-QZ.y)*k;QZ.s=s;if(s<1.03)qzReset();else qzApply()},{passive:false})}
-{const _rq=renderQuran;renderQuran=function(){qzReset();_rq()}}
+{hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'pre',function(){qzReset()})}
 {const _qsc=qSlideCommit;qSlideCommit=function(d){qzReset();_qsc(d);qMarksDraw()}}
 /* 16. mark a line on scanned pages (long-press) */
 function QLMK(){return S.quran.lmarks||(S.quran.lmarks={})}
@@ -34,7 +34,7 @@ function qMarksDraw(){const R=RIWAYAT[S.quran.riwaya];if(!R||R.kind!=='img')retu
 {const _qh=qHydrate;qHydrate=function(root){_qh(root);setTimeout(qMarksDraw,50)}}
 /* 30. sepia reading mode: light → sepia → dark */
 {const b=$('#qDark');if(b){b.onclick=()=>{const Q=S.quran;if(!Q.dark&&!Q.sepia){Q.sepia=true}else if(Q.sepia){Q.sepia=false;Q.dark=true}else{Q.dark=false}save();renderQuran()}}}
-{const _rq2=renderQuran;renderQuran=function(){_rq2();const Q=S.quran;$('#mushaf').classList.toggle('sepia',!!Q.sepia&&!Q.dark);const b=$('#qDark');if(b)b.textContent=Q.dark?'☀ '+t('sp.light'):Q.sepia?'☾ '+t('sp.dark'):'📜 '+t('sp.sepia');const fd=$('#qFsDark');if(fd)fd.textContent=Q.dark?'☀':Q.sepia?'☾':'📜'}}
+{hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(){const Q=S.quran;$('#mushaf').classList.toggle('sepia',!!Q.sepia&&!Q.dark);const b=$('#qDark');if(b)b.textContent=Q.dark?'☀ '+t('sp.light'):Q.sepia?'☾ '+t('sp.dark'):'📜 '+t('sp.sepia');const fd=$('#qFsDark');if(fd)fd.textContent=Q.dark?'☀':Q.sepia?'☾':'📜'})}
 /* 31. sajdah ayahs */
 const SAJDA=[[7,206],[13,15],[16,50],[17,109],[19,58],[22,18],[22,77,1],[25,60],[27,26],[32,15],[38,24],[41,38],[53,62,1],[84,21,1],[96,19,1]];
 function sajdaOnPage(p){const r=S.quran.riwaya,R=RIWAYAT[r]||{};const B=R.kind==='text'&&QB[r]?QB[r]:QB.hafs;if(!B||!B.pages[p])return null;return SAJDA.find(([s,a])=>B.pages[p].ay.some(x=>x.s===s&&x.a===a&&!x.cont))||null}
@@ -61,7 +61,7 @@ setInterval(()=>{const on=QA.playing&&QA.el&&!QA.el.paused,n=Date.now();if(on){i
   if(QLS.start&&n-QLS.last>20000){const s=QLS.start,e=QLS.last;QLS.start=0;if(S.settings.qListenTime===false||e-s<6e4)return;if(S.timer&&S.timer.mode==='work')return;addSession(qftCat(),s,e,{src:'listen'});save();try{renderGlass();renderLog()}catch(x){}toast(t('ql.saved',fmtHM(e-s)))}},5000);
 /* settings for this block */
 function renderD2Set(){const st=S.settings;const a=$('#qEdgeT');if(a)toggle(a,st.qEdgeTap!==false,v=>{st.qEdgeTap=v});const b=$('#qlT');if(b)toggle(b,st.qListenTime!==false,v=>{st.qListenTime=v})}
-{const _rs21=renderSettings;renderSettings=function(){_rs21();try{renderD2Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderD2Set()}catch(e){console.error(e)}})}
 /* a double-tap zoom must not also open the page menu */
 {const sp=$('#spread');let guardUntil=0;$('#mushaf').addEventListener('touchstart',e=>{if(e.touches.length>1)guardUntil=Date.now()+600},{passive:true,capture:true});
   const _qz=qzApply;qzApply=function(){guardUntil=Date.now()+600;_qz()};const _qr=qzReset;qzReset=function(){guardUntil=Date.now()+600;_qr()};

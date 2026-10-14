@@ -6,7 +6,7 @@ function qwrPaint(){if(!S.quran.hide)return;document.querySelectorAll('#spread .
 function qwrDropAyah(k){[...QWR].forEach(x=>{if(x.split('#')[0].replace(/^\d*:/,'')===k)QWR.delete(x)})}
 /* pages render later (and neighbours re-render): paint again whenever the spread changes */
 {let pend=0;const mo=new MutationObserver(()=>{if(!S.quran.hide||!QWR.size||pend)return;pend=1;setTimeout(()=>{pend=0;qwrPaint()},0)});const m=$('#mushaf');if(m)mo.observe(m,{childList:true,subtree:true})}
-{const _am=qApplyMarks;qApplyMarks=function(...a){const r=_am(...a);try{qwrPaint()}catch(e){}return r}}
+{hookFn('qApplyMarks',()=>qApplyMarks,f=>{qApplyMarks=f},'post',function(...a){try{qwrPaint()}catch(e){}})}
 {const _hs=qHideSet;qHideSet=function(on){QWR.clear();return _hs(on)}}
 document.addEventListener('click',e=>{if(!S.quran.hide)return;const w=e.target.closest&&e.target.closest('#spread .ml span[data-k]');if(!w)return;
   if(window._ppGuard&&Date.now()<window._ppGuard)return;const sel=getSelection();if(sel&&!sel.isCollapsed&&sel.toString().trim())return;

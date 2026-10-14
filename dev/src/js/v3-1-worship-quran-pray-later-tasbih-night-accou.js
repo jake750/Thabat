@@ -3,7 +3,7 @@
 function prayLaterGo(){const P=S.prayPop;if(!P)return;const now=Date.now();adhanStop();S.prayLater={k:P.k,dk:P.dk||todayKey(),at:now,due:now+30*6e4};S.prayPop=null;save();$('#prayModal').classList.remove('on');document.title=t('app');quietFlush();
   if(ANDROID){try{window.ThabatAndroid.remind&&window.ThabatAndroid.remind(8800,String(S.prayLater.due),t('pl2.qT',t('pr.'+P.k)),t('pl2.qB'),'praycheck')}catch(e){}}
   renderTimerBtns();renderTimer();renderTodayEv();toast(t('pl2.toast',t('pr.'+P.k)))}
-{const _spp=showPrayPop;showPrayPop=function(){_spp();const b=$('#pLater');if(b){b.textContent='⏳ '+t('pl2.btn');b.onclick=prayLaterGo}}}
+{hookFn('showPrayPop',()=>showPrayPop,f=>{showPrayPop=f},'post',function(){const b=$('#pLater');if(b){b.textContent='⏳ '+t('pl2.btn');b.onclick=prayLaterGo}})}
 function prayLaterAsk(force){const L_=S.prayLater;if(!L_)return;if(!force&&Date.now()<L_.due)return;if(!force&&$$('.modal.on,.praymodal.on').length)return;const box=$('#plBox');
   box.innerHTML=`<h2 style="font-size:20px">🕌 ${t('pl2.qT',t('pr.'+L_.k))}</h2><p style="color:var(--muted);font-size:13px;margin:6px 0 14px">${t('pl2.qSub',fmtT(L_.at))}</p><div class="evact"><button class="btn sm ghost" id="plcLater">⏳ ${t('pl2.snooze')}</button><span style="flex:1"></span><button class="btn sm pri" id="plcYes">✓ ${t('pray.done')}</button></div>`;
   $('#plcYes').onclick=()=>{const d=day(L_.dk);(d.prayed=d.prayed||{})[L_.k]=L_.at;S.prayLater=null;const T=S.timer;if(T.mode==='pray'){T.mode='work';T.start=Date.now();T.prayStart=null}save();$('#plModal').classList.remove('on');if(ANDROID){try{window.ThabatAndroid.cancelRemind&&window.ThabatAndroid.cancelRemind(8800)}catch(e){}}renderTimerBtns();renderTimer();renderPrayers();toastAct(t('pray.accepted'),t('adx.prayer'),()=>{ADHXSEL='prayer';openAdhkar('x')})};
@@ -14,7 +14,7 @@ setInterval(()=>prayLaterAsk(),3e4);setTimeout(()=>prayLaterAsk(),3000);
 function takePrayLater(){if(!ANDROID||!window.ThabatAndroid.takePrayLater)return;try{const v=window.ThabatAndroid.takePrayLater();if(!v)return;const [k,at]=v.split('|');if(!PRAYERS.includes(k))return;S.prayLater={k,dk:keyOf(+at),at:+at,due:+at+30*6e4};if(S.prayPop&&S.prayPop.k===k){S.prayPop=null;$('#prayModal').classList.remove('on')}save();renderTodayEv()}catch(e){}}
 setTimeout(takePrayLater,1500);document.addEventListener('visibilitychange',()=>{if(!document.hidden)takePrayLater()});
 /* after "I prayed": offer the after-prayer adhkar */
-{const _pd=prayDone;prayDone=function(){_pd();if(adhExtraOn())setTimeout(()=>toastAct(t('pl2.after'),t('adx.prayer'),()=>{ADHXSEL='prayer';openAdhkar('x')},7000),600)}}
+{hookFn('prayDone',()=>prayDone,f=>{prayDone=f},'post',function(){if(adhExtraOn())setTimeout(()=>toastAct(t('pl2.after'),t('adx.prayer'),()=>{ADHXSEL='prayer';openAdhkar('x')},7000),600)})}
 /* tasbih counters */
 function TSB(){return S.tasbih||(S.tasbih=[{id:'t1',text:'أستغفر الله',goal:100}])}
 function tsbCount(id,k){return(((S.days[k||todayKey()]||{}).tsb)||{})[id]||0}
@@ -112,4 +112,4 @@ function renderV32Set(){const st=S.settings;toggle($('#qiyamLogT'),qiyamOn(),v=>
   const M=mhCfg();toggle($('#mhT'),M.on,v=>{st.muhasaba=Object.assign(mhCfg(),{on:v})});$('#mhAt').value=M.at;$('#mhAt').onchange=e=>{st.muhasaba=Object.assign(mhCfg(),{at:e.target.value||'22:30'});save()};
   const L_=slCfg();toggle($('#slT'),L_.on,v=>{st.sleepAdh=Object.assign(slCfg(),{on:v})});$('#slAt').value=L_.at;$('#slAt').onchange=e=>{st.sleepAdh=Object.assign(slCfg(),{at:e.target.value||'23:00'});save()};
   toggle($('#virtT'),virtOn(),v=>{st.virt=v;setTimeout(renderTodayEv,0)});$('#tsbEdit').onclick=tsbEdit;toggle($('#topicsT'),qTopicsOn(),v=>{S.quran.topicsOn=v})}
-{const _rs6=renderSettings;renderSettings=function(){_rs6();try{renderV32Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV32Set()}catch(e){console.error(e)}})}

@@ -25,7 +25,7 @@ function renderBriefPray(){const box=$('#bPray');if(!box)return;const keys=perio
   const all=rows.reduce((a,r)=>({ok:a.ok+r.c.on+r.c.auto,n:a.n+r.n}),{ok:0,n:0}),fast=keys.filter(k=>S.days[k]&&S.days[k].fast).length;
   const seg=(v,n,col)=>n&&v?`<i style="width:${v/n*100}%;background:${col}"></i>`:'';
   box.innerHTML=`<h3><span>${t('bp.title')}</span><span style="font-size:13px;color:var(--muted)">${all.n?t('bp.overall',Math.round(all.ok/all.n*100)):''}${fast?' · 🌙 '+t('bp.fast',fast):''}</span></h3>`+(all.n?`<div class="bpr">${rows.map(r=>`<div class="bprow"><b>${t('pr.'+r.k)}</b><div class="bar">${seg(r.c.on,r.n,'#4ade80')}${seg(r.c.auto,r.n,'#4ade8088')}${seg(r.c.late,r.n,'#fbbf24')}${seg(r.c.miss,r.n,'#f87171')}${seg(r.c.q,r.n,'#8884')}</div><small>${r.n?Math.round((r.c.on+r.c.auto)/r.n*100)+'%':'—'}${r.c.late?' · ◷'+r.c.late:''}${r.c.miss?' · ✕'+r.c.miss:''}</small></div>`).join('')}<div class="bpleg"><span><i style="background:#4ade80"></i>${t('pl.on')}</span><span><i style="background:#4ade8088"></i>${t('pl.auto')}</span><span><i style="background:#fbbf24"></i>${t('pl.late')}</span><span><i style="background:#f87171"></i>${t('pl.miss')}</span></div></div>`:`<div class="empty" style="padding:6px 0">${t('bp.none')}</div>`)}
-{const _rb=renderBrief;renderBrief=function(){_rb();try{renderBriefPray()}catch(e){}}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{renderBriefPray()}catch(e){}})}
 /* ---- fasting: white days (on), Monday/Thursday (optional) ---- */
 const HNF=(()=>{const o={day:'numeric',month:'numeric',year:'numeric'};try{return new Intl.DateTimeFormat('en-u-ca-islamic-umalqura-nu-latn',o)}catch(e){return new Intl.DateTimeFormat('en-u-ca-islamic-nu-latn',o)}})();const HNC={};
 function hNum(date){const key=dKey(date)+'|'+S.settings.hijriAdj;if(HNC[key])return HNC[key];const d=new Date(date);d.setDate(d.getDate()+S.settings.hijriAdj);d.setHours(12);const p=HNF.formatToParts(d),g=x=>+(((p.find(q=>q.type===x)||{}).value)||'0').replace(/\D/g,'');return HNC[key]={d:g('day'),m:g('month'),y:g('year')}}
@@ -42,7 +42,7 @@ function adhXChips(){const box=$('#adhXg'),L_=$('#adhList');if(!box)return;box.h
   box.innerHTML=ADHXG.map(x=>{const items=ADHX.map((a,i)=>[a,i]).filter(([a])=>a.g===x),done=items.length&&items.every(([a,i])=>(st['x'+i]||0)>=a.n);return`<button class="chip ${x===g?'on':''}" data-g="${x}">${t('adx.'+x)}${done?' ✓':''}</button>`}).join('');
   if(L_)L_.querySelectorAll('.adel').forEach(x=>x.remove());const ab=$('#adhAddBtn');if(ab)ab.hidden=true;
   box.querySelectorAll('[data-g]').forEach(b=>b.onclick=e=>{e.stopPropagation();ADHXSEL=b.dataset.g;adhFI=null;renderAdhkar()})}
-{const _ra=renderAdhkar;renderAdhkar=function(){_ra();try{const ab=$('#adhAddBtn');if(ab&&adhK!=='x')ab.hidden=false;adhXChips()}catch(e){}}}
+{hookFn('renderAdhkar',()=>renderAdhkar,f=>{renderAdhkar=f},'post',function(){try{const ab=$('#adhAddBtn');if(ab&&adhK!=='x')ab.hidden=false;adhXChips()}catch(e){}})}
 function adhExtraOn(){return S.settings.adhExtra!==false}
 const ADHX=[
  {g:'sleep',x:'باسمك ربي وضعت جنبي، وبك أرفعه، إن أمسكت نفسي فارحمها، وإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين.',n:1,src:'البخاري ومسلم'},
@@ -147,6 +147,6 @@ function renderV26Set(){const P=S.settings.prayer,F=fastCfg();
   toggle($('#fastMTT'),F.monthu,v=>{S.settings.fast=Object.assign(fastCfg(),{monthu:v});setTimeout(()=>{renderTodayEv();if(ANDROID)androidSchedule()},0)});
   $('#fastAtIn').value=F.at;$('#fastAtIn').onchange=e=>{S.settings.fast=Object.assign(fastCfg(),{at:e.target.value||'21:00'});save();if(ANDROID)androidSchedule()};
   toggle($('#adhExtraT'),adhExtraOn(),v=>{S.settings.adhExtra=v})}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{renderV26Set()}catch(e){}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV26Set()}catch(e){}})}
 plSince();
 

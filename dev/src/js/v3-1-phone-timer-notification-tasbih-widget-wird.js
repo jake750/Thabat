@@ -10,25 +10,25 @@ function timerActsApply(){if(!ANDROID||!window.ThabatAndroid.takeTimerActs)retur
     else if(String(a).startsWith('brk')){const m=+String(a).slice(3)||5;if(T.mode==='work'&&T.start)addSession(T.cat,T.start,ts);T.mode='brk';T.start=null;T.brkStart=ts;T.brkDur=m;T.brkAlerted=false;T.brkTip=Math.floor(Math.random()*12)}
     else if(a==='resume'&&(T.mode==='brk'||T.mode==='idle')){T.mode='work';T.start=ts;T.brkStart=null;T.pomoAlerted=false}});
   save();TN_LAST='';renderTimerBtns();renderTimer();renderGlass();renderLog()}
-{const _rtb4=renderTimerBtns;renderTimerBtns=function(){_rtb4();timerNotifPush()}}
-{const _rcc2=renderCatChips;renderCatChips=function(){_rcc2();timerNotifPush()}}
+{hookFn('renderTimerBtns',()=>renderTimerBtns,f=>{renderTimerBtns=f},'post',function(){timerNotifPush()})}
+{hookFn('renderCatChips',()=>renderCatChips,f=>{renderCatChips=f},'post',function(){timerNotifPush()})}
 /* tasbih widget */
 let TSW_LAST='';
 function tsbWidgetPush(){if(!ANDROID||!window.ThabatAndroid.tsbWidget)return;const js=JSON.stringify({date:dKey(new Date()),list:TSB().map(x=>({id:x.id,text:x.text,goal:x.goal,count:tsbCount(x.id)}))});if(js===TSW_LAST)return;TSW_LAST=js;try{window.ThabatAndroid.tsbWidget(js)}catch(e){}}
 function tsbTake(){if(!ANDROID||!window.ThabatAndroid.takeTsb)return;let L_=[];try{L_=JSON.parse(window.ThabatAndroid.takeTsb()||'[]')}catch(e){}if(!L_.length)return;
   L_.forEach(e=>{if(!TSB().some(x=>x.id===e.id))return;const k=e.d===dKey(new Date())?todayKey():e.d,d=day(k);d.tsb=d.tsb||{};d.tsb[e.id]=(d.tsb[e.id]||0)+(+e.n||0)});save();TSW_LAST='';tsbWidgetPush();renderTodayEv();if($('#tsModal').classList.contains('on'))renderTasbih()}
-{const _rts=renderTasbih;renderTasbih=function(){_rts();tsbWidgetPush()}}
+{hookFn('renderTasbih',()=>renderTasbih,f=>{renderTasbih=f},'post',function(){tsbWidgetPush()})}
 /* wird notification */
 function wnOn(){return!!S.settings.wirdNotif}
 let WN_LAST='';
 function wirdNotifPush(){if(!ANDROID||!window.ThabatAndroid.wirdNotif)return;const q=qDay(todayKey()),o={on:wnOn()&&!q.wird,done:q.read||0,target:S.quran.wird||1,title:'📖 '+t('wn.title'),unit:t('wn.pages'),addLbl:'+1 '+t('wn.page'),openLbl:t('wn.open'),chName:t('wn.title')};
   const js=JSON.stringify(o);if(js===WN_LAST)return;WN_LAST=js;try{window.ThabatAndroid.wirdNotif(js)}catch(e){}}
 function wirdTake(){if(!ANDROID||!window.ThabatAndroid.takeWird)return;let n=0;try{n=+window.ThabatAndroid.takeWird()||0}catch(e){}if(n>0){qSetPage(S.quran.page+n);WN_LAST=''}}
-{const _wp=widgetPush;widgetPush=function(){_wp();try{wirdTake();wirdNotifPush();tsbWidgetPush()}catch(e){}}}
+{hookFn('widgetPush',()=>widgetPush,f=>{widgetPush=f},'post',function(){try{wirdTake();wirdNotifPush();tsbWidgetPush()}catch(e){}})}
 {const _qsp=qSetPage;qSetPage=function(np){_qsp(np);try{if(ANDROID)wirdNotifPush()}catch(e){}}}
 /* Do Not Disturb at prayer time */
 function dndCfg(){return Object.assign({on:false,min:20},S.settings.prayer.dnd||{})}
-{const _pd3=prayDone;prayDone=function(){_pd3();try{if(ANDROID&&window.ThabatAndroid.dndEnd)window.ThabatAndroid.dndEnd()}catch(e){}}}
+{hookFn('prayDone',()=>prayDone,f=>{prayDone=f},'post',function(){try{if(ANDROID&&window.ThabatAndroid.dndEnd)window.ThabatAndroid.dndEnd()}catch(e){}})}
 /* changes pushed or pressed outside the page */
 window.thabatPoll=()=>{try{timerActsApply();tsbTake();wirdTake();wirdNotifPush()}catch(e){}};
 {const _tr=window.thabatResume;window.thabatResume=()=>{try{window.thabatPoll()}catch(e){}_tr&&_tr();try{lockResume()}catch(e){}}}
@@ -60,5 +60,5 @@ function renderV37Set(){const st=S.settings;
   lt.onclick=()=>{const on=lockCfg().on;if(on){st.lock=Object.assign(lockCfg(),{on:false});save();lt.classList.remove('on');return}
     if(ANDROID){let a='error';try{a=window.ThabatAndroid.bioAvail()}catch(e){}if(a!=='ok'){toast(t(a==='nolock'?'lk.noLock':'lk.old'));return}st.lock=Object.assign(lockCfg(),{on:true});save();lt.classList.add('on');toast(t('lk.on'))}
     else{const en=()=>{st.lock=Object.assign(lockCfg(),{on:true});save();lt.classList.add('on');toast(t('lk.on'))};if(S.notesPin)en();else pinAsk('set',en)}}}
-{const _rs11=renderSettings;renderSettings=function(){_rs11();try{renderV37Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV37Set()}catch(e){console.error(e)}})}
 

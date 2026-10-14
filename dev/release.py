@@ -113,6 +113,9 @@ def main():
     if dup:
         sys.exit('FAILED: functions declared more than once: ' + ', '.join(sorted(dup)))
     print('no duplicate functions')
+    # stacked wrappers make every change riskier (3.35.0 moved the plain before/after ones into hookFn lists); keep the count visible
+    wr = len(re.findall(r'\{\s*(?:const|let)\s+\w+\s*=\s*(\w+)\s*;\s*\1\s*=\s*(?:async\s+)?function', s))
+    print(f'wrappers: {wr} stacked, {s.count("{hookFn('")} hooks')
     html = open(HTML, 'rb').read()
     for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
         prev = os.path.join(tmp, z)

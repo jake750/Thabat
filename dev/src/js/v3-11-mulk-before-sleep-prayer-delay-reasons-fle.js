@@ -1,7 +1,7 @@
 /* ============ v3.11: Mulk before sleep, prayer delay reasons, flexible repeats, stuck tasks, lighter-day postpone, Ramadan countdown, focus by prayer period ============ */
 /* ---- Surat al-Mulk before sleep: one task a day after Isha (fixed id so synced devices do not duplicate it) ---- */
 function ensureMulk(){if(S.settings.mulk===false)return;const k=todayKey(),d=day(k);if(d.mulk)return;d.mulk=1;const id='mulk-'+k;if(!d.tasks.some(x=>x.id===id))d.tasks.push({id,text:t('mlk.task'),done:false,created:Date.now(),auto:'mulk',after:'isha'});save()}
-{const _ek=ensureKahf;ensureKahf=function(){_ek();try{ensureMulk()}catch(e){console.error(e)}}}
+{hookFn('ensureKahf',()=>ensureKahf,f=>{ensureKahf=f},'post',function(){try{ensureMulk()}catch(e){console.error(e)}})}
 
 /* ---- why was a prayer late? asked once when it is logged late ---- */
 const LATE_WHY=['sleep','work','forgot','travel','other'];
@@ -53,7 +53,7 @@ function bedtimeFor(){const tm=addDays(keyToDate(todayKey()),1),f=prayerTimes(tm
 
 /* ---- keep the screen on while a focus session runs ---- */
 let WK3=null;async function wakeSync(){try{const on=S.timer.mode==='work'&&S.settings.wakeWork!==false&&!document.hidden;if(on&&!WK3&&navigator.wakeLock){WK3=await navigator.wakeLock.request('screen');WK3.addEventListener('release',()=>{WK3=null})}else if(!on&&WK3){await WK3.release();WK3=null}}catch(e){WK3=null}}
-{const _ta=timerAct;timerAct=function(...a){const r=_ta(...a);setTimeout(wakeSync,50);return r}}
+{hookFn('timerAct',()=>timerAct,f=>{timerAct=f},'post',function(...a){setTimeout(wakeSync,50)})}
 document.addEventListener('visibilitychange',()=>setTimeout(wakeSync,100));setTimeout(wakeSync,2000);
 
 /* ---- Summary: in which period between the prayers you focus most ---- */
@@ -66,7 +66,7 @@ function periodFocus(keys){const tot={};PDL_P.forEach(p=>tot[p]=0);keys.forEach(
 /* ---- what goes with good days: Fajr on time ---- */
 {const _c=corr;corr=function(){const out=_c();try{const tk=todayKey(),A=[],B=[];for(let i=1;i<=60;i++){const k=dKey(addDays(keyToDate(tk),-i));if(!S.days[k])continue;const s=plStatus(k,'fajr'),w=totals(k).tot/36e5;if(s==='on'||s==='auto')A.push(w);else if(s==='late'||s==='miss')B.push(w)}
   if(A.length>=4&&B.length>=4){const a=A.reduce((x,y)=>x+y,0)/A.length,b=B.reduce((x,y)=>x+y,0)/B.length;if(b>0.2&&a/b>=1.15)out.unshift(t('fj.corr',Math.round(a/b*10)/10))}}catch(e){}return out}}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#mulkT'),S.settings.mulk!==false,v=>{S.settings.mulk=v;if(v)ensureMulk();renderTasks()});toggle($('#wakeT'),S.settings.wakeWork!==false,v=>{S.settings.wakeWork=v;wakeSync()})}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{toggle($('#mulkT'),S.settings.mulk!==false,v=>{S.settings.mulk=v;if(v)ensureMulk();renderTasks()});toggle($('#wakeT'),S.settings.wakeWork!==false,v=>{S.settings.wakeWork=v;wakeSync()})}catch(e){console.error(e)}})}
 try{ensureMulk();renderTodayEv()}catch(e){console.error(e)}/* 3.12.8: the task list is drawn once, by renderToday at the end of start-up */
 
 
@@ -151,7 +151,7 @@ function openUnused(){let U={};try{U=JSON.parse(localStorage.getItem('thabat.use
 
 /* ---- commands and settings for these ---- */
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'↶',label:t('uh.t'),run:openUndoHist,kw:'undo history تراجع سجل'},{icon:'🙈',label:t('pv3.cmd'),run:()=>privToggle(),kw:'privacy present hide عرض اخفاء'},{icon:'🧭',label:t('nv.t'),run:openNavCfg,kw:'navigation pages تنقل'},{icon:'🧹',label:t('uu.t'),run:openUnused,kw:'unused features ميزات'},{icon:'👆',label:t('gs.t'),run:()=>gestGuide(true),kw:'gestures ايماءات'});return L_}}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{toggle($('#comfyT'),!!S.settings.comfy,v=>{S.settings.comfy=v;comfyApply()});const m={navCfgBtn:openNavCfg,unusedBtn:openUnused,undoHBtn:openUndoHist,gestBtn:()=>gestGuide(true),privBtn:()=>privToggle()};Object.entries(m).forEach(([id,f])=>{const b=$('#'+id);if(b)b.onclick=f})}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{toggle($('#comfyT'),!!S.settings.comfy,v=>{S.settings.comfy=v;comfyApply()});const m={navCfgBtn:openNavCfg,unusedBtn:openUnused,undoHBtn:openUndoHist,gestBtn:()=>gestGuide(true),privBtn:()=>privToggle()};Object.entries(m).forEach(([id,f])=>{const b=$('#'+id);if(b)b.onclick=f})}catch(e){console.error(e)}})}
 
 
 /* ---- notes: backlinks («notes that point here»), nested tags, share as image or PDF ---- */

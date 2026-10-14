@@ -108,5 +108,5 @@ document.addEventListener('keydown',e=>{if(!FC||!$('#fcModal').classList.contain
 $('#fcModal').onclick=e=>{if(e.target.id==='fcModal'&&!FC)$('#fcModal').classList.remove('on')};
 {const _cc2=cmdCommands;cmdCommands=function(){const c=(icon,label,run,kw)=>({icon,label,run,kw:kw||''});return _cc2().concat([c('🎨',t('st.t'),()=>{nbMode='studio';showView('boards')},'studio portfolio inspiration palette استوديو'),c('🗂',t('fc.reviewAll'),()=>fcReviewAll()||(nbMode='studio',STAB='fc',showView('boards')),'flashcards anki بطاقات'),c('🏁',t('st.chToday'),()=>{STAB='ch';nbMode='studio';showView('boards')},'challenge تحدي')])}}
 function renderV35Set(){toggle($('#stChipT'),stChipOn(),v=>{S.settings.stChip=v;setTimeout(renderTodayEv,0)})}
-{const _rs9=renderSettings;renderSettings=function(){_rs9();try{renderV35Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV35Set()}catch(e){console.error(e)}})}
 

@@ -18,7 +18,7 @@ function lodCheck(){try{const k=todayKey(),d=S.days[k];if(!d||!d.tasks)return;co
 /* a ▶ on tasks that point to a lesson (lesson of the day, or any task linked to one) */
 function lodPlay(x){const go=async()=>{if(!LIB.base){try{await libConnect()}catch(e){}}if(!LIB.base){toast(t('lb.off'));return}let id=x.lib;const nx=x.lod?lodNext(x.lod):null;if(nx)id=nx.id;if(!id){showView('lib');return}showView('lib');if(x.lod&&x.lod.startsWith('f:'))LIBX.ctx=x.lod.slice(2);libPlay(id)};go()}
 {const _tm=taskMeta;taskMeta=function(x,...a){let h=_tm(x,...a);try{if(x&&!x.done&&(x.lib||x.lod))h+=`<button class="tklib" data-lodp="${esc(x.id)}" title="${esc(t('lod.play'))}">▶ ${t('lod.play')}</button>`}catch(e){}return h}}
-{const _rt=renderTasks;renderTasks=function(...a){const r=_rt(...a);try{const d=day(todayKey());$$('#tasks [data-lodp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.lodp);if(x)lodPlay(x)})}catch(e){}return r}}
+{hookFn('renderTasks',()=>renderTasks,f=>{renderTasks=f},'post',function(...a){try{const d=day(todayKey());$$('#tasks [data-lodp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.lodp);if(x)lodPlay(x)})}catch(e){}})}
 /* the setting: a 📅 button on a PC course page and on a course folder */
 function lodPop(anchor,ref,name){const o=LOD().find(z=>z.ref===ref)||{ref,n:name,days:[],after:'asr'},days=new Set(o.days),wd=[6,0,1,2,3,4,5];
   const r=anchor.getBoundingClientRect(),p=qPopAt(`<div class="aymh">📅 ${t('lod.t')}</div><p class="muted lodp">${t('lod.sub')}</p><div class="lodd">${wd.map(i=>`<button data-wd="${i}" class="${days.has(i)?'on':''}">${esc((LOC[LANG]||LOC.ar).sdays[i])}</button>`).join('')}</div>
@@ -27,12 +27,12 @@ function lodPop(anchor,ref,name){const o=LOD().find(z=>z.ref===ref)||{ref,n:name
   p.querySelectorAll('[data-wd]').forEach(b=>b.onclick=()=>{const i=+b.dataset.wd;days.has(i)?days.delete(i):days.add(i);b.classList.toggle('on',days.has(i))});
   p.querySelector('#lodOk').onclick=()=>{closePP();const L=LOD().filter(z=>z.ref!==ref);if(days.size)L.push({ref,n:name,days:[...days].sort(),after:p.querySelector('#lodA').value});LIBS().lod=L;save();ensureLod();renderLib();toast(days.size?t('lod.on',days.size):t('lod.offT'))};
   const no=p.querySelector('#lodNo');if(no)no.onclick=()=>{closePP();LIBS().lod=LOD().filter(z=>z.ref!==ref);save();renderLib();toast(t('lod.offT'))}}
-{const _rl=renderLib;renderLib=function(...a){const r=_rl(...a);try{const o=String(LIB.open||'');let host=null,ref=null,name='';
+{hookFn('renderLib',()=>renderLib,f=>{renderLib=f},'post',function(...a){try{const o=String(LIB.open||'');let host=null,ref=null,name='';
   if(o&&!o.startsWith('f:')&&!o.startsWith('au:')&&libFind(o)){host=$('#libBox .lbbar #lshPcM');ref='d:'+o;name=(libFind(o)||{}).n||''}
   else if(o.startsWith('f:')){const f=lshGet(o.slice(2));if(f){host=$('#lshMore');ref=o;name=f.n}}
-  if(host&&!$('#lodBtn')){const on=LOD().some(z=>z.ref===ref);host.insertAdjacentHTML('beforebegin',`<button class="btn sm ${on?'pri':'ghost'}" id="lodBtn" title="${esc(t('lod.t'))}">📅${on?' '+t('lod.onShort'):''}</button>`);$('#lodBtn').onclick=e=>{e.stopPropagation();lodPop(e.currentTarget,ref,name)}}}catch(e){console.error(e)}return r}}
-{const _rt2=renderToday;renderToday=function(...a){try{ensureLod();lodCheck()}catch(e){}return _rt2(...a)}}
-{const _ls=libSave;libSave=function(...a){const r=_ls(...a);try{if(a[2]||(LIB.cur&&LIBS().prog[LIB.cur.id]&&LIBS().prog[LIB.cur.id].done))lodCheck()}catch(e){}return r}}
+  if(host&&!$('#lodBtn')){const on=LOD().some(z=>z.ref===ref);host.insertAdjacentHTML('beforebegin',`<button class="btn sm ${on?'pri':'ghost'}" id="lodBtn" title="${esc(t('lod.t'))}">📅${on?' '+t('lod.onShort'):''}</button>`);$('#lodBtn').onclick=e=>{e.stopPropagation();lodPop(e.currentTarget,ref,name)}}}catch(e){console.error(e)}})}
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'pre',function(...a){try{ensureLod();lodCheck()}catch(e){}})}
+{hookFn('libSave',()=>libSave,f=>{libSave=f},'post',function(...a){try{if(a[2]||(LIB.cur&&LIBS().prog[LIB.cur.id]&&LIBS().prog[LIB.cur.id].done))lodCheck()}catch(e){}})}
 setTimeout(()=>{ensureLod();lodCheck()},2500);
 /* ---------- learning time in the Summary (L5) ---------- */
 function learnStats(keys){const C={},B={},t0=keyToDate(keys[0]).getTime(),t1=keyToDate(keys[keys.length-1]).getTime()+864e5,P=LIBS().prog;

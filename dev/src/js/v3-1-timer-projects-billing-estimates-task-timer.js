@@ -24,7 +24,7 @@ function renderTProj(){const el=$('#tProj');if(!el)return;const T=S.timer,L_=pjF
   if(T.task)h+=`<span class="ttask" title="${esc(T.task.text)}">▶ <b dir="auto">${esc(T.task.text)}</b>${estOn()?(()=>{const x=(S.days[T.task.k]||{tasks:[]}).tasks.find(q=>q.id===T.task.id);return x&&x.est?` · ${fmtHM(taskMs(x.id))} / ${fmtHM(x.est*6e4)}`:''})():''}<button class="link" id="tTaskX">✕</button></span>`;
   el.innerHTML=h;const s=$('#tPjSel');if(s)s.onchange=()=>{tSplit();T.proj=s.value||null;save();renderLog();renderGlass()};
   $('#tPjMan').onclick=()=>openProjects(topOf(T.cat));const x=$('#tTaskX');if(x)x.onclick=()=>{tSplit();T.task=null;save();renderTProj();renderLog();renderTasks()}}
-{const _rcc=renderCatChips;renderCatChips=function(){_rcc();renderTProj()}}
+{hookFn('renderCatChips',()=>renderCatChips,f=>{renderCatChips=f},'post',function(){renderTProj()})}
 /* projects manager */
 let PJF=null;
 function openProjects(cat){PJF=cat||null;renderProjects();$('#pjModal').classList.add('on')}
@@ -92,12 +92,12 @@ function tpCheck(){const k=todayKey(),d=S.days[k];if(!d)return;const pt=prayerTi
   ['fajr','dhuhr','asr','maghrib','isha'].forEach(p=>{const L_=d.tasks.filter(x=>x.after===p&&!x.done&&!x.afterShown);if(!L_.length)return;const prayed=d.prayed&&d.prayed[p];if(!prayed&&now<pt[p]+25*6e4)return;if(S.prayPop)return;
     L_.forEach(x=>x.afterShown=1);save();chimeSoft(880);toastAct(t('tp2.now',t('pr.'+p),L_.map(x=>x.text).join('، ')),t('tt.start'),()=>taskStart(k,L_[0]),15000)})}
 setInterval(tpCheck,3e4);setTimeout(tpCheck,5000);
-{const _pd2=prayDone;prayDone=function(){_pd2();setTimeout(tpCheck,1500)}}
+{hookFn('prayDone',()=>prayDone,f=>{prayDone=f},'post',function(){setTimeout(tpCheck,1500)})}
 /* timer tools row: deep work, background sound, water, floating window */
 function renderTTools(){const el=$('#tTools');if(!el)return;const T=S.timer;
   el.innerHTML=`<button class="tt ${T.deep?'on':''}" id="ttDeep">🎯 ${t('dw.btn')}</button><button class="tt ${NZ.src?'on':''}" id="ttNoise">🎧 ${NZ.src?t('nz.'+NZ.type):t('nz.btn')}</button>${waterOn()?`<button class="tt" id="ttWater" title="${esc(t('wt.tip'))}">💧 ${waterN()}/${wtCfg().goal}</button>`:''}${pipOk()?`<button class="tt ${PIP.w?'on':''}" id="ttPip" title="${esc(t('pip.tip'))}">⧉ ${t('pip.btn')}</button>`:''}`;
   $('#ttDeep').onclick=e=>T.deep?deepEnd():deepMenu(e.currentTarget);$('#ttNoise').onclick=e=>nzMenu(e.currentTarget);const w=$('#ttWater');if(w)w.onclick=waterAdd;const pp=$('#ttPip');if(pp)pp.onclick=pipOpen}
-{const _rtb3=renderTimerBtns;renderTimerBtns=function(){_rtb3();renderTTools();renderTProj()}}
+{hookFn('renderTimerBtns',()=>renderTimerBtns,f=>{renderTimerBtns=f},'post',function(){renderTTools();renderTProj()})}
 function waterAdd(){const d=day(todayKey());d.water=(d.water||0)+1;d.waterAt=Date.now();save();vib(10);renderTTools();const n=d.water,g=wtCfg().goal;toastAct(n>=g&&n-1<g?t('wt.goal',n):t('wt.added',n,g),t('undo'),()=>{d.water=Math.max(0,(d.water||1)-1);save();renderTTools()},5000)}
 /* deep work */
 function deepMenu(anchor){const r=anchor.getBoundingClientRect();const p=qPopAt(`<div class="aymh">🎯 ${t('dw.t')}</div><small style="display:block;padding:0 12px 6px;color:var(--muted)">${t('dw.sub')}</small>${[25,50,90,0].map(m=>`<button data-m="${m}">${m?fmtHM(m*6e4):t('dw.open')}</button>`).join('')}`,r.left+r.width/2,r.bottom-10,'aymenu');p.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{closePP();deepStart(+b.dataset.m)})}
@@ -142,10 +142,10 @@ const ABRK={ar:['🧘 قف ومدّ ظهرك وذراعيك للأعلى ٣٠ ث
   en:['🧘 Stand up and stretch your back and arms for 30s','👀 20-20-20: look at something far away for 20s','🚶 Walk a little — even around the room','🤲 Roll your shoulders and neck slowly','🌬 Breathe: in 4, hold 4, out 6 — five times','✋ Stretch your fingers and wrists after long typing','🪟 Open the window for fresh air','📿 Do some dhikr during the break','🦵 Ten light squats to wake the body up','🧹 Tidy your desk for one minute','😌 Close your eyes for a minute away from the screen','🍎 A light snack instead of sweets']};
 {const _sb=startBreak;startBreak=function(min){_sb(min);const T=S.timer;T.brkTip=Math.floor(Math.random()*12);save();renderTimer()}}
 /* every-second updates */
-{const _rt3=renderTimer;renderTimer=function(){_rt3();const T=S.timer,tip=$('#brkTip');
+{hookFn('renderTimer',()=>renderTimer,f=>{renderTimer=f},'post',function(){const T=S.timer,tip=$('#brkTip');
   if(tip){let h='';if(T.mode==='brk'&&abrkOn()){h=(ABRK[LANG]||ABRK.ar)[(T.brkTip||0)%12];if(waterOn()){const d=S.days[todayKey()],last=d&&d.waterAt;if(!last||Date.now()-last>60*6e4)h+=' · '+t('wt.brk')}}tip.hidden=!h;if(tip.textContent!==h)tip.textContent=h}
   if(NZ.src&&T.mode!=='work'&&(T.mode==='pray'||S.settings.nzAuto!==false))nzStop();
-  if(T.deep)deepRender();else if($('#deepOv').classList.contains('on'))$('#deepOv').classList.remove('on');pipRender()}}
+  if(T.deep)deepRender();else if($('#deepOv').classList.contains('on'))$('#deepOv').classList.remove('on');pipRender()})}
 /* floating timer window (PC, Document Picture-in-Picture) */
 const PIP={w:null};
 function pipOk(){return!ANDROID&&'documentPictureInPicture' in window}
@@ -180,7 +180,7 @@ function renderV33Set(){const st=S.settings;$('#pjManage').onclick=()=>openProje
   const W=wtCfg();toggle($('#waterT'),W.on,v=>{st.waterCfg=Object.assign(wtCfg(),{on:v});setTimeout(renderTTools,0)});$('#waterG').value=W.goal;$('#waterG').onchange=e=>{st.waterCfg=Object.assign(wtCfg(),{goal:Math.max(1,+e.target.value||8)});save();renderTTools()};
   toggle($('#nzAutoT'),st.nzAuto!==false,v=>{st.nzAuto=v});
   const F=fgCfg();$('#fgField').hidden=ANDROID;$('#fgBox').hidden=ANDROID||!F.on;toggle($('#fgT'),F.on,v=>{st.fg=Object.assign(fgCfg(),{on:v});$('#fgBox').hidden=!v;if(v)setTimeout(()=>{fgPoll().then(renderFgRules)},50)});toggle($('#fgAutoT'),F.auto,v=>{st.fg=Object.assign(fgCfg(),{auto:v})});renderFgRules()}
-{const _rs7=renderSettings;renderSettings=function(){_rs7();try{renderV33Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderV33Set()}catch(e){console.error(e)}})}
 /* brief: focus, estimates, projects, water */
 {const _rb4=renderBrief;renderBrief=function(){_rb4();try{const keys=periodKeys(bMode,bAnchor).filter(k=>k<=todayKey()),box=$('#bHours');if(!box)return;const SS=keys.flatMap(k=>(S.days[k]&&S.days[k].sessions)||[]);
   const rated=SS.filter(s=>s.focus),deep=SS.filter(s=>s.deep),stat=box.querySelector('.bhstat');let h='';

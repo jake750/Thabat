@@ -39,10 +39,10 @@ function renderBadges(){badgesCheck(true);const B=BDG(),groups=[['w','bd.gW'],['
    <div class="evact"><small class="muted" style="flex:1">${t('bd.note')}</small><button class="btn sm" id="bdX">${t('ok')}</button></div>`;$('#bdX').onclick=()=>$('#bdModal').classList.remove('on')}
 $('#bdModal').onclick=e=>{if(e.target.id==='bdModal')$('#bdModal').classList.remove('on')};
 $('#bdBtn').onclick=openBadges;
-{const _rb7=renderBrief;renderBrief=function(){_rb7();renderBdBtn()}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){renderBdBtn()})}
 {const _cc4=cmdCommands;cmdCommands=function(){const c=(icon,label,run,kw)=>({icon,label,run,kw:kw||''});return _cc4().concat([c('🏅',t('bd.title'),openBadges,'badges achievements أوسمة')])}}
 setInterval(()=>badgesCheck(),5*6e4);setTimeout(()=>{if(!S.badgesInit){badgesCheck(true);S.badgesInit=1;save()}else badgesCheck()},9000);
-{const _pd4=prayDone;prayDone=function(){_pd4();setTimeout(()=>badgesCheck(),2500)}}
+{hookFn('prayDone',()=>prayDone,f=>{prayDone=f},'post',function(){setTimeout(()=>badgesCheck(),2500)})}
 {const _ta4=timerAct;timerAct=function(a){_ta4(a);if(a==='stop')setTimeout(()=>badgesCheck(),2500)}}
 renderBdBtn();
 

@@ -39,7 +39,7 @@ function medPush(){if(andV()<4||!window.ThabatAndroid.mediaState)return;const a=
   if(!a||!r)o={on:false};else o={on:true,title:r.title,artist:r.reciter||t('app'),playing:!a.paused,pos:Math.round((a.currentTime||0)*1000),dur:Math.round((isFinite(a.duration)?a.duration:(r.dur||0))*1000),rate:a.playbackRate||1,prevLbl:t('rcp.prev'),nextLbl:t('rcp.next'),playLbl:t('med.play'),pauseLbl:t('med.pause'),chName:t('rc.t')};
   const js=JSON.stringify(o);MED.t=Date.now();if(js===MED.last)return;MED.last=js;try{window.ThabatAndroid.mediaState(js)}catch(e){}}
 {const _ra=rcAudio;rcAudio=function(...x){const a=_ra(...x);if(a&&!a._med){a._med=1;['play','pause','ended','loadedmetadata','ratechange','seeked'].forEach(ev=>a.addEventListener(ev,medPush));a.addEventListener('timeupdate',()=>{if(Date.now()-MED.t>15000)medPush()})}return a}}
-{const _rs=rcStop;rcStop=function(...x){const r=_rs(...x);medPush();return r}}
+{hookFn('rcStop',()=>rcStop,f=>{rcStop=f},'post',function(...x){medPush()})}
 window.thabatMedia=a=>{const el=RCX.el;if(!el)return;a=String(a||'');if(a==='play')el.play().catch(()=>{});else if(a==='pause')el.pause();else if(a==='next')rcStep(1);else if(a==='prev')rcStep(-1);else if(a.startsWith('seek:')){el.currentTime=(+a.slice(5)||0)/1000;medPush()}};
 /* ---------- the phone's own colour (Android 12+, pick 143) ---------- */
 (function(){if(andV()<4||!window.ThabatAndroid.sysColors)return;let c='';try{c=window.ThabatAndroid.sysColors()||''}catch(e){}const P=c.split(',');if(P.length<3)return;

@@ -125,8 +125,8 @@ document.addEventListener('click',e=>{const m=$('#lpvSpm');if(m&&!m.hidden&&!e.t
   const i=h.indexOf('<div class="lshh"><h4 class="lbfh">🗂');return i<0?row+h:h.slice(0,i)+row+h.slice(i)}}
 {const _rl=renderLib;renderLib=function(){const r=_rl();try{$$('#v-lib [data-lrm]').forEach(x=>x.onclick=e=>{e.stopPropagation();lpvLaterDel(x.dataset.lrm);renderLib()})}catch(e){}return r}}
 /* in Notes: a lesson's note shows its moments as buttons that open the player there */
-{const _rne=renderNoteEd;renderNoteEd=function(...a){const r=_rne(...a);try{const n=NE;if(n&&n.lib){const hd=$('#noteBox .nehead');const ms=[];let m;LPV_RE.lastIndex=0;while((m=LPV_RE.exec(n.body||'')))ms.push({ts:m[1],s:lpvSec(m[1]),tx:m[2]});
+{hookFn('renderNoteEd',()=>renderNoteEd,f=>{renderNoteEd=f},'post',function(...a){try{const n=NE;if(n&&n.lib){const hd=$('#noteBox .nehead');const ms=[];let m;LPV_RE.lastIndex=0;while((m=LPV_RE.exec(n.body||'')))ms.push({ts:m[1],s:lpvSec(m[1]),tx:m[2]});
     if(hd&&!$('#lpvStrip'))hd.insertAdjacentHTML('afterend',`<div class="lpvstrip" id="lpvStrip"><span>🎬 ${esc(n.libC||'')}</span>${ms.map(x=>`<button class="btn sm ghost" data-ls="${x.s}" title="${esc(x.tx)}">▶ <span dir="ltr">${x.ts}</span></button>`).join('')}<button class="btn sm" data-ls="-1">▶ ${t('lpv.openLesson')}</button></div>`);
-    $$('#lpvStrip [data-ls]').forEach(b=>b.onclick=()=>lpvOpenAt(n.lib,+b.dataset.ls))}}catch(e){console.error(e)}return r}}
+    $$('#lpvStrip [data-ls]').forEach(b=>b.onclick=()=>lpvOpenAt(n.lib,+b.dataset.ls))}}catch(e){console.error(e)}})}
 function lpvOpenAt(id,sec){if(!LIB.base){toast(t('lb.off'));return}$('#noteModal').classList.remove('on');showView('lib');libPlay(id);if(sec>=0){const v=$('#lvV');if(v)v.addEventListener('loadedmetadata',()=>{v.currentTime=sec},{once:true})}}
 

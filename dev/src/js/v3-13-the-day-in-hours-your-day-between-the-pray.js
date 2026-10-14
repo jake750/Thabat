@@ -79,6 +79,6 @@ function pdlAgendaBind(box,k,d){box.querySelectorAll('[data-tog]').forEach(h=>h.
 /* the setting: which view */
 function pdlvSeg(){const g=$('#pdlvSeg');if(!g)return;g.innerHTML=PDLV.map(v=>`<button data-v="${v}" class="${pdlView()===v?'on':''}">${t('pdlv.'+v)}</button>`).join('');
   g.querySelectorAll('button').forEach(b=>b.onclick=()=>{S.settings.pdlView=b.dataset.v;save();pdlvSeg();pdlHoursBind._k=0;pdlRender()})}
-{const _rs=renderSettings;renderSettings=function(){_rs();try{pdlvSeg()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{pdlvSeg()}catch(e){console.error(e)}})}
 try{pdlRender()}catch(e){}
 

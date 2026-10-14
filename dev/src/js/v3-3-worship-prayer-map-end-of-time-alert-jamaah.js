@@ -26,7 +26,7 @@ function openPrayMap(tab){tab=tab||'on';const tk=todayKey(),end=keyToDate(tk),st
     <div class="pmleg">${t('pm.less')} <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> ${t('pm.more')}</div>${bars}`);
   $$('[data-pm]').forEach(b=>b.onclick=()=>openPrayMap(b.dataset.pm))}
 {const rv=$('#rvBtn');if(rv&&!$('#pmBtn')){rv.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="pmBtn">🕌 <span>${t('pm.btn')}</span></button>`);$('#pmBtn').onclick=()=>openPrayMap()}}
-{const _rbP=renderBrief;renderBrief=function(){_rbP();const b=$('#pmBtn');if(b)b.querySelector('span').textContent=t('pm.btn')}}
+{hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){const b=$('#pmBtn');if(b)b.querySelector('span').textContent=t('pm.btn')})}
 /* 2. the prayer time is about to end and it is not logged */
 function endCheck(){const W=W3();if(!W.endOn)return;const now=Date.now(),dk=todayKey(),A=S.endAsk||(S.endAsk={});
   for(const k of PRAYERS){const s=plStatus(dk,k);const d=S.days[dk];if((d&&d.prayed&&d.prayed[k])||(s&&s!=='q'&&s!=='auto'))continue;const pt=prayerTimes(keyToDate(dk))[k];if(now<pt)continue;const we=plWinEnd(k,dk),at=we-(+W.endMin||20)*6e4;
@@ -69,5 +69,5 @@ function renderW3Set(){const W=W3(),box=$('#w3Box');if(!box)return;
   toggle($('#trvT'),!!W.travel,v=>{W.travel=v;if(v&&!W.travelUntil){}renderPrayers();renderTodayEv()});const tu=$('#trvUntil');tu.value=W.travelUntil||'';tu.onchange=()=>{W.travelUntil=tu.value||null;save()};
   $('#adhPerBox').innerHTML=PRAYERS.map(k=>`<label class="adp"><span>${t('pr.'+k)}</span><select class="in" data-adp="${k}">${['full','takbir','off'].map(m=>`<option value="${m}" ${adhPK(k)===m?'selected':''}>${t('adp.'+m)}</option>`).join('')}</select></label>`).join('');
   $$('[data-adp]').forEach(s=>s.onchange=()=>{W.adhPer=W.adhPer||{};W.adhPer[s.dataset.adp]=s.value;save();if(ANDROID)setTimeout(androidSchedule,100);PCN_LAST=''})}
-{const _rs20=renderSettings;renderSettings=function(){_rs20();try{renderW3Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderW3Set()}catch(e){console.error(e)}})}
 

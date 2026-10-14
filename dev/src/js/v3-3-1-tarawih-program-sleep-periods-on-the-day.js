@@ -38,8 +38,8 @@ function openTarawih(){const T=TAR(),S2=tarSchedule(),tn=tarTonight();
 {const _rte12=renderTodayEv;renderTodayEv=function(){_rte12();const box=$('#todayEv');if(!box||S.settings.tarChip===false)return;const n=tarTonight();if(!n)return;const S2=tarSchedule(),N=S2.nights.find(x=>x.n===n);if(!N)return;const rk=N.rk.filter(Boolean);if(!rk.length)return;
   const sj=S2.sj.filter(x=>x.night===n);box.insertAdjacentHTML('afterbegin',`<span class="evchip big" data-tr3 style="--c:#8b5cf6"><i></i>🕌 ${t('tr.chip',tarLabel(rk[0].a,rk[0].u))}${sj.length?' · ۩ '+sj.map(x=>t('tr.rkN',x.rk)).join('، '):''}</span>`);box.querySelector('[data-tr3]').onclick=openTarawih}}
 /* entry points: the Quran side panel and the Ramadan board */
-{const _rqs2=renderQSide;renderQSide=function(){_rqs2();try{const r=$('.qx3 .row');if(r&&!$('#trBtn')){r.insertAdjacentHTML('beforeend',`<button class="btn sm ghost" id="trBtn">🌙 ${t('tr.btn')}</button>`);$('#trBtn').onclick=openTarawih}}catch(e){}}}
-{const _or=openRamadan;openRamadan=function(){_or();const b=$('#infoBox .infob');if(b)b.insertAdjacentHTML('beforeend',`<button class="btn sm" id="trFromRam" style="margin-top:10px">🌙 ${t('tr.btn')}</button>`);const x=$('#trFromRam');if(x)x.onclick=openTarawih}}
+{hookFn('renderQSide',()=>renderQSide,f=>{renderQSide=f},'post',function(){try{const r=$('.qx3 .row');if(r&&!$('#trBtn')){r.insertAdjacentHTML('beforeend',`<button class="btn sm ghost" id="trBtn">🌙 ${t('tr.btn')}</button>`);$('#trBtn').onclick=openTarawih}}catch(e){}})}
+{hookFn('openRamadan',()=>openRamadan,f=>{openRamadan=f},'post',function(){const b=$('#infoBox .infob');if(b)b.insertAdjacentHTML('beforeend',`<button class="btn sm" id="trFromRam" style="margin-top:10px">🌙 ${t('tr.btn')}</button>`);const x=$('#trFromRam');if(x)x.onclick=openTarawih})}
 /* ---- sleep in several periods, from–to, shown on the day strip ---- */
 function slPeriods(d){const s=d&&d.sleep3;if(!s)return[];if(s.p)return s.p;if(s.bed&&s.wake)return[{f:s.bed,t:s.wake}];return[]}
 function slMins(p){const [a,b]=p.f.split(':').map(Number),[c,e]=p.t.split(':').map(Number);let m=(c*60+e)-(a*60+b);if(m<=0)m+=1440;return m}
@@ -60,5 +60,5 @@ openSleep=function(k0){const k=typeof k0==='string'?k0:todayKey(),d=day(k);let L
   sp.forEach(s=>{const t0=Math.max(a,s.t0),t1=Math.min(b,s.t1);if(t1<=t0)return;br.insertAdjacentHTML('afterbegin',`<i class="slp" style="${side}:${x(t0)};width:${((t1-t0)/W*100).toFixed(2)}%" title="😴 ${s.p.f}–${s.p.t}"></i>`)});
   if(!box.querySelector('.slleg'))box.insertAdjacentHTML('beforeend',`<div class="slleg"><i></i> ${t('sl4.leg')}</div>`)}catch(e){console.error(e)}}}
 function renderE2Set(){const st=S.settings;const a=$('#tarChipT');if(a)toggle(a,st.tarChip!==false,v=>{st.tarChip=v});const b=$('#tarOpenBtn');if(b)b.onclick=openTarawih}
-{const _rs24=renderSettings;renderSettings=function(){_rs24();try{renderE2Set()}catch(e){console.error(e)}}}
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{renderE2Set()}catch(e){console.error(e)}})}
 
