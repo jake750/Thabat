@@ -3,6 +3,16 @@
 تطبيق إنتاجية يُنظّم اليوم حول الصلوات الخمس: المواقيت والأذان، والمصحف، والورد والحفظ والمراجعة، والمؤقّت، والمهام، والتقويم، والملاحظات.
 من صنع **jake750_** (فرات بوشاعة). الشيفرة معروضة للاطلاع، والاستخدام والتعديل وإعادة النشر وفق [LICENSE.txt](LICENSE.txt): أي تعديل أو نشر يحتاج إذناً كتابياً من المؤلّف.
 
+## التحميل
+
+| الجهاز | الطريقة |
+|---|---|
+| **ويندوز** | نزّل [Thabat-Setup.exe](https://github.com/jake750/Thabat/releases/latest/download/Thabat-Setup.exe) وافتحه ثم اضغط «ثبّت»: ينزّل آخر إصدار ويضع اختصارًا على سطح المكتب وفي قائمة ابدأ. أول مرة فقط يظهر تحذير «Windows protected your PC»: اضغط «More info» ثم «Run anyway». |
+| **ماك** | افتح Terminal والصق: `curl -fsSL https://raw.githubusercontent.com/jake750/Thabat/main/dev/mac/install.sh \| bash` |
+| **أندرويد** | نزّل [Thabat.apk](https://github.com/jake750/Thabat/releases/latest/download/Thabat.apk) وثبّته. |
+
+التحديثات بعد ذلك من داخل التطبيق.
+
 ## البنية
 
 - `dev/src.html`: **مصدر الحقيقة**. التطبيق كله ملف HTML واحد، وفيه مواضع تُملأ عند البناء من `dev/placeholders.json`.

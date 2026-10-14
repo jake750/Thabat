@@ -155,6 +155,10 @@ def main():
                  '--ks-key-alias', 'thabat', '--min-sdk-version', '26', '--v4-signing-enabled', 'false', '--out', 'Thabat-Android-Test.apk', a2], env=env)
             assert 'cf19fc4a36f04e0ec75c825cce5f99491390c7065c48070ae7156302d04722f0' in run(['java', '-jar', signer, 'verify', '--print-certs', 'Thabat-Android-Test.apk'], env=env)
             print('test APK (new shell) signed: Thabat-Android-Test.apk')
+    # the one-file Windows setup (dev/setup: IExpress, downloads the latest Thabat-Windows.zip when run)
+    sys.path.insert(0, os.path.join(ROOT, 'dev', 'setup'))
+    import build_setup
+    build_setup.build()
     if os.path.exists(PERSONAL):
         shutil.copy(PERSONAL, PERSONAL + '.bak')
         shutil.copy(HTML, PERSONAL)
