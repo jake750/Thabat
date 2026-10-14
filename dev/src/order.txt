@@ -83,6 +83,7 @@ css/v3-44-adhan-per-prayer-eid-bedtime-season-plans.css
 css/v3-44-eclipses.css
 css/v3-45-board-shapes-library-ornaments-symbols-cro.css
 css/v3-46-timeline-thumbnail-durations-book-outline.css
+css/v3-48-in-app-apk-update.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -213,6 +214,7 @@ js/v3-44-eclipses-solar-and-lunar-eclipses-2027-204.js
 js/v3-45-whiteboard-a-larger-shapes-library-islamic.js
 js/v3-46-library-and-books-picture-preview-on-the-t.js
 js/v3-47-windows-update-check-when-the-pc-starts-th.js
+js/v3-48-android-download-the-new-version-and-insta.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
