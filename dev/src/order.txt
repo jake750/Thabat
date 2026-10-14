@@ -73,6 +73,7 @@ css/v3-32-calendar-stars-and-moons-behind-the-day-ca.css
 css/v3-33-line-icons-in-place-of-emoji.css
 css/v3-34-test-mode-word-reveal-full-screen-grace-pi.css
 css/v3-38.css
+css/v3-39-settings-on-two-levels.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -193,6 +194,7 @@ js/v3-34-test-mode-word-by-word-40-s-grace-after-le.js
 js/v3-36-indexeddb-is-where-the-data-lives-the-brow.js
 js/v3-37-lighter-file-root-data-on-demand-dead-code.js
 js/v3-38-switch-off-the-parts-you-do-not-use-and-th.js
+js/v3-39-settings-on-two-levels-each-large-card-sho.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

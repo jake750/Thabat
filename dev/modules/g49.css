@@ -1,0 +1,4 @@
+/* v3.39: settings on two levels */
+html:not(.sgq) #v-set .card:not(.sga-on)>.sga-x{display:none!important}
+#v-set .sgabtn{margin-top:10px;width:100%;justify-content:center;border:1px dashed var(--line)}
+html.sgq #v-set .sgabtn{display:none}
