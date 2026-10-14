@@ -3,7 +3,7 @@
 #   css/<name>.css       the styles: base.css, then one part per version comment (/* v3.x … */), then image-viewer.css
 #   body.html            </style> … <script> (the page markup)
 #   js/<name>.js         the script: core.js, then one part per module marker (/* ============ … ============ */)
-#   tail.html            </script> to the end
+#   tail.html            </script> to the end (with the loader script since 3.36)
 # split() and join() are exact inverses, so the built Thabat.html is unchanged byte for byte.
 # dev/src.html is regenerated from the parts on every save/build (git-ignored) so grep, tlchk.sh and the src_vNNN backups keep working.
 import os, re
@@ -46,8 +46,12 @@ def _css_starts(css):
 def split(s):
     a = s.index('<style>') + len('<style>')
     b = s.index('</style>', a)
-    c = s.index('<script>', b) + len('<script>')
-    d = s.rindex('</script>')
+    # the app script: since 3.36 it is <script type="text/x-thabat" id="thMain"> (run by the loader in tail.html); it cannot contain «</script>»
+    m = re.compile(r'<script[^>]*id="thMain"[^>]*>').search(s, b)
+    if m:
+        c = m.end(); d = s.index('</script>', c)
+    else:
+        c = s.index('<script>', b) + len('<script>'); d = s.rindex('</script>')
     parts = [('head.html', s[:a])]
     css, used = s[a:b], set()
     for i, chunk in enumerate(_cut(css, _css_starts(css))):
