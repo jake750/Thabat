@@ -216,6 +216,8 @@ $handler = {
       $cvd = Join-Path (Split-Path $cfgFile) 'conv'; New-Item -ItemType Directory -Force -Path $cvd | Out-Null
       $sid = ([string]$q['id']) -replace '[^A-Za-z0-9_\-]', ''
       if (-not $sid) { Fail '400 Bad Request' 'id'; return }
+      # 3.51: lite=1 is a lighter copy for phones (720p at most), kept as conv\<id>-lite.mp4
+      $srcId = $sid; $lite = ($q['lite'] -eq '1'); if ($lite) { $sid = "$srcId-lite" }
       $ff = [bool](Get-Command ffmpeg -ErrorAction SilentlyContinue)
       $stf = Join-Path $cvd "$sid.st"; $o = @{ s = 'none'; p = 0 }
       if (Test-Path -LiteralPath (Join-Path $cvd "$sid.mp4")) { $o = @{ s = 'ok'; p = 100 } }
@@ -228,15 +230,45 @@ $handler = {
       if ($route -eq '/cv/start') {
         if ($o.s -ne 'ok' -and $o.s -ne 'run') {
           if (-not $ff) { Fail '428 Precondition Required' 'ffmpeg'; return }
-          $full = Resolve $sid; if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
+          $full = Resolve $srcId; if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
           [IO.File]::WriteAllText($stf, '{"s":"run","p":0}', $utf8)
-          Start-Process powershell.exe -WindowStyle Hidden -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$(Split-Path $cfgFile)`"", '-Convert', $sid, '-In', "`"$full`"")
+          $cargs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$trScript`"", '-Dir', "`"$(Split-Path $cfgFile)`"", '-Convert', $sid, '-In', "`"$full`""); if ($lite) { $cargs += '-Lite' }
+          Start-Process powershell.exe -WindowStyle Hidden -ArgumentList $cargs
           $o = @{ s = 'run'; p = 0 }
         }
         Json @{ ok = $true; ff = $ff; st = $o }; return
       }
       if ($route -eq '/cv/cancel') { [IO.File]::WriteAllText((Join-Path $cvd "$sid.cancel"), '1', $utf8); Json @{ ok = $true }; return }
       Fail '404 Not Found' 'route'; return
+    }
+    # 3.51: add a file to a library folder — from the phone (110, token, Wi-Fi/Tailscale) or a file dropped on the PC app (146).
+    # Only video, audio, PDF and pictures, at most 2 GB, only inside a folder already in the library, never over an existing
+    # file (a number is added to the name), written to a hidden .part file first and renamed when complete.
+    if ($route -eq '/put') {
+      if ($method -ne 'POST') { Fail '405 Method Not Allowed' 'method'; return }
+      $dir = $null; $dq = [string]$q['dir']
+      if ($dq -match '^r(\d+)$') { $ri = [int]$matches[1]; if ($ri -lt $roots.Count) { $dir = [IO.Path]::GetFullPath($roots[$ri]).TrimEnd('\') } } else { $dir = Resolve $dq }
+      if (-not $dir -or -not (Test-Path -LiteralPath $dir -PathType Container)) { Fail '404 Not Found' 'dir'; return }
+      $nm = [IO.Path]::GetFileName([string]$q['n']); $nm = ($nm -replace '[\x00-\x1f<>:"/\\|?*]', '_').Trim().TrimStart('.').TrimEnd('.', ' ')
+      if ($nm.Length -gt 180) { $ext0 = [IO.Path]::GetExtension($nm); $nm = $nm.Substring(0, 180 - $ext0.Length) + $ext0 }
+      $ext = [IO.Path]::GetExtension($nm).TrimStart('.').ToLower()
+      $okExt = $vid + $aud + @('pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'heic')
+      if (-not $nm -or -not ($okExt -contains $ext)) { Fail '415 Unsupported Media Type' 'type'; return }
+      $len = [int64]0; [void][int64]::TryParse([string]$hd['content-length'], [ref]$len)
+      if ($len -le 0 -or $len -gt 2147483648) { Fail '413 Payload Too Large' 'size'; return }
+      $base = [IO.Path]::GetFileNameWithoutExtension($nm); $dst = Join-Path $dir $nm; $k = 2
+      while ((Test-Path -LiteralPath $dst) -and $k -lt 1000) { $dst = Join-Path $dir ("$base ($k).$ext"); $k++ }
+      $part = Join-Path $dir ('.thabat-upload-' + [Guid]::NewGuid().ToString('N') + '.part')
+      $client.ReceiveTimeout = 60000
+      $fs = [IO.File]::Open($part, 'CreateNew', 'Write', 'None'); $got = [int64]0
+      try { $buf = New-Object byte[] 262144
+        while ($got -lt $len) { $r = $s.Read($buf, 0, [int][Math]::Min($buf.Length, $len - $got)); if ($r -le 0) { break }; $fs.Write($buf, 0, $r); $got += $r }
+      } finally { $fs.Close() }
+      if ($got -ne $len) { Remove-Item -LiteralPath $part -ErrorAction SilentlyContinue; Fail '400 Bad Request' 'short'; return }
+      if (Test-Path -LiteralPath $dst) { Remove-Item -LiteralPath $part -ErrorAction SilentlyContinue; Fail '409 Conflict' 'exists'; return }
+      Move-Item -LiteralPath $part -Destination $dst
+      $ri = -1; for ($i = 0; $i -lt $roots.Count; $i++) { $rt = [IO.Path]::GetFullPath($roots[$i]).TrimEnd('\'); if ($dst.StartsWith($rt + '\', [StringComparison]::OrdinalIgnoreCase)) { $ri = $i; $rel = $dst.Substring($rt.Length + 1); break } }
+      Json @{ ok = $true; n = [IO.Path]::GetFileName($dst); id = $(if ($ri -ge 0) { IdOf $ri $rel } else { '' }); size = $got }; return
     }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
