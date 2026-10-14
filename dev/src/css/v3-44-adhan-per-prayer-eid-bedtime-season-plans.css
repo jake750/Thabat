@@ -1,0 +1,27 @@
+/* v3.44: adhan per prayer, Eid, bedtime, season plans */
+.adhvp{display:flex;flex-direction:column;gap:6px;min-width:0;width:100%;max-width:340px}
+.adhvp label{display:grid;grid-template-columns:64px minmax(0,1fr) 40px;align-items:center;gap:8px;font-size:13px}
+.adhvp input{width:100%;min-width:0}
+.adhvp em{font-style:normal;font-size:12px;color:var(--muted);text-align:end;font-variant-numeric:tabular-nums}
+.adhvp .link{align-self:flex-start;min-height:32px}
+.eidr{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 10px;margin:0 0 10px;font-size:14px;min-width:0}
+.eidr small{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:-4px}
+.eidr .in{min-width:0;min-height:38px}
+.eidr input[type=checkbox]{width:22px;height:22px}
+.bed2big{display:flex;flex-direction:column;align-items:center;gap:2px;margin:6px 0 14px}
+.bed2big b{font-size:34px;font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.bed2big small{color:var(--muted);font-size:12.5px}
+.ssnbar{height:8px;border-radius:5px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden;margin:4px 0 4px}
+.ssnbar i{display:block;height:100%;background:var(--gold);border-radius:5px;transition:width .3s}
+.ssnl{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+.ssnr{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2,var(--panel));min-width:0}
+.ssnr span{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.ssnr.on span{color:var(--muted);text-decoration:line-through}
+.ssnck{width:26px;height:26px;border-radius:8px;border:1.6px solid var(--line);background:transparent;color:transparent;display:grid;place-items:center;cursor:pointer;position:relative;padding:0}
+.ssnck::after{content:"";position:absolute;inset:-8px}
+.ssnck svg{width:15px;height:15px}
+.ssnr.on .ssnck{background:var(--gold);border-color:var(--gold);color:#111}
+.ssnr .link{min-width:34px;min-height:34px}
+.ssnadd{display:flex;gap:8px}.ssnadd .in{flex:1;min-width:0}
+.ssnbtns{flex-wrap:wrap;gap:6px}
+

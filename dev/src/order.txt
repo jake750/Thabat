@@ -79,6 +79,8 @@ css/v3-40-2-calendar-cells-see-through-a-little-on-p.css
 css/v3-41-notes-folders-editor-contents-highlights-w.css
 css/v3-42-repeat-after-done-habit-quantities-weekly.css
 css/v3-43-event-reminder-choice-two-days-side-by-sid.css
+css/v3-44-adhan-per-prayer-eid-bedtime-season-plans.css
+css/v3-44-eclipses.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -204,6 +206,8 @@ js/v3-40-share-thabat-the-one-file-windows-setup-th.js
 js/v3-41-notes-folders-inside-the-notes-page-nested.js
 js/v3-42-tasks-habits-timer-repeat-n-days-after-don.js
 js/v3-43-calendar-summary-event-reminders-two-days.js
+js/v3-44-worship-and-seasons-adhan-volume-per-praye.js
+js/v3-44-eclipses-solar-and-lunar-eclipses-2027-204.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
