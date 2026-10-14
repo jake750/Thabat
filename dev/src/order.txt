@@ -71,6 +71,7 @@ css/v3-31-khatm-du-a-root-search.css
 css/v3-31-1-macos-install-command.css
 css/v3-32-calendar-stars-and-moons-behind-the-day-ca.css
 css/v3-33-line-icons-in-place-of-emoji.css
+css/v3-34-test-mode-word-reveal-full-screen-grace-pi.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -187,6 +188,7 @@ js/v3-31-khatm-du-a-options-after-a-completed-khatm.js
 js/v3-31-1-macos-install-and-update-with-one-termin.js
 js/v3-32-calendar-day-panel-tick-past-tasks-quran-f.js
 js/v3-33-one-line-icon-set-instead-of-emoji-in-the.js
+js/v3-34-test-mode-word-by-word-40-s-grace-after-le.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

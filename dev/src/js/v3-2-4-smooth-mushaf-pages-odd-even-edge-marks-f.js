@@ -20,7 +20,7 @@ function qftUi(){const el=$('#qFsTm');if(!el)return;const on=!!S.qfsT;el.hidden=
 {let lastA=0;const act=()=>{if(!S.qfsT||!document.documentElement.classList.contains('qfs'))return;const n=Date.now();if(n-lastA<4000)return;lastA=n;qftAct()};['touchstart','keydown','wheel','pointerdown'].forEach(ev=>document.addEventListener(ev,act,{passive:true,capture:true})) }
 document.addEventListener('visibilitychange',()=>{if(!S.qfsT)return;if(document.hidden){qftCut(Date.now());save()}else if(document.documentElement.classList.contains('qfs'))qftAct()});
 setInterval(()=>{if(!S.qfsT)return;if(!document.documentElement.classList.contains('qfs')){qftFinish();return}save();qftUi()},30000);
-setTimeout(()=>{if(S.qfsT&&!document.documentElement.classList.contains('qfs'))qftFinish()},3000);
+setTimeout(()=>{if(S.qfsT&&!document.documentElement.classList.contains('qfs'))qftFinish(true)},3000);
 {const fu=$('#qFsUi'),pg=$('#qFsPg');if(fu&&pg&&!$('#qFsTm'))pg.insertAdjacentHTML('afterend','<span class="qfspg qfstm" id="qFsTm" hidden></span>')}
 {const _qfu=qFs;qFs=function(on){_qfu(on);qftUi()}}
 /* Android: optional manual lift of the bottom bar */

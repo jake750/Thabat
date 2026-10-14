@@ -1,0 +1,6 @@
+/* v3.34: test mode word reveal, full-screen grace pill */
+.hidetest .ml span[data-k].wrev{-webkit-text-fill-color:currentColor;background:none;animation:revIn .3s ease}
+.hidetest .ml span[data-k] .aen{cursor:pointer}
+.qfgpill{position:fixed;left:50%;width:max-content;transform:translateX(-50%);bottom:24px;z-index:75;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;max-width:calc(100vw - 32px);box-sizing:border-box;padding:8px 10px 8px 14px;border-radius:16px;background:var(--panel);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 10px 30px rgba(0,0,0,.35);font-size:13px;font-variant-numeric:tabular-nums}
+@media(max-width:700px){.qfgpill{bottom:calc(96px + var(--andnav,0px))}}
+
