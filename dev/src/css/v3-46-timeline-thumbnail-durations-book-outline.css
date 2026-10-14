@@ -1,0 +1,13 @@
+/* v3.46: timeline thumbnail, durations, book outline, trim and turn */
+.lpvthumb{position:absolute;bottom:48px;transform:translateX(-50%);width:176px;border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.5);border:2px solid #fff;background:#000;pointer-events:none;line-height:0;z-index:3}
+.lpvthumb[hidden]{display:none}
+.lpvthumb img{width:100%;display:block}
+.ldurbar{font-size:12.5px;color:var(--muted);padding:6px 4px 10px;line-height:1.6}
+.ldurbar small{opacity:.8}
+.bkol{display:flex;flex-direction:column;gap:2px;max-height:calc(100% - 50px);overflow:auto}
+.bkoli{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:start;background:transparent;border:0;color:inherit;font:inherit;font-size:13.5px;padding:8px 10px;border-radius:8px;cursor:pointer;min-height:38px;line-height:1.5}
+.bkoli:hover{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.bkoli small{color:var(--muted);font-size:11.5px;flex:none;font-variant-numeric:tabular-nums}
+.bkp.bkxt{overflow:hidden}
+.bkv.hlmode .bkp canvas,.bkv.hlmode .bkhl{transform:none!important}
+

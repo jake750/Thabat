@@ -82,6 +82,7 @@ css/v3-43-event-reminder-choice-two-days-side-by-sid.css
 css/v3-44-adhan-per-prayer-eid-bedtime-season-plans.css
 css/v3-44-eclipses.css
 css/v3-45-board-shapes-library-ornaments-symbols-cro.css
+css/v3-46-timeline-thumbnail-durations-book-outline.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -210,6 +211,7 @@ js/v3-43-calendar-summary-event-reminders-two-days.js
 js/v3-44-worship-and-seasons-adhan-volume-per-praye.js
 js/v3-44-eclipses-solar-and-lunar-eclipses-2027-204.js
 js/v3-45-whiteboard-a-larger-shapes-library-islamic.js
+js/v3-46-library-and-books-picture-preview-on-the-t.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
