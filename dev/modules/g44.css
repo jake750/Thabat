@@ -1,0 +1,4 @@
+/* v3.33: line icons in place of emoji */
+svg.uic{display:inline-block!important;width:1.12em!important;height:1.12em!important;vertical-align:-.2em;flex:none;overflow:visible;position:static!important;margin:0!important;opacity:1}
+svg.uic desc{display:none}
+.btn svg.uic,.chip svg.uic,button svg.uic{vertical-align:-.18em}

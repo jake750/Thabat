@@ -1,0 +1,46 @@
+/* v3.32: calendar — stars and moons behind the day cards, misbaha the same on gold days, day panel editing */
+.calsky{z-index:0}
+#cal .cell{z-index:1}
+#cal .cell:not(.out){background-color:color-mix(in srgb,var(--panel) 82%,var(--bg))}
+html.st-glass #cal .cell:not(.out){background-color:color-mix(in srgb,var(--bg) 78%,var(--panel))}
+html:not(.mode-light) .cell.gold .msb,html:not(.mode-light) .cell.fl .msb{color:#9be0b4;filter:drop-shadow(0 0 3px rgba(120,220,160,.35));background:radial-gradient(circle,rgba(14,18,22,.82) 58%,rgba(14,18,22,0) 71%);border-radius:50%;padding:2px;box-sizing:content-box;margin:-2px}
+html:not(.mode-light) .cell.gold .msb.l1,html:not(.mode-light) .cell.fl .msb.l1{opacity:1}
+html:not(.mode-light) .cell.gold .msb.l3,html:not(.mode-light) .cell.fl .msb.l3{color:#b6f5cc;filter:drop-shadow(0 0 5px rgba(120,230,170,.75))}
+/* day panel: tasks */
+.dtask .dtck{width:22px;height:22px;flex:none;border-radius:7px;border:1.6px solid var(--line);display:grid;place-items:center;color:transparent;background:transparent;align-self:center}
+.dtask .dtck svg{width:14px;height:14px}
+.dtask .dtck.on{background:var(--accent);border-color:var(--accent);color:#111}
+.dtask .dtck:hover{border-color:var(--accent)}
+@media(max-width:700px){.dtask .dtck{position:relative}.dtask .dtck::after{content:"";position:absolute;inset:-8px}}
+/* day panel: Quran */
+.dq43{display:flex;flex-direction:column;gap:6px}
+.dq-r{display:flex;align-items:center;gap:10px;min-width:0}
+.dq-ck{width:24px;height:24px;flex:none;border-radius:7px;border:1.6px solid var(--line);display:grid;place-items:center;color:transparent;background:transparent;position:relative}
+.dq-ck::after{content:"";position:absolute;inset:-8px}
+.dq-ck svg{width:15px;height:15px}
+.dq-ck.on{background:var(--water);border-color:var(--water);color:#0b1215}
+.dq-t,.dq-pg{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.dq-t span,.dq-pg span{font-size:13.5px}
+.dq-t small,.dq-pg small{font-size:12px;color:var(--muted);overflow-wrap:anywhere;line-height:1.6}
+.dq-pg{padding-inline-start:34px;margin-top:2px}
+/* day panel: breakdown rows open their sessions */
+.detail li.ds-open{cursor:pointer;border-radius:8px;margin-inline:-6px;padding:3px 6px}
+.detail li.ds-open:hover,.detail li.ds-open:focus-visible{background:color-mix(in srgb,var(--text) 6%,transparent);outline:none}
+.detail li.ds-open::after{content:"›";color:var(--muted);font-size:14px;line-height:1;margin-inline-start:2px}
+html[dir=rtl] .detail li.ds-open::after{content:"‹"}
+.ds-day{font-size:12.5px;color:var(--muted);font-weight:400;margin-inline-start:6px}
+.ds-list{display:flex;flex-direction:column;gap:8px}
+.ds-r{display:flex;align-items:center;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);min-width:0}
+.ds-r .dot{width:9px;height:9px;border-radius:50%;flex:none}
+.ds-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ds-t b{font-weight:500;font-size:13.5px;overflow-wrap:anywhere}
+.ds-t small{color:var(--muted);font-size:12px}
+.ds-b{min-width:38px;min-height:38px;justify-content:center;padding:0 8px}
+.ds-del:hover{color:var(--danger)}
+.ds-f{display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:12px;background:var(--panel2)}
+.ds-f label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ds-f .in{min-width:0;width:100%;box-sizing:border-box}
+.ds-ft{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.ds-ft input{direction:ltr}
+.ds-fa{display:flex;justify-content:flex-end;gap:8px}
+.ds-hint{font-size:12px;color:var(--muted);margin:10px 0 0}
