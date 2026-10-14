@@ -12,7 +12,7 @@ setInterval(()=>folderBackup(),5*6e4);
 <script>/* 3.36: the loader. The app above is not run by the browser directly (type="text/x-thabat"): this runs it at once, the same as before,
    unless the browser storage only holds the short start copy (its meta says slim) — then the full data is first read from IndexedDB
    (at most 4 s; on failure the app starts from the short copy and joins the rest when it can). */
-(function(){var go=function(){var m=document.getElementById('thMain');if(!m||m.dataset.ran)return;m.dataset.ran='1';var s=document.createElement('script');s.textContent=m.textContent;m.textContent='';document.body.appendChild(s)};
+(function(){var go=function(){var m=document.getElementById('thMain');if(!m||m.dataset.ran)return;m.dataset.ran='1';var T=window.__TH_T={a:performance.now()};var s=document.createElement('script');s.textContent=m.textContent;m.textContent='';document.body.appendChild(s);T.b=performance.now()};
   var meta=null;try{meta=JSON.parse(localStorage.getItem('thabat.v1.meta')||'null')}catch(e){}
   if(!meta||!meta.slim||localStorage.getItem('thabat.idb2')!=='1'||!window.indexedDB){go();return}
   var done=false,fin=function(o){if(done)return;done=true;if(o)window.__THABAT_BOOT=o;go()};setTimeout(function(){fin(null)},4000);

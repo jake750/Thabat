@@ -88,10 +88,8 @@ function lshBindBody(b){if(!b)return;const L_=LIBS();
 function lshNewFolder(parent){const n=prompt(t('lsh.folderName'));if(!n||!n.trim())return;const f={id:uid(),n:n.trim(),parent:parent||null,course:false,items:[]};LSH().push(f);save();LIB.open='f:'+f.id;renderLib()}
 /* menus */
 function lshMenu(anchor,html){const r=anchor.getBoundingClientRect();return qPopAt(html,r.left+r.width/2,r.bottom-6,'aymenu lshmenu')}
-function lshFolderPick(exclude){const opts=LSH().filter(f=>f.id!==exclude).map(f=>({f,p:lshPath(f.id).map(x=>x.n).join(' › ')})).sort((a,b)=>a.p.localeCompare(b.p));return opts}
-function lshItemMenu(anchor,ref,inFolder){const opts=lshFolderPick();const p=lshMenu(anchor,`<div class="aymh">${t('lsh.addTo')}</div>${opts.map(o=>`<button data-to="${o.f.id}">📁 <span dir="auto">${esc(o.p)}</span></button>`).join('')}<button data-to="new">＋ ${t('lsh.newFolder')}</button>${inFolder?`<button data-rm="1">✕ ${t('lsh.remove')}</button>`:''}`);
-  p.querySelectorAll('[data-to]').forEach(b=>b.onclick=()=>{closePP();let f;if(b.dataset.to==='new'){const n=prompt(t('lsh.folderName'));if(!n||!n.trim())return;f={id:uid(),n:n.trim(),parent:null,course:ref.t==='d',items:[]};LSH().push(f)}else f=lshGet(b.dataset.to);if(!f)return;f.items=f.items||[];if(!f.items.some(r=>r.id===ref.id))f.items.push(ref);save();toast(t('lsh.added',f.n));renderLib()});
-  const rm=p.querySelector('[data-rm]');if(rm)rm.onclick=()=>{closePP();const f=lshGet(inFolder);if(f){f.items=(f.items||[]).filter(r=>r.id!==ref.id);save();renderLib()}}}
+
+var lshItemMenu;
 function lshFolderMenu(anchor,f){const p=lshMenu(anchor,`<button data-a="ren">✏ ${t('lsh.rename')}</button><button data-a="move">📂 ${t('lsh.move')}</button><button data-a="cover">🖼 ${t('lsh.cover')}</button><button data-a="rate">★ ${t('lsh.rate')}</button><button data-a="del">🗑 ${t('lsh.delete')}</button>`);
   p.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{closePP();const a=b.dataset.a;
     if(a==='ren'){const n=prompt(t('lsh.folderName'),f.n);if(n&&n.trim()){f.n=n.trim();save();renderLib()}}

@@ -26,8 +26,7 @@ function qzReset(){QZ.s=1;QZ.x=0;QZ.y=0;$$('#spread .qimg').forEach(e=>{e.style.
 {const _qsc=qSlideCommit;qSlideCommit=function(d){qzReset();_qsc(d);qMarksDraw()}}
 /* 16. mark a line on scanned pages (long-press) */
 function QLMK(){return S.quran.lmarks||(S.quran.lmarks={})}
-function qMarksDraw(){const R=RIWAYAT[S.quran.riwaya];if(!R||R.kind!=='img')return;const M=QLMK();$$('#spread img[data-p]').forEach(im=>{const p=+im.dataset.p,box=im.parentElement;box.querySelectorAll('.qmark').forEach(x=>x.remove());box.style.position='relative';
-  (M[S.quran.riwaya+':'+p]||[]).forEach((y,i)=>{const b=document.createElement('i');b.className='qmark';b.style.top=(y*100)+'%';b.title=t('lm.del');b.onclick=e=>{e.stopPropagation();const L_=M[S.quran.riwaya+':'+p];L_.splice(i,1);if(!L_.length)delete M[S.quran.riwaya+':'+p];save();qMarksDraw()};box.append(b)})})}
+var qMarksDraw;
 /* the existing long-press / click menu on a scanned page gets a "mark this line" action */
 {const _qpam=qPageAyahMenu;qPageAyahMenu=async function(pg,x,y){const pr=_qpam(pg,x,y);const pop=$('#ppPop');if(pop){const im=[...$$('#spread img[data-p]')].find(i=>+i.dataset.p===pg&&i.getBoundingClientRect().width>0&&i.getBoundingClientRect().left<x&&i.getBoundingClientRect().right>x)||[...$$('#spread img[data-p]')].find(i=>+i.dataset.p===pg);
   if(im){const r=im.getBoundingClientRect(),fy=(y-r.top)/r.height;if(fy>=0&&fy<=1){const hd=pop.querySelector('.aymh');hd.insertAdjacentHTML('afterend',`<button class="lmbtn" data-lm>🖍 ${t('lm.mark')}</button>`);pop.querySelector('[data-lm]').onclick=()=>{closePP();const k=S.quran.riwaya+':'+pg,M=QLMK();(M[k]=M[k]||[]).push(Math.round(fy*1000)/1000);save();qMarksDraw();toast(t('lm.added'))}}}}return pr}}

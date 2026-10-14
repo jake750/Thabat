@@ -119,7 +119,7 @@ window.addEventListener('keydown',e=>{const ov=$('#libPlayer');if(!ov||!ov.class
   if(act){e.preventDefault();e.stopPropagation();act();lpvWake()}else if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();v.volume=Math.max(0,Math.min(1,v.volume+(e.key==='ArrowUp'?.1:-.1)));v.muted=false;lpvFlash(Math.round(v.volume*100)+'%')}},true);
 document.addEventListener('click',e=>{const m=$('#lpvSpm');if(m&&!m.hidden&&!e.target.closest('#lpvSpm,[data-c="spd"]'))m.hidden=true});
 /* «watch later» from the library: in each lesson's «⋯», and a row on the library home */
-{const _im=lshItemMenu;lshItemMenu=function(anchor,ref,inF){const r=_im(anchor,ref,inF);try{const p=$('#ppPop');if(p&&ref&&ref.t==='m'){const h=lpvLaterHas(ref.id);p.insertAdjacentHTML('afterbegin',`<button data-lpl="1">${h?'✓ '+t('lpv.inLater'):'🕒 '+t('lpv.later')}</button>`);p.querySelector('[data-lpl]').onclick=()=>{closePP();const f=libItem(ref.id);lpvLaterToggle(ref.id,f?libTitle(f.n):'',f?f.course.n:'');renderLib()}}}catch(e){console.error(e)}return r}}
+
 {const _t=lshTop;lshTop=function(){const h=_t(),L=lpvLater();if(!L.length)return h;const P=LIBS().prog;
   const row=`<div class="lshh"><h4 class="lbfh">🕒 ${t('lpv.laterH')}</h4></div><div class="lbcw lpvlaterrow">${L.map(x=>{const f=libItem(x.id),p=P[x.id]||{};return`<div class="lbcwi lpvlc" data-play="${x.id}" role="button" tabindex="0"><b dir="auto">${esc(f?libTitle(f.n):x.n)}</b><small dir="auto">${esc(f?f.course.n:x.c)}</small><span class="lbpb"><i style="width:${p.d?Math.min(100,p.p/p.d*100):0}%"></i></span><span class="lpvlcx" data-lrm="${x.id}" role="button" aria-label="✕">✕</span></div>`}).join('')}</div>`;
   const i=h.indexOf('<div class="lshh"><h4 class="lbfh">🗂');return i<0?row+h:h.slice(0,i)+row+h.slice(i)}}

@@ -31,6 +31,7 @@ JDK = os.path.expanduser(r'~\.jdks\temurin-24.0.2\bin')
 KEYSTORE = os.path.join(ROOT, 'android', 'thabat-signing.keystore')
 BASE_APK = os.path.join(ROOT, 'android', 'base.apk')
 VENDOR = os.path.join(ROOT, 'dev', 'vendor', 'pdfjs')
+DATA = os.path.join(ROOT, 'dev', 'data')   # Thabat's own data files loaded on demand (3.37: Thabat-Roots.js)
 
 
 def run(cmd, **kw):
@@ -126,12 +127,14 @@ def main():
     # third-party files loaded on demand (pdf.js for the book reader) sit beside Thabat.html
     for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
         put_tree(z, VENDOR, 'Thabat/pdfjs/')
+        put_files(z, DATA, 'Thabat/')
     if not no_apk:
         if not os.environ.get('THABAT_KS_PASS'):
             sys.exit('Set THABAT_KS_PASS (ask the owner) or pass --no-apk')
         u, a = os.path.join(tmp, 'u.apk'), os.path.join(tmp, 'a.apk')
         swap(BASE_APK, u, 'assets/www/Thabat.html', html, drop_meta=True)
         put_tree(u, VENDOR, 'assets/www/pdfjs/')
+        put_files(u, DATA, 'assets/www/')
         run([os.path.join(SDK_BT, 'zipalign.exe'), '-f', '-p', '4', u, a])
         env = dict(os.environ, PATH=JDK + os.pathsep + os.environ['PATH'])
         signer = os.path.join(SDK_BT, 'lib', 'apksigner.jar')
@@ -146,6 +149,7 @@ def main():
             u2, a2 = os.path.join(tmp, 'u2.apk'), os.path.join(tmp, 'a2.apk')
             swap(nxt, u2, 'assets/www/Thabat.html', html, drop_meta=True)
             put_tree(u2, VENDOR, 'assets/www/pdfjs/')
+            put_files(u2, DATA, 'assets/www/')
             run([os.path.join(SDK_BT, 'zipalign.exe'), '-f', '-p', '4', u2, a2])
             run(['java', '-jar', signer, 'sign', '--ks', KEYSTORE, '--ks-pass', 'env:THABAT_KS_PASS', '--key-pass', 'env:THABAT_KS_PASS',
                  '--ks-key-alias', 'thabat', '--min-sdk-version', '26', '--v4-signing-enabled', 'false', '--out', 'Thabat-Android-Test.apk', a2], env=env)
@@ -156,6 +160,8 @@ def main():
         shutil.copy(HTML, PERSONAL)
         # the pdf.js folder beside it (program files only; the owner's data is never touched)
         shutil.copytree(VENDOR, os.path.join(os.path.dirname(PERSONAL), 'pdfjs'), dirs_exist_ok=True)
+        for n in os.listdir(DATA):
+            shutil.copy(os.path.join(DATA, n), os.path.join(os.path.dirname(PERSONAL), n))
         print('personal copy updated (old one in Thabat.html.bak, pdfjs/ refreshed)')
     print('versions:')
     print('  Thabat.html        ', ver_in(html))

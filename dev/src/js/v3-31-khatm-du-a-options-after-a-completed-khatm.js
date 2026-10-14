@@ -32,7 +32,7 @@ async function khatmDua(){try{await qLoadPack('hafs')}catch(e){}const Q=S.quran,
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#qsDua');if(b)khatmDua()});
 /* ---------- search by root (data: Quranic Arabic Corpus 0.4, derived index in QROOT_GZ) ---------- */
 let QROOT=null;
-async function qRootIdx(){if(QROOT)return QROOT;const bin=Uint8Array.from(atob(QROOT_GZ),c=>c.charCodeAt(0));const ds=new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));const raw=JSON.parse(await new Response(ds).text());
+async function qRootIdx(){if(QROOT)return QROOT;const bin=Uint8Array.from(atob(await qRootLoad()),c=>c.charCodeAt(0));const ds=new Blob([bin]).stream().pipeThrough(new DecompressionStream('gzip'));const raw=JSON.parse(await new Response(ds).text());
   const roots=Object.keys(raw).map(r=>{const ay=raw[r].split(';').map(x=>{const[s,a,w]=x.split('.');return{s:parseInt(s,36),a:parseInt(a,36),w:w.split('+').map(z=>parseInt(z,36))}});return{r,k:qRootKey(r),ay,n:ay.reduce((t,x)=>t+x.w.length,0)}});
   QROOT={roots,by:new Map(roots.map(o=>[o.r,o]))};return QROOT}
 function qRootKey(s){return String(s||'').replace(/[\sـًٌٍَُِّْٰ]/g,'').replace(/[أإآٱءؤئ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه')}

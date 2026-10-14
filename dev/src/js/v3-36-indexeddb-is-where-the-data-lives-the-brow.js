@@ -66,6 +66,6 @@ window.addEventListener('storage',e=>{if(e.key!==KEY||!e.newValue||!v2Migrated()
 
 /* data health shows where the data lives */
 function v2Status(){const mig=v2Migrated();let meta=null;try{meta=JSON.parse(localStorage.getItem('thabat.v1.meta')||'null')}catch(e){}
-  return`<div class="v2st">🗄 ${mig?t('v2.on',Object.keys(V2.last).filter(k=>k.startsWith('v2:m:')).length,V2.lastAt?fmtT(V2.lastAt):'—'):t('v2.off')}${mig?`<br><small>${meta&&meta.slim?t('v2.slim'):t('v2.full')}${V2.err?' · ⚠ '+esc(V2.err):''}</small>`:''}</div>`}
+  return`<div class="v2st">🗄 ${mig?t('v2.on',new Set(Object.keys(S.days).map(k=>k.slice(0,7))).size,S._savedAt?fmtT(S._savedAt):'—'):t('v2.off')}${mig?`<br><small>${meta&&meta.slim?t('v2.slim'):t('v2.full')}${V2.err?' · ⚠ '+esc(V2.err):''}</small>`:''}</div>`}
 {hookFn('openHealth',()=>openHealth,f=>{openHealth=f},'post',function(){let n=0;const go=()=>{const b=$('#infoBox .hlsize');if(b){if(!$('#infoBox .v2st'))b.insertAdjacentHTML('afterend',v2Status());return}if(++n<40)setTimeout(go,100)};go()})}
 

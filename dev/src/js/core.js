@@ -11,5 +11,5 @@ const CHW={ar:['اصنع فيديو 15 ثانية لعلامة تجارية خي
  en:['A 15-second video for an imaginary brand: logo + motion + sound','Re-animate a cartoon scene with your own shapes','Design a series of 5 posters with one visual system','A full YouTube channel intro (5–8 seconds)','Kinetic typography for a full short poem or quote','Design an app screen and animate its transitions','A 10-second ad for an everyday object (mug, pen)','Design and animate 6 consistent icons on one theme','A short explainer (20 s) about an idea you know well','Redesign the identity of a shop in your area','A long 10-second loop for a screen background','Animate a chart that tells a story with real numbers']};
 {hookFn('renderChallenge',()=>renderChallenge,f=>{renderChallenge=f},'post',function(){const wk=wkStart(),n=CHW.ar.length,i=Math.floor(keyToDate(wk).getTime()/(7*864e5))%n,W=ST().chw||(ST().chw={}),done=W[wk];
   $('#stBody').insertAdjacentHTML('afterbegin',`<div class="chcard chw ${done?'done':''}"><small>${t('chw.t')} · ${gShort(keyToDate(wk))}</small><h3 dir="auto">${esc((CHW[LANG]||CHW.ar)[i])}</h3><button class="btn sm ${done?'':'pri'}" id="chwGo">${done?'✓ '+t('st.chDone'):t('st.chMark')}</button></div>`);$('#chwGo').onclick=()=>{if(W[wk])delete W[wk];else{W[wk]=Date.now();chimeSoft(1046)}save();renderChallenge()}})}
-function renderV42Set(){}
+
 

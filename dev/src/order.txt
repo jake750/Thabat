@@ -130,6 +130,7 @@ js/v3-32-calendar-day-panel-tick-past-tasks-quran-f.js
 js/v3-33-one-line-icon-set-instead-of-emoji-in-the.js
 js/v3-34-test-mode-word-by-word-40-s-grace-after-le.js
 js/v3-36-indexeddb-is-where-the-data-lives-the-brow.js
+js/v3-37-lighter-file-root-data-on-demand-dead-code.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

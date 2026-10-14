@@ -42,9 +42,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&QHL.on)qhlToggle(fa
 const QRD={key:'',t0:0,done:false},QRD_MS=40000;
 function qVisPages(){const Q=S.quran,v=Q.view||1,one=MOB.matches||document.documentElement.classList.contains('qfs-one');return one?[Math.max(1,Math.min(604,Q.pv||v))]:[v,v+1].filter(p=>p>=1&&p<=604)}
 function qPgsOf(k){const d=S.days[k];return(d&&d.quran&&d.quran.pgs)||[]}
-function qReadMark(pages){const q=qDay(todayKey());q.pgs=q.pgs||[];const nw=pages.filter(p=>!q.pgs.includes(p)).sort((a,b)=>a-b);if(!nw.length)return;
-  q.pgs=[...q.pgs,...nw].sort((a,b)=>a-b);const Q=S.quran;let moved=false;
-  nw.forEach(p=>{if(qCovered(Q.page)<604&&qNextPage(Q.page)===p){qSetPage(p);moved=true}});if(!moved)save();qrdUi()}
+var qReadMark;
 function qrdUi(){const el=$('#qRdSt');if(!el)return;const g=qPgsOf(todayKey()),ps=qVisPages(),ok=ps.every(p=>g.includes(p));
   el.hidden=false;el.classList.toggle('ok',ok);if(ok){el.textContent='✓ '+t('rd.read');return}const left=Math.max(0,Math.ceil((QRD_MS-(Date.now()-QRD.t0))/1000));el.textContent=QRD.key?'📖 '+left+'s':''}
 {const pg=$('#qFsPg');if(pg&&!$('#qRdSt'))pg.insertAdjacentHTML('afterend','<span class="qfspg qrdst" id="qRdSt" hidden></span>')}

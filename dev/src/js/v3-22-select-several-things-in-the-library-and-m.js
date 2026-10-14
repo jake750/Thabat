@@ -26,9 +26,7 @@ function lselTargets(){const it=lselItems(),o=String(LIB.open||''),out=[];if(!it
   if(lib){out.push({k:'sf',id:null,n:'🗂 '+t('lsh.mine')});LSH().forEach(f=>out.push({k:'sf',id:f.id,n:'📁 '+lshPath(f.id).map(x=>x.n).join(' › ')}))}
   if(aud){out.push({k:'af',id:null,n:'🎧 '+t('au.t')});AUD().f.forEach(f=>out.push({k:'af',id:f.id,n:'📁 '+f.n}));AUD().pl.forEach(p=>out.push({k:'pl',id:p.id,n:'🎶 '+p.n}))}
   return out.filter(g=>it.some(s=>ldOk(s,g)))}
-function lselMoveMenu(anchor){const T=lselTargets();if(!T.length){toast(t('lsel.cant'));return}
-  lshMenu(anchor,`<b class="lselh">${t('lsel.moveTo',LSEL.ids.size)}</b>${T.map((g,i)=>`<button data-lt="${i}" dir="auto">${esc(g.n)}</button>`).join('')}`);
-  $$('#ppPop [data-lt]').forEach(b=>b.onclick=()=>{const g=T[+b.dataset.lt];closePP();lselMove(g)})}
+var lselMoveMenu;
 /* dragging a selected item carries the whole selection */
 {const _d=ldDo;ldDo=function(s,g){if(!LSEL.batch&&LSEL.ids.size>1&&s&&LSEL.ids.has(lselKey(s)))return lselMove(g)>0;return _d(s,g)}}
 {const _ok=ldOk;ldOk=function(s,g){if(!LSEL.batch&&LSEL.ids.size>1&&s&&LSEL.ids.has(lselKey(s)))return lselItems().some(x=>_ok(x,g));return _ok(s,g)}}

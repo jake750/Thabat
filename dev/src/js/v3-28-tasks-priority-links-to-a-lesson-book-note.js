@@ -29,7 +29,7 @@ function linkPickNote(anchor,k,x){const N=NOTES().slice().sort((a,b)=>(b.updated
   $$('#tasks [data-bkp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.bkp),bk=x&&bkAll().find(z=>z.key===x.bk);if(bk)bkOpen(bk);else toast(t('lb.off'))});
   $$('#tasks [data-ntp]').forEach(b=>b.onclick=e=>{e.stopPropagation();const x=d.tasks.find(q=>q.id===b.dataset.ntp);if(x&&x.note)openNote(x.note)});tcdTick()}catch(e){}})}
 /* a lesson's «⋯»: a task for this lesson today */
-{const _im=lshItemMenu;lshItemMenu=function(anchor,ref,...a){const r=_im(anchor,ref,...a);try{const p=$('#ppPop');if(p&&ref&&ref.t==='m'){const b=document.createElement('button');b.innerHTML=`☑ ${t('lnk.taskFor')}`;b.onclick=()=>{closePP();const n=libFind(ref.id);day(todayKey()).tasks.push({id:uid(),text:'🎬 '+(lrnName(ref.id)||(n?libTitle(n.n):'')),done:false,created:Date.now(),lib:ref.id});save();renderTasks();toast(t('lnk.taskAdded'))};p.prepend(b)}}catch(e){}return r}}
+
 /* a note line → a task (the line where the cursor is, or the selected text) */
 {const _rn=renderNoteEd;renderNoteEd=function(...a){const r=_rn(...a);try{const tp=$('#neTplSave');if(tp&&!$('#neToTask')){tp.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="neToTask" title="${esc(t('lnk.lineTask'))}">☑</button>`);
   $('#neToTask').onclick=()=>{const ta=$('#neBody');if(!ta)return;const v=ta.value,s=ta.selectionStart,e=ta.selectionEnd;let line=s!==e?v.slice(s,e):v.slice(v.lastIndexOf('\n',s-1)+1,(v.indexOf('\n',s)+1||v.length+1)-1);

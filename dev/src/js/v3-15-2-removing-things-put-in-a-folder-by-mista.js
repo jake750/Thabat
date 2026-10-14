@@ -10,8 +10,7 @@ function lshRemove(rootId,refs){const snap=lshSnap();let n=0;
     const h=lshHolder(rootId,r.id);if(!h)return;if(h.direct)h.f.items=h.f.items.filter(x=>x.id!==r.id);else{h.f.hide=h.f.hide||[];if(!h.f.hide.includes(r.id))h.f.hide.push(r.id)}n++});
   if(n){save();LIBX.sel=null;renderLib();lshUndo(snap,n)}}
 /* the «⋯» on a lesson: «remove from this folder» now works for every lesson in the folder */
-{const _im=lshItemMenu;lshItemMenu=function(anchor,ref,inFolder){const fid=inFolder||(LIB.open&&String(LIB.open).startsWith('f:')?String(LIB.open).slice(2):null);_im(anchor,ref,fid);
-  const p=$('#ppPop'),rm=p&&p.querySelector('[data-rm]');if(rm)rm.onclick=()=>{closePP();lshRemove(fid,[ref])}}}
+
 /* «select» mode in a folder: tick lessons and courses, then remove them together */
 {const _fv=lshFolderView;lshFolderView=function(id){let h=_fv(id);const f=lshGet(id);if(!f)return h;const ed=!!(LIBX.sel&&LIBX.sel.f===id);
   const bar=ed?`<div class="lshselbar" id="lshSelBar"><span id="lshSelN">${t('lsh.selN',LIBX.sel.ids.size)}</span><button class="btn sm ghost" id="lshSelAll">${t('lsh.selAll')}</button><button class="btn sm" id="lshSelRm" ${LIBX.sel.ids.size?'':'disabled'}>✕ ${t('lsh.removeSel')}</button></div>`:'';

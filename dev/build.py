@@ -6,4 +6,7 @@ s=srcparts.join();open(D+'/src.html','w',encoding='utf-8',newline='').write(s)  
 for k,v in json.load(open(D+'/placeholders.json',encoding='utf-8')).items():
     assert s.count(k)==1,k; s=s.replace(k,v)
 open(os.path.join(D,'..','Thabat','Thabat.html'),'w',encoding='utf-8',newline='').write(s)
+import shutil
+for n in os.listdir(D+'/data'):
+    for dst in (os.path.join(D,'..','Thabat',n),os.path.join(D,'..',n)):shutil.copy(os.path.join(D,'data',n),dst)
 print('built',len(s))

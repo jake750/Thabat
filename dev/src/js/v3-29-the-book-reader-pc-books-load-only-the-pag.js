@@ -79,13 +79,7 @@ async function bkImgRects(pg,vp){const L=window.pdfjsLib||window['pdfjs-dist/bui
     else if(f===O.paintFormXObjectBegin){st.push(m);if(a&&a[0])m=U.transform(m,a[0])}else if(f===O.paintFormXObjectEnd)m=st.pop()||m;
     else if(img.has(f)){const T=U.transform(vp.transform,m),pts=[[0,0],[1,0],[0,1],[1,1]].map(p=>U.applyTransform(p,T)),xs=pts.map(p=>p[0]),ys=pts.map(p=>p[1]);out.push([Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)])}}
   return out}
-async function bkNightPaint(c,pg,vp){try{if(typeof bkxLoad==='function'){await bkxLoad();await bkxIsScanned()}}catch(e){}
-  const scan=typeof BKX!=='undefined'&&!!BKX.scanned,W=c.width,H=c.height,x=c.getContext('2d');
-  let rects=scan?[]:await bkImgRects(pg,vp);rects=rects.map(r=>[Math.max(0,r[0]),Math.max(0,r[1]),Math.min(W,r[2]),Math.min(H,r[3])]).filter(r=>r[2]-r[0]>6&&r[3]-r[1]>6);
-  const o=document.createElement('canvas');o.width=W;o.height=H;o.getContext('2d').drawImage(c,0,0);
-  x.save();x.globalCompositeOperation='difference';x.fillStyle=scan?'#dedad2':'#e4e1da';x.fillRect(0,0,W,H);x.globalCompositeOperation='hue';x.drawImage(o,0,0);x.globalCompositeOperation='source-over';
-  if(rects.length){try{x.filter='brightness(.84)'}catch(e){}rects.forEach(r=>{const w=r[2]-r[0],h=r[3]-r[1];x.drawImage(o,r[0],r[1],w,h,r[0],r[1],w,h)})}
-  x.restore();o.width=o.height=0}
+var bkNightPaint;
 /* finishing a book */
 function bkSetDone(key,on){const r=BKS()[key]||(BKS()[key]={});if(on){r.done=Date.now();if(r.n)r.pg=r.n}else delete r.done;r.at=Date.now();save();if(BK.key===key)bkTrack();if(curView()==='lib'&&!BK.doc)renderLib();if(on){toast('✓ '+t('bk2.doneT',r.t||''));}}
 function bkAskDone(){const key=BK.key;if(!key||bkAskDone._k===key)return;bkAskDone._k=key;toastAct(t('bk2.lastPage'),'✓ '+t('bk2.done'),()=>bkSetDone(key,true),10000)}
