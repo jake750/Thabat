@@ -212,6 +212,7 @@ js/v3-44-worship-and-seasons-adhan-volume-per-praye.js
 js/v3-44-eclipses-solar-and-lunar-eclipses-2027-204.js
 js/v3-45-whiteboard-a-larger-shapes-library-islamic.js
 js/v3-46-library-and-books-picture-preview-on-the-t.js
+js/v3-47-windows-update-check-when-the-pc-starts-th.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

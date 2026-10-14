@@ -45,7 +45,17 @@ function Install {
   [IO.Compression.ZipFile]::ExtractToDirectory($zip, $tmp)
   $src = Join-Path $tmp 'Thabat'; if (-not (Test-Path -LiteralPath (Join-Path $src 'Thabat.html'))) { throw 'Thabat.html missing in the download' }
   New-Item -ItemType Directory -Force -Path $DST | Out-Null
-  Get-ChildItem -LiteralPath $src -Force | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $DST -Recurse -Force }
+  $top = @(Get-ChildItem -LiteralPath $src -Force)
+  $top | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $DST -Recurse -Force }
+  # 3.47: what was installed (the uninstaller removes only these) and the entry in Windows «Apps» (current user, no admin)
+  Set-Content -LiteralPath (Join-Path $DST 'install-manifest.txt') -Value ($top | ForEach-Object { $_.Name }) -Encoding UTF8
+  $ver = ''; $tx = [IO.File]::ReadAllText((Join-Path $DST 'Thabat.html')); if ($tx -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }
+  $rk = $(if ($TESTDIR) { 'HKCU:\Software\ThabatTest\Uninstall\Thabat' } else { 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Thabat' })
+  New-Item -Path $rk -Force | Out-Null
+  $un = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + (Join-Path $DST 'Uninstall-Thabat.ps1') + '"'
+  $kb = [int]((Get-ChildItem -LiteralPath $DST -Recurse -Force -File | Measure-Object -Property Length -Sum).Sum / 1KB)
+  foreach ($kv in @(@('DisplayName', 'ثبات · Thabat'), @('DisplayVersion', $ver), @('Publisher', 'jake750_'), @('DisplayIcon', (Join-Path $DST 'Thabat.ico')), @('InstallLocation', $DST), @('UninstallString', $un), @('QuietUninstallString', $un), @('URLInfoAbout', 'https://github.com/jake750/Thabat'))) { New-ItemProperty -Path $rk -Name $kv[0] -Value $kv[1] -PropertyType String -Force | Out-Null }
+  foreach ($kv in @(@('NoModify', 1), @('NoRepair', 1), @('EstimatedSize', $kb))) { New-ItemProperty -Path $rk -Name $kv[0] -Value $kv[1] -PropertyType DWord -Force | Out-Null }
   Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue; Remove-Item -LiteralPath $zip -Force -ErrorAction SilentlyContinue
   $w = New-Object -ComObject WScript.Shell; $q = [char]34
   foreach ($dir in @((ThDir 'Desktop'), (ThDir 'Programs'))) {

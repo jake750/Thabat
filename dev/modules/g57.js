@@ -1,0 +1,5 @@
+/* ============ v3.47 Windows: update check when the PC starts (the helper), uninstall entry in Windows «Apps» (Thabat-Setup) ============ */
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{if(ANDROID||MAC)return;const sb=$('#shareBtn'),fd=sb&&sb.closest('.field');if(!fd||$('#updMode'))return;
+  fd.insertAdjacentHTML('afterend',`<div class="field" id="updModeRow"><div><label>${t('upd2.t')}</label><small>${t('upd2.sub')}</small></div><select class="in" id="updMode"><option value="notify">${t('upd2.notify')}</option><option value="auto">${t('upd2.auto')}</option><option value="off">${t('upd2.off')}</option></select></div>`);
+  const s=$('#updMode');fetch(HELPER+'/updcfg',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.mode)s.value=j.mode}).catch(()=>{$('#updModeRow').hidden=true});
+  s.onchange=()=>fetch(HELPER+'/updcfg?m='+s.value,{cache:'no-store'}).then(r=>{if(r.ok)toast(t('upd2.saved'));else toast(t('upd2.old'))}).catch(()=>toast(t('upd2.old')))}catch(e){console.error(e)}})}

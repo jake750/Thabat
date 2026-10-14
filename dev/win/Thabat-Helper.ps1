@@ -78,6 +78,68 @@ function Play-Adhan() {
   } catch {}
 }
 
+# 3.47: the update itself (used by /selfupdate and by the check at sign-in); throws on any failure
+function Run-SelfUpdate {
+  $wc = New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent', 'Thabat/1.0'); $wc.Encoding = [Text.Encoding]::UTF8
+  $rel = $wc.DownloadString('https://api.github.com/repos/jake750/Thabat/releases/latest') | ConvertFrom-Json
+  $asset = $rel.assets | Where-Object { $_.name -eq 'Thabat-Windows.zip' } | Select-Object -First 1
+  $url = [string]$asset.browser_download_url
+  if ($url -notlike 'https://github.com/jake750/Thabat/releases/download/*') { throw 'asset' }
+  $zip = Join-Path $env:TEMP ('thabat_upd_' + [Guid]::NewGuid().ToString('N') + '.zip')
+  $wc2 = New-Object System.Net.WebClient; $wc2.Headers.Add('User-Agent', 'Thabat/1.0'); $wc2.DownloadFile($url, $zip)
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  $za = [IO.Compression.ZipFile]::OpenRead($zip)
+  $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat', 'Thabat-Roots.js', 'Uninstall-Thabat.ps1')
+  $new = @{}
+  foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
+  $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
+  if (-not $new.ContainsKey('Thabat.html')) { throw 'nohtml' }
+  $ver = ''; if ([Text.Encoding]::UTF8.GetString($new['Thabat.html']) -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }
+  $changed = @()
+  foreach ($n in @($new.Keys)) {
+    $dst = Join-Path $PSScriptRoot ($n -replace '/', '\'); $sub = $n -like 'pdfjs/*'
+    if ($sub) { New-Item -ItemType Directory -Force -Path (Split-Path $dst) | Out-Null }
+    $same = $false
+    if (Test-Path -LiteralPath $dst) { $old = [IO.File]::ReadAllBytes($dst); $same = ($old.Length -eq $new[$n].Length) -and ([Convert]::ToBase64String($old) -eq [Convert]::ToBase64String($new[$n])) }
+    if (-not $same) { if ((Test-Path -LiteralPath $dst) -and -not $sub) { Copy-Item -LiteralPath $dst -Destination ($dst + '.bak') -Force }; [IO.File]::WriteAllBytes($dst, $new[$n]); $changed += $n }
+  }
+  $global:restart = $changed -contains 'Thabat-Helper.ps1'
+  if ($changed -contains 'Thabat-Library.ps1') {
+    # restart the library server only if it is running: ask the old one to stop, start the new one a little later
+    $libUp = $false; try { $tc = New-Object System.Net.Sockets.TcpClient; $tc.Connect('127.0.0.1', 47815); $libUp = $tc.Connected; $tc.Close() } catch {}
+    if ($libUp) {
+      $ld = Join-Path $env:LOCALAPPDATA 'Thabat'; New-Item -ItemType Directory -Force -Path $ld | Out-Null; Set-Content -LiteralPath (Join-Path $ld 'library.stop') -Value '1'
+      $cmd = "Start-Sleep -Seconds 6; & '" + ((Join-Path $PSScriptRoot 'Thabat-Library.ps1') -replace "'", "''") + "'"
+      Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand ' + [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($cmd)))
+    }
+  }
+  # 3.47: keep the version shown in Windows «Apps» right (only for the install made by Thabat-Setup)
+  try { $rk = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Thabat'; if ($ver -and (Test-Path $rk) -and ((Get-ItemProperty $rk).InstallLocation -eq $PSScriptRoot)) { Set-ItemProperty -Path $rk -Name DisplayVersion -Value $ver } } catch {}
+  return @{ ok = $true; ver = $ver; changed = $changed; restart = [bool]$global:restart }
+}
+# 3.47 (151): at sign-in and every 12 hours, look for a new release; «notify» shows a Windows notification, «auto» updates
+# by itself. %LOCALAPPDATA%\Thabat\upd.json = {mode: notify|auto|off, at: last check (ms), told: version already announced}
+$global:updTick = Get-Date; $global:startedAt = Get-Date
+function Upd-Cfg() { $p = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'upd.json'; $c = @{ mode = 'notify'; at = 0; told = '' }
+  try { if (Test-Path -LiteralPath $p) { $j = [IO.File]::ReadAllText($p) | ConvertFrom-Json; if ($j.mode) { $c.mode = [string]$j.mode }; if ($j.at) { $c.at = [double]$j.at }; if ($j.told) { $c.told = [string]$j.told } } } catch {}
+  return $c }
+function Upd-Save($c) { try { $d = Join-Path $env:LOCALAPPDATA 'Thabat'; New-Item -ItemType Directory -Force -Path $d | Out-Null; [IO.File]::WriteAllText((Join-Path $d 'upd.json'), ($c | ConvertTo-Json -Compress)) } catch {} }
+function Check-Update() {
+  $c = Upd-Cfg; if ($c.mode -eq 'off') { return }
+  if (((Get-Date) - $global:startedAt).TotalSeconds -lt 90) { return }
+  $now = [double][DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds(); if (($now - $c.at) -lt 12 * 3600000) { return }
+  $c.at = $now; Upd-Save $c
+  try {
+    $wc = New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent', 'Thabat/1.0'); $wc.Encoding = [Text.Encoding]::UTF8
+    $rel = $wc.DownloadString('https://api.github.com/repos/jake750/Thabat/releases/latest') | ConvertFrom-Json
+    $latest = ([string]$rel.tag_name) -replace '^v', ''
+    $cur = ''; $hp = Join-Path $PSScriptRoot 'Thabat.html'; if (Test-Path -LiteralPath $hp) { $tx = [IO.File]::ReadAllText($hp); if ($tx -match "APP_VER='([0-9.]+)'") { $cur = $matches[1] } }
+    if (-not $latest -or -not $cur) { return }
+    if ([version]$latest -le [version]$cur) { return }
+    if ($c.mode -eq 'auto') { $r = Run-SelfUpdate; Show-Toast 'ثبات' ('حُدِّث ثبات إلى ' + $r.ver + ' — أعد فتحه لترى الجديد.') }
+    elseif ($c.told -ne $latest) { Show-Toast 'ثبات' ('إصدار جديد من ثبات (' + $latest + ') متاح. افتح ثبات واضغط «حدّث الآن».'); $c.told = $latest; Upd-Save $c }
+  } catch {}
+}
 # alerts the app scheduled; shown only while the app window itself is closed
 function Check-Schedule() {
   if ($global:sched.Count -eq 0) { return }
@@ -128,6 +190,7 @@ while ($true) {
   else {
     Start-Sleep -Milliseconds 150
     if (((Get-Date) - $global:lastTick).TotalSeconds -ge 5) { $global:lastTick = Get-Date; Check-Schedule }
+    if (((Get-Date) - $global:updTick).TotalSeconds -ge 60) { $global:updTick = Get-Date; Check-Update; if ($global:restart) { break } }
     if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan) { break }
     continue
   }
@@ -242,43 +305,12 @@ public static class ThabatFolderPick {
       # update Thabat from its official releases only (github.com/jake750/Thabat); the address is fixed here,
       # so a request can never point the helper anywhere else. Program files are replaced (old ones kept as .bak);
       # your data, the adhan files and the mushaf/tafsir folders are not touched.
-      try {
-        $wc = New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent', 'Thabat/1.0'); $wc.Encoding = [Text.Encoding]::UTF8
-        $rel = $wc.DownloadString('https://api.github.com/repos/jake750/Thabat/releases/latest') | ConvertFrom-Json
-        $asset = $rel.assets | Where-Object { $_.name -eq 'Thabat-Windows.zip' } | Select-Object -First 1
-        $url = [string]$asset.browser_download_url
-        if ($url -notlike 'https://github.com/jake750/Thabat/releases/download/*') { throw 'asset' }
-        $zip = Join-Path $env:TEMP ('thabat_upd_' + [Guid]::NewGuid().ToString('N') + '.zip')
-        $wc2 = New-Object System.Net.WebClient; $wc2.Headers.Add('User-Agent', 'Thabat/1.0'); $wc2.DownloadFile($url, $zip)
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        $za = [IO.Compression.ZipFile]::OpenRead($zip)
-        $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat', 'Thabat-Roots.js')
-        $new = @{}
-        foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
-        $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
-        if (-not $new.ContainsKey('Thabat.html')) { throw 'nohtml' }
-        $ver = ''; if ([Text.Encoding]::UTF8.GetString($new['Thabat.html']) -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }
-        $changed = @()
-        foreach ($n in @($new.Keys)) {
-          $dst = Join-Path $PSScriptRoot ($n -replace '/', '\'); $sub = $n -like 'pdfjs/*'
-          if ($sub) { New-Item -ItemType Directory -Force -Path (Split-Path $dst) | Out-Null }
-          $same = $false
-          if (Test-Path -LiteralPath $dst) { $old = [IO.File]::ReadAllBytes($dst); $same = ($old.Length -eq $new[$n].Length) -and ([Convert]::ToBase64String($old) -eq [Convert]::ToBase64String($new[$n])) }
-          if (-not $same) { if ((Test-Path -LiteralPath $dst) -and -not $sub) { Copy-Item -LiteralPath $dst -Destination ($dst + '.bak') -Force }; [IO.File]::WriteAllBytes($dst, $new[$n]); $changed += $n }
-        }
-        $global:restart = $changed -contains 'Thabat-Helper.ps1'
-        if ($changed -contains 'Thabat-Library.ps1') {
-          # restart the library server only if it is running: ask the old one to stop, start the new one a little later
-          $libUp = $false; try { $tc = New-Object System.Net.Sockets.TcpClient; $tc.Connect('127.0.0.1', 47815); $libUp = $tc.Connected; $tc.Close() } catch {}
-          if ($libUp) {
-            $ld = Join-Path $env:LOCALAPPDATA 'Thabat'; New-Item -ItemType Directory -Force -Path $ld | Out-Null; Set-Content -LiteralPath (Join-Path $ld 'library.stop') -Value '1'
-            $cmd = "Start-Sleep -Seconds 6; & '" + ((Join-Path $PSScriptRoot 'Thabat-Library.ps1') -replace "'", "''") + "'"
-            Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand ' + [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($cmd)))
-          }
-        }
-        $o = @{ ok = $true; ver = $ver; changed = $changed; restart = [bool]$global:restart }
+      try { $o = Run-SelfUpdate
         Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes(($o | ConvertTo-Json -Compress)))
       } catch { Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"update"}')) }
+    } elseif ($path -match '^/updcfg(\?m=(notify|auto|off))?$') {
+      $c = Upd-Cfg; if ($matches[2]) { $c.mode = $matches[2]; Upd-Save $c }
+      Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes((@{ mode = $c.mode } | ConvertTo-Json -Compress)))
     } elseif ($path -like '/ping*') {
       Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes('{"ok":true,"v":1}'))
     } elseif ($path -like '/fg*') {
