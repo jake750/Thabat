@@ -53,7 +53,7 @@ function bkHlBind(v){let d=null;
 /* bookmarks, notes and highlights of this book; go to a page */
 function bkPanel(){const p=$('#bkPanel');if(!p.hidden){p.hidden=true;return}const r=BKS()[BK.key],pages=[...new Set([...r.bm,...Object.keys(r.nt).map(Number),...Object.keys(r.hl).map(Number)])].sort((a,b)=>a-b);
   p.innerHTML=`<div class="bkph"><b>${t('bk.list')}</b><button class="btn sm ghost" id="bkPx">✕</button></div><div class="bkgo"><input class="in" id="bkGoIn" type="number" min="1" max="${BK.pages.length}" placeholder="${esc(t('bk.goto'))}"><button class="btn sm pri" id="bkGo">${t('bk.go')}</button></div>
-    ${pages.length?pages.map(n=>`<button class="bkpi" data-go="${n}"><b>${t('q.pageS')}${n}</b>${r.bm.includes(n)?' 🔖':''}${r.hl[n]?' 🖍'+r.hl[n].length:''}${r.nt[n]?`<small dir="auto">${esc(r.nt[n])}</small>`:''}</button>`).join(''):`<p class="muted" style="padding:8px">${t('bk.none')}</p>`}`;p.hidden=false;
+    ${pages.length?pages.map(n=>`<button class="bkpi" data-go="${n}"><b>${t('q.pageS')}${n}</b>${r.bm.includes(n)?' 🔖':''}${r.hl[n]?' 🖍'+r.hl[n].length:''}${r.nt[n]?`<small dir="auto">${esc(r.nt[n])}</small>`:''}</button>`).join(''):`<p class="muted" style="padding:8px">${t('bkr.none')}</p>`}`;p.hidden=false;
   $('#bkPx').onclick=()=>p.hidden=true;const go=n=>{const el=BK.pages[n-1];if(el){$('#bkV').scrollTop=el.offsetTop-8;p.hidden=true}};
   $('#bkGo').onclick=()=>go(+$('#bkGoIn').value||1);$('#bkGoIn').onkeydown=e=>{if(e.key==='Enter')go(+e.target.value||1)};p.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(+b.dataset.go))}
 /* reading time: counted while the book is open, the app is in front and you scrolled within the last two minutes; logged like watch time */

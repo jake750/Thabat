@@ -4,7 +4,7 @@ function shareText(){return [t('sh.msg'),'',t('sh.win')+': '+SHARE_L.win,t('sh.w
 async function shCopy(txt){try{await navigator.clipboard.writeText(txt);toast(t('mac.copied'));return true}catch(e){return false}}
 function openShare(){
   const row=(ic,k,body,btn)=>`<div class="shrow"><b>${ic} ${t(k)}</b>${body}${btn||''}</div>`;
-  openInfo('📤 '+t('sh.t'),`<p class="muted" style="margin:0 0 10px">${t('sh.sub')}</p>`+
+  openInfo('📤 '+t('shr.t'),`<p class="muted" style="margin:0 0 10px">${t('shr.sub')}</p>`+
     row('💻','sh.win',`<p class="muted">${t('sh.winNote')}</p><div class="maccmd"><code dir="ltr">${esc(SHARE_L.win)}</code><button class="btn sm" data-sh="win">📋 ${t('mac.copy')}</button></div>`)+
     row('🍎','sh.mac',`<p class="muted">${t('sh.macNote')}</p><div class="maccmd"><code dir="ltr">${esc(MAC_CMD)}</code><button class="btn sm" data-sh="mac">📋 ${t('mac.copy')}</button></div>`)+
     row('📱','sh.and',`<div class="maccmd"><code dir="ltr">${esc(SHARE_L.apk)}</code><button class="btn sm" data-sh="apk">📋 ${t('mac.copy')}</button></div>`)+
@@ -15,8 +15,8 @@ function openShare(){
   const s=$('#shSend');if(s)s.onclick=()=>{try{navigator.share({title:'ثبات · Thabat',text:shareText()})}catch(e){}}}
 /* in Settings → About, after the creator line */
 function shareRow(){const a=$('#aboutV')&&$('#aboutV').closest('.field');if(!a||$('#shareBtn'))return;
-  a.insertAdjacentHTML('afterend',`<div class="field"><div><label>${t('sh.t')}</label><small>${t('sh.row')}</small></div><button class="btn sm" id="shareBtn">📤 ${t('sh.open')}</button></div>`);$('#shareBtn').onclick=openShare}
+  a.insertAdjacentHTML('afterend',`<div class="field"><div><label>${t('shr.t')}</label><small>${t('sh.row')}</small></div><button class="btn sm" id="shareBtn">📤 ${t('sh.open')}</button></div>`);$('#shareBtn').onclick=openShare}
 {hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{shareRow()}catch(e){}})}
-{const _cc=cmdCommands;cmdCommands=function(...a){const L_=_cc(...a);L_.push({icon:'📤',label:t('sh.t'),run:()=>openShare(),kw:'share install download شارك تثبيت تحميل'});return L_}}
+{const _cc=cmdCommands;cmdCommands=function(...a){const L_=_cc(...a);L_.push({icon:'📤',label:t('shr.t'),run:()=>openShare(),kw:'share install download شارك تثبيت تحميل'});return L_}}
 setTimeout(()=>{try{shareRow()}catch(e){}},700);
 

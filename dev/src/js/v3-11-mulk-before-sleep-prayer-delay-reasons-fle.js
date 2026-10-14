@@ -191,7 +191,7 @@ function openAgenda(){const tk=todayKey(),rows=[];for(let i=0;i<14;i++){const k=
 function calLayers(){const L_=S.settings.calLayers||{},v=$('#v-cal');if(!v)return;['ev','fill','sky','fast'].forEach(k=>v.classList.toggle('cl-no-'+k,L_[k]===false))}
 function calTools(){const head=$('#v-cal .calhead');if(!head||$('#calTools3'))return;const row=head.querySelector('.row')||head;const w=document.createElement('span');w.id='calTools3';w.className='caltools3';
   w.innerHTML=`<button class="btn sm ghost" id="agBtn">📋 ${t('ag.btn')}</button><button class="btn sm ghost" id="clBtn" title="${esc(t('cl.t'))}">🗂</button>`;row.append(w);
-  $('#agBtn').onclick=openAgenda;$('#clBtn').onclick=e=>{const L_=S.settings.calLayers||(S.settings.calLayers={}),r=e.currentTarget.getBoundingClientRect();const p=qPopAt(`<div class="aymh">🗂 ${t('cl.t')}</div>${['ev','fill','sky','fast'].map(k=>`<button data-l="${k}">${L_[k]===false?'☐':'☑'} ${t('cl.'+k)}</button>`).join('')}`,r.left+r.width/2,r.bottom-8,'aymenu');
+  $('#agBtn').onclick=openAgenda;$('#clBtn').onclick=e=>{const L_=S.settings.calLayers||(S.settings.calLayers={}),r=e.currentTarget.getBoundingClientRect();const p=qPopAt(`<div class="aymh">🗂 ${t('cly.t')}</div>${['ev','fill','sky','fast'].map(k=>`<button data-l="${k}">${L_[k]===false?'☐':'☑'} ${t('cl.'+k)}</button>`).join('')}`,r.left+r.width/2,r.bottom-8,'aymenu');
     p.querySelectorAll('[data-l]').forEach(b=>b.onclick=ev=>{ev.stopPropagation();const k=b.dataset.l;L_[k]=L_[k]===false;save();calLayers();b.textContent=(L_[k]===false?'☐ ':'☑ ')+t('cl.'+k)})}}
 
 /* ---- calendar: drag an event from the day panel onto another day (PC) ---- */

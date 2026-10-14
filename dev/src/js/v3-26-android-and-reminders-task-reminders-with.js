@@ -20,7 +20,7 @@ function remPush(){try{androidSchedule()}catch(e){}try{pcnPush&&pcnPush()}catch(
   remTasks(todayKey(),8).forEach(({k,x})=>{if(x.done||!x.rem||x.rem<=now||x.remN)return;out.push({id:6000+remHash(x.id)%400,t:x.rem,title:'⏰ '+x.text,body:t('rem.body',dayLabel(k)),open:'today',...(andV()>=4?{tk:x.id,doneLbl:'✓ '+t('rem.done'),tkLaterLbl:t('rem.later')}:{})})});
   /* the morning plan after Fajr */
   const M=S.settings.mPlan||{};if(M.on){for(let i=0;i<2;i++){const d=addDays(keyToDate(todayKey()),i),k=dKey(d),pt=prayerTimes(d),at=pt.fajr+(+M.after||15)*6e4;if(at<=now)continue;
-    const tk=((S.days[k]||{}).tasks||[]).filter(x=>!x.done),ev=evsOn(k).filter(e=>e.time),bits=[];if(tk.length)bits.push(t('mp.tasks',tk.length)+': '+tk.slice(0,3).map(x=>x.text).join('، ')+(tk.length>3?'…':''));if(ev.length)bits.push('📅 '+ev.slice(0,2).map(e=>e.time+' '+e.title).join('، '));
+    const tk=((S.days[k]||{}).tasks||[]).filter(x=>!x.done),ev=evsOn(k).filter(e=>e.time),bits=[];if(tk.length)bits.push(t('mpl.tasks',tk.length)+': '+tk.slice(0,3).map(x=>x.text).join('، ')+(tk.length>3?'…':''));if(ev.length)bits.push('📅 '+ev.slice(0,2).map(e=>e.time+' '+e.title).join('، '));
     out.push({id:5910+i,t:at,title:'☀ '+t('mp.title'),body:bits.join(' · ')||t('mp.none'),open:'today'})}}
   /* the Fajr wake-up alarm (Android only: an alarm clock that rings until you stop it) */
   const W=S.settings.wakeF||{};if(W.on&&andV()>=4){for(let i=0;i<3;i++){const d=addDays(keyToDate(todayKey()),i),f=prayerTimes(d).fajr,at=f-(+W.before||0)*6e4;if(at<=now)continue;

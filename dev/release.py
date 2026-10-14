@@ -114,6 +114,14 @@ def main():
     if dup:
         sys.exit('FAILED: functions declared more than once: ' + ', '.join(sorted(dup)))
     print('no duplicate functions')
+    # a text key defined twice keeps the OLDER text (later in the table): the newer feature then shows someone else's words (3.40.1 fixed 13)
+    for lang, a, b in (('ar', "app:'ثبات'", "app:'Thabat'"), ('en', "app:'Thabat'", None)):
+        i = s.find(a); j = s.find(b) if b else s.find('\n}};', i)   # the English table ends the I18N object
+        tbl = s[i:j] if j > i else s[i:i + 600000]
+        vals = collections.defaultdict(set)
+        for k, v in re.findall(r"'([A-Za-z0-9_.]+)':(\"[^\"]*\"|'[^']*')", tbl): vals[k].add(v[1:-1])
+        clash = sorted(k for k, v in vals.items() if len(v) > 1)
+        if clash: print(f'WARNING {lang}: text keys with two different texts (the older one wins):', ', '.join(clash))
     # stacked wrappers make every change riskier (3.35.0 moved the plain before/after ones into hookFn lists); keep the count visible
     wr = len(re.findall(r'\{\s*(?:const|let)\s+\w+\s*=\s*(\w+)\s*;\s*\1\s*=\s*(?:async\s+)?function', s))
     print(f'wrappers: {wr} stacked, {s.count("{hookFn('")} hooks')
