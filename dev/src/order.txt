@@ -75,6 +75,7 @@ css/v3-34-test-mode-word-reveal-full-screen-grace-pi.css
 css/v3-38.css
 css/v3-39-settings-on-two-levels.css
 css/v3-40-share-thabat.css
+css/v3-40-2-calendar-cells-see-through-a-little-on-p.css
 css/image-viewer.css
 body.html
 js/core.js

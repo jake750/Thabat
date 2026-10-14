@@ -1,0 +1,17 @@
+/* v3.40.2: calendar — cells see-through a little; on phones only the day numbers, the fill, and a glowing dot for the adhkar */
+#cal .cell:not(.out){background-color:color-mix(in srgb,var(--panel) 52%,transparent)}
+html.st-glass #cal .cell:not(.out){background-color:color-mix(in srgb,var(--bg) 46%,transparent)}
+html.mode-light #cal .cell:not(.out){background-color:color-mix(in srgb,var(--panel) 62%,transparent)}
+@media(max-width:700px){
+  #cal .cell .pc{display:none}
+  #cal .cell .msb,html:not(.mode-light) #cal .cell.gold .msb,html:not(.mode-light) #cal .cell.fl .msb{width:7px!important;height:7px!important;top:6px!important;inset-inline-end:6px!important;padding:0!important;margin:0!important;border-radius:50%;background:#9be0b4!important;color:transparent!important;filter:none!important;opacity:1!important}
+  #cal .cell .msb svg{display:none}
+  #cal .cell .msb.l1{background:rgba(155,224,180,.5)!important;box-shadow:none}
+  #cal .cell .msb.l2{box-shadow:0 0 5px 1px rgba(155,224,180,.65)}
+  #cal .cell .msb.l3{width:8px!important;height:8px!important;background:#c8ffd9!important;box-shadow:0 0 6px 2px rgba(150,240,185,.9),0 0 12px 3px rgba(120,230,170,.45)}
+  html.mode-light #cal .cell .msb{background:#23875a!important}
+  html.mode-light #cal .cell .msb.l1{background:rgba(35,135,90,.45)!important}
+  html.mode-light #cal .cell .msb.l3{box-shadow:0 0 6px 2px rgba(35,135,90,.55)}
+  #cal .cell .gd{font-weight:600}
+}
+
