@@ -2,7 +2,7 @@
 const HL=()=>S.settings.hl3||(S.settings.hl3={move:true,moveMin:50,eye:false,meals:{on:false,b:'08:00',l:'13:00',d:'20:00'},vibP:'normal'});
 /* 65 + 66. move and rest your eyes while working */
 setInterval(()=>{const T=S.timer;if(!T||T.mode!=='work'||!T.start)return;const H=HL(),mins=(Date.now()-T.start)/6e4,A=S.hlFired||(S.hlFired={}),key=String(T.start);
-  if(H.move&&mins>=(+H.moveMin||50)){const n=Math.floor(mins/(+H.moveMin||50));if((A.mv||{})[key]!==n){A.mv={[key]:n};save();toast('🚶 '+t('mv3.t'));vibT('rem')}}
+  if(H.move&&mins>=(+H.moveMin||50)){const n=Math.floor(mins/(+H.moveMin||50));if((A.mv||{})[key]!==n){A.mv={[key]:n};save();(document.hidden?alertUser('🚶 '+t('mv3.t'),''):toast('🚶 '+t('mv3.t')));vibT('rem')}}
   if(H.eye&&mins>=20){const n=Math.floor(mins/20);if((A.ey||{})[key]!==n){A.ey={[key]:n};save();toast('👀 '+t('ey3.t'))}}},30000);
 /* 83. vibration patterns */
 const VIBP={normal:{pray:[400,200,400],rem:[150],task:[60,40,60]},soft:{pray:[200],rem:[60],task:[40]},strong:{pray:[700,250,700,250,700],rem:[300,150,300],task:[120,60,120]},off:{pray:[],rem:[],task:[]}};

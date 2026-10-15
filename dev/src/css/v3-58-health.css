@@ -1,0 +1,5 @@
+/* v3.58: health */
+.wkpl{display:flex;flex-direction:column;gap:6px}
+.wkpr{display:grid;grid-template-columns:70px minmax(0,1fr) 80px;gap:8px;align-items:center;font-size:13px}.wkpr .in{min-width:0}
+.mwline{font-size:13px;color:var(--muted);margin:4px 0 8px}
+
