@@ -1,0 +1,14 @@
+/* v3.54: notes timeline, templates, colour, quote */
+.ntl{display:flex;flex-direction:column;gap:16px;width:100%}
+.ntlm>b{display:block;font-size:14px;margin:0 0 8px;color:var(--muted)}
+.ntli{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;position:relative;padding-bottom:10px}
+.ntli::before{content:"";position:absolute;inset-inline-start:16px;top:30px;bottom:0;width:2px;background:var(--line)}
+.ntld{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--panel2,var(--panel));border:1px solid var(--line);font-size:13px;font-variant-numeric:tabular-nums}
+.ntli .ncard{margin:0}
+.ncard.nbgc{background:color-mix(in srgb,var(--nbg) 22%,var(--panel));border-color:color-mix(in srgb,var(--nbg) 55%,var(--line))}
+.notebox.nbgc{background:color-mix(in srgb,var(--nbg) 14%,var(--panel))!important}
+.nfsw .nbg0{border:2px dashed var(--line)!important}
+.ntpl{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.ntpr{display:flex;gap:8px;align-items:center}.ntpr .in{flex:1;min-width:0}
+.ntpb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}.ntpb small{width:100%}
+
