@@ -3,9 +3,9 @@
 #cal .cell{z-index:1}
 #cal .cell:not(.out){background-color:color-mix(in srgb,var(--panel) 82%,var(--bg))}
 html.st-glass #cal .cell:not(.out){background-color:color-mix(in srgb,var(--bg) 78%,var(--panel))}
-html:not(.mode-light) .cell.gold .msb,html:not(.mode-light) .cell.fl .msb{color:#9be0b4;filter:drop-shadow(0 0 3px rgba(120,220,160,.35));background:radial-gradient(circle,rgba(14,18,22,.82) 58%,rgba(14,18,22,0) 71%);border-radius:50%;padding:2px;box-sizing:content-box;margin:-2px}
+html:not(.mode-light) .cell.gold .msb,html:not(.mode-light) .cell.fl .msb{color:#9be0b4;filter:drop-shadow(0 0 1px rgba(0,0,0,.7)) drop-shadow(0 0 3px rgba(120,220,160,.35))}
 html:not(.mode-light) .cell.gold .msb.l1,html:not(.mode-light) .cell.fl .msb.l1{opacity:1}
-html:not(.mode-light) .cell.gold .msb.l3,html:not(.mode-light) .cell.fl .msb.l3{color:#b6f5cc;filter:drop-shadow(0 0 5px rgba(120,230,170,.75))}
+html:not(.mode-light) .cell.gold .msb.l3,html:not(.mode-light) .cell.fl .msb.l3{color:#b6f5cc;filter:drop-shadow(0 0 1px rgba(0,0,0,.7)) drop-shadow(0 0 5px rgba(120,230,170,.75))}
 /* day panel: tasks */
 .dtask .dtck{width:22px;height:22px;flex:none;border-radius:7px;border:1.6px solid var(--line);display:grid;place-items:center;color:transparent;background:transparent;align-self:center}
 .dtask .dtck svg{width:14px;height:14px}

@@ -1,10 +1,11 @@
 /* ============ v3.61 Today layouts (cards / the day's line between the prayers / bento / three columns) and the geometric style ============ */
 /* the Islamic geometric look is a style choice (any colour), next to minimal and glass; the «mosque» colour keeps it too */
 STYLES.geo={ar:'هندسي إسلامي',en:'Islamic geometric'};
-{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){const st=S.settings,geo=st.style==='geo',on=geo||st.color==='masjid',h=document.documentElement;h.classList.toggle('st-geo',geo);h.classList.toggle('th-masjid',on);
+{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){const st=S.settings,geo=st.style==='geo',on=geo,h=document.documentElement;h.classList.toggle('st-geo',geo);h.classList.toggle('th-masjid',on);
   let b=$('#msjBg');if(on&&!b){b=document.createElement('div');b.id='msjBg';b.setAttribute('aria-hidden','true');const a=$('#aurora');if(a)a.insertAdjacentElement('afterend',b);else document.body.prepend(b)}else if(!on&&b)b.remove()})}
 /* layouts */
 const TDL_K=['cards','line','bento','cols'];
+try{if(SGA_MAIN['set.look']&&!SGA_MAIN['set.look'].includes('tdl.set'))SGA_MAIN['set.look'].push('tdl.set')}catch(e){}
 function tdl(){const v=S.settings.tdLayout;return TDL_K.includes(v)?v:'cards'}
 function tdlWideOk(){return!MOB.matches&&innerWidth/(uiZoom()||1)>=1100}
 function tdlApply(){const v=tdl(),h=document.documentElement;TDL_K.forEach(k=>h.classList.toggle('tdl-'+k,k===v&&k!=='cards'));h.classList.toggle('tdl-colsw',v==='cols'&&tdlWideOk());
@@ -75,7 +76,7 @@ function tdsRender(){const grid=$('#v-today .grid');if(!grid)return;let P=$('#td
   $('#tdsM').onclick=e=>tkMenu(e.currentTarget,k,x.id);$('#tdsDel').onclick=()=>{const li=$(`#tasks .task[data-id="${x.id}"] .del`);TDS.sel=null;if(li)li.click();else tdsRender()}}
 /* settings: one row under «compact Today» */
 {hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{const host=$('#pdlvRow');if(!host||$('#tdlRow'))return;const v=tdl();
-  host.insertAdjacentHTML('afterend',`<div class="field" id="tdlRow"><div><label>${t('tdl.set')}</label><small>${t('tdl.setS')}</small></div><div class="seg tdlseg">${TDL_K.map(k=>`<button data-tdl="${k}" class="${v===k?'on':''}">${t('tdl.k.'+k)}</button>`).join('')}</div></div>`);
+  host.insertAdjacentHTML('afterend',`<div class="field" id="tdlRow"><div><label data-i18n="tdl.set">${t('tdl.set')}</label><small>${t('tdl.setS')}</small></div><div class="seg tdlseg">${TDL_K.map(k=>`<button data-tdl="${k}" class="${v===k?'on':''}">${t('tdl.k.'+k)}</button>`).join('')}</div></div>`);
   $$('#tdlRow [data-tdl]').forEach(b=>b.onclick=()=>{S.settings.tdLayout=b.dataset.tdl;save();$$('#tdlRow [data-tdl]').forEach(x=>x.classList.toggle('on',x===b));tdlApply();try{uxWide()}catch(e){}toast(t('tdl.ok',t('tdl.k.'+b.dataset.tdl)))})}catch(e){console.error(e)}})}
 {const _cc=cmdCommands;cmdCommands=function(...a){const L_=_cc(...a);TDL_K.forEach(k=>L_.push({icon:'▦',label:t('tdl.set')+': '+t('tdl.k.'+k),run:()=>{S.settings.tdLayout=k;save();showView('today');tdlApply();try{uxWide()}catch(e){}},kw:'layout تخطيط '+k}));return L_}}
 setTimeout(()=>{try{tdlApply()}catch(e){}},300);

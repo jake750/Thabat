@@ -77,8 +77,8 @@ function gstOpen(){const on=gstOn();openInfo('👤 '+t('gst.t'),`<p>${t('gst.sub
   const g=$('#gstGo');if(g)g.onclick=()=>{try{localStorage.setItem('thabat.guest','1')}catch(e){}gstBar();$$('.modal.on').forEach(m=>m.classList.remove('on'));toast(t('gst.onT'))};const x=$('#gstX');if(x)x.onclick=gstLeave;const f=$('#gstOff');if(f)f.onclick=()=>{try{localStorage.removeItem('thabat.guest')}catch(e){}gstBar();$$('.modal.on').forEach(m=>m.classList.remove('on'))}}
 window.addEventListener('beforeunload',e=>{if(gstOn()&&!window.__GST_GONE){e.preventDefault();e.returnValue=''}});setTimeout(gstBar,800);
 /* 186: the «mosque» theme — deep green surfaces, gold accent, a quiet geometric star pattern behind the pages */
-COLORS.masjid={n:{ar:'المسجد',en:'Mosque'},d:'#d8b35a',l:'#86641a',sh:168};
-{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){const on=S.settings.color==='masjid';document.documentElement.classList.toggle('th-masjid',on);let b=$('#msjBg');if(on&&!b){b=document.createElement('div');b.id='msjBg';b.setAttribute('aria-hidden','true');const a=$('#aurora');if(a)a.insertAdjacentElement('afterend',b);else document.body.prepend(b)}else if(!on&&b)b.remove()})}
+/* 3.61.1: the 3.60 «mosque» colour reused the key of the existing «مسجدي» colour and replaced it; removed */
+{hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){const on=S.settings.style==='geo';document.documentElement.classList.toggle('th-masjid',on);let b=$('#msjBg');if(on&&!b){b=document.createElement('div');b.id='msjBg';b.setAttribute('aria-hidden','true');const a=$('#aurora');if(a)a.insertAdjacentElement('afterend',b);else document.body.prepend(b)}else if(!on&&b)b.remove()})}
 try{applyTheme()}catch(e){}
 /* 191: student mode — a weekly class timetable and exams with a revision task each day before them */
 function STU(){return S.stu||(S.stu={on:false,cls:[],ex:[]})}
