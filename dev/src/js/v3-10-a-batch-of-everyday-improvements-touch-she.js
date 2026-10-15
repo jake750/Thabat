@@ -183,7 +183,9 @@ function uxBalance(){const g=$('#v-today .grid'),S0=uxStacks();if(!g||S0.length<
   const wall=$('#v-today .glasswrap'),timer=$('#tDisp')&&$('#tDisp').closest('.card'),tasks=$('#tasks')&&$('#tasks').closest('.card');
   [[wall,a],[timer,b],[tasks,c3]].forEach(([c,col])=>{if(c){c.classList.add('uxanchor');col.append(c)}});
   const rest=cards.filter(c=>c!==wall&&c!==timer&&c!==tasks),tmp=document.createDocumentFragment();rest.forEach(c=>tmp.append(c));
-  rest.forEach(c=>{if(c.classList.contains('hhide')){a.append(c);return}const col=cols.reduce((m,x)=>x.offsetHeight<m.offsetHeight?x:m,cols[0]);col.append(c)})}
+  /* 3.62: measure every card at the column width, then place the tallest first into the shortest column (the old pass placed them in order before their content had loaded) */
+  rest.forEach(c=>c3.append(c));const hs=new Map(rest.map(c=>[c,c.offsetHeight]));rest.forEach(c=>tmp.append(c));const H=cols.map(x=>x.offsetHeight),gap=14;
+  rest.slice().sort((x,y)=>hs.get(y)-hs.get(x)).forEach(c=>{if(c.classList.contains('hhide')){a.append(c);return}let i=0;H.forEach((h,j)=>{if(h<H[i])i=j});cols[i].append(c);H[i]+=hs.get(c)+gap})}
 function uxUnbalance(){const S0=uxStacks(),c3=$('#uxCol3');const all=[...S0,c3].filter(Boolean).flatMap(s=>[...s.children]);
   all.forEach(c=>{c.classList.remove('uxanchor');const t=S0[+c.dataset.uxp];if(t)t.append(c)});S0.forEach(s=>[...s.children].sort((x,y)=>(+x.dataset.uxi||0)-(+y.dataset.uxi||0)).forEach(c=>s.append(c)));if(c3)c3.remove()}
 function uxRebalance(){if($('#uxCol3')){uxUnbalance();uxBalance()}}

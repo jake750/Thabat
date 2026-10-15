@@ -1,0 +1,4 @@
+/* v3.62: the third column on wide Today (three-column layout) */
+html.tdl-colsw #tdCol3{position:sticky;top:12px;align-self:start;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh / var(--uiz,1) - 24px);overflow-y:auto;scrollbar-width:thin;padding-bottom:4px}
+html.tdl-colsw #tdCol3>.card{margin:0!important;flex:none}html.tdl-colsw #tdSide{position:static}html:not(.tdl-colsw) #tdCol3{display:contents}
+

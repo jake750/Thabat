@@ -11,7 +11,7 @@ function tdlWideOk(){return!MOB.matches&&innerWidth/(uiZoom()||1)>=1100}
 function tdlApply(){const v=tdl(),h=document.documentElement;TDL_K.forEach(k=>h.classList.toggle('tdl-'+k,k===v&&k!=='cards'));h.classList.toggle('tdl-colsw',v==='cols'&&tdlWideOk());
   if(v!=='cards'){h.classList.remove('wide3');if($('#uxCol3'))try{uxUnbalance()}catch(e){}}
   if(v!=='bento')$$('#v-today .bxo').forEach(c=>{c.classList.remove('bxo');c.style.gridRow=''});
-  if(v==='line')tdlLine();else $('#tdLine')?.remove();if(v==='cols')tdsRender();else $('#tdSide')?.remove();if(v==='bento'){bntPrep();bntSums()}}
+  if(v==='line')tdlLine();else $('#tdLine')?.remove();if(v==='cols')tdsRender();else tdsHome();if(v==='bento'){bntPrep();bntSums()}}
 /* three columns on wide windows would fight the other layouts */
 {const _f=uxWide;uxWide=function(...a){if(tdl()!=='cards'){document.documentElement.classList.remove('wide3');if($('#uxCol3'))try{uxUnbalance()}catch(e){}document.documentElement.classList.toggle('tdl-colsw',tdl()==='cols'&&tdlWideOk());return}return _f(...a)}}
 {hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){try{tdlApply()}catch(e){console.error(e)}})}
@@ -57,7 +57,9 @@ const BNT_RO=new ResizeObserver(es=>es.forEach(en=>{const c=en.target;if(c.class
 /* 4 · three columns on the PC: the day | the work | details of what you pick (no windows) */
 const TDS={sel:null};
 document.addEventListener('click',e=>{if(tdl()!=='cols'||!document.documentElement.classList.contains('tdl-colsw'))return;const li=e.target.closest('#tasks .task');if(!li||e.target.closest('.ck,.del,.pp,button'))return;TDS.sel=li.dataset.id;tdsRender()},true);
-function tdsRender(){const grid=$('#v-today .grid');if(!grid)return;let P=$('#tdSide');if(!P){P=document.createElement('aside');P.id='tdSide';P.className='card';grid.appendChild(P)}else if(P.parentNode!==grid||P!==grid.lastElementChild)grid.appendChild(P);
+function tdsHome(){const pc=$('#pdlCard'),W=$('#tdCol3');if(pc&&W&&pc.parentNode===W){const h=TDS.home;if(h&&h.p&&h.p.isConnected)h.p.insertBefore(pc,h.n&&h.n.parentNode===h.p?h.n:null);else{const s=$('#v-today .grid>.stack');if(s)s.appendChild(pc)}}if(W)W.remove();$('#tdSide')?.remove()}
+function tdsRender(){const grid=$('#v-today .grid');if(!grid)return;if(!document.documentElement.classList.contains('tdl-colsw')){tdsHome();return}let W=$('#tdCol3');if(!W){W=document.createElement('div');W.id='tdCol3';grid.appendChild(W)}else if(W.parentNode!==grid||W!==grid.lastElementChild)grid.appendChild(W);
+  let P=$('#tdSide');if(!P){P=document.createElement('aside');P.id='tdSide';P.className='card'}if(P.parentNode!==W)W.prepend(P);const pc=$('#pdlCard');if(pc&&pc.parentNode!==W){TDS.home={p:pc.parentNode,n:pc.nextSibling};W.appendChild(pc)}
   const k=todayKey(),d=day(k),x=TDS.sel&&d.tasks.find(q=>q.id===TDS.sel);$$('#tasks .task').forEach(li=>li.classList.toggle('tdsel',!!x&&li.dataset.id===x.id));
   if(!x){TDS.sel=null;const now=Date.now(),slots=pdlSlots(k),nx=slots.find(s=>s.t0>now),up=[];d.tasks.forEach(q=>{const a=pdlAt(k,q);if(a!=null&&a>now-30*6e4&&!q.done)up.push({a,n:q.text})});
     evsOn(k).forEach(e=>{if(!e.time||!/^\d\d?:\d\d/.test(e.time))return;const [h,m]=e.time.split(':').map(Number),D=keyToDate(k);D.setHours(h,m,0,0);if(D.getTime()>now-30*6e4)up.push({a:D.getTime(),n:e.title||''})});up.sort((a,b)=>a.a-b.a);
