@@ -243,6 +243,7 @@ js/v3-59-android-shell-36-next-prayer-in-the-notifi.js
 js/v3-60-pc-data-and-look-start-with-windows-storag.js
 js/v3-61-today-layouts-cards-the-day-s-line-between.js
 js/v3-62-even-columns-on-wide-today-the-day-line-un.js
+js/v3-62-1-a-deleted-task-stays-deleted-repeating-p.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

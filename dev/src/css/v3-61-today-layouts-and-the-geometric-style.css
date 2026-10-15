@@ -7,8 +7,8 @@ html.th-masjid .pgt::after{background:var(--accent)!important;-webkit-mask:var(-
 .tdlseg{flex-wrap:wrap}
 /* 2 · the line */
 html.tdl-line #pdlCard{display:none!important}
-html.tdl-line #v-today .grid{display:grid!important;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)!important;grid-template-rows:auto auto 1fr;align-items:start}
-html.tdl-line #tdLine{grid-column:1;grid-row:1/4;margin:0}html.tdl-line #v-today .grid>.stack:nth-child(2){grid-column:2;grid-row:1}html.tdl-line #v-today .grid>.stack:nth-child(3){grid-column:2;grid-row:2}
+html.tdl-line #v-today .grid{display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)!important;grid-template-rows:auto 1fr;align-items:start;column-gap:18px}
+html.tdl-line #tdLine{grid-column:1;grid-row:1;margin:0 0 18px!important}html.tdl-line #v-today .grid>.stack:nth-child(2){grid-column:1;grid-row:2}html.tdl-line #v-today .grid>.stack:nth-child(3){grid-column:2;grid-row:1/3}
 @media (max-width:700px){html.tdl-line #v-today .grid{grid-template-columns:minmax(0,1fr)!important;grid-template-rows:none}html.tdl-line #tdLine,html.tdl-line #v-today .grid>.stack{grid-column:1!important;grid-row:auto!important}}
 #tdLine h3{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.tdlw{position:relative;padding-inline-start:26px}.tdlw::before{content:'';position:absolute;inset-inline-start:9px;top:8px;bottom:8px;width:2px;border-radius:2px;background:color-mix(in srgb,var(--accent) 45%,var(--line))}
 .tdlp{position:relative;padding:6px 10px 10px;border-radius:12px;margin-bottom:6px}.tdlp.cur{background:color-mix(in srgb,var(--accent) 10%,transparent);outline:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}.tdlp.past .tdln b{color:var(--muted)}
