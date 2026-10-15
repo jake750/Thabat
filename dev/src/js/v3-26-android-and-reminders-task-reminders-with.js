@@ -36,7 +36,7 @@ setTimeout(remActs,1800);
 /* ---------- recordings on the lock screen and in the background (picks 145, 146) ---------- */
 const MED={t:0,last:''};
 function medPush(){if(andV()<4||!window.ThabatAndroid.mediaState)return;const a=RCX.el,r=RCL().find(x=>x.id===RCX.cur);let o;
-  if(!a||!r)o={on:false};else o={on:true,title:r.title,artist:r.reciter||t('app'),playing:!a.paused,pos:Math.round((a.currentTime||0)*1000),dur:Math.round((isFinite(a.duration)?a.duration:(r.dur||0))*1000),rate:a.playbackRate||1,prevLbl:t('rcp.prev'),nextLbl:t('rcp.next'),playLbl:t('med.play'),pauseLbl:t('med.pause'),chName:t('rc.t')};
+  if(!a||!r)o={on:false};else o={on:true,title:r.title,artist:r.reciter||t('app'),playing:!a.paused,pos:Math.round((a.currentTime||0)*1000),dur:Math.round((isFinite(a.duration)?a.duration:(r.dur||0))*1000),rate:a.playbackRate||1,prevLbl:t('rcp.prev'),nextLbl:t('rcp.next'),playLbl:t('med.play'),pauseLbl:t('med.pause'),chName:t('rc.t'),art:(typeof AUART!=='undefined'&&AUART.get(r.id)||'').split(',')[1]||''};
   const js=JSON.stringify(o);MED.t=Date.now();if(js===MED.last)return;MED.last=js;try{window.ThabatAndroid.mediaState(js)}catch(e){}}
 {const _ra=rcAudio;rcAudio=function(...x){const a=_ra(...x);if(a&&!a._med){a._med=1;['play','pause','ended','loadedmetadata','ratechange','seeked'].forEach(ev=>a.addEventListener(ev,medPush));a.addEventListener('timeupdate',()=>{if(Date.now()-MED.t>15000)medPush()})}return a}}
 {hookFn('rcStop',()=>rcStop,f=>{rcStop=f},'post',function(...x){medPush()})}
