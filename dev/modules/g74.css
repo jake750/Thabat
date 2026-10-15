@@ -1,0 +1,5 @@
+/* v3.62.2 matrix delete */
+.mxit .mxdel{flex:none;width:26px;height:26px;border-radius:8px;border:0;background:transparent;color:var(--muted);font-size:13px;cursor:pointer;display:grid;place-items:center}
+.mxit .mxdel:hover{background:color-mix(in srgb,#e5484d 18%,transparent);color:#e5484d}
+@media (max-width:700px){.mxit .mxdel{width:34px;height:34px}}
+#tasks>.mx,#tasks>.mxq,#tasks>.mxdn{flex-shrink:0}
