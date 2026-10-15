@@ -1,5 +1,5 @@
 /* v3.73.0 page interfaces */
-.qjbar{position:sticky;top:0;z-index:6;height:18px;margin:0 0 6px;display:flex;align-items:center;gap:8px;grid-column:1/-1}
+.qjbar{position:relative;height:18px;margin:6px 2px 8px;display:flex;align-items:center;gap:8px;min-width:0}
 .qjbar i{display:block;flex:1;height:3px;border-radius:3px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}.qjbar i>b{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s}
 .qjbar span{font-size:11px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
 html.qread #qbTop,html.qread #v-quran>.pgt,html.qread #v-quran .qstrip,html.qread #v-quran .qtools{opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .25s}

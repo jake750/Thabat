@@ -2,7 +2,7 @@
 /* ---- Quran ---- */
 /* 147. a thin bar above the mushaf: where you are inside the current juz' */
 function qjBar(){const v=$('#v-quran');if(!v||typeof QJ==='undefined'||!QJ.length)return;const p=+S.quran.page||1,j=qJuzAt(p),a=QJ[j-1]||1,b=(QJ[j]||((typeof qPagesN==='function'&&qPagesN())||604)+1)-1,pc=Math.max(0,Math.min(1,(p-a+1)/(b-a+1)));
-  let el=$('#qjBar');if(!el){el=document.createElement('div');el.id='qjBar';el.className='qjbar';el.innerHTML='<i><b></b></i><span></span>';const w=v.querySelector('.qwrap');if(!w)return;w.prepend(el)}
+  let el=$('#qjBar');if(!el){el=document.createElement('div');el.id='qjBar';el.className='qjbar';el.innerHTML='<i><b></b></i><span></span>';}{const qb=$('#qbTop'),bar=qb&&qb.closest('.qbar');if(bar&&bar.nextElementSibling!==el)bar.after(el);else if(!bar&&!el.parentNode){const w=v.querySelector('.qwrap');if(!w)return;w.prepend(el)}}
   el.querySelector('i>b').style.width=(pc*100).toFixed(1)+'%';el.querySelector('span').textContent=t('qj.l',j,p-a+1,b-a+1);el.title=t('qj.t',j,Math.round(pc*100))}
 {hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(){try{qjBar()}catch(e){}})}
 setInterval(()=>{try{if(curView()==='quran'&&!document.hidden)qjBar()}catch(e){}},4000);
