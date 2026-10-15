@@ -43,5 +43,5 @@ html.nvs-clear nav.side.flt .navpill,html.nvs-clear nav.side.flt .navset{backgro
 .lkseg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;overflow:hidden}.lkseg button{border:0;background:transparent;color:var(--muted);font-size:12.5px;padding:5px 9px;cursor:pointer}.lkseg button.on{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--text)}
 .lkcols{display:flex;flex-wrap:wrap;gap:8px}.lkc{width:30px;height:30px;border-radius:50%;border:2px solid transparent;background:var(--c);cursor:pointer;color:var(--text);font-size:14px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}.lkc.on{border-color:var(--text);box-shadow:0 0 0 2px var(--panel),inset 0 0 0 1px rgba(0,0,0,.2)}
 .lkact{gap:8px;margin-top:14px;flex-wrap:wrap}
-#infoBox.lkbox,.box.lkbox{width:min(980px,calc(94vw / var(--uiz,1)))!important;max-width:none!important;max-height:calc(100vh / var(--uiz,1) - 40px)!important}
+@media(min-width:701px){#infoBox.lkbox,.box.lkbox{width:min(980px,calc(94vw / var(--uiz,1)))!important;max-width:none!important;max-height:calc(100vh / var(--uiz,1) - 40px)!important}}
 
