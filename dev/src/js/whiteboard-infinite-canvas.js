@@ -224,7 +224,7 @@ function wbTextLayout(txt,X,Y,w,fs,lh,font,ta,vcenter,h){const lines=wbLines(wbP
   return lines.map((s,i)=>{const rtl=wbAr(s);let al=ta||'start';if(al==='start')al=rtl?'right':'left';else if(al==='end')al=rtl?'left':'right';
     return{s,y:y0+i*lh,x:al==='center'?X+w/2:al==='right'?X+w:X,anchor:al==='center'?'middle':al==='right'?'end':'start'}})}
 async function wbExportPng(els){els=els||wbExportSet();if(!els.length){toast(t('notes.nothing'));return}const{a,b,c,d}=wbBounds(els);
-  const M=40,W=c-a+2*M,H=d-b+2*M,sc=Math.min(2,6000/Math.max(W,H));const cv=document.createElement('canvas');cv.width=Math.ceil(W*sc);cv.height=Math.ceil(H*sc);const x=cv.getContext('2d');x.scale(sc,sc);x.translate(M-a,M-b);
+  const M=40,W=c-a+2*M,H=d-b+2*M,sc=window.WB_SC||Math.min(2,6000/Math.max(W,H));const cv=document.createElement('canvas');cv.width=Math.ceil(W*sc);cv.height=Math.ceil(H*sc);const x=cv.getContext('2d');x.scale(sc,sc);x.translate(M-a,M-b);
   const cs=getComputedStyle(document.documentElement),bg=cs.getPropertyValue('--bg').trim()||'#111',fg=wbColRes('auto'),muted=cs.getPropertyValue('--muted').trim()||'#999';x.fillStyle=bg;x.fillRect(a-M,b-M,W,H);
   const txt=(L_,font,col)=>{x.font=font;x.fillStyle=col;L_.forEach(l=>{x.textAlign=l.anchor==='middle'?'center':l.anchor==='end'?'right':'left';x.direction=wbAr(l.s)?'rtl':'ltr';x.fillText(l.s,l.x,l.y)})};
   const rr=(X,Y,w,h,r)=>{x.beginPath();x.roundRect?x.roundRect(X,Y,w,h,r):x.rect(X,Y,w,h)};
