@@ -1,0 +1,20 @@
+/* v3.69.0 states */
+.svdpill{position:fixed;z-index:96;bottom:calc(16px + env(safe-area-inset-bottom));inset-inline-start:16px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;color:#fff;background:color-mix(in srgb,#22c55e 88%,#000);box-shadow:0 4px 14px rgba(0,0,0,.3);opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
+.svdpill.on{opacity:.95;transform:none}
+@media(max-width:700px){.svdpill{bottom:auto;top:calc(10px + env(safe-area-inset-top));inset-inline-start:auto;left:50%;transform:translate(-50%,-6px)}.svdpill.on{transform:translate(-50%,0)}}
+.skelgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.skelc{display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.skel{display:block;border-radius:8px;background:linear-gradient(90deg,color-mix(in srgb,var(--text) 6%,transparent) 0%,color-mix(in srgb,var(--text) 13%,transparent) 50%,color-mix(in srgb,var(--text) 6%,transparent) 100%);background-size:200% 100%;animation:skel 1.3s linear infinite}
+.skimg{aspect-ratio:16/9}.skl1{height:12px;width:75%}.skl2{height:10px;width:45%}
+@keyframes skel{from{background-position:200% 0}to{background-position:-200% 0}}
+.selcnt{margin-inline-end:6px;font-size:13px}
+.wbselcnt{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:20;padding:3px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:12px;pointer-events:none}
+.nclbtn{position:fixed!important;top:12px;inset-inline-end:84px!important;z-index:40;width:26px;height:26px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--accent) 60%,var(--line));color:var(--accent);background:var(--panel);display:grid!important;place-items:center;opacity:.75;box-shadow:0 2px 10px rgba(0,0,0,.25);padding:0;cursor:pointer}@media(max-width:700px){.nclbtn{top:8px;width:24px;height:24px;inset-inline-end:68px!important}}.nclbtn svg{width:14px;height:14px}
+.nclbtn i{position:absolute;top:-6px;inset-inline-start:-6px;min-width:15px;height:15px;padding:0 3px;border-radius:999px;background:#e5484d;color:#fff;font-size:9.5px;font-style:normal;font-weight:700;display:none;place-items:center;line-height:1}
+.nclbtn.has i{display:grid}.nclbtn.has{opacity:1}
+html.solo .nclbtn{display:none!important}
+.nclday{font-size:12px;font-weight:700;color:var(--muted);margin:10px 0 4px}
+.nclit{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}.nclit b{display:block;font-size:13.5px}.nclit small{display:block;color:var(--muted);font-size:12px}.ncltm{color:var(--muted);font-size:12px;min-width:44px;font-variant-numeric:tabular-nums}
+.newb{position:relative}
+.newb::after{content:'';position:absolute;top:2px;inset-inline-end:2px;width:8px;height:8px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 2px var(--panel);pointer-events:none}
+
