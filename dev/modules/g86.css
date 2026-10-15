@@ -1,0 +1,6 @@
+/* v3.74.0 clarity */
+html.iconlbl [data-ilb]{width:auto!important;min-width:0;padding-inline:8px!important;display:inline-flex!important;align-items:center;gap:5px}
+html.iconlbl [data-ilb]::after{content:attr(data-ilb);font-size:11.5px;font-weight:500;white-space:nowrap}
+html.iconlbl .wbt .tool[data-ilb]::after{display:none}
+.demobar{position:fixed;z-index:97;top:calc(8px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:6px 8px 6px 14px;border-radius:999px;background:color-mix(in srgb,#a855f7 22%,var(--panel));border:1px solid color-mix(in srgb,#a855f7 55%,var(--line));box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:12.5px;max-width:calc(100vw - 24px)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.35s}
