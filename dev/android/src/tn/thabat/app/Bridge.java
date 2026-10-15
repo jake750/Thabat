@@ -17,7 +17,7 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "6"; }
+    public String version() { return "7"; }
 
     /* 3.59: the next prayer as an ongoing notification; the month widget */
     @JavascriptInterface

@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int code, String[] perms, int[] res) {
         if (code == REQ_MIC && micReq != null) {
-            boolean ok = res.length > 0 && res[0] == 0;
+            boolean ok = res.length > 0; for (int x : res) if (x != 0) ok = false;
             try { if (ok) micReq.grant(micReq.getResources()); else micReq.deny(); } catch (Throwable t) {}
             micReq = null;
             return;
@@ -193,12 +193,16 @@ public class MainActivity extends Activity {
     }
 
     void askMic(android.webkit.PermissionRequest r) {
-        boolean audio = false;
-        for (String x : r.getResources()) if (android.webkit.PermissionRequest.RESOURCE_AUDIO_CAPTURE.equals(x)) audio = true;
-        if (!audio) { r.deny(); return; }
-        if (checkSelfPermission("android.permission.RECORD_AUDIO") == 0) { r.grant(new String[]{android.webkit.PermissionRequest.RESOURCE_AUDIO_CAPTURE}); return; }
+        /* 3.60: the camera too (scanning the PC's transfer code) */
+        java.util.ArrayList<String> res = new java.util.ArrayList<>(), need = new java.util.ArrayList<>();
+        for (String x : r.getResources()) {
+            if (android.webkit.PermissionRequest.RESOURCE_AUDIO_CAPTURE.equals(x)) { res.add(x); if (checkSelfPermission("android.permission.RECORD_AUDIO") != 0) need.add("android.permission.RECORD_AUDIO"); }
+            else if (android.webkit.PermissionRequest.RESOURCE_VIDEO_CAPTURE.equals(x)) { res.add(x); if (checkSelfPermission("android.permission.CAMERA") != 0) need.add("android.permission.CAMERA"); }
+        }
+        if (res.isEmpty()) { r.deny(); return; }
+        if (need.isEmpty()) { r.grant(res.toArray(new String[0])); return; }
         micReq = r;
-        requestPermissions(new String[]{"android.permission.RECORD_AUDIO"}, REQ_MIC);
+        requestPermissions(need.toArray(new String[0]), REQ_MIC);
     }
 
     boolean pickFile(ValueCallback<Uri[]> cb, WebChromeClient.FileChooserParams p) {
