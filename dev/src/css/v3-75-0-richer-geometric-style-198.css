@@ -1,0 +1,8 @@
+/* v3.75.0 richer geometric style (198) */
+html.st-geo .card>h3{position:relative;padding-inline-start:20px}
+html.st-geo .card>h3::before{content:'';position:absolute;inset-inline-start:0;top:50%;width:13px;height:13px;transform:translateY(-50%);background:var(--accent);opacity:.85;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1l3.2 4.8L21 6.2l-1.4 5.8L23 17l-5.6 1.4L12 23l-5.4-4.6L1 17l3.4-5L3 6.2l5.8-.4z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1l3.2 4.8L21 6.2l-1.4 5.8L23 17l-5.6 1.4L12 23l-5.4-4.6L1 17l3.4-5L3 6.2l5.8-.4z'/%3E%3C/svg%3E") center/contain no-repeat}
+html.st-geo .card>h3:has(.tmvgrip)::before,html.st-geo .card.uxfold>h3::before{opacity:.6}
+html.st-geo hr,html.st-geo .tkgh{border:0;border-top:3px solid transparent;border-image:repeating-linear-gradient(90deg,var(--line) 0 7px,transparent 7px 10px,color-mix(in srgb,var(--accent) 70%,transparent) 10px 13px,transparent 13px 16px) 3}
+html.st-geo .pgt::after{content:'';display:inline-block;width:56px;height:8px;margin-inline-start:12px;vertical-align:middle;background:var(--accent);opacity:.5;-webkit-mask:var(--msjStar) repeat-x center/16px 8px;mask:var(--msjStar) repeat-x center/16px 8px}
+#qbTop #qnBtn{flex:none}#qbTop .qbriw{min-width:0;flex:1 1 auto;overflow:hidden}#qbTop .qbriw select{max-width:100%;min-width:0}
+

@@ -28,6 +28,7 @@ public class Widget5 extends AppWidgetProvider {
             v.setTextViewText(Widget.rid(c, "w5_ref", "id"), ay == null ? "الرعد 28" : ay.optString("ref"));
             Intent open = new Intent(c, MainActivity.class); open.addFlags(0x10000000 | 0x20000000);
             if (open != null) { open.putExtra("open", ay == null ? "quran" : "ayah:" + ay.optString("k")); v.setOnClickPendingIntent(Widget.rid(c, "w5_root", "id"), PendingIntent.getActivity(c, 7871, open, Widget.FLAGS)); }
+            WTheme.apply(c, v, 5);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
     }

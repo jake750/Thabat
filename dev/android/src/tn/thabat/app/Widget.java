@@ -61,6 +61,7 @@ public class Widget extends AppWidgetProvider {
             adh.putExtra("open", "adhkar");
             adh.addFlags(0x10000000 | 0x20000000);
             v.setOnClickPendingIntent(rid(c, "w_adh", "id"), PendingIntent.getActivity(c, 102, adh, FLAGS));
+            WTheme.apply(c, v, 1);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
         Widget2.render(c);

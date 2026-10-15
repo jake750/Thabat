@@ -30,6 +30,7 @@ public class Widget6 extends AppWidgetProvider {
             v.setTextViewText(Widget.rid(c, "w6_add", "id"), o.optString("addLbl", "+1"));
             v.setOnClickPendingIntent(Widget.rid(c, "w6_add", "id"), Ongoing.act(c, ActReceiver.WADD, null, 7881));
             v.setOnClickPendingIntent(Widget.rid(c, "w6_root", "id"), Ongoing.open(c, "quran", 7882));
+            WTheme.apply(c, v, 6);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
     }

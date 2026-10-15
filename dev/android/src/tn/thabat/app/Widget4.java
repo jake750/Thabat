@@ -63,6 +63,7 @@ public class Widget4 extends AppWidgetProvider {
             v.setOnClickPendingIntent(Widget.rid(c, "w4_done", "id"), PendingIntent.getBroadcast(c, 7861, d, Widget.FLAGS));
             Intent open = new Intent(c, MainActivity.class); open.addFlags(0x10000000 | 0x20000000);
             if (open != null) { open.putExtra("open", "today"); v.setOnClickPendingIntent(Widget.rid(c, "w4_text", "id"), PendingIntent.getActivity(c, 7862, open, Widget.FLAGS)); }
+            WTheme.apply(c, v, 4);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
     }

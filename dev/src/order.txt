@@ -111,6 +111,7 @@ css/v3-71-0-the-phone.css
 css/v3-72-0-the-pc.css
 css/v3-73-0-page-interfaces.css
 css/v3-74-0-clarity.css
+css/v3-75-0-richer-geometric-style-198.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -270,6 +271,7 @@ js/v3-71-0-the-phone-fourth-list-group-h-119-121-12.js
 js/v3-72-0-the-pc-fourth-list-group-i-133-142-144-1.js
 js/v3-73-0-page-interfaces-fourth-list-group-j-147.js
 js/v3-74-0-clarity-and-text-fourth-list-group-k-171.js
+js/v3-75-0-other-items-fourth-list-group-l-188-190.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

@@ -86,6 +86,7 @@ public class Widget3 extends AppWidgetProvider {
             v.setOnClickPendingIntent(Widget.rid(c, "w3_root", "id"), PendingIntent.getBroadcast(c, 7851, tap, Widget.FLAGS));
             Intent nx = new Intent(c, Widget3.class); nx.setAction(NEXT);
             v.setOnClickPendingIntent(Widget.rid(c, "w3_next", "id"), PendingIntent.getBroadcast(c, 7852, nx, Widget.FLAGS));
+            WTheme.apply(c, v, 3);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
     }

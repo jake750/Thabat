@@ -45,6 +45,7 @@ public class Widget2 extends AppWidgetProvider {
                 try { v.setChronometerCountDown(cd, true); } catch (Throwable t) {}
             }
             v.setOnClickPendingIntent(Widget.rid(c, "w2_root", "id"), Widget.openPi(c, 103));
+            WTheme.apply(c, v, 2);
             m.updateAppWidget(ids, v);
         } catch (Throwable t) {}
     }

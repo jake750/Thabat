@@ -17,7 +17,7 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "8"; }
+    public String version() { return "9"; }
 
     /* 3.59: the next prayer as an ongoing notification; the month widget */
     @JavascriptInterface
@@ -240,4 +240,8 @@ public class Bridge {
             } catch (Throwable t) {}
         }
     }
+
+    /* 3.75: the widgets follow the app's theme colours */
+    @JavascriptInterface
+    public void widgetTheme(String json) { try { a.getSharedPreferences("thabat", 0).edit().putString("wtheme", json).apply(); WTheme.renderAll(a.getApplicationContext()); } catch (Throwable t) {} }
 }

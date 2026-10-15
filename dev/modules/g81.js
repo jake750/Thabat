@@ -36,7 +36,7 @@ setTimeout(()=>{try{if(!SOLO)nclBadge()}catch(e){}},700);
 addEventListener('beforeunload',e=>{try{const ne=$('#noteModal.on')&&typeof NE!=='undefined'&&NE&&(String(($('#neTitle')||{}).value||'').trim()||String(($('#neBody')||{}).value||'').trim());const ev=$('#evModal.on')&&String(($('#evT')||{}).value||'').trim();if(ne||ev){e.preventDefault();e.returnValue=''}}catch(x){}});
 
 /* 105. «new» on new features until you open them once */
-const NEWB={'#lkBtn':'lk','#nselBtn':'nsel','#eselBtn':'esel','#navMiniB':'navmini','#tdaRing':'ring','#nteWin':'solo','#nclBtn':'ncl'};
+const NEWB={'#lkBtn':'lk','#nselBtn':'nsel','#eselBtn':'esel','#navMiniB':'navmini','#tdaRing':'ring','#nteWin':'solo'};
 function newbSeen(){try{return JSON.parse(localStorage.getItem('thabat.newb')||'{}')}catch(e){return{}}}
 function newbPaint(){const S0=newbSeen();if(!S0._since){S0._since=Date.now();try{localStorage.setItem('thabat.newb',JSON.stringify(S0))}catch(e){}}if(Date.now()-S0._since>30*864e5)return;
   Object.entries(NEWB).forEach(([sel,k])=>{const el=$(sel);if(!el)return;el.classList.toggle('newb',!S0[k])})}
