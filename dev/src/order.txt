@@ -106,6 +106,7 @@ css/v3-66-0-the-look.css
 css/v3-67-0-interaction.css
 css/v3-68-0-forms.css
 css/v3-69-0-states.css
+css/v3-70-0-settings.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -260,6 +261,7 @@ js/v3-66-0-the-look-fourth-list-group-c-37-39-43-45.js
 js/v3-67-0-interaction-fourth-list-group-d-59-63-64.js
 js/v3-68-0-forms-and-input-fourth-list-group-e-80-8.js
 js/v3-69-0-states-and-alerts-fourth-list-group-f-94.js
+js/v3-70-0-settings-fourth-list-group-g-110-111-112.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

@@ -107,7 +107,7 @@ function lkPreview(P){const el=$('#lkPv');if(!el)return;const C=COLORS[P.color]|
   el.className='lkpv cs-'+(P.lk.shape||'def')+(P.style==='glass'?' pv-glass':'')+' dv-'+P.lk.div+(P.mode==='light'?' pv-light':'');
   el.querySelector('.lkpvn b').style.fontSize=P.lk.tscale?'21px':'22px'}
 /* settings row (Look) and Ctrl+K */
-{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{if($('#lkRow'))return;const a=$('#styleSeg');const row=a&&a.closest('.field,.row,.setrow,div');if(!row)return;
+{hookFn('renderSettings',()=>renderSettings,f=>{renderSettings=f},'post',function(){try{if($('#lkRow'))return;const a=$('#styleSeg');const row=a&&(a.closest('.field')||a.closest('.row'));if(!row)return;
   row.insertAdjacentHTML('afterend',`<div class="field" id="lkRow"><div><label data-i18n="lka.t">${t('lka.t')}</label><small>${t('lka.sub')}</small></div><button class="btn sm" id="lkBtn">🎨 ${t('lka.open')}</button></div>`);$('#lkBtn').onclick=lkOpen;
   try{(SGA_MAIN['set.look']=SGA_MAIN['set.look']||[]).includes('lka.t')||SGA_MAIN['set.look'].push('lka.t')}catch(e){}}catch(e){console.error(e)}})}
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'🎨',label:t('lka.t'),run:()=>{showView('set');lkOpen()},kw:'look theme appearance colours font icons motion مظهر ألوان ثيم خطوط أيقونات حركة'});return L_}}
