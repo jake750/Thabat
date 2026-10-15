@@ -26,6 +26,8 @@ import os, re, shutil, subprocess, sys, tempfile, time, zipfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 HTML = os.path.join(ROOT, 'Thabat', 'Thabat.html')
 PERSONAL = os.path.expanduser(r'~\Documents\Thabat\Thabat.html')
+# the copy Thabat-Setup.exe installs (his desktop shortcut opens it since he tried the setup on 2026-10-14)
+INSTALLED = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Programs', 'Thabat', 'Thabat.html')
 SDK_BT = os.path.expanduser(r'~\AppData\Local\Android\Sdk\build-tools\35.0.1')
 JDK = os.path.expanduser(r'~\.jdks\temurin-24.0.2\bin')
 KEYSTORE = os.path.join(ROOT, 'android', 'thabat-signing.keystore')
@@ -175,6 +177,14 @@ def main():
         for n in os.listdir(DATA):
             shutil.copy(os.path.join(DATA, n), os.path.join(os.path.dirname(PERSONAL), n))
         print('personal copy updated (old one in Thabat.html.bak, pdfjs/ refreshed)')
+    if os.path.exists(INSTALLED):
+        # program files only, like the in-app update: the page, its data files and pdf.js
+        shutil.copy(INSTALLED, INSTALLED + '.bak')
+        shutil.copy(HTML, INSTALLED)
+        shutil.copytree(VENDOR, os.path.join(os.path.dirname(INSTALLED), 'pdfjs'), dirs_exist_ok=True)
+        for n in os.listdir(DATA):
+            shutil.copy(os.path.join(DATA, n), os.path.join(os.path.dirname(INSTALLED), n))
+        print('installed copy updated (%LOCALAPPDATA%\\Programs\\Thabat; old page in Thabat.html.bak)')
     print('versions:')
     print('  Thabat.html        ', ver_in(html))
     for z in ('Thabat-Windows.zip', 'Thabat-Mac.zip'):
@@ -183,6 +193,8 @@ def main():
         print('  Thabat.apk         ', ver_in(zipfile.ZipFile('Thabat.apk').read('assets/www/Thabat.html')))
     if os.path.exists(PERSONAL):
         print('  personal copy      ', ver_in(open(PERSONAL, 'rb').read()))
+    if os.path.exists(INSTALLED):
+        print('  installed copy     ', ver_in(open(INSTALLED, 'rb').read()))
     shutil.rmtree(tmp, ignore_errors=True)
 
 
