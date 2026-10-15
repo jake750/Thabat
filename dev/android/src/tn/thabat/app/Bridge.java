@@ -17,7 +17,7 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "7"; }
+    public String version() { return "8"; }
 
     /* 3.59: the next prayer as an ongoing notification; the month widget */
     @JavascriptInterface
@@ -218,5 +218,26 @@ public class Bridge {
         final MainActivity a; final boolean on;
         FsRun(MainActivity a, boolean on) { this.a = a; this.on = on; }
         public void run() { a.applyFullscreen(on); }
+    }
+
+    /* 3.71: the status and navigation bars take the page's colour; light pages get dark icons */
+    @JavascriptInterface
+    public void barColors(String status, String nav, boolean light) { a.runOnUiThread(new BarRun(a, status, nav, light)); }
+
+    static class BarRun implements Runnable {
+        final MainActivity a; final String s, n; final boolean light;
+        BarRun(MainActivity a, String s, String n, boolean light) { this.a = a; this.s = s; this.n = n; this.light = light; }
+        public void run() {
+            try {
+                android.view.Window w = a.getWindow();
+                w.setStatusBarColor(android.graphics.Color.parseColor(s));
+                w.setNavigationBarColor(android.graphics.Color.parseColor(n));
+                android.view.View d = w.getDecorView();
+                int f = d.getSystemUiVisibility();
+                if (Build.VERSION.SDK_INT >= 23) f = light ? (f | android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) : (f & ~android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                if (Build.VERSION.SDK_INT >= 26) f = light ? (f | android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR) : (f & ~android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+                d.setSystemUiVisibility(f);
+            } catch (Throwable t) {}
+        }
     }
 }

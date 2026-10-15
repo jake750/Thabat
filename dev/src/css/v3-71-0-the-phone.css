@@ -1,0 +1,6 @@
+/* v3.71.0 the phone */
+@media(max-width:700px){
+ .modal.on>.box .thumbbar{position:sticky;bottom:calc(-1 * var(--sheetPad,16px));z-index:5;margin-inline:calc(-1 * var(--sheetPad,16px));padding:10px var(--sheetPad,16px) calc(10px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--panel) 94%,transparent);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+ .uxsel:not([hidden]){position:fixed!important;left:12px;right:12px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:75;margin:0!important;box-shadow:0 12px 34px rgba(0,0,0,.45)}
+ .nfback{flex:none}}
+

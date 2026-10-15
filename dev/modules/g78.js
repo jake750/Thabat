@@ -91,7 +91,7 @@ function lkOpen(){const st=S.settings,P={color:st.color||'yellow',mode:st.mode||
     <div class="lkcols">${['',...['#3fd98a','#e8b64c','#4fcbff','#ab7dff','#ff72b8']].map(c=>`<button type="button" class="lkc lkcf ${P.lk.calFill===c?'on':''}" data-cf="${c}" style="--c:${c||'var(--water)'}" title="${c?c:esc(T('cfDef'))}">${c?'':'↺'}</button>`).join('')}</div>
    </div></div>
    <div class="row lkact"><button class="btn" id="lkApply">${T('apply')}</button><button class="btn ghost" id="lkCancel">${t('cancel')}</button><button class="btn ghost sm" id="lkReset">${T('reset')}</button></div>`);
-  const box=$('#infoBox');if(box)box.classList.add('lkbox');
+  const box=$('#infoBox');if(box){box.classList.add('lkbox');const ea=box.querySelector('.evact');if(ea)ea.hidden=true}
   const pv=()=>lkPreview(P);
   $$('.lkcols [data-c]').forEach(b=>b.onclick=()=>{P.color=b.dataset.c;$$('.lkcols [data-c]').forEach(x=>x.classList.toggle('on',x===b));pv()});
   $$('.lkcols [data-cf]').forEach(b=>b.onclick=()=>{P.lk.calFill=b.dataset.cf;$$('.lkcols [data-cf]').forEach(x=>x.classList.toggle('on',x===b));pv()});
@@ -112,5 +112,5 @@ function lkPreview(P){const el=$('#lkPv');if(!el)return;const C=COLORS[P.color]|
   try{(SGA_MAIN['set.look']=SGA_MAIN['set.look']||[]).includes('lka.t')||SGA_MAIN['set.look'].push('lka.t')}catch(e){}}catch(e){console.error(e)}})}
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'🎨',label:t('lka.t'),run:()=>{showView('set');lkOpen()},kw:'look theme appearance colours font icons motion مظهر ألوان ثيم خطوط أيقونات حركة'});return L_}}
 DYK.push({k:'look',run:()=>lkOpen()});
-{hookFn('openInfo',()=>openInfo,f=>{openInfo=f},'pre',function(){const b=$('#infoBox');if(b)b.classList.remove('lkbox','pebox')})}
+{hookFn('openInfo',()=>openInfo,f=>{openInfo=f},'pre',function(){const b=$('#infoBox');if(b){b.classList.remove('lkbox','pebox');const ea=b.querySelector('.evact');if(ea)ea.hidden=false}})}
 setTimeout(()=>{try{lkApply()}catch(e){}},200);
