@@ -27,7 +27,7 @@ function androidSchedule(){if(!ANDROID)return;try{const P=S.settings.prayer,Q=S.
       if(Q.rem.read.on)out.push({id:d*40+20,t:pt[Q.rem.read.prayer]+Q.rem.read.after*6e4,title:t('q.remRead'),body:t('q.wird')});
       if(Q.rem.hifz.on)out.push({id:d*40+21,t:pt[Q.rem.hifz.prayer]+Q.rem.hifz.after*6e4,title:t('q.remHifz'),body:t('q.hifz')+' · '+t('q.review')});
       const AR_=adhRemCfg();if(AR_.on)[['m',pt.fajr+AR_.m*6e4,22],['e',pt.asr+AR_.e*6e4,23]].forEach(([k,at,id])=>{if(d===0){const p=adhProgress(k);if(p.total&&p.done>=p.total)return}out.push({id:d*40+id,t:at,title:t('adh.rem.'+k),body:t('adh.remB2'),open:'adhkar-'+k})})}
-    extraSched(out,now);const list=out.filter(x=>x.t>now+5000),js=JSON.stringify(list);if(js===andSchedLast)return;andSchedLast=js;window.ThabatAndroid.schedule(js)}catch(e){}widgetPush()}
+    extraSched(out,now);const list=out.filter(x=>x.t>now+5000).map(x=>{try{return toneTag(x)}catch(e){return x}}),js=JSON.stringify(list);if(js===andSchedLast)return;andSchedLast=js;window.ThabatAndroid.schedule(js)}catch(e){}widgetPush()}
 if(ANDROID){setTimeout(androidSchedule,1500);setInterval(androidSchedule,10*6e4);
   document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="http"]');if(a){e.preventDefault();try{window.ThabatAndroid.openUrl(a.href)}catch(x){}}},true)}
 

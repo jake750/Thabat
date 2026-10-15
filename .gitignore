@@ -20,3 +20,4 @@ dev/src.html
 /tafsir/
 /Thabat-Roots.js
 /Thabat-Setup.exe
+!dev/android/src/tn/thabat/

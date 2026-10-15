@@ -19,4 +19,8 @@
     <string name="sc_task">مهمة جديدة</string>
     <string name="tile_label">ثبات · جلسة</string>
     <string name="tile_running">جلسة تعمل</string>
+    <string name="w6_name">ورد القرآن</string>
+    <string name="w6_desc">ورد اليوم مع زرّ +1 صفحة</string>
+    <string name="w7_name">التقويم</string>
+    <string name="w7_desc">الشهر مع الأيام الذهبية</string>
 </resources>
