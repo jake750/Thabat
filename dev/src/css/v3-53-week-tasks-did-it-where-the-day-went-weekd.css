@@ -1,0 +1,29 @@
+/* v3.53: week tasks, did-it, where the day went, weekdays, balance, day clock, monthly goals */
+.wkt{margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.wkth{display:flex;align-items:center;gap:8px}.wkth .link{min-height:34px}.wkth #wktTg{flex:1;text-align:start}
+.wktl{font-size:11.5px;color:var(--accent);border:1px solid currentColor;border-radius:8px;padding:0 6px}
+.wktl2{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.wktl2 li{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:4px 6px;border-radius:8px;min-width:0}
+.wktl2 li span{flex:1;min-width:0;overflow-wrap:anywhere}.wktl2 li.done span{color:var(--muted);text-decoration:line-through}.wktl2 li em{font-style:normal;color:var(--accent)}
+.wdg{display:flex;flex-direction:column;gap:12px}
+.wdgr{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:4px 10px;align-items:center;font-size:13px}
+.wdgb{position:relative;height:14px;border-radius:6px;background:color-mix(in srgb,var(--text) 8%,transparent);overflow:hidden}
+.wdgb i{position:absolute;inset-inline-start:0;border-radius:6px}.wdgb .pl{top:0;height:14px;background:color-mix(in srgb,var(--water) 35%,transparent)}.wdgb .dn{top:4px;height:6px;background:var(--accent)}
+.wdgr small{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.wdgc{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--muted)}.wdgc i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:4px}
+.fyleg i.wdgpl{background:color-mix(in srgb,var(--water) 35%,transparent)}.fyleg i.wdgdn{background:var(--accent)}
+.wdct{display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.wdcr{display:grid;grid-template-columns:minmax(70px,1.3fr) repeat(7,minmax(0,1fr));gap:4px;align-items:center;font-size:12px}
+.wdcr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wdcr span i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-end:5px}
+.wdcr em{font-style:normal;text-align:center;padding:5px 0;border-radius:6px;background:color-mix(in srgb,var(--accent) calc(var(--a,0)*40%),transparent);font-variant-numeric:tabular-nums}
+.wdcr em.hi{outline:1.5px solid var(--accent)}.wdcr em.lo{color:var(--muted)}
+.wdch em{background:none;color:var(--muted)}
+.balbar{display:flex;height:16px;border-radius:8px;overflow:hidden;background:color-mix(in srgb,var(--text) 8%,transparent);margin:6px 0 8px}
+.balbar i{display:block;height:100%}.balbar .w,.fyleg i.balw{background:var(--gold)}.balbar .k,.fyleg i.balk{background:var(--accent)}.balbar .r,.fyleg i.balr{background:#6366f1}
+.dclockw{margin:8px 0}.dclock{display:block;width:180px;max-width:60%;margin:6px auto}
+.cwgm{margin-top:6px}
+.cwgmo{display:grid;grid-template-columns:12px minmax(0,1fr) auto 76px auto;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-top:-4px}
+.cwgmo .in{width:76px;min-height:34px}
+.catgs{width:auto;min-width:0;max-width:110px}
+#didBtn{min-width:44px}
+
