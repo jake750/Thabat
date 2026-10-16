@@ -22,9 +22,11 @@
 .prxft .btn:first-child{flex:1}
 .prxft .btn{justify-content:center;text-align:center}
 #prayers [data-pk]{position:relative}
-#prayers .prxb{position:absolute;top:-7px;inset-inline-start:-6px;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--line);color:var(--text);pointer-events:none}
-#prayers .prxb svg{width:12px;height:12px}
-#prayers .prxm .prxb{background:color-mix(in srgb,var(--gold) 30%,var(--panel));border-color:var(--gold);color:var(--gold)}
+#prayers .prxb{position:absolute;top:-9px;inset-inline-start:-8px;z-index:2;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--text);border:2px solid var(--bg);color:var(--bg);pointer-events:none}
+#prayers .prxb svg{width:15px;height:15px;stroke-width:2.2}
+#prayers .prxm .prxb{background:var(--gold);color:#2b2006}#prayers .prxb .prxdoor{fill:var(--gold)}#prayers .prxm .prxb svg{width:16px;height:16px}
 html #prayers .pr.prxm,html #v-today .tdpr .pr.prxm{box-shadow:inset 0 0 0 1.5px var(--gold)!important;background-color:color-mix(in srgb,var(--gold) 12%,transparent)}
 #prayers .jm3::after{content:none}
-
+#prayers .pr .prxb{opacity:1!important}
+/* 3.77.1: the side-bar collapse button under Settings is gone (his request); Ctrl+K still toggles it */
+#navMiniB{display:none!important}

@@ -1,5 +1,6 @@
 /* ============ 3.77 prayer menu that stays open; alone / congregation / mosque ============ */
 /* day.jama[k]: 1 = in congregation, 2 = in the mosque (a mosque prayer is also a congregation, so jmHas() still counts it) */
+const PRX_MSQ='<svg class="prxi" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3.6c-3.4 2-5.2 4.2-5.2 7h10.4c0-2.8-1.8-5-5.2-7z"/><rect fill="currentColor" x="6.8" y="11.4" width="10.4" height="9.1" rx=".6"/><rect fill="currentColor" x="2.4" y="7.6" width="2.6" height="12.9" rx=".7"/><rect fill="currentColor" x="19" y="7.6" width="2.6" height="12.9" rx=".7"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M12 1.3v2.3"/><path class="prxdoor" d="M10.4 20.5v-3.1a1.6 1.6 0 0 1 3.2 0v3.1z"/></svg>';
 const PRX={on:false,dk:null,k:null,c:null};
 function prxKind(dk,k){const d=S.days[dk],v=d&&d.jama&&d.jama[k];return v?(+v===2?2:1):0}
 function prxSetKind(dk,k,v){const d=day(dk);d.jama=d.jama||{};if(v)d.jama[k]=v;else delete d.jama[k];
@@ -44,7 +45,7 @@ function prxOpen(c){const k=c.dataset.pk,dk=todayKey(),r=c.getBoundingClientRect
 {hookFn('closePP',()=>closePP,f=>{closePP=f},'pre',function(){if(PRX.on){PRX.on=false;document.removeEventListener('keydown',prxKey,true)}})}
 function prxMarks(){$$('#prayers [data-pk]').forEach(c=>{const kind=prxKind(todayKey(),c.dataset.pk);c.classList.remove('jm3');c.classList.toggle('prxj',kind===1);c.classList.toggle('prxm',kind===2);
   let s=c.querySelector('.prxb');if(!kind){if(s)s.remove();return}if(!s){s=document.createElement('span');s.className='prxb';c.append(s)}
-  s.innerHTML=prxIco(kind===2?'mosque':'users');s.title=t(kind===2?'prx.msq':'prx.jm')})}
+  s.innerHTML=kind===2?PRX_MSQ:prxIco('users');s.title=t(kind===2?'prx.msq':'prx.jm')})}
 {hookFn('bindPrayChips',()=>bindPrayChips,f=>{bindPrayChips=f},'post',function(){$$('#prayers [data-pk]').forEach(c=>{c.onclick=()=>prxOpen(c)});prxMarks()})}
 /* the old toggle stays for anything else that calls it: it now means «in congregation» */
 jmToggle=function(dk,k){prxSetKind(dk,k,prxKind(dk,k)?0:1)};
