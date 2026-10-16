@@ -34,3 +34,6 @@
   $('#demoLang').onclick=()=>{lsSet('thabat.demoLang',AR?'en':'ar');lsSet('thabat.demoReset','1');location.reload()};
   $('#demoReset').onclick=()=>{lsSet('thabat.demoReset','1');location.reload()};
 })();
+/* demo: no pop-up alerts in the first 10 seconds, and the ribbon steps aside while a window is open */
+{const t0=Date.now(),_au=alertUser;alertUser=function(...a){if(Date.now()-t0<1e4)return;return _au.apply(this,a)}}
+{const st=document.createElement('style');st.textContent='body:has(.modal.on) .demorb,body:has(.praymodal.on) .demorb{display:none}';document.head.append(st)}
