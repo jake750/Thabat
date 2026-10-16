@@ -1,0 +1,30 @@
+/* v3.77 prayer menu that stays open; alone / congregation / mosque */
+.prxpop{width:272px;gap:6px}
+.prxpop .prxh{display:flex;align-items:center;justify-content:space-between}
+.prxpop .prxx{width:30px;height:30px;border-radius:9px;background:transparent;border:0;color:var(--muted);font-size:14px;cursor:pointer}
+.prxpop .prxl{color:var(--muted);font-size:11.5px;margin-top:2px}
+.prxpop .prxl span{opacity:.85}
+.prxseg{display:flex;gap:4px}
+.prxseg button,.prxwhy button,.prxck{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 4px;border-radius:10px;border:1px solid var(--line);background:color-mix(in srgb,var(--text) 4%,transparent);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap;min-height:38px}
+.prxseg button span{overflow:hidden;text-overflow:ellipsis}
+.prxseg button.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.prxseg button.on.s-late{border-color:#d9a441;background:color-mix(in srgb,#d9a441 22%,transparent)}
+.prxseg button.on.s-miss{border-color:#d0645a;background:color-mix(in srgb,#d0645a 22%,transparent)}
+.prxseg button.on.k2{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 26%,transparent)}
+.prxwhy{display:flex;flex-wrap:wrap;gap:4px}
+.prxwhy button{flex:0 1 auto;padding:6px 9px;min-height:32px;font-size:12px}
+.prxwhy button.on{border-color:#d9a441;background:color-mix(in srgb,#d9a441 22%,transparent)}
+.prxck{justify-content:flex-start;padding:8px 10px}
+.prxck i{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:12px}
+.prxck.on i{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.prxi{width:15px;height:15px;flex:none}
+.prxft{display:flex;gap:6px;margin-top:4px}
+.prxft .btn:first-child{flex:1}
+.prxft .btn{justify-content:center;text-align:center}
+#prayers [data-pk]{position:relative}
+#prayers .prxb{position:absolute;top:-7px;inset-inline-start:-6px;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--line);color:var(--text);pointer-events:none}
+#prayers .prxb svg{width:12px;height:12px}
+#prayers .prxm .prxb{background:color-mix(in srgb,var(--gold) 30%,var(--panel));border-color:var(--gold);color:var(--gold)}
+html #prayers .pr.prxm,html #v-today .tdpr .pr.prxm{box-shadow:inset 0 0 0 1.5px var(--gold)!important;background-color:color-mix(in srgb,var(--gold) 12%,transparent)}
+#prayers .jm3::after{content:none}
+
