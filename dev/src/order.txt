@@ -114,6 +114,7 @@ css/v3-74-0-clarity.css
 css/v3-75-0-richer-geometric-style-198.css
 css/v3-76-moving-icons-shapes-and-motion-from-itshov.css
 css/v3-77-prayer-menu-that-stays-open-alone-congrega.css
+css/v3-78-life-os-branch-command-center-navigation-b.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -276,6 +277,7 @@ js/v3-74-0-clarity-and-text-fourth-list-group-k-171.js
 js/v3-75-0-other-items-fourth-list-group-l-188-190.js
 js/3-76-moving-icons-itshover-shapes-and-motion-apa.js
 js/3-77-prayer-menu-that-stays-open-alone-congregat.js
+js/v3-78-life-os-branch-a-module-registry-the-comma.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

@@ -1,0 +1,56 @@
+/* v3.78 (Life OS branch): Command Center, navigation by category, persona modes */
+html.losnav nav.side .navpill .navbtn:not(.losc):not([data-v=today]){display:none!important}
+.navbtn.losc{position:relative}
+.navbtn.losc .losni{font-style:normal;display:flex;align-items:center;justify-content:center;width:21px;height:21px}
+.navbtn.losc .losni svg{width:21px;height:21px}
+.lospop{position:fixed!important;z-index:80;width:260px;max-height:min(70vh,560px);overflow:auto;padding:8px;display:flex;flex-direction:column;gap:2px;border-radius:16px;box-shadow:0 12px 32px rgba(0,0,0,.35);background:var(--panel)!important;border:1px solid var(--line)}
+.lospop.lossheet{left:10px;right:10px;width:auto;bottom:calc(var(--losNavH,78px) + 10px);max-height:62vh;position:fixed!important}
+.loshd2{font-size:12px;color:var(--muted);padding:8px 10px 4px;display:flex;align-items:center;gap:6px}
+.loshd2 svg{width:15px;height:15px}
+.losrow{display:flex;align-items:center;gap:10px;width:100%;min-height:40px;padding:6px 10px;border-radius:10px;color:var(--text);text-align:start;font-size:14px}
+.losrow:hover,.losrow:focus-visible{background:color-mix(in srgb,var(--accent) 12%,transparent);outline:none}
+.losri{width:22px;display:flex;justify-content:center;flex-shrink:0}
+.losri svg{width:19px;height:19px}
+.losdot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-inline-start:auto}
+.losadv summary{cursor:pointer;font-size:12.5px;color:var(--muted);padding:8px 10px;border-radius:10px;list-style:none}
+.losadv summary::-webkit-details-marker{display:none}
+.losadv summary::before{content:'▸ ';display:inline-block;transition:transform .15s}
+.losadv[open] summary::before{transform:rotate(90deg)}
+html[dir=rtl] .losadv summary::before{content:'◂ '}
+html[dir=rtl] .losadv[open] summary::before{transform:rotate(-90deg)}
+.losft{display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--line);margin-top:6px;padding-top:8px}
+.loshub{padding:12px 14px!important;margin-bottom:14px}
+.loshd{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.loshd>b{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;margin-inline-end:auto}
+.loshd>b svg{width:17px;height:17px}
+.lospz{font-size:12px}
+.lospz button{min-height:32px;padding:4px 12px}
+.loscfg{min-width:38px;min-height:34px}
+.losgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.lostile{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:10px 12px;border-radius:14px;background:color-mix(in srgb,var(--text) 4%,transparent);border:1px solid var(--line);cursor:pointer;transition:background .15s,border-color .15s}
+.lostile:hover,.lostile:focus-visible{border-color:color-mix(in srgb,var(--accent) 50%,var(--line));outline:none}
+.lostile.on{border-color:color-mix(in srgb,var(--accent) 60%,var(--line));background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.losti{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+.losti svg{width:19px;height:19px}
+.lostx{display:flex;flex-direction:column;min-width:0;flex:1;line-height:1.3}
+.lostx small{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lostx b{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lostx em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.losact{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent);font-size:15px}
+.losact:hover{background:color-mix(in srgb,var(--accent) 28%,transparent)}
+.losact svg{width:16px;height:16px}
+.losflash{animation:losfl 1.3s ease}
+@keyframes losfl{0%,100%{box-shadow:none}30%{box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 55%,transparent)}}
+html.rmotion .losflash{animation:none}
+html.mode-light .lostile{background:color-mix(in srgb,var(--text) 3%,var(--panel))}
+@media (max-width:700px){
+  .loshub{padding:10px!important;margin-bottom:10px}
+  .losgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .lostile{padding:8px;gap:8px}
+  .losti{width:30px;height:30px}
+  .lostx b{font-size:15px}
+  .losact{width:32px;height:32px}
+  .loshd{gap:6px}
+  .lospz button{padding:4px 9px}
+}
+
