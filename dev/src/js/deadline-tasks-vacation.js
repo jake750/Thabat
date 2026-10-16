@@ -1,5 +1,5 @@
 /* ============ deadline tasks & vacation ============ */
-const ICON_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>';
+const ICON_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path class="ih-clh" d="M12 7v5l3 3"/></svg>';
 const ICON_UP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 11l6-6 6 6"/></svg>';
 const dDiff=(a,b)=>Math.round((keyToDate(b)-keyToDate(a))/864e5);
 function LT(){return S.ltasks||(S.ltasks=[])}

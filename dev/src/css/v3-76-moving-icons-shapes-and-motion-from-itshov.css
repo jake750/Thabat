@@ -1,0 +1,178 @@
+/* v3.76 moving icons: shapes and motion from itshover (github.com/itshover/itshover, Apache License 2.0, see LICENSE-itshover.txt), redrawn as plain SVG + CSS */
+.ih-clh,.ih-gr,.ih-rp{transform-origin:12px 12px}
+.ih-mn{transform-box:fill-box;transform-origin:center}
+.ih-mg{transform-origin:9.75px 9.75px}
+.ih-sf{transform-box:fill-box;transform-origin:center;fill-opacity:0;transition:fill-opacity .3s}
+.ih-so{transform-box:fill-box;transform-origin:center}
+.ih-tl1,.ih-tl2{transform-box:fill-box;transform-origin:50% 100%;transition:transform .25s ease-out}
+.ih-bm{transform-box:fill-box;transform-origin:50% 20%;transition:transform .18s ease-out}
+.ih-fm{transform-box:fill-box;transform-origin:50% 100%}
+.ih-hh{transform-box:fill-box;transform-origin:center}
+.ih-hd{transform-box:fill-box;transform-origin:center bottom}
+.ih-cmb{transform-box:fill-box;transform-origin:center;transition:transform .3s ease-out}
+.ih-cml{transform-origin:12px 13px;transition:transform .3s ease-out}
+.ih-wl{transform-origin:12px 11px}
+.ih-wd{transform-origin:12px 17px}
+.ih-lb1{transform-origin:18px 20px;transition:transform .4s ease-out}
+.ih-lb2{transform-origin:12px 20px;transition:transform .4s ease-out}
+.ih-lb3{transform-origin:8px 20px;transition:transform .4s ease-out}
+.ih-lb4{transform-origin:4px 20px;transition:transform .4s ease-out}
+.ih-lb2{transition-timing-function:cubic-bezier(.175,.885,.32,1.275)}
+.ih-lkt,.ih-lkb{transition:transform .25s ease-out}
+.ih-lkm{transform-box:fill-box;transform-origin:center}
+.ih-rp{transition:transform .4s ease-in-out}
+.ih-ch1{transform-origin:6px 20px}
+.ih-ch2{transform-origin:12px 20px}
+.ih-ch3{transform-origin:18px 20px}
+.ih-chb{transform-origin:11px 20px}
+.ih-trb{transform-origin:4px 19px}
+.ih-spm{transform-origin:9px 12px}
+.ih-sp1{transform-origin:18px 6px}
+.ih-sp2{transform-origin:18px 18px}
+.ih-lk{transform-box:fill-box;transform-origin:50% 100%;transition:transform .28s ease-out}
+.ih-dt{transform-box:fill-box;transform-origin:center bottom}
+.ih-ep,.ih-es,.ih-eo{transform-origin:12px 12px;transition:transform .15s ease-out,opacity .3s}
+.ih-u1,.ih-u2,.ih-us{transform-box:fill-box;transform-origin:center;transition:transform .3s ease-out,opacity .3s}
+.ih-w1{transform-origin:16px 12px}
+.ih-w2{transform-origin:19.364px 12px}
+.ih-mx{transform-origin:19px 12px}
+.ih-cd{transform-box:fill-box;transform-origin:center}
+.ih-rk2{transform-box:fill-box;transform-origin:center}
+.ih-pn{transform-box:fill-box;transform-origin:center}
+.ih-ps{opacity:0}
+.ih-tg1,.ih-tg2,.ih-tg3{transform-origin:12px 12px}
+.ih-xbr,.ih-xtr,.ih-xbl,.ih-xtl{transition:transform .25s ease-out}
+.ih-ml{transform-box:fill-box;transform-origin:50% 0;transition:transform .5s ease-in-out}
+.ih-ad{transform-origin:9px 15px}
+.ih-ai{transform-origin:14px 10px}
+.ih-ao{transform-origin:16px 8px}
+.ih-tr{transform-origin:12px 20px}
+.ih-cf{transform-box:fill-box;transform-origin:center;opacity:0}
+.ihgo .ih-bk1{animation:ihdraw .3s ease-in-out .1s both}
+.ihgo .ih-bk2{animation:ihdraw .3s ease-in-out .45s both}
+.ihgo .ih-bk3{animation:ihdraw .3s ease-in-out .8s both}
+.ihgo .ih-clh{animation:ihspin 1s ease-in-out}
+.ihgo .ih-gr{animation:ihspin .9s ease-in-out}
+.ihgo .ih-mn{animation:ihmoon .5s ease-in-out}
+.ihgo .ih-mg{animation:ihmag 1s ease-in-out}
+.ihgo .ih-sf{fill-opacity:1;animation:ihpop .4s ease-out}
+.ihgo .ih-so{animation:ihstar .5s ease-in-out}
+.ihgo .ih-tl1{transform:translateY(-4px) rotate(-25deg)}
+.ihgo .ih-tl2{transform:translate(-2px,-6px) rotate(-35deg)}
+.ihgo .ih-bm{transform:translateY(1px) scaleY(.9)}
+.ihgo .ih-fm{animation:ihflame .6s ease-out}
+.ihgo .ih-hr{animation:ihroof .4s ease-out}
+.ihgo .ih-hh{animation:ihgrow .3s ease-out}
+.ihgo .ih-hd{animation:ihdoor .3s ease-out .3s both}
+.ihgo .ih-cmb{transform:scale(.95)}
+.ihgo .ih-cml{transform:scale(1.2)}
+.ihgo .ih-wt{animation:ihbump .25s ease-out}
+.ihgo .ih-wl{animation:ihwl .3s ease-out}
+.ihgo .ih-wd{animation:ihpulse .25s ease-out .05s;--s:1.4;--o:.6}
+.ihgo .ih-lb1{transform:rotate(12deg)}
+.ihgo .ih-lb2{transform:translateY(-3px) rotate(-8deg)}
+.ihgo .ih-lb3{transform:rotate(-12deg)}
+.ihgo .ih-lb4{transform:rotate(-5deg)}
+.ihgo .ih-lkt{transform:translate(1.5px,-1.5px)}
+.ihgo .ih-lkb{transform:translate(-1.5px,1.5px)}
+.ihgo .ih-lkm{animation:ihfade .2s ease-out}
+.ihgo .ih-ffo{animation:ihdraw .3s ease-out}
+.ihgo .ih-ffl{animation:ihdraw .4s ease-out}
+.ihgo .ih-rp{transform:rotate(180deg)}
+.ihgo .ih-ch1{animation:ihbar .3s ease-out 0s both}
+.ihgo .ih-ch2{animation:ihbar .3s ease-out .1s both}
+.ihgo .ih-ch3{animation:ihbar .3s ease-out .2s both}
+.ihgo .ih-chb{animation:ihchb .4s ease-in-out}
+.ihgo .ih-trb{animation:ihbx .4s ease-out}
+.ihgo .ih-trl{animation:ihdraw .6s ease-in-out}
+.ihgo .ih-spm{animation:ihspm .6s ease-in-out}
+.ihgo .ih-sp1{animation:ihsp1 .5s ease-in-out .1s}
+.ihgo .ih-sp2{animation:ihsp2 .5s ease-in-out .05s}
+.ihgo .ih-lk{transform:translate(3px,-1.7px) rotate(40deg)}
+.ihgo .ih-dt{animation:ihtray .3s ease-out}
+.ihgo .ih-ds{animation:ihdls 1s ease-in-out}
+.ihgo .ih-dh{animation:ihdlh 1s ease-in-out}
+.ihgo .ih-ck{animation:ihdraw .4s ease-in-out .1s both}
+.ihgo .ih-ep{transform:scale(.7)}
+.ihgo .ih-es{transform:scaleY(.9)}
+.ihgo .ih-eo{opacity:.6;transform:scale(.98)}
+.ihgo .ih-ex{animation:ihdraw .3s ease-out}
+.ihgo .ih-u1{transform:translateY(-2px) scale(1.05)}
+.ihgo .ih-u2{transform:translateX(1px);opacity:.8}
+.ihgo .ih-us{transform:translateY(-1px) scale(1.05)}
+.ihgo .ih-w1{animation:ihpulse .6s ease-in-out;--s:1.2;--o:.6}
+.ihgo .ih-w2{animation:ihpulse .7s ease-in-out .1s;--s:1.3;--o:.4}
+.ihgo .ih-msp{animation:ihshx .3s ease-in-out}
+.ihgo .ih-mx{animation:ihpulse .4s ease-out;--s:1.15}
+.ihgo .ih-wm{animation:ihdraw 1s linear}
+.ihgo .ih-sv{animation:ihbump1 .4s ease-in-out}
+.ihgo .ih-svl{animation:ihfade2 .4s ease-in-out}
+.ihgo .ih-cd{animation:ihpulse 1s ease-in-out;--s:1.05}
+.ihgo .ih-pd{animation:ihfade2 .6s ease-in-out}
+.ihgo .ih-qm{animation:ihdraw .4s ease-in-out}
+.ihgo .ih-qd{animation:ihhop .3s ease-out .3s}
+.ihgo .ih-rk1{animation:ihrk1 .8s ease-in-out}
+.ihgo .ih-rk2{animation:ihrk2 .8s ease-out}
+.ihgo .ih-cs{animation:ihsteam .8s ease-out}
+.ihgo .ih-pn{animation:ihpen .8s ease-in-out}
+.ihgo .ih-ps{animation:ihslash .8s ease-out}
+.ihgo .ih-tg1{animation:ihpulse .6s ease-in-out;--s:1.1;--o:.7}
+.ihgo .ih-tg2{animation:ihpulse .6s ease-in-out .1s;--s:1.15;--o:.6}
+.ihgo .ih-tg3{animation:ihpulse .6s ease-in-out .2s;--s:1.3;--o:.5}
+.ihgo .ih-xtr{transform:translate(2px,-2px)}
+.ihgo .ih-xtl{transform:translate(-2px,-2px)}
+.ihgo .ih-xbr{transform:translate(2px,2px)}
+.ihgo .ih-xbl{transform:translate(-2px,2px)}
+.ihgo .ih-wf1{animation:ihfade3 .6s ease-in-out}
+.ihgo .ih-wf2{animation:ihfade3 .6s ease-in-out .15s}
+.ihgo .ih-wf3{animation:ihfade3 .6s ease-in-out .3s}
+.ihgo .ih-ml{transform:scaleY(.5)}
+.ihgo .ih-ad{animation:ihtilt .5s ease-in-out}
+.ihgo .ih-ai{animation:ihpulse .6s ease-in-out;--s:1.15;--o:.6}
+.ihgo .ih-ao{animation:ihpulse .7s ease-in-out .1s;--s:1.25;--o:.4}
+.ihgo .ih-acl{animation:ihring .5s ease-in-out;--x:1px;--y:-1.5px}
+.ihgo .ih-abl{animation:ihring .5s ease-in-out;--x:2px;--y:-2.5px}
+.ihgo .ih-tr{animation:ihtrophy .8s ease-out}
+.ihgo .ih-cf1{animation:ihconf .8s ease-out .1s;--x:-12px;--y:-15px;--r:140deg}
+.ihgo .ih-cf2{animation:ihconf .8s ease-out .1s;--x:-5px;--y:-18px;--r:-100deg}
+.ihgo .ih-cf3{animation:ihconf .8s ease-out .1s;--x:5px;--y:-18px;--r:120deg}
+.ihgo .ih-cf4{animation:ihconf .8s ease-out .1s;--x:12px;--y:-15px;--r:-140deg}
+@media (hover:hover){:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-bk1{animation:ihdraw .3s ease-in-out .1s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-bk2{animation:ihdraw .3s ease-in-out .45s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-bk3{animation:ihdraw .3s ease-in-out .8s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-clh{animation:ihspin 1s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-gr{animation:ihspin .9s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-mn{animation:ihmoon .5s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-mg{animation:ihmag 1s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-sf{fill-opacity:1;animation:ihpop .4s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-so{animation:ihstar .5s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tl1{transform:translateY(-4px) rotate(-25deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tl2{transform:translate(-2px,-6px) rotate(-35deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-bm{transform:translateY(1px) scaleY(.9)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-fm{animation:ihflame .6s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-hr{animation:ihroof .4s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-hh{animation:ihgrow .3s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-hd{animation:ihdoor .3s ease-out .3s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cmb{transform:scale(.95)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cml{transform:scale(1.2)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wt{animation:ihbump .25s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wl{animation:ihwl .3s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wd{animation:ihpulse .25s ease-out .05s;--s:1.4;--o:.6}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lb1{transform:rotate(12deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lb2{transform:translateY(-3px) rotate(-8deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lb3{transform:rotate(-12deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lb4{transform:rotate(-5deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lkt{transform:translate(1.5px,-1.5px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lkb{transform:translate(-1.5px,1.5px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lkm{animation:ihfade .2s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ffo{animation:ihdraw .3s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ffl{animation:ihdraw .4s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-rp{transform:rotate(180deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ch1{animation:ihbar .3s ease-out 0s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ch2{animation:ihbar .3s ease-out .1s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ch3{animation:ihbar .3s ease-out .2s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-chb{animation:ihchb .4s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-trb{animation:ihbx .4s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-trl{animation:ihdraw .6s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-spm{animation:ihspm .6s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-sp1{animation:ihsp1 .5s ease-in-out .1s}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-sp2{animation:ihsp2 .5s ease-in-out .05s}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-lk{transform:translate(3px,-1.7px) rotate(40deg)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-dt{animation:ihtray .3s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ds{animation:ihdls 1s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-dh{animation:ihdlh 1s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ck{animation:ihdraw .4s ease-in-out .1s both}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ep{transform:scale(.7)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-es{transform:scaleY(.9)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-eo{opacity:.6;transform:scale(.98)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ex{animation:ihdraw .3s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-u1{transform:translateY(-2px) scale(1.05)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-u2{transform:translateX(1px);opacity:.8}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-us{transform:translateY(-1px) scale(1.05)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-w1{animation:ihpulse .6s ease-in-out;--s:1.2;--o:.6}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-w2{animation:ihpulse .7s ease-in-out .1s;--s:1.3;--o:.4}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-msp{animation:ihshx .3s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-mx{animation:ihpulse .4s ease-out;--s:1.15}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wm{animation:ihdraw 1s linear}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-sv{animation:ihbump1 .4s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-svl{animation:ihfade2 .4s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cd{animation:ihpulse 1s ease-in-out;--s:1.05}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-pd{animation:ihfade2 .6s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-qm{animation:ihdraw .4s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-qd{animation:ihhop .3s ease-out .3s}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-rk1{animation:ihrk1 .8s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-rk2{animation:ihrk2 .8s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cs{animation:ihsteam .8s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-pn{animation:ihpen .8s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ps{animation:ihslash .8s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tg1{animation:ihpulse .6s ease-in-out;--s:1.1;--o:.7}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tg2{animation:ihpulse .6s ease-in-out .1s;--s:1.15;--o:.6}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tg3{animation:ihpulse .6s ease-in-out .2s;--s:1.3;--o:.5}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-xtr{transform:translate(2px,-2px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-xtl{transform:translate(-2px,-2px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-xbr{transform:translate(2px,2px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-xbl{transform:translate(-2px,2px)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wf1{animation:ihfade3 .6s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wf2{animation:ihfade3 .6s ease-in-out .15s}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-wf3{animation:ihfade3 .6s ease-in-out .3s}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ml{transform:scaleY(.5)}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ad{animation:ihtilt .5s ease-in-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ai{animation:ihpulse .6s ease-in-out;--s:1.15;--o:.6}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-ao{animation:ihpulse .7s ease-in-out .1s;--s:1.25;--o:.4}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-acl{animation:ihring .5s ease-in-out;--x:1px;--y:-1.5px}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-abl{animation:ihring .5s ease-in-out;--x:2px;--y:-2.5px}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-tr{animation:ihtrophy .8s ease-out}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cf1{animation:ihconf .8s ease-out .1s;--x:-12px;--y:-15px;--r:140deg}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cf2{animation:ihconf .8s ease-out .1s;--x:-5px;--y:-18px;--r:-100deg}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cf3{animation:ihconf .8s ease-out .1s;--x:5px;--y:-18px;--r:120deg}:is(button,a,.btn,.chip,label,[role=button],svg):hover .ih-cf4{animation:ihconf .8s ease-out .1s;--x:12px;--y:-15px;--r:-140deg}}
+@keyframes ihdraw{from{stroke-dasharray:1;stroke-dashoffset:1;opacity:0}to{stroke-dasharray:1;stroke-dashoffset:0;opacity:1}}
+@keyframes ihspin{to{transform:rotate(360deg)}}
+@keyframes ihmoon{50%{transform:rotate(-15deg) scale(1.1)}}
+@keyframes ihmag{25%{transform:translate(.75px,-.75px) rotate(-5deg)}50%{transform:translate(0,-1.5px) rotate(5deg)}75%{transform:translate(-.75px,-.75px) rotate(-5deg)}}
+@keyframes ihpop{from{transform:scale(.8)}}
+@keyframes ihstar{33%{transform:scale(1.1) rotate(-5deg)}66%{transform:scale(1.05) rotate(5deg)}}
+@keyframes ihflame{25%{transform:translate(1px,-2px) rotate(4deg)}50%{transform:translate(-1px,-1px) rotate(-3deg)}75%{transform:translate(.5px,-2px) rotate(2deg)}}
+@keyframes ihroof{from{transform:translateY(-2px);opacity:.6}}
+@keyframes ihgrow{from{transform:scale(.95)}}
+@keyframes ihdoor{from{transform:scaleY(0)}}
+@keyframes ihbump{50%{transform:translateY(-1.5px)}}
+@keyframes ihbump1{50%{transform:translateY(-1px)}}
+@keyframes ihhop{50%{transform:translateY(-3px)}}
+@keyframes ihpulse{50%{transform:scale(var(--s,1));opacity:var(--o,1)}}
+@keyframes ihfade{from{opacity:.6}}
+@keyframes ihfade2{50%{opacity:.4}}
+@keyframes ihfade3{50%{opacity:.3}}
+@keyframes ihbar{from{transform:scaleY(0)}}
+@keyframes ihbx{from{transform:scaleX(0)}}
+@keyframes ihspm{50%{transform:rotate(90deg) scale(1.2)}to{transform:rotate(180deg)}}
+@keyframes ihsp1{50%{transform:rotate(-45deg) scale(.8);opacity:.6}to{transform:rotate(-90deg)}}
+@keyframes ihsp2{50%{transform:rotate(45deg) scale(1.15);opacity:.7}to{transform:rotate(90deg)}}
+@keyframes ihtray{50%{transform:translateY(2px) scale(1.05)}}
+@keyframes ihdls{30%,40%{transform:translateY(8px);opacity:0}50%{transform:translateY(-8px);opacity:0}}
+@keyframes ihdlh{40%,50%{transform:translateY(8px);opacity:0}60%{transform:translateY(-8px);opacity:0}}
+@keyframes ihshx{0%{transform:translateX(-1px)}33%{transform:translateX(1px)}66%{transform:translateX(-1px)}}
+@keyframes ihrk1{40%{transform:translate(14px,-14px);opacity:0}41%{transform:translate(-14px,14px);opacity:0}}
+@keyframes ihrk2{30%{transform:translate(-8px,8px) scale(1.2);opacity:0}31%,60%{transform:none;opacity:0}}
+@keyframes ihsteam{50%{transform:translateY(-2px);opacity:0}51%{transform:translateY(1px);opacity:0}}
+@keyframes ihpen{20%{transform:translate(.75px,-1px) rotate(-6deg)}40%{transform:translate(-.75px,-2px) rotate(-4deg)}60%{transform:translate(.75px,-3px) rotate(-6deg)}80%{transform:translate(-.75px,-2px) rotate(-4deg)}}
+@keyframes ihslash{0%{opacity:0;stroke-dasharray:1;stroke-dashoffset:1}40%,80%{opacity:1;stroke-dasharray:1;stroke-dashoffset:0}100%{opacity:0;stroke-dasharray:1;stroke-dashoffset:0}}
+@keyframes ihtilt{33%{transform:rotate(-2deg)}66%{transform:rotate(2deg)}}
+@keyframes ihring{20%,60%{transform:translate(calc(var(--x)*-1),var(--y))}40%,80%{transform:translate(var(--x),var(--y))}}
+@keyframes ihtrophy{40%{transform:translateY(-4px) rotate(-10deg)}70%{transform:translateY(-4px) rotate(10deg)}}
+@keyframes ihconf{0%{opacity:0;transform:scale(0)}50%{opacity:1;transform:translate(calc(var(--x)/2),calc(var(--y)/2)) rotate(calc(var(--r)/2))}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.5)}}
+@keyframes ihwl{50%{transform:scaleY(1.35)}}
+@keyframes ihchb{50%{transform:scaleX(1.05)}}
+
