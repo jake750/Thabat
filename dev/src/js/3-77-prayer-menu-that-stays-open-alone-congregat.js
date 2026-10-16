@@ -50,4 +50,5 @@ function prxMarks(){$$('#prayers [data-pk]').forEach(c=>{const kind=prxKind(toda
 /* the old toggle stays for anything else that calls it: it now means «in congregation» */
 jmToggle=function(dk,k){prxSetKind(dk,k,prxKind(dk,k)?0:1)};
 try{renderPrayers()}catch(e){}
-
+/* 3.77.2: the «كم نمت؟» chip repeated the sleep chip; switched off once (Settings → health brings it back) */
+if(!S.settings.slaOff1){S.settings.slaOff1=1;S.settings.sleepAsk=false;save();try{renderTodayEv()}catch(e){}}
