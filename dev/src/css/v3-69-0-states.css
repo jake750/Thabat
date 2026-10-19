@@ -18,3 +18,5 @@ html.solo .nclbtn{display:none!important}
 .newb{position:relative}
 .newb::after{content:'';position:absolute;top:2px;inset-inline-end:2px;width:8px;height:8px;border-radius:50%;background:#e5484d;box-shadow:0 0 0 2px var(--panel);pointer-events:none}
 
+/* 3.77.3: on Android the page draws under the status bar (env() is 0), so the pill sat under the camera; in full-screen Quran it goes above the page footer */
+@media(max-width:700px){html.android .svdpill{top:calc(max(env(safe-area-inset-top,0px),30px) + 10px)}html.qfs .svdpill{top:auto;bottom:calc(84px + env(safe-area-inset-bottom))}}
