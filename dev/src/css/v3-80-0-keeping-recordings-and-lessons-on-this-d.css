@@ -1,0 +1,16 @@
+/* v3.80.0 keeping recordings and lessons on this device */
+.dkpill{position:fixed;z-index:80;left:50%;transform:translateX(-50%);bottom:24px;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 32px);box-sizing:border-box;padding:8px 10px 8px 14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 28px rgba(0,0,0,.35);font-size:13px}
+.dkpill #dkTx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.dkpill i{flex:none;width:70px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden}
+.dkpill i b{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+@media (max-width:700px){.dkpill{bottom:calc(96px + var(--andnav,0px))}}
+.dkb{margin-inline-start:6px;font-size:12px;opacity:.85;flex:none}
+.dkc{margin-inline-start:6px;font-size:12px;opacity:.7}
+.aurow.dkcloud .aut b{opacity:.85}
+.dkbox h3{margin:0 0 4px}.dkbox h4{margin:14px 0 6px;font-size:14px}
+.dksub{color:var(--muted);font-size:13px;margin:0 0 8px}
+.dkst{font-size:13px;color:var(--muted);margin-bottom:6px}.dkst b{color:var(--text);font-size:16px}
+.dkrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.dkrow span{overflow-wrap:anywhere;font-size:13.5px}.dkrow small{color:var(--muted);white-space:nowrap}
+.dkbox>.btn{margin-top:12px}
+

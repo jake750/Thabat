@@ -270,6 +270,35 @@ $handler = {
       $ri = -1; for ($i = 0; $i -lt $roots.Count; $i++) { $rt = [IO.Path]::GetFullPath($roots[$i]).TrimEnd('\'); if ($dst.StartsWith($rt + '\', [StringComparison]::OrdinalIgnoreCase)) { $ri = $i; $rel = $dst.Substring($rt.Length + 1); break } }
       Json @{ ok = $true; n = [IO.Path]::GetFileName($dst); id = $(if ($ri -ge 0) { IdOf $ri $rel } else { '' }); size = $got }; return
     }
+    # 3.80: copies of the PC app's own recordings (their sound lives in the PC browser), kept in audio\ so the phone can play them.
+    # Writing and deleting: this PC only, with the helper key (like /cfg). Reading: the token (like /f). The file name is only
+    # the recording id (letters, digits, - and _) and an extension from a fixed list, so nothing can reach another folder.
+    $audDir = Join-Path (Split-Path $cfgFile) 'audio'; $audExt = @('mp3', 'm4a', 'aac', 'ogg', 'opus', 'wav', 'webm', 'flac')
+    function AudFile($id) { if ($id -notmatch '^[A-Za-z0-9_\-]{1,64}$') { return $null }; foreach ($e in $audExt) { $p = Join-Path $audDir "$id.$e"; if (Test-Path -LiteralPath $p -PathType Leaf) { return $p } }; return $null }
+    if ($route -eq '/aud/list') {
+      $out = @{}; if (Test-Path -LiteralPath $audDir) { foreach ($fi in (Get-ChildItem -LiteralPath $audDir -File -ErrorAction SilentlyContinue)) { if ($fi.BaseName -match '^[A-Za-z0-9_\-]{1,64}$' -and ($audExt -contains $fi.Extension.TrimStart('.').ToLower())) { $out[$fi.BaseName] = $fi.Length } } }
+      Json @{ ok = $true; ids = $out }; return
+    }
+    if ($route -eq '/aud/put' -or $route -eq '/aud/del') {
+      if (-not $local) { Fail '403 Forbidden' 'local'; return }
+      if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
+      $aid = [string]$q['id']; if ($aid -notmatch '^[A-Za-z0-9_\-]{1,64}$') { Fail '400 Bad Request' 'id'; return }
+      if ($route -eq '/aud/del') { foreach ($e in $audExt) { Remove-Item -LiteralPath (Join-Path $audDir "$aid.$e") -ErrorAction SilentlyContinue }; Json @{ ok = $true }; return }
+      if ($method -ne 'POST') { Fail '405 Method Not Allowed' 'method'; return }
+      $ext = ([string]$q['e']).ToLower(); if (-not ($audExt -contains $ext)) { Fail '415 Unsupported Media Type' 'type'; return }
+      $len = [int64]0; [void][int64]::TryParse([string]$hd['content-length'], [ref]$len)
+      if ($len -le 0 -or $len -gt 524288000) { Fail '413 Payload Too Large' 'size'; return }
+      New-Item -ItemType Directory -Force -Path $audDir | Out-Null
+      $part = Join-Path $audDir ('.up-' + [Guid]::NewGuid().ToString('N') + '.part'); $client.ReceiveTimeout = 60000
+      $fs = [IO.File]::Open($part, 'CreateNew', 'Write', 'None'); $got = [int64]0
+      try { $buf = New-Object byte[] 262144
+        while ($got -lt $len) { $r = $s.Read($buf, 0, [int][Math]::Min($buf.Length, $len - $got)); if ($r -le 0) { break }; $fs.Write($buf, 0, $r); $got += $r }
+      } finally { $fs.Close() }
+      if ($got -ne $len) { Remove-Item -LiteralPath $part -ErrorAction SilentlyContinue; Fail '400 Bad Request' 'short'; return }
+      foreach ($e in $audExt) { Remove-Item -LiteralPath (Join-Path $audDir "$aid.$e") -ErrorAction SilentlyContinue }
+      Move-Item -LiteralPath $part -Destination (Join-Path $audDir "$aid.$ext") -Force
+      Json @{ ok = $true; id = $aid; size = $got }; return
+    }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
       if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
@@ -277,12 +306,13 @@ $handler = {
       if ($q['folder'] -eq '1' -and -not (Test-Path -LiteralPath $full -PathType Container)) { Start-Process explorer.exe -ArgumentList ('/select,"' + $full + '"') } else { Start-Process -FilePath $full }
       Json @{ ok = $true }; return
     }
-    if ($route -eq '/f') {
-      if ($q['cv'] -eq '1') { $full = Join-Path (Join-Path (Split-Path $cfgFile) 'conv') ((([string]$q['id']) -replace '[^A-Za-z0-9_\-]', '') + '.mp4') } else { $full = Resolve $q['id'] }
+    if ($route -eq '/f' -or $route -eq '/aud') {
+      if ($route -eq '/aud') { $full = AudFile ([string]$q['id']) }
+      elseif ($q['cv'] -eq '1') { $full = Join-Path (Join-Path (Split-Path $cfgFile) 'conv') ((([string]$q['id']) -replace '[^A-Za-z0-9_\-]', '') + '.mp4') } else { $full = Resolve $q['id'] }
       if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
       $fi = New-Object IO.FileInfo $full; $len = $fi.Length; $e = $fi.Extension.TrimStart('.').ToLower()
-      $types = @{ mp4 = 'video/mp4'; m4v = 'video/mp4'; mov = 'video/mp4'; webm = 'video/webm'; mkv = 'video/webm'; ogv = 'video/ogg'; mp3 = 'audio/mpeg'; m4a = 'audio/mp4'; aac = 'audio/aac'; ogg = 'audio/ogg'; opus = 'audio/ogg'; wav = 'audio/wav'; pdf = 'application/pdf'; png = 'image/png'; jpg = 'image/jpeg'; jpeg = 'image/jpeg'; gif = 'image/gif'; txt = 'text/plain; charset=utf-8'; md = 'text/plain; charset=utf-8' }
-      $type = $types[$e]; if (-not $type) { $type = 'application/octet-stream' }
+      $types = @{ mp4 = 'video/mp4'; m4v = 'video/mp4'; mov = 'video/mp4'; webm = 'video/webm'; mkv = 'video/webm'; ogv = 'video/ogg'; mp3 = 'audio/mpeg'; m4a = 'audio/mp4'; aac = 'audio/aac'; ogg = 'audio/ogg'; opus = 'audio/ogg'; wav = 'audio/wav'; flac = 'audio/flac'; pdf = 'application/pdf'; png = 'image/png'; jpg = 'image/jpeg'; jpeg = 'image/jpeg'; gif = 'image/gif'; txt = 'text/plain; charset=utf-8'; md = 'text/plain; charset=utf-8' }
+      $type = $types[$e]; if ($route -eq '/aud' -and $e -eq 'webm') { $type = 'audio/webm' }; if (-not $type) { $type = 'application/octet-stream' }
       $start = [int64]0; $end = [int64]($len - 1); $status = '200 OK'; $extra = "Accept-Ranges: bytes`r`n"
       if ($hd['range'] -match 'bytes=(\d*)-(\d*)') {
         if ($matches[1] -ne '') { $start = [int64]$matches[1]; if ($matches[2] -ne '') { $end = [int64]$matches[2] } }

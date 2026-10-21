@@ -119,6 +119,7 @@ css/v3-77-6-quran-bar-on-phones-the-position-button.css
 css/v3-78-0-shooting-star-past-16-hours.css
 css/v3-78-2-one-reading-bar-per-page-when-the-pc-sho.css
 css/v3-79-0-memorisation-mode-repetition-counter.css
+css/v3-80-0-keeping-recordings-and-lessons-on-this-d.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -286,6 +287,7 @@ js/v3-77-6-go-to-in-the-quran-tools-sheet-the-posit.js
 js/v3-78-0-a-shooting-star-in-the-wall-s-sky-once-t.js
 js/v3-78-1-nearby-mosques-no-longer-wait-on-overpas.js
 js/v3-79-0-memorisation-mode-a-manual-repetition-co.js
+js/v3-80-0-pc-recordings-play-on-the-phone-fix-2-an.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
