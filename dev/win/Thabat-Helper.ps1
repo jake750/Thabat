@@ -1,7 +1,7 @@
 ﻿# Thabat helper: a tiny local bridge so the app (opened from a file) can read
 # public mosque data from mawaqit.net and, if enabled in settings, the name of
 # the program in front (active-app detection), and audio of YouTube/SoundCloud
-# links you choose to keep (via yt-dlp, fetched once on request). It can also list a playlist's items (/ytlist) so the app downloads them one by one. It only listens on this computer
+# links you choose to keep (via yt-dlp, fetched once on request). It can also list a playlist's items (/ytlist) so the app downloads them one by one, each as a background job (/ytjob) so it keeps answering meanwhile. It only listens on this computer
 # (127.0.0.1) — except while you use "transfer over the local network" in
 # Settings, when it also accepts /lan/ requests with a one-time code for up to
 # 15 minutes — only forwards requests to https://mawaqit.net/ (and Quran audio
@@ -166,6 +166,49 @@ try {
   }
 } catch {}
 
+# 3.81: YouTube / SoundCloud addresses yt-dlp may be asked for (SoundCloud lists give api-v2 track addresses after the first five)
+function Yt-UrlOk($u) { return ($u -match '^https://((www|m|music|on)\.)?(youtube\.com|youtu\.be|soundcloud\.com)/[A-Za-z0-9_\-\./\?=&%:@,]+$') -or ($u -match '^https://api(-v2)?\.soundcloud\.com/tracks/\d+$') }
+# 3.81: downloads run as background jobs, so the helper keeps answering (prayer alerts, other requests) during a long download.
+# yt-dlp gets its options from a config file (no shell quoting); cmd.exe only redirects its output to files.
+$global:ytjobs = @{}
+function Yt-Why($t) {
+  if ($t -match 'not a bot|Sign in to confirm you') { return 'bot' }
+  if ($t -match 'confirm your age|age-restricted|inappropriate') { return 'age' }
+  if ($t -match 'Private video|private') { return 'private' }
+  if ($t -match 'members-only|Join this channel') { return 'members' }
+  if ($t -match 'not available in your country|geo') { return 'geo' }
+  if ($t -match 'Video unavailable|not available|removed|404') { return 'gone' }
+  if ($t -match 'HTTP Error 429|Too Many Requests') { return 'rate' }
+  if ($t -match 'timed out|getaddrinfo|Connection|Network|SSL') { return 'net' }
+  return 'other'
+}
+function Yt-Start($url) {
+  $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
+  $id = [Guid]::NewGuid().ToString('N'); $tmp = Join-Path $env:TEMP ('thabat_' + $id)
+  $cfg = @('--no-playlist', '--newline', '--no-warnings', '--no-simulate', '--concurrent-fragments 8', '--retries 5', '--fragment-retries 10', '--socket-timeout 30',
+    '-f "bestaudio[ext=m4a]/bestaudio"', "-o `"$tmp.%(ext)s`"", "--print-to-file `"after_move:%(title)s|||%(uploader)s|||%(duration)s|||%(filepath)s`" `"$tmp.txt`"")
+  if (Get-Command ffmpeg -ErrorAction SilentlyContinue) { $cfg += @('-x', '--audio-format mp3', '--audio-quality 2') }
+  [IO.File]::WriteAllLines("$tmp.conf", [string[]]$cfg, (New-Object Text.UTF8Encoding($false)))
+  $psi = New-Object Diagnostics.ProcessStartInfo
+  $psi.FileName = $env:ComSpec; $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true
+  $psi.Arguments = '/d /s /c ""' + $exe + '" --ignore-config --config-locations "' + "$tmp.conf" + '" "' + $url + '" > "' + "$tmp.out" + '" 2> "' + "$tmp.err" + '""'
+  $p = [Diagnostics.Process]::Start($psi)
+  $global:ytjobs[$id] = @{ p = $p; tmp = $tmp; at = Get-Date }
+  return $id
+}
+function Yt-Clean($id) { $j = $global:ytjobs[$id]; if (-not $j) { return }; try { if (-not $j.p.HasExited) { & taskkill.exe /PID $j.p.Id /T /F 2>$null | Out-Null } } catch {}; Get-ChildItem -Path ($j.tmp + '*') -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue; $global:ytjobs.Remove($id) }
+function Yt-State($id) {
+  $j = $global:ytjobs[$id]; if (-not $j) { return @{ s = 'none' } }
+  if (-not $j.p.HasExited) {
+    $pc = 0; try { $tail = Get-Content -LiteralPath ($j.tmp + '.out') -Tail 3 -ErrorAction SilentlyContinue; foreach ($l in $tail) { if ($l -match '\[download\]\s+([\d\.]+)%') { $pc = [double]$matches[1] } } } catch {}
+    return @{ s = 'run'; p = $pc }
+  }
+  $line = $null; if (Test-Path ($j.tmp + '.txt')) { $line = (Get-Content -LiteralPath ($j.tmp + '.txt') -Encoding UTF8 | Where-Object { $_ -like '*|||*' } | Select-Object -Last 1) }
+  if ($line) { $parts = $line -split '\|\|\|'; if ($parts.Count -ge 4 -and (Test-Path -LiteralPath $parts[3])) { return @{ s = 'ok'; file = $parts[3]; title = $parts[0]; uploader = $parts[1]; duration = $parts[2] } } }
+  $err = ''; try { $err = ((Get-Content -LiteralPath ($j.tmp + '.err') -Encoding UTF8 -ErrorAction SilentlyContinue | Where-Object { $_ -match 'ERROR' } | Select-Object -Last 1) -as [string]) } catch {}
+  return @{ s = 'err'; why = (Yt-Why $err); msg = $(if ($err) { $err.Substring(0, [Math]::Min(240, $err.Length)) } else { '' }) }
+}
+
 function Send-ResponseMeta($stream, $type, [byte[]]$body, $meta) {
   $head = "HTTP/1.1 200 OK`r`nContent-Type: $type`r`nContent-Length: $($body.Length)`r`nX-Meta: $meta`r`nAccess-Control-Allow-Origin: *`r`nAccess-Control-Expose-Headers: X-Meta`r`nAccess-Control-Allow-Private-Network: true`r`nCache-Control: no-store`r`nConnection: close`r`n`r`n"
   $hb = [Text.Encoding]::ASCII.GetBytes($head)
@@ -190,8 +233,9 @@ while ($true) {
   else {
     Start-Sleep -Milliseconds 150
     if (((Get-Date) - $global:lastTick).TotalSeconds -ge 5) { $global:lastTick = Get-Date; Check-Schedule }
-    if (((Get-Date) - $global:updTick).TotalSeconds -ge 60) { $global:updTick = Get-Date; Check-Update; if ($global:restart) { break } }
-    if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan) { break }
+    foreach ($k in @($global:ytjobs.Keys)) { if (((Get-Date) - $global:ytjobs[$k].at).TotalHours -gt 2) { Yt-Clean $k } }
+    if ($global:ytjobs.Count -eq 0 -and ((Get-Date) - $global:updTick).TotalSeconds -ge 60) { $global:updTick = Get-Date; Check-Update; if ($global:restart) { break } }
+    if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan -and $global:ytjobs.Count -eq 0) { break }
     continue
   }
   $last = Get-Date
@@ -379,11 +423,31 @@ public static class ThabatFolderPick {
       } catch {
         Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))
       }
+    } elseif ($path -match '^/ytjob\?u=(.+)$') {
+      # 3.81: start one download in the background; the app asks /ytjob/state, then /ytjob/get
+      $url = [Uri]::UnescapeDataString($matches[1]); $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
+      if (-not (Yt-UrlOk $url)) { Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"forbidden"}')) }
+      elseif (-not (Test-Path $exe)) { Send-Response $stream '428 Precondition Required' 'application/json' ($utf8.GetBytes('{"error":"setup"}')) }
+      elseif ($global:ytjobs.Count -ge 3) { Send-Response $stream '429 Too Many Requests' 'application/json' ($utf8.GetBytes('{"error":"busy"}')) }
+      else { $jid = Yt-Start $url; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true,"id":"' + $jid + '"}')) }
+    } elseif ($path -match '^/ytjob/(state|get|cancel)\?id=([0-9a-f]{32})$') {
+      $act = $matches[1]; $jid = $matches[2]
+      if ($act -eq 'cancel') { Yt-Clean $jid; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}')) }
+      else {
+        $st = Yt-State $jid
+        if ($act -eq 'state') { $o = @{ ok = $true; s = $st.s }; if ($st.p) { $o.p = $st.p }; if ($st.why) { $o.why = $st.why; $o.msg = $st.msg }; Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes(($o | ConvertTo-Json -Compress))) }
+        elseif ($st.s -eq 'ok') {
+          $file = $st.file; $bytes = [IO.File]::ReadAllBytes($file); $ext = [IO.Path]::GetExtension($file).TrimStart('.').ToLower()
+          $type = 'audio/mpeg'; if ($ext -eq 'm4a' -or $ext -eq 'mp4') { $type = 'audio/mp4' } elseif ($ext -eq 'webm') { $type = 'audio/webm' } elseif ($ext -eq 'opus' -or $ext -eq 'ogg') { $type = 'audio/ogg' }
+          $meta = [Convert]::ToBase64String($utf8.GetBytes((@{ title = $st.title; uploader = $st.uploader; duration = $st.duration; ext = $ext } | ConvertTo-Json -Compress)))
+          Send-ResponseMeta $stream $type $bytes $meta; Remove-Item -LiteralPath $file -ErrorAction SilentlyContinue; Yt-Clean $jid
+        } else { Send-Response $stream '409 Conflict' 'application/json' ($utf8.GetBytes('{"error":"notready"}')) }
+      }
     } elseif ($path -match '^/ytlist\?u=(.+)$') {
       # the contents of a playlist (SoundCloud set or YouTube list) without downloading anything: title, and each item's address, name and length
       $url = [Uri]::UnescapeDataString($matches[1])
       $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
-      if ($url -notmatch '^https://((www|m|music|on)\.)?(youtube\.com|youtu\.be|soundcloud\.com)/[A-Za-z0-9_\-\./\?=&%:]+$') {
+      if (-not (Yt-UrlOk $url)) {
         Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"forbidden"}'))
       } elseif (-not (Test-Path $exe)) {
         Send-Response $stream '428 Precondition Required' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))
@@ -398,6 +462,16 @@ public static class ThabatFolderPick {
           }
           Remove-Item -LiteralPath $info -ErrorAction SilentlyContinue
         }
+        $need = @($items | Where-Object { $_.u -match '^https://api(-v2)?\.soundcloud\.com/tracks/\d+$' -or (-not $_.t -and $_.u -match '^https://soundcloud\.com/') } | Select-Object -First 300)
+        if ($need.Count) {
+          $info2 = Join-Path $env:TEMP ('thabat_list2_' + [Guid]::NewGuid().ToString('N') + '.txt')
+          try { & $exe '--simulate' '--no-warnings' '--ignore-errors' '--print-to-file' '%(original_url)s|||%(webpage_url)s|||%(title)s|||%(duration)s' $info2 @($need | ForEach-Object { $_.u }) 2>$null | Out-Null } catch {}
+          if (Test-Path $info2) {
+            $map = @{}; foreach ($ln in (Get-Content -LiteralPath $info2 -Encoding UTF8)) { $p = $ln -split '\|\|\|'; if ($p.Count -ge 4) { $map[$p[0]] = $p } }
+            foreach ($it in $items) { $m = $map[$it.u]; if ($m) { if ($m[1] -match '^https://soundcloud\.com/') { $it.u = $m[1] }; if ($m[2] -ne 'NA') { $it.t = $m[2] }; $d = 0; [void][double]::TryParse($m[3], [ref]$d); if ($d) { $it.d = [int]$d } } }
+            Remove-Item -LiteralPath $info2 -ErrorAction SilentlyContinue
+          }
+        }
         if ($items.Count -eq 0) { Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"list"}')) }
         else { Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes((@{ ok = $true; title = $ptitle; items = $items } | ConvertTo-Json -Depth 4 -Compress))) }
       }
@@ -405,7 +479,7 @@ public static class ThabatFolderPick {
       # download the audio of one YouTube / SoundCloud link (only those sites)
       $url = [Uri]::UnescapeDataString($matches[1])
       $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
-      if ($url -notmatch '^https://((www|m|music|on)\.)?(youtube\.com|youtu\.be|soundcloud\.com)/[A-Za-z0-9_\-\./\?=&%:]+$') {
+      if (-not (Yt-UrlOk $url)) {
         Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"forbidden"}'))
       } elseif (-not (Test-Path $exe)) {
         Send-Response $stream '428 Precondition Required' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))

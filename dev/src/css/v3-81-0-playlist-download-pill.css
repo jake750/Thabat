@@ -1,0 +1,10 @@
+/* v3.81.0 playlist download pill */
+.aujpill{position:fixed;z-index:79;left:50%;transform:translateX(-50%);bottom:24px;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 32px);box-sizing:border-box;padding:7px 8px 7px 14px;border-radius:16px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 28px rgba(0,0,0,.35);font-size:13px}
+.aujpill .ajtx{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 auto}
+.aujpill i{flex:none;width:64px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden}
+.aujpill i b{display:block;height:100%;background:var(--accent);transition:width .6s}
+.aujpill .btn{flex:none}
+.ajlist{display:flex;flex-direction:column;gap:2px;max-height:50vh;overflow:auto}
+.ajrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.ajrow span{overflow-wrap:anywhere}.ajrow small{color:var(--muted);text-align:end;max-width:46%}
+
