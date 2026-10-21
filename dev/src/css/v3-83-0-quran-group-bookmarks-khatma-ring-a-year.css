@@ -1,0 +1,42 @@
+/* v3.83.0 Quran group: bookmarks, khatma ring, a year of reading, repeat history, surah goal, hifz map by repeats */
+#infoBox.qbmbox{max-width:520px}
+.qbmadd{display:flex;gap:8px;margin-bottom:10px}.qbmadd .in{flex:1;min-width:0}
+.qbml{display:flex;flex-direction:column;gap:4px}
+.qbmr{display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:12px;padding:4px}
+.qbmgo{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:none;border:0;color:var(--text);text-align:start;padding:6px 8px;cursor:pointer;border-radius:9px}
+.qbmgo:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.qbmgo b{font-weight:600;overflow-wrap:anywhere}.qbmgo small{color:var(--muted);font-size:12px}
+#qbPos .qkr{flex:none;width:18px;height:18px;display:inline-flex}
+#qbPos .qkr svg{width:18px;height:18px;transform:rotate(-90deg)}
+#qbPos .qkr circle{fill:none;stroke:color-mix(in srgb,var(--muted) 35%,transparent);stroke-width:2.6}
+#qbPos .qkr .qkra{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:0 100}
+html[dir=rtl] #qbPos .qkr svg{transform:rotate(-90deg) scaleY(-1)}
+#infoBox.qygbox{max-width:min(860px,calc(94vw / var(--uiz,1)))!important;width:min(860px,calc(94vw / var(--uiz,1)))}
+.qygnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.qygst{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.qygst span{display:flex;flex-direction:column;align-items:center;padding:8px 4px;border:1px solid var(--line);border-radius:12px;font-size:12px;color:var(--muted);text-align:center}
+.qygst b{font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
+.qygsc{overflow-x:auto;padding-bottom:6px}
+.qygm,.qygg{display:grid;grid-template-columns:repeat(var(--c),12px);gap:3px;width:max-content}
+.qygm{height:16px;font-size:10.5px;color:var(--muted);margin-bottom:2px}.qygm span{white-space:nowrap}
+.qygg{grid-template-rows:repeat(7,12px);grid-auto-flow:column}
+.qygg i,.qyglg i{width:12px;height:12px;border-radius:3px;background:color-mix(in srgb,var(--muted) 16%,transparent);cursor:pointer}
+.qygg i.l1,.qyglg i.l1{background:color-mix(in srgb,var(--accent) 30%,transparent)}
+.qygg i.l2,.qyglg i.l2{background:color-mix(in srgb,var(--accent) 52%,transparent)}
+.qygg i.l3,.qyglg i.l3{background:color-mix(in srgb,var(--accent) 76%,transparent)}
+.qygg i.l4,.qyglg i.l4{background:var(--accent)}
+.qyglg{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-top:8px;font-size:12px;color:var(--muted)}.qyglg small{flex-basis:100%;margin-top:2px}
+.qrph{display:flex;align-items:center;gap:8px;margin-top:8px}.qrph small{color:var(--muted);font-size:11.5px;white-space:nowrap}
+.qrphb{flex:1;min-width:0;display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:2px;height:26px;align-items:end}
+.qrphb i{height:var(--h);min-height:2px;border-radius:2px;background:var(--accent)}.qrphb i.z{height:2px;background:color-mix(in srgb,var(--muted) 30%,transparent)}
+@media(max-width:700px){.qrpbox.qrpfs .qrph{display:none}}
+.qrgp{position:relative;display:inline-flex;align-items:center;min-width:64px;height:18px;border-radius:9px;overflow:hidden;background:color-mix(in srgb,var(--muted) 18%,transparent)}
+.qrgp i{position:absolute;inset-block:0;inset-inline-start:0;background:color-mix(in srgb,var(--accent) 45%,transparent)}.qrgp.ok i{background:color-mix(in srgb,var(--ok,#4caf7d) 60%,transparent)}
+.qrgp em{position:relative;font-style:normal;font-size:11.5px;padding-inline:8px;font-variant-numeric:tabular-nums}
+.qmrb{font-weight:400;margin-inline-start:6px}.qmrb.on{background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--text)}
+.hmap.hmrep .hc{background:color-mix(in srgb,var(--muted) 14%,transparent)}
+.hmap.hmrep .hc[data-rl="1"],.qmrk[data-rl="1"]{background:color-mix(in srgb,var(--water) 32%,transparent)!important}
+.hmap.hmrep .hc[data-rl="2"],.qmrk[data-rl="2"]{background:color-mix(in srgb,var(--water) 55%,transparent)!important}
+.hmap.hmrep .hc[data-rl="3"],.qmrk[data-rl="3"]{background:color-mix(in srgb,var(--water) 78%,transparent)!important}
+.hmap.hmrep .hc[data-rl="4"],.qmrk[data-rl="4"]{background:var(--water)!important}
+
