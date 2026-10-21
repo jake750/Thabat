@@ -1,0 +1,35 @@
+/* v3.79.0 memorisation mode: repetition counter */
+.qrpbox{margin:8px 0;padding:10px 12px!important;display:flex;flex-direction:column;gap:8px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line))!important}
+.qrpbox [hidden]{display:none!important}
+.qrpr1,.qrpr3{display:flex;align-items:center;gap:6px;flex-wrap:wrap;min-width:0}
+.qrpsp{flex:1}
+.qrpseg{display:inline-flex;gap:2px;padding:2px;border-radius:10px;background:color-mix(in srgb,var(--text) 7%,transparent)}
+.qrpseg .btn{border:0;background:transparent;min-height:30px;padding:4px 10px}
+.qrpseg .btn.on{background:var(--accent);color:var(--bg)}
+.qrpsl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrped{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.qrped label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);min-width:0}
+.qrped .in{min-width:0;width:100%;box-sizing:border-box}
+.qrpr2{display:flex;align-items:center;gap:12px;min-width:0}
+.qrpplus{min-width:72px;min-height:56px;font-size:22px!important;font-weight:700;border-radius:16px!important;flex:none;touch-action:manipulation}
+.qrpplus.qrpbump{animation:qrpbump .25s ease}
+@keyframes qrpbump{50%{transform:scale(1.08)}}
+.qrpst{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.qrpl1{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qrpl1 b{font-size:24px;color:var(--text);font-variant-numeric:tabular-nums}
+.qrpl1 .qrpg{font-size:15px;color:var(--text)}
+.qrpl2{font-size:12.5px;color:var(--muted)}
+.qrpbar{height:5px;border-radius:3px;background:color-mix(in srgb,var(--text) 10%,transparent);overflow:hidden}
+.qrpbar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qrpbar.ok i{background:#22c55e}
+.qrpmin{flex:none}
+.qrpr3{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.qrpr3 b{color:var(--text)}
+.qrpr3 select{max-width:150px;min-width:0}
+.qrpr3 .btn{margin-inline-start:auto}
+.qrpbox.qrpfs{position:fixed!important;z-index:76;left:12px;bottom:12px;width:250px;max-width:calc(100vw - 32px);box-sizing:border-box;margin:0;background:var(--panel)!important}
+html.android .qrpbox.qrpfs{bottom:calc(16px + var(--andnav,0px))}
+#qrpBtn.on{color:var(--accent)}
+.qrpbox.qrpfs .qrpr1,.qrpbox.qrpfs .qrpr3{gap:4px}.qrpbox.qrpfs .qrpr3{font-size:12px}.qrpbox.qrpfs .qrpplus{min-width:60px;min-height:50px}
+@media (max-width:700px){.qrpbox.qrpfs{left:8px;right:auto;width:auto;bottom:calc(8px + var(--andnav,0px));padding:5px 8px!important;border-radius:22px!important;opacity:.94}.qrpbox.qrpfs .qrpr1,.qrpbox.qrpfs .qrpr3,.qrpbox.qrpfs .qrped,.qrpbox.qrpfs .qrpl2,.qrpbox.qrpfs .qrpbar,.qrpbox.qrpfs .qrpl1>span:not(.qrpg){display:none}.qrpbox.qrpfs .qrpr2{gap:8px}.qrpbox.qrpfs .qrpplus{min-width:52px;min-height:42px;font-size:18px!important}.qrpbox.qrpfs .qrpl1 b{font-size:20px}}
+
