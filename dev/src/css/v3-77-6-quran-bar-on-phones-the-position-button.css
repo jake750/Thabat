@@ -1,0 +1,7 @@
+/* v3.77.6 Quran bar on phones: the position button keeps its room; grace pill at the top */
+@media (max-width:700px){
+#qbTop .qbpos{flex:1 1 0;min-width:112px}
+#qbTop .qbriw{flex:0 1 128px;min-width:84px}
+#qbTop .qbriw select{text-overflow:ellipsis}
+.qfgpill.qfgin{position:static;transform:none;left:auto;bottom:auto;width:auto;max-width:100%;margin:8px 0;z-index:auto}
+}

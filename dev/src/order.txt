@@ -115,6 +115,7 @@ css/v3-75-0-richer-geometric-style-198.css
 css/v3-76-moving-icons-shapes-and-motion-from-itshov.css
 css/v3-77-prayer-menu-that-stays-open-alone-congrega.css
 css/v3-77-5-off-device-activity-form-on-phones.css
+css/v3-77-6-quran-bar-on-phones-the-position-button.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -278,6 +279,7 @@ js/v3-75-0-other-items-fourth-list-group-l-188-190.js
 js/3-76-moving-icons-itshover-shapes-and-motion-apa.js
 js/3-77-prayer-menu-that-stays-open-alone-congregat.js
 js/3-77-4-i-ll-pray-now-stops-asking-once-the-praye.js
+js/v3-77-6-go-to-in-the-quran-tools-sheet-the-posit.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
