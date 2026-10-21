@@ -114,6 +114,7 @@ css/v3-74-0-clarity.css
 css/v3-75-0-richer-geometric-style-198.css
 css/v3-76-moving-icons-shapes-and-motion-from-itshov.css
 css/v3-77-prayer-menu-that-stays-open-alone-congrega.css
+css/v3-77-5-off-device-activity-form-on-phones.css
 css/image-viewer.css
 body.html
 js/core.js

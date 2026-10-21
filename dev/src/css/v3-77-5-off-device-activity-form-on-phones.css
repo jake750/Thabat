@@ -1,0 +1,9 @@
+/* v3.77.5 off-device activity form on phones */
+@media (max-width:700px){
+#manPop .form{grid-template-columns:minmax(0,1fr)}
+#manPop .form>label{grid-column:1/-1}
+#manPop .form label:has(#manH) .inline{display:grid!important;grid-template-columns:44px minmax(0,1fr) 44px 2.2em;gap:8px 6px;align-items:center;width:100%}
+#manPop .form #manH,#manPop .form #manMin{width:100%!important;min-width:0;text-align:center;font-size:18px}
+#manPop .form label:has(#manH) .inline>span{text-align:start;white-space:nowrap}
+#manPop .form #manDate,#manPop .form #manTime{width:100%!important;min-width:0;font-size:16px}
+}
