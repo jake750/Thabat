@@ -52,7 +52,7 @@ const ICO_STAR=`<i class="ico st">${STAR_SVG}</i>`,ICO_CRES=`<i class="ico mo"><
 function skyLine(c){return`<span class="sk">${ICO_STAR}<b>${c.s}</b></span><span class="sk">${ICO_CRES}<b>${c.c}</b></span><span class="sk">${ICO_MOON}<b>${c.m}</b></span>`}
 function placeCalSky(){const wrap=$('#calSkyWrap'),sky=$('#calSky');if(overBricks()&&sky){sky.innerHTML='';return}if(!wrap||!wrap.offsetParent)return;
   const W=wrap.clientWidth,H=wrap.clientHeight;if(!W||!H)return;const wr=wrap.getBoundingClientRect();
-  const rects=$$('#cal .cell,#cal .dow').map(c=>{const r=c.getBoundingClientRect();return[r.left-wr.left,r.top-wr.top,r.right-wr.left,r.bottom-wr.top]});
+  const z_=uiZoom(),rects=$$('#cal .cell,#cal .dow').map(c=>{const r=c.getBoundingClientRect();return[(r.left-wr.left)/z_,(r.top-wr.top)/z_,(r.right-wr.left)/z_,(r.bottom-wr.top)/z_]});
   const y=calM.getFullYear(),m=calM.getMonth(),last=new Date(y,m+1,0).getDate(),tk=todayKey();
   const step=2,free={};const freeFor=sz=>{if(free[sz])return free[sz];const c=sz/2+1,pts=[];
     for(let yy=c;yy<=H-c;yy+=step)for(let xx=c;xx<=W-c;xx+=step){let ok=true;for(const r of rects){if(xx>r[0]-c&&xx<r[2]+c&&yy>r[1]-c&&yy<r[3]+c){ok=false;break}}if(ok)pts.push([xx,yy])}return free[sz]=pts};

@@ -1,0 +1,14 @@
+/* v3.82.0 dialogs never taller than the window at any interface size (vh inside a zoomed body grows with the zoom); the shooting star in the calendar */
+@media (min-width:701px){.modal>.box:not(.lkbox){max-height:calc(100vh / var(--uiz,1) - 32px)!important;overflow:auto}
+#cmdk>.box{max-height:calc(100vh / var(--uiz,1) - 130px)!important}
+html.solo #noteModal .box{max-height:none!important}}
+@media (max-width:700px){.modal.uxsheet>.box:not(.uxhalf):not(.uxfull){max-height:calc(92dvh / var(--uiz,1))!important}}
+.cmet{position:absolute;width:24px;height:2px;margin:-1px 0 0 -12px;border-radius:2px;background:linear-gradient(to right,#fff,rgba(255,233,168,.8) 22%,transparent);transform:rotate(-18deg);filter:drop-shadow(0 0 3px rgba(255,236,170,.85));animation:cmet 6s ease-in-out var(--md,2s) infinite}
+html[dir=ltr] .cmet{transform:rotate(198deg)}
+.cmet::before{content:"";position:absolute;left:-2px;top:-2px;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 6px 1px rgba(255,245,200,.9)}
+.cmet::after{content:"";position:absolute;inset:-8px -4px}
+html.mode-light .cmet{background:linear-gradient(to right,#d19a00,rgba(209,154,0,.6) 22%,transparent);filter:drop-shadow(0 0 2px rgba(209,154,0,.4))}
+html.mode-light .cmet::before{background:#d19a00;box-shadow:0 0 4px rgba(209,154,0,.6)}
+@keyframes cmet{0%,70%,100%{opacity:.9}80%{opacity:.35}}
+html.rmotion .cmet,html.lite .cmet{animation:none!important}
+

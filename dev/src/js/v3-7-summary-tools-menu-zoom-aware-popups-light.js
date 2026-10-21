@@ -44,7 +44,7 @@ if(ANDROID){let n=0;const iv=setInterval(()=>{if(andLiftMigrate()||++n>20)clearI
 /* ---- phone calendar sky: stars and moons spread evenly over the whole calendar, never on a day's number, percentage or icons ---- */
 {const _pcs=placeCalSky;placeCalSky=function(){if(!MOB.matches)return _pcs();const wrap=$('#calSkyWrap'),sky=$('#calSky');if(!sky)return;if(overBricks()){sky.innerHTML='';return}if(!wrap||!wrap.offsetParent)return;
   const W=wrap.clientWidth,H=wrap.clientHeight;if(!W||!H)return;const wr=wrap.getBoundingClientRect(),tk=todayKey(),y=calM.getFullYear(),m=calM.getMonth(),last=new Date(y,m+1,0).getDate();
-  const forb=[],pad=(b,p)=>forb.push([b.left-wr.left-p,b.top-wr.top-p,b.right-wr.left+p,b.bottom-wr.top+p]);
+  const z_=uiZoom(),forb=[],pad=(b,p)=>forb.push([(b.left-wr.left)/z_-p,(b.top-wr.top)/z_-p,(b.right-wr.left)/z_+p,(b.bottom-wr.top)/z_+p]);
   $$('#cal .dow').forEach(e=>pad(e.getBoundingClientRect(),1));
   $$('#cal .cell').forEach(cell=>{const tw=document.createTreeWalker(cell,NodeFilter.SHOW_TEXT);let n;while((n=tw.nextNode())){if(!n.textContent.trim())continue;const r=document.createRange();r.selectNodeContents(n);for(const b of r.getClientRects())if(b.width)pad(b,3)}
     cell.querySelectorAll('svg,img').forEach(e=>{const b=e.getBoundingClientRect();if(b.width)pad(b,3)})});
