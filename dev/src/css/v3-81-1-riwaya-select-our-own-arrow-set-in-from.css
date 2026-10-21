@@ -1,0 +1,13 @@
+/* v3.81.1 riwaya select: our own arrow, set in from the edge; on PC the select is as wide as its text */
+#qbTop .qbriw{position:relative}
+#qbTop .qbriw select{-webkit-appearance:none;appearance:none;background-image:none;padding-inline-end:34px!important;padding-inline-start:12px!important;text-overflow:ellipsis;cursor:pointer}
+#qbTop .qbpos{justify-content:flex-start;gap:10px}
+#qbTop .qbpos span{flex:0 1 auto;min-width:0}
+#qbTop .qbpos i{font-size:0;width:7px;height:7px;flex:none;border:solid var(--muted);border-width:0 2px 2px 0;transform:translateY(-25%) rotate(45deg);opacity:1}
+#qbTop .qbriw::after{content:"";position:absolute;inset-inline-end:14px;top:50%;width:7px;height:7px;border:solid var(--muted);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);pointer-events:none}
+@media (min-width:701px){
+#qbTop .qbriw{flex:0 1 auto;max-width:440px}
+#qbTop .qbriw select{width:auto;max-width:100%}
+#qbTop .qbriw+*{margin-inline-start:auto}
+#qbTop .qbpos{min-width:0;flex:0 1 auto;justify-content:flex-start;gap:10px;padding-inline:14px}
+}

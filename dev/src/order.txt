@@ -121,6 +121,7 @@ css/v3-78-2-one-reading-bar-per-page-when-the-pc-sho.css
 css/v3-79-0-memorisation-mode-repetition-counter.css
 css/v3-80-0-keeping-recordings-and-lessons-on-this-d.css
 css/v3-81-0-playlist-download-pill.css
+css/v3-81-1-riwaya-select-our-own-arrow-set-in-from.css
 css/image-viewer.css
 body.html
 js/core.js
