@@ -43,12 +43,20 @@ const QRD={key:'',t0:0,done:false},QRD_MS=40000;
 function qVisPages(){const Q=S.quran,v=Q.view||1,one=MOB.matches||document.documentElement.classList.contains('qfs-one');return one?[Math.max(1,Math.min(604,Q.pv||v))]:[v,v+1].filter(p=>p>=1&&p<=604)}
 function qPgsOf(k){const d=S.days[k];return(d&&d.quran&&d.quran.pgs)||[]}
 var qReadMark;
+/* 3.78.2: two pages on screen = one 40-s timer per page, the right page (the lower number) first, then the left; each page shows its own bar */
 function qrdUi(){const el=$('#qRdSt');if(!el)return;const g=qPgsOf(todayKey()),ps=qVisPages(),ok=ps.every(p=>g.includes(p));
-  el.hidden=false;el.classList.toggle('ok',ok);if(ok){el.textContent='✓ '+t('rd.read');return}const left=Math.max(0,Math.ceil((QRD_MS-(Date.now()-QRD.t0))/1000));el.textContent=QRD.key?'📖 '+left+'s':''}
+  el.hidden=false;el.classList.toggle('ok',ok);qrdBars(ps,g);if(ok){el.textContent='✓ '+t('rd.read');return}const left=Math.max(0,Math.ceil((QRD_MS-(Date.now()-QRD.t0))/1000));el.textContent=QRD.key&&QRD.cur?'📖 '+(ps.length>1?t('q.pageS')+QRD.cur+' · ':'')+left+'s':''}
+function qrdBars(ps,g){const two=ps.length>1&&document.documentElement.classList.contains('qfs');
+  ['r','l'].forEach((s,i)=>{const pg=$('#spread .qpage.'+s);if(!pg)return;let b=pg.querySelector(':scope>.qrdbar');
+    if(!two){if(b)b.remove();return}const n=ps[i];if(!n){if(b)b.remove();return}
+    if(!b){pg.insertAdjacentHTML('beforeend','<div class="qrdbar" aria-hidden="true"><i></i></div>');b=pg.querySelector(':scope>.qrdbar')}
+    const done=g.includes(n),f=done?1:n===QRD.cur&&QRD.key?Math.min(1,(Date.now()-QRD.t0)/QRD_MS):0;b.classList.toggle('ok',done);b.classList.toggle('on',n===QRD.cur&&!done);b.firstChild.style.width=(f*100).toFixed(1)+'%'})}
 {const pg=$('#qFsPg');if(pg&&!$('#qRdSt'))pg.insertAdjacentHTML('afterend','<span class="qfspg qrdst" id="qRdSt" hidden></span>')}
 setInterval(()=>{const fs=document.documentElement.classList.contains('qfs');if(!fs||document.hidden||curView()!=='quran'||S.settings.qRead40===false){QRD.key='';return}
-  const ps=qVisPages(),k=ps.join(',');if(k!==QRD.key){QRD.key=k;QRD.t0=Date.now();QRD.done=false}
-  else if(!QRD.done&&Date.now()-QRD.t0>=QRD_MS){QRD.done=true;qReadMark(ps)}qrdUi()},1000);
+  const ps=qVisPages(),k=ps.join(','),todo=()=>{const g=qPgsOf(todayKey());return ps.filter(p=>!g.includes(p))};
+  if(k!==QRD.key){QRD.key=k;QRD.t0=Date.now();QRD.cur=todo()[0]||0;QRD.done=!QRD.cur}
+  else if(QRD.cur&&!todo().includes(QRD.cur)){QRD.cur=todo()[0]||0;QRD.t0=Date.now();QRD.done=!QRD.cur}
+  else if(QRD.cur&&Date.now()-QRD.t0>=QRD_MS){qReadMark([QRD.cur]);QRD.cur=todo()[0]||0;QRD.t0=Date.now();QRD.done=!QRD.cur}qrdUi()},1000);
 function qPgsLine(k){const g=qPgsOf(k);return g.length?t('rd.line',rangesStr(g),g.length):''}
 {hookFn('renderQSide',()=>renderQSide,f=>{renderQSide=f},'post',function(){try{const b=$('#qToday'),l=qPgsLine(todayKey());if(b&&l&&!b.querySelector('.qrdl'))b.insertAdjacentHTML('beforeend',`<div class="qrdl">📖 ${l}</div>`)}catch(e){}})}
 {const _rd=renderDetail;renderDetail=function(k){_rd(k);try{const l=qPgsLine(k),mb=$('#detail .minibar');if(l&&mb)mb.insertAdjacentHTML('afterend',`<div class="sec qrdsec"><b>📖 ${t('rd.day')}</b><div class="qrdl">${l}</div></div>`)}catch(e){}}}

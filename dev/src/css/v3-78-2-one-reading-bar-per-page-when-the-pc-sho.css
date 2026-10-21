@@ -1,0 +1,7 @@
+/* v3.78.2 one reading bar per page when the PC shows two pages */
+.qpage{position:relative}
+.qrdbar{position:absolute;left:12%;right:12%;bottom:3px;height:3px;border-radius:2px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden;pointer-events:none;opacity:.35;transition:opacity .3s}
+.qrdbar.on{opacity:1}.qrdbar.ok{opacity:.75}
+.qrdbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .9s linear}
+.qrdbar.ok i{background:#22c55e}
+

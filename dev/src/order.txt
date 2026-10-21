@@ -117,6 +117,7 @@ css/v3-77-prayer-menu-that-stays-open-alone-congrega.css
 css/v3-77-5-off-device-activity-form-on-phones.css
 css/v3-77-6-quran-bar-on-phones-the-position-button.css
 css/v3-78-0-shooting-star-past-16-hours.css
+css/v3-78-2-one-reading-bar-per-page-when-the-pc-sho.css
 css/image-viewer.css
 body.html
 js/core.js
