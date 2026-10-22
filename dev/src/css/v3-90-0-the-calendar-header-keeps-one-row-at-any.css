@@ -58,3 +58,6 @@ html.calwkon #calSky,html.calwkon #calCount,html.calwkon #cal2Box{display:none!i
 .qimg.tsl::before{content:"";position:absolute;top:calc(50% - 30px);left:calc(50% - 15px);width:30px;height:30px;border-radius:50%;border:3px solid color-mix(in srgb,#8a7755 30%,transparent);border-top-color:var(--accent);animation:tslspin .9s linear infinite;z-index:2}
 .qimg.tsl::after{content:attr(data-tsl);position:absolute;top:calc(50% + 12px);left:0;right:0;text-align:center;font-size:13px;color:#8a7755;z-index:2}.mushaf.dark .qimg.tsl::after{color:#958d78}
 @keyframes tslspin{to{transform:rotate(360deg)}}
+.nflrw{grid-template-columns:minmax(0,1fr) auto 2.6em 4.5em}.nflrwb{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}.nflrwb .btn{font-variant-numeric:tabular-nums}.nfltot{margin:10px 0 4px;font-weight:600}
+@media (min-width:701px){.nflwk{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:700px){.nflrw{grid-template-columns:minmax(0,1fr) 2.6em 4.5em}.nflrwb{grid-column:1/-1;grid-row:2;justify-content:flex-start}}
