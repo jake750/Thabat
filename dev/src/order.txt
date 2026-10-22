@@ -129,6 +129,7 @@ css/v3-85-0-library-part-1-chapters-snapshot-rating.css
 css/v3-86-0-library-part-2-the-want-to-read-list.css
 css/v3-86-1-the-shooting-star-sits-in-its-own-day-ce.css
 css/v3-86-2-calendar-header-one-row-of-buttons-the-l.css
+css/v3-87-0-youtube-playlists-as-courses.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -304,6 +305,7 @@ js/v3-84-0-the-library-on-the-phone-keep-a-whole-co.js
 js/v3-85-0-library-group-part-1-chapters-inside-a-v.js
 js/v3-86-0-library-group-part-2-a-want-to-read-list.js
 js/v3-86-2-calendar-header-prev-today-next-and-the.js
+js/v3-87-0-a-youtube-playlist-as-a-course-item-114.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

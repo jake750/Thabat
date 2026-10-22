@@ -1,0 +1,22 @@
+/* v3.87.0 YouTube playlists as courses */
+.ytchome{margin:10px 0 16px}.ytch{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}.ytch h3{margin:0;font-size:15px}.ytch h3 small{color:var(--muted);font-weight:400}
+.ytcg{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+@media(max-width:700px){.ytcg{grid-template-columns:minmax(0,1fr)}}
+.ytcc{display:flex;flex-direction:column;gap:5px;text-align:start;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:color-mix(in srgb,var(--panel) 70%,transparent);color:var(--text);cursor:pointer;font:inherit;min-width:0}
+.ytcc b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ytcc small{color:var(--muted);font-size:12px}
+.ytcbar{display:block;height:5px;border-radius:3px;background:color-mix(in srgb,var(--muted) 22%,transparent);overflow:hidden}.ytcbar>i{display:block;height:100%;background:var(--accent);border-radius:3px}
+#infoBox.ytcbox{max-width:620px}
+.ytcf{display:flex;flex-direction:column;gap:10px}.ytcf label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}.ytcf .in{min-width:0}
+.ytcmodes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}@media(max-width:700px){.ytcmodes{grid-template-columns:minmax(0,1fr)}}
+.ytcmode{display:flex!important;flex-direction:row!important;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px;cursor:pointer;color:var(--text)!important}
+.ytcmode:has(input:checked){border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}.ytcmode.off{opacity:.55;cursor:default}
+.ytcmode span{display:flex;flex-direction:column;gap:3px}.ytcmode b{font-size:13.5px}.ytcmode small{font-size:12px;color:var(--muted);line-height:1.5}
+.ytcst{min-height:18px;font-size:13px}
+.ytchd{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}.ytchd>span:nth-child(2){flex:1}.ytcmd{color:var(--text)}
+.ytcw .ytcbar{margin:8px 0 10px}.ytcacts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.ytcacts .btn{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ytcl{display:flex;flex-direction:column}
+.ytcr{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;align-items:center;gap:6px;padding:7px 2px;border-bottom:1px dashed var(--line)}
+.ytcr .ytcn{color:var(--muted);font-size:12px;text-align:center;font-variant-numeric:tabular-nums}
+.ytct{display:flex;flex-direction:column;gap:2px;min-width:0}.ytct b{font-weight:500;overflow-wrap:anywhere}.ytct small{color:var(--muted);font-size:11.5px}
+.ytcr.done .ytct b{color:var(--muted)}.ytcr.seen .ytcn{color:var(--accent)}
+

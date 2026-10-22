@@ -182,19 +182,39 @@ function Yt-Why($t) {
   if ($t -match 'timed out|getaddrinfo|Connection|Network|SSL') { return 'net' }
   return 'other'
 }
-function Yt-Start($url) {
+function Yt-Start($url, $vdir, $pre) {
   $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
   $id = [Guid]::NewGuid().ToString('N'); $tmp = Join-Path $env:TEMP ('thabat_' + $id)
   $cfg = @('--no-playlist', '--newline', '--no-warnings', '--no-simulate', '--concurrent-fragments 8', '--retries 5', '--fragment-retries 10', '--socket-timeout 30',
-    '-f "bestaudio[ext=m4a]/bestaudio"', "-o `"$tmp.%(ext)s`"", "--print-to-file `"after_move:%(title)s|||%(uploader)s|||%(duration)s|||%(filepath)s`" `"$tmp.txt`"")
-  if (Get-Command ffmpeg -ErrorAction SilentlyContinue) { $cfg += @('-x', '--audio-format mp3', '--audio-quality 2') }
-  [IO.File]::WriteAllLines("$tmp.conf", [string[]]$cfg, (New-Object Text.UTF8Encoding($false)))
+    "--print-to-file `"after_move:%(title)s|||%(uploader)s|||%(duration)s|||%(filepath)s`" `"$tmp.txt`"")
+  if ($vdir) {
+    # 3.87: a video (up to 720p, mp4) written straight into a library folder; forward slashes so the config parser keeps the path as it is
+    $out = ($vdir.TrimEnd('\') + '\' + $pre + '%(title).150B.%(ext)s') -replace '\\', '/'
+    $cfg += @('-f "bv*[height<=720][ext=mp4]+ba[ext=m4a]/b[height<=720][ext=mp4]/bv*[height<=720]+ba/b[height<=720]/b"', '--merge-output-format mp4', '--windows-filenames', "-o `"$out`"")
+  } else {
+    $cfg += @('-f "bestaudio[ext=m4a]/bestaudio"', "-o `"$tmp.%(ext)s`"")
+    if (Get-Command ffmpeg -ErrorAction SilentlyContinue) { $cfg += @('-x', '--audio-format mp3', '--audio-quality 2') }
+  }
+  [IO.File]::WriteAllLines("$tmp.conf", [string[]](@('# coding: utf-8') + $cfg), (New-Object Text.UTF8Encoding($false)))
   $psi = New-Object Diagnostics.ProcessStartInfo
   $psi.FileName = $env:ComSpec; $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true
   $psi.Arguments = '/d /s /c ""' + $exe + '" --ignore-config --config-locations "' + "$tmp.conf" + '" "' + $url + '" > "' + "$tmp.out" + '" 2> "' + "$tmp.err" + '""'
   $p = [Diagnostics.Process]::Start($psi)
   $global:ytjobs[$id] = @{ p = $p; tmp = $tmp; at = Get-Date }
   return $id
+}
+function Yt-VDir($ri, $name) {
+  try {
+    $lj = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'library.json'; if (-not (Test-Path $lj)) { return $null }
+    $roots = @((Get-Content -LiteralPath $lj -Raw -Encoding UTF8 | ConvertFrom-Json).roots); $i = 0; if (-not [int]::TryParse([string]$ri, [ref]$i)) { return $null }
+    if ($i -lt 0 -or $i -ge $roots.Count) { return $null }
+    $root = [IO.Path]::GetFullPath([string]$roots[$i]).TrimEnd('\'); if (-not (Test-Path -LiteralPath $root)) { return $null }
+    $n = ([string]$name) -replace '[\\/:*?"<>|\x00-\x1f]', '_'; $n = $n.Trim().TrimStart('.').TrimEnd('.', ' '); if ($n.Length -gt 120) { $n = $n.Substring(0, 120).Trim() }
+    if (-not $n) { return $null }
+    $full = [IO.Path]::GetFullPath((Join-Path $root $n)); if (-not $full.StartsWith($root + '\', [StringComparison]::OrdinalIgnoreCase)) { return $null }
+    if (-not (Test-Path -LiteralPath $full)) { New-Item -ItemType Directory -Path $full -Force | Out-Null }
+    return $full
+  } catch { return $null }
 }
 function Yt-Clean($id) { $j = $global:ytjobs[$id]; if (-not $j) { return }; try { if (-not $j.p.HasExited) { & taskkill.exe /PID $j.p.Id /T /F 2>$null | Out-Null } } catch {}; Get-ChildItem -Path ($j.tmp + '*') -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue; $global:ytjobs.Remove($id) }
 function Yt-State($id) {
@@ -423,13 +443,17 @@ public static class ThabatFolderPick {
       } catch {
         Send-Response $stream '502 Bad Gateway' 'application/json' ($utf8.GetBytes('{"error":"setup"}'))
       }
-    } elseif ($path -match '^/ytjob\?u=(.+)$') {
+    } elseif ($path -match '^/ytjob\?(u=.+)$') {
       # 3.81: start one download in the background; the app asks /ytjob/state, then /ytjob/get
-      $url = [Uri]::UnescapeDataString($matches[1]); $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'
+      # 3.87: with r=<library root index>&d=<folder name>[&n=<number>] it is a video saved into that library folder (nothing is sent back)
+      $qp = @{}; foreach ($kv in ($matches[1] -split '&')) { $ix = $kv.IndexOf('='); if ($ix -gt 0) { $qp[$kv.Substring(0, $ix)] = [Uri]::UnescapeDataString($kv.Substring($ix + 1)) } }
+      $url = [string]$qp['u']; $exe = Join-Path (Join-Path $env:LOCALAPPDATA 'Thabat') 'yt-dlp.exe'; $vdir = $null; $pre = ''
+      if ($qp.ContainsKey('r')) { $vdir = Yt-VDir $qp['r'] $qp['d']; $nn = 0; if ([int]::TryParse([string]$qp['n'], [ref]$nn) -and $nn -gt 0 -and $nn -lt 10000) { $pre = $nn.ToString('000') + ' - ' } }
       if (-not (Yt-UrlOk $url)) { Send-Response $stream '403 Forbidden' 'application/json' ($utf8.GetBytes('{"error":"forbidden"}')) }
+      elseif ($qp.ContainsKey('r') -and -not $vdir) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"dir"}')) }
       elseif (-not (Test-Path $exe)) { Send-Response $stream '428 Precondition Required' 'application/json' ($utf8.GetBytes('{"error":"setup"}')) }
       elseif ($global:ytjobs.Count -ge 3) { Send-Response $stream '429 Too Many Requests' 'application/json' ($utf8.GetBytes('{"error":"busy"}')) }
-      else { $jid = Yt-Start $url; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true,"id":"' + $jid + '"}')) }
+      else { $jid = Yt-Start $url $vdir $pre; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true,"id":"' + $jid + '"}')) }
     } elseif ($path -match '^/ytjob/(state|get|cancel)\?id=([0-9a-f]{32})$') {
       $act = $matches[1]; $jid = $matches[2]
       if ($act -eq 'cancel') { Yt-Clean $jid; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}')) }
