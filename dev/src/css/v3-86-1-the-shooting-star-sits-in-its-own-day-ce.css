@@ -6,8 +6,8 @@ html.mode-light #cal .cell:not(.fl) .cmetc{background:linear-gradient(to right,#
 html.mode-light #cal .cell:not(.fl) .cmetc::before{background:#c28a00;box-shadow:0 0 5px rgba(209,154,0,.7)}
 @keyframes cmetc{0%,100%{opacity:1}50%{opacity:.62}}
 html.rmotion #cal .cell .cmetc,html.lite #cal .cell .cmetc{animation:none}
-.skymet i{left:auto!important;inset-inline-end:8%;top:58%;width:min(86px,34%);opacity:.95;transform:rotate(-28deg);animation:skymet2 3.6s ease-in-out infinite}
-html[dir=ltr] .skymet i{transform:rotate(208deg);inset-inline-end:auto;inset-inline-start:58%}
+@media (max-width:700px){.skymet i{left:auto!important;inset-inline-end:8%;top:58%;width:min(86px,34%);opacity:.95;transform:rotate(-28deg);animation:skymet2 3.6s ease-in-out infinite}
+html[dir=ltr] .skymet i{transform:rotate(208deg);inset-inline-end:auto;inset-inline-start:58%}}
 @keyframes skymet2{0%,100%{opacity:.95}50%{opacity:.55}}
-html.rmotion .skymet i{animation:none!important;opacity:.95;transform:rotate(-28deg)}
+@media (max-width:700px){html.rmotion .skymet i{animation:none!important;opacity:.95;transform:rotate(-28deg)}}
 
