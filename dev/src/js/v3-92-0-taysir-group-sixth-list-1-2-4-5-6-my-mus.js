@@ -40,18 +40,18 @@ async function tsSaveAll(id){if(TSM.save[id])return;const r='ts_'+id,o=TSM.save[
   delete TSM.save[id];if(!o.stop&&o.f<=5){S.quran.dl=S.quran.dl||{};S.quran.dl[r]=1;save();toast(t('tsm.saved'))}else if(!o.stop)toast(t('ts.off'));tsMinePaint()}
 /* 2 · phones: the page cut to its frame (the PDF has wide side margins for notes); «هامش التيسير» shows them again */
 const TSF={box:new Map()};
-async function tsFrame(blob,key){let bb=TSF.box.get(key);const bm=await createImageBitmap(blob);
+async function tsFrame(blob,key){key+=MOB.matches?':m':':d';let bb=TSF.box.get(key);const bm=await createImageBitmap(blob);
   if(bb===undefined){const w=240,h=Math.round(bm.height*w/bm.width),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(bm,0,0,w,h);
     const d=x.getImageData(0,0,w,h).data,bg=[d[(2*w+2)*4],d[(2*w+2)*4+1],d[(2*w+2)*4+2]],ink=(i)=>Math.abs(d[i]-bg[0])+Math.abs(d[i+1]-bg[1])+Math.abs(d[i+2]-bg[2])>90;
     const col=new Array(w).fill(0);for(let y=0;y<h;y++)for(let x0=0;x0<w;x0++)if(ink((y*w+x0)*4))col[x0]++;
     const fr=[];for(let x0=0;x0<w;x0++)if(col[x0]>h*.5)fr.push(x0);bb=null;
     if(fr.length>=2&&fr[fr.length-1]-fr[0]>w*.4){const a=fr[0],z=fr[fr.length-1];let y0=h,y1=0;for(let y=0;y<h;y++)for(let x0=a;x0<=z;x0++)if(ink((y*w+x0)*4)){if(y<y0)y0=y;if(y>y1)y1=y;break}
-      const px=w*.02,py=h*.015;bb=[Math.max(0,(a-px)/w),Math.max(0,(y0-py)/h),Math.min(1,(z+px)/w),Math.min(1,(y1+py)/h)]}
+      const px=w*(MOB.matches?.02:.10),py=h*.015;/* PC: a band each side for the margin notes (3.97, his «so small») */bb=[Math.max(0,(a-px)/w),Math.max(0,(y0-py)/h),Math.min(1,(z+px)/w),Math.min(1,(y1+py)/h)]}
     TSF.box.set(key,bb)}
   if(!bb){bm.close&&bm.close();return null}
   const sx=bb[0]*bm.width,sy=bb[1]*bm.height,sw=(bb[2]-bb[0])*bm.width,sh=(bb[3]-bb[1])*bm.height,c=document.createElement('canvas');c.width=Math.round(sw);c.height=Math.round(sh);
   c.getContext('2d').drawImage(bm,sx,sy,sw,sh,0,0,c.width,c.height);bm.close&&bm.close();const out=await new Promise(z=>c.toBlob(z,'image/jpeg',.86));c.width=c.height=0;return out}
-const tsCrop=()=>MOB.matches&&!S.quran.tsMargin;
+function tsCrop(){return!S.quran.tsMargin}
 {const _l=qLoadImg;qLoadImg=function(im,p,r){const R=RIWAYAT[r];if(!R||!R.ts||!tsCrop())return _l(im,p,r);im.onerror=null;im.classList.add('tsp');
   tsCache(r,p).then(async b=>{let out=b;if(typeof b!=='string'){try{out=await tsFrame(b,r+':'+p)||b}catch(e){}}im.src=typeof out==='string'?out:URL.createObjectURL(out);im.classList.add('tsfr')}).catch(e=>tsFailBox(im,p,r,e&&e.code||'off'))}}
 /* 4 · the mushaf's own appendix (the usul of the reading and the closing pages after page 604) */
@@ -79,7 +79,7 @@ function tsCmpMenu(anchor){const Q=S.quran,ks=Object.keys(RIWAYAT).filter(k=>RIW
   if(g)g.insertAdjacentHTML('afterend',h);else tb.insertAdjacentHTML('afterbegin',h);
   $('#tsmBtn').onclick=()=>setTimeout(tsMineOpen,20);$('#tsaBtn').onclick=()=>{const R=RIWAYAT[S.quran.riwaya];if(R&&R.ts)setTimeout(()=>tsAppendix(R.ts),20)};
   $('#tshBtn').onclick=()=>{S.quran.tsMargin=!S.quran.tsMargin;save();renderQuran();toast(t(S.quran.tsMargin?'tsh.on':'tsh.off'))};$('#tscBtn').onclick=()=>setTimeout(tsCmpMenu,20);tsBtns()}catch(e){console.error(e)}})}
-function tsBtns(){const R=RIWAYAT[S.quran.riwaya]||{},ts=!!R.ts;const s=(id,v)=>{const e=$(id);if(e)e.hidden=!v};s('#tsaBtn',ts);s('#tshBtn',ts&&MOB.matches);s('#tscBtn',R.kind==='img'&&!MOB.matches);
+function tsBtns(){const R=RIWAYAT[S.quran.riwaya]||{},ts=!!R.ts;const s=(id,v)=>{const e=$(id);if(e)e.hidden=!v};s('#tsaBtn',ts);s('#tshBtn',ts);s('#tscBtn',R.kind==='img'&&!MOB.matches);
   const h=$('#tshBtn small');if(h)h.textContent=t(S.quran.tsMargin?'tsh.hide':'tsh.b')}
 {hookFn('renderQuran',()=>renderQuran,f=>{renderQuran=f},'post',function(){try{tsBtns()}catch(e){}})}
 {const _cc=cmdCommands;cmdCommands=function(){const L_=_cc();L_.push({icon:'📚',label:t('tsm.t'),run:()=>{showView('quran');tsMineOpen()},kw:'taysir mushaf qiraat تيسير مصاحف قراءات'});return L_}}

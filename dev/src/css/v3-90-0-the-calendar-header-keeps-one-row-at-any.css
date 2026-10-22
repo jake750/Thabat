@@ -54,3 +54,7 @@ html.calwkon #calSky,html.calwkon #calCount,html.calwkon #cal2Box{display:none!i
 .c30f{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.c30f label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}.c30f .in{min-width:0}
 .evchip.c30chip.ok{opacity:.75}
 .srlive{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.obsbox .field{gap:10px}.obsbox .obsst{margin:10px 0;font-size:13px;color:var(--muted)}
+.qimg.tsl::before{content:"";position:absolute;top:calc(50% - 30px);left:calc(50% - 15px);width:30px;height:30px;border-radius:50%;border:3px solid color-mix(in srgb,#8a7755 30%,transparent);border-top-color:var(--accent);animation:tslspin .9s linear infinite;z-index:2}
+.qimg.tsl::after{content:attr(data-tsl);position:absolute;top:calc(50% + 12px);left:0;right:0;text-align:center;font-size:13px;color:#8a7755;z-index:2}.mushaf.dark .qimg.tsl::after{color:#958d78}
+@keyframes tslspin{to{transform:rotate(360deg)}}
