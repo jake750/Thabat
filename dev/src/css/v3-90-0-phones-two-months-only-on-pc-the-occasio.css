@@ -1,0 +1,3 @@
+/* v3.90.0 phones: two months only on PC; the occasions icon sits beside the «i» */
+@media(max-width:700px){#cal2Btn,html.cal2on .cal2box{display:none!important}.calhead .occi{inset-inline-end:42px!important}}
+#occBtn svg{vertical-align:-4px}

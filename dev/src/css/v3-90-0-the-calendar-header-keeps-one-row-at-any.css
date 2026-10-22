@@ -1,0 +1,3 @@
+/* v3.90.0 the calendar header keeps one row at any interface size on phones */
+.calhead .row.caltight #calPrev span,.calhead .row.caltight #calNext span{display:none}
+.calhead .row.caltight #agBtn{font-size:0;width:38px;padding:0;justify-content:center}.calhead .row.caltight #agBtn svg,.calhead .row.caltight #agBtn .uic{font-size:16px;width:18px;height:18px}
