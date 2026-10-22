@@ -121,6 +121,86 @@ const UIC_P={
 };
 /* emoji (without the variation selector) → icon name */
 const UIC_E={'📖':'book','📁':'folder','📂':'folderOpen','🗂':'folders','🌙':'moon','☾':'moon','🕌':'mosque','☑':'checkSq','☐':'square','🎧':'headphones','🎬':'film','🎞':'film','📺':'tv','📝':'note','✎':'pencil','✏':'pencil','✍':'pencil','✒':'pencil','🖍':'marker','📅':'calendar','🗓':'calendar','📆':'calendar','🎯':'target','🖼':'photo','📸':'camera','⏱':'stopwatch','⏳':'hourglass','⏰':'alarm','🕒':'clock','🕰':'clock','⚠':'warn','🔍':'search','📋':'clipboard','📚':'books','🌱':'sprout','🔗':'link','✉':'mail','🎨':'palette','📄':'file','📑':'file','🧾':'file','📒':'file','🗒':'file','🔁':'repeat','🔄':'repeat','♻':'repeat','📱':'phone','📿':'misbaha','🧭':'compass','📊':'chart','📈':'trend','🗑':'trash','✨':'sparkles','☀':'sun','🌅':'sunrise','⚡':'bolt','🔒':'lock','🔓':'unlock','📥':'download','⬇':'download','🤲':'hands','🏅':'medal','🏆':'medal','💡':'bulb','⌨':'keyboard','🎶':'music','🎵':'music','🎙':'mic','🛏':'bed','💧':'drop','⭐':'star','⏭':'next','⏮':'prev','⏸':'pause','⏯':'play','⏹':'stop','⏩':'ffwd','☕':'coffee','⚙':'gear','🗣':'speak','🔖':'bookmark','✅':'checkCirc','🐸':'frog','💻':'laptop','🖥':'monitor','📍':'pin','🍃':'leaf','🌿':'leaf','🎓':'cap','🙈':'eyeOff','👁':'eye','👀':'eye','🔥':'flame','🏁':'flag','⚑':'flag','↩':'undo','💪':'dumbbell','🏋':'dumbbell','🧰':'toolbox','⛶':'expand','🧹':'broom','👥':'users','👤':'user','💰':'money','📦':'box','🪟':'window','📶':'wifi','🍅':'tomato','🧩':'puzzle','🧠':'brain','🕋':'kaaba','🏷':'tag','🔀':'shuffle','📎':'clip','🌕':'fullmoon','🏠':'home','🏡':'home','🔔':'bell','🔊':'speaker','🔈':'speakerLow','🔇':'mute','🩺':'pulse','🚫':'ban','🛑':'ban','🌐':'globe','🌍':'globe','💾':'save','📌':'pushpin','☁':'cloud','🗺':'map','❓':'question','📡':'antenna','🧱':'bricks','🌬':'wind','🍽':'meal','💼':'briefcase','✂':'scissors','🔤':'text','📨':'inbox','🚀':'rocket'};
+/* 3.90.1 (his request «no emoji in the app, all icons»): every remaining emoji gets a line icon — faces, people and sports, hands, moon phases, status dots and objects */
+const UIC_P2={
+ faceSmile:'<circle cx="12" cy="12" r="9"/><path d="M8.6 14.2c1.9 2.1 4.9 2.1 6.8 0"/><path d="M9 9.6h.01M15 9.6h.01"/>',
+ faceCalm:'<circle cx="12" cy="12" r="9"/><path d="M7.8 10.2c.8-.9 2-.9 2.8 0M13.4 10.2c.8-.9 2-.9 2.8 0"/><path d="M9 14.8c1.7 1.3 4.3 1.3 6 0"/>',
+ faceNeutral:'<circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01"/><path d="M8.8 15h6.4"/>',
+ faceMeh:'<circle cx="12" cy="12" r="9"/><path d="M9 9.6h.01M15 9.6h.01"/><path d="M9 15.6l6-1.4"/>',
+ faceTired:'<circle cx="12" cy="12" r="9"/><path d="M7.8 8.8l2.4 1.2-2.4 1.2M16.2 8.8l-2.4 1.2 2.4 1.2"/><path d="M9.2 16.2c1.6-1.6 4-1.6 5.6 0"/>',
+ faceSleep:'<circle cx="11" cy="13" r="8"/><path d="M7.4 12.2h2.4M12.4 12.2h2.4"/><path d="M9.6 16.4h2.8"/><path d="M16.5 3h3.5l-3.5 4h3.5"/>',
+ faceYawn:'<circle cx="12" cy="12" r="9"/><path d="M7.8 9.8h2.6M13.6 9.8h2.6"/><ellipse cx="12" cy="15.6" rx="1.8" ry="2.2"/>',
+ faceDizzy:'<circle cx="12" cy="12" r="9"/><path d="M8 8.4l2 2M10 8.4l-2 2M14 8.4l2 2M16 8.4l-2 2"/><circle cx="12" cy="15.6" r="1.6"/>',
+ faceStar:'<circle cx="12" cy="12" r="9"/><path d="M9 7.6l.6 1.3 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2zM15 7.6l.6 1.3 1.4.2-1 1 .2 1.4-1.2-.7-1.2.7.2-1.4-1-1 1.4-.2z"/><path d="M8.6 14.4c1.9 2.1 4.9 2.1 6.8 0"/>',
+ faceHurt:'<circle cx="12" cy="12" r="9"/><path d="M5 9.2l14 0" stroke-dasharray="2 1.6"/><path d="M9 12.4h.01M15 12.4h.01"/><path d="M9.2 16.4c1.6-1.2 4-1.2 5.6 0"/>',
+ walk:'<circle cx="13" cy="4.5" r="1.8"/><path d="M12 8l-2.5 5 3 2 1 5.5M12 8l3.5 3.5 3 .5M9.5 13l-2.5 7M11.6 8.2l-3.6 1.6-1 3"/>',
+ run:'<circle cx="15" cy="4.5" r="1.8"/><path d="M13.6 8.2l-3 4.6 3.8 2.4-1.4 5.3M13.6 8.2l3 3.6 3.4.2M10.6 12.8l-4.4 1.8M13.6 8.2l-4.6.4-2.2 2.6"/>',
+ yoga:'<circle cx="12" cy="5" r="1.8"/><path d="M12 8v6M5 10.5l7 1.5 7-1.5M7 19.5c1.6-2.4 3.2-3.3 5-3.3s3.4.9 5 3.3M4 19.5h16"/>',
+ bike:'<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l3.5-6h6L18 16M9.5 10L12 16h-6M15 6.5h2.5l-2 3.5"/>',
+ swim:'<circle cx="16.5" cy="6.5" r="1.8"/><path d="M4 12.5l5-3.5 3.5 2.5 3-2"/><path d="M2.5 17c1.6 0 1.6-1.2 3.2-1.2S7.3 17 8.9 17s1.6-1.2 3.2-1.2 1.6 1.2 3.2 1.2 1.6-1.2 3.2-1.2 1.6 1.2 3 1.2"/>',
+ ball:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5l3.6 2.6-1.4 4.2H9.8l-1.4-4.2z"/><path d="M12 7.5V3.2M15.6 10.1l4.2-1.5M14.2 14.3l2.6 3.6M9.8 14.3l-2.6 3.6M8.4 10.1L4.2 8.6"/>',
+ handUp:'<path d="M9 12V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 10.5v-1a1.5 1.5 0 0 1 3 0V11M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a5 5 0 0 1-4-2l-2.6-3.5a1.4 1.4 0 0 1 2.2-1.8L9 15"/>',
+ hand:'<path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v8a7 7 0 0 1-7 7h-.5a5 5 0 0 1-4.2-2.3L3.6 16a1.4 1.4 0 0 1 2.3-1.6L8 17"/>',
+ handshake:'<path d="M3 11l4-4 4 2 3-2 3 1 4 4"/><path d="M7 13l3.5 3.5a1.5 1.5 0 0 0 2.1 0l4.4-4.4"/><path d="M9.5 15.5l1.4 1.4M3 11l3 3M21 11l-3 3"/>',
+ party:'<path d="M4 20l4.5-12 7.5 7.5z"/><path d="M13 4c.5 1.5 0 2.5-1 3.5M18 9c1.5-.5 2.5 0 3.5 1M15 6.5l.01.01M19 4l.01.01M20.5 13.5l.01.01M9.5 4.5l.01.01"/>',
+ comet:'<circle cx="16" cy="8" r="3"/><path d="M13.8 10.2L4 20M14.6 11.3L8 18M12.7 9.4L6 16"/>',
+ bellOff:'<path d="M9.5 19a2.5 2.5 0 0 0 5 0M6 16h10.5M18 13.5V10a6 6 0 0 0-8.6-5.4M6.6 7.3A6 6 0 0 0 6 10v3.5L4.5 16"/><path d="M3 3l18 18"/>',
+ upload:'<path d="M12 15V4M7.5 8.5L12 4l4.5 4.5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>',
+ excl:'<circle cx="12" cy="12" r="9"/><path d="M12 7v6.5M12 16.8h.01"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6h.01"/>',
+ scale:'<path d="M12 4v16M7 20h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/>',
+ ruler:'<path d="M4 16.5L16.5 4 20 7.5 7.5 20z"/><path d="M8 12.5l1.5 1.5M10.5 10l1.5 1.5M13 7.5l1.5 1.5"/>',
+ moonHalf:'<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/>',
+ moonNew:'<circle cx="12" cy="12" r="8.5"/>',
+ moonFull:'<circle cx="12" cy="12" r="8.5" fill="currentColor" fill-opacity=".25"/>',
+ apple:'<path d="M12 7.5c-2-1.6-6-1.2-6 3.8 0 4.4 3 8.2 4.6 8.2 1 0 1-.6 1.4-.6s.4.6 1.4.6C15 19.5 18 15.7 18 11.3c0-5-4-5.4-6-3.8z"/><path d="M12 7.5c0-2 1-3.5 3-4"/>',
+ flask:'<path d="M9 3h6M10 3v6L4.8 18a1.8 1.8 0 0 0 1.6 2.7h11.2a1.8 1.8 0 0 0 1.6-2.7L14 9V3"/><path d="M7 14h10"/>',
+ battery:'<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M6 10v4M9 10v4"/>',
+ wave:'<path d="M3 12c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0 3 2 4.5 0"/>',
+ rock:'<path d="M4 18l2-7 5-4 6 2 3 5-1 4z"/><path d="M11 7l1 5 7 2"/>',
+ compress:'<path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/>',
+ ring:'<circle cx="12" cy="12" r="8"/>',
+ mouse:'<rect x="7" y="3" width="10" height="18" rx="5"/><path d="M12 7v3"/>',
+ hash:'<path d="M5 9h14M5 15h14M10 4L8 20M16 4l-2 16"/>',
+ wrench:'<path d="M14.5 6.5a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3l7.5-7.5a4 4 0 0 1-2-2z"/>',
+ swirl:'<path d="M12 12a2 2 0 1 1 2-2 4 4 0 0 1-4 4 6 6 0 0 1-6-6 8 8 0 0 1 8-8M12 12a2 2 0 1 0-2 2 4 4 0 0 0 4-4 6 6 0 0 0-6-6"/>',
+ car:'<path d="M5 16V12l2-5h10l2 5v4"/><path d="M3 12h18v4H3z"/><circle cx="7.5" cy="16.5" r="1.8"/><circle cx="16.5" cy="16.5" r="1.8"/>',
+ plane:'<path d="M10.5 20l1.5-6-5-1 1.2-1.6 4.3.4L15.5 5a1.6 1.6 0 0 1 2.6 1.6L15 13.5l4 3-1 1.5-4.5-2-1.5 4z"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+ archive:'<rect x="3" y="4" width="18" height="5" rx="1"/><path d="M5 9v10h14V9M10 13h4"/>',
+ playL:'<path d="M17 5.5v13L6.5 12z"/>',
+ arrowR:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+ arrowL:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+ arrowU:'<path d="M12 19V5M6 11l6-6 6 6"/>',
+ bug:'<rect x="7" y="7" width="10" height="13" rx="5"/><path d="M12 11v9M7 12H3M21 12h-4M7 16H4M20 16h-3M9 7l-2-3M15 7l2-3"/>',
+ thermo:'<path d="M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 9v6"/>',
+ feather:'<path d="M20 4c-8 0-14 6-14 14v2"/><path d="M20 4c0 7-4 12-12 12M14 10H8M17 7h-5"/>',
+ sheep:'<path d="M7 10a3 3 0 0 1 5-2 3 3 0 0 1 5 2 2.5 2.5 0 0 1 0 5 3 3 0 0 1-5 1 3 3 0 0 1-5-1 2.5 2.5 0 0 1 0-5z"/><path d="M9 16v3M15 16v3"/>',
+ door:'<path d="M5 21V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v17M3 21h18"/><path d="M15 12h.01"/>',
+ sunCloud:'<path d="M9 4v1M4.2 6.2l.7.7M2.5 11h1M13.8 6.2l-.7.7"/><path d="M6 11a3 3 0 0 1 5.6-1.5"/><path d="M8.5 19h9a3.5 3.5 0 0 0 0-7 5 5 0 0 0-9.6 1.5A2.8 2.8 0 0 0 8.5 19z"/>',
+ dotOrange:'<circle cx="12" cy="12" r="6" fill="#f59e0b" stroke="none"/>',
+ dotGreen:'<circle cx="12" cy="12" r="6" fill="#22c55e" stroke="none"/>',
+ dotRed:'<circle cx="12" cy="12" r="6" fill="#ef4444" stroke="none"/>',
+ dotWhite:'<circle cx="12" cy="12" r="6"/>',
+ diamondBlue:'<path d="M12 5l7 7-7 7-7-7z" fill="#3b82f6" stroke="none"/>',
+ bag:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M3 12h18"/>',
+ home:'<path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5M10 20v-5h4v5"/>',
+ food:'<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 3c-2 2-2.5 5-2.5 7.5S16 13 17 13v8"/>',
+ game:'<rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7.5 10.5v4M5.5 12.5h4M15.5 11.5h.01M18 13.5h.01"/>',
+ cart:'<path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/>',
+ phoneCall:'<path d="M6 3h3l1.5 4.5-2 1.5a11 11 0 0 0 6.5 6.5l1.5-2L21 15v3a3 3 0 0 1-3 3A16 16 0 0 1 3 6a3 3 0 0 1 3-3z"/>',
+ arrowsH:'<path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/>',
+ arrowsV:'<path d="M12 4v16M8 8l4-4 4 4M8 16l4 4 4-4"/>',
+ sqS:'<rect x="9" y="9" width="6" height="6" rx="1"/>',
+ sqL:'<rect x="5" y="5" width="14" height="14" rx="2"/>',
+ hole:'<ellipse cx="12" cy="14" rx="8" ry="4"/><path d="M4 14c0-3 4-6 8-6s8 3 8 6"/>'
+};
+const UIC_E2={'↔':'arrowsH','↕':'arrowsV','📘':'book','📗':'book','📙':'book','📓':'book','📔':'book','💼':'bag','🏠':'home','🏡':'home','🍽':'food','🎮':'game','🕹':'game','💤':'faceSleep','🛒':'cart','📞':'phoneCall','▪':'sqS','◼':'sqL','◻':'sqL','▶':'play','◀':'playL','😴':'faceSleep','📜':'file','🗄':'archive','➡':'arrowR','⬅':'arrowL','⬆':'arrowU','👆':'handUp','📷':'camera','💬':'chat','💭':'chat','✋':'hand','👋':'hand','🚶':'walk','🏃':'run','🤸':'run','🦵':'run','🧘':'yoga','🚴':'bike','🏊':'swim','⚽':'ball',
+ '🤕':'faceHurt','🎉':'party','☄':'comet','🔕':'bellOff','📤':'upload','❗':'excl','ℹ':'info','🕘':'clock','⚖':'scale','👏':'hands','🙏':'hands','🤝':'handshake','👌':'checkCirc','🙂':'faceSmile','😊':'faceSmile','😌':'faceCalm','😐':'faceNeutral','😕':'faceMeh','😫':'faceTired','🥱':'faceYawn','😵':'faceDizzy','🤩':'faceStar',
+ '🔎':'search','📲':'phone','📳':'phone','📐':'ruler','🌘':'moonHalf','🌗':'moonHalf','🌑':'moonNew','🍎':'apple','🧪':'flask','🔋':'battery','〰':'wave','🪨':'rock','🗜':'compress','⭕':'ring','🖱':'mouse','🎥':'film','🔢':'hash','🔧':'wrench','🌀':'swirl','🚗':'car','🌌':'sparkles','✈':'plane',
+ '🐞':'bug','🕳':'hole','🌡':'thermo','🪶':'feather','🐑':'sheep','🔐':'lock','🚪':'door','👪':'users','🌟':'star','📕':'book','🌤':'sunCloud','🟠':'dotOrange','🟢':'dotGreen','🔴':'dotRed','⚪':'dotWhite','🔷':'diamondBlue'};
+Object.assign(UIC_P,UIC_P2);Object.keys(UIC_E2).forEach(k=>{if(!UIC_E[k])UIC_E[k]=UIC_E2[k]});
+
 const UIC_RE=new RegExp('('+Object.keys(UIC_E).map(e=>e.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\\uFE0F?','gu');
 const UIC_TEST=new RegExp(UIC_RE.source,'u');
 /* places whose text belongs to the user or to the Quran: never touched */
@@ -133,7 +213,10 @@ function uicText(tn){const s=tn.data;if(!UIC_TEST.test(s))return;const p=tn.pare
   UIC_RE.lastIndex=0;const frag=document.createDocumentFragment();let last=0,m;
   while((m=UIC_RE.exec(s))){if(m.index>last)frag.append(s.slice(last,m.index));frag.append(uicNode(UIC_E[m[1]],m[0]));last=m.index+m[0].length}
   if(last<s.length)frag.append(s.slice(last));tn.replaceWith(frag)}
-function uicPass(root){if(!root||document.documentElement.classList.contains('emoji'))return;
+function uicStrip(v){return typeof v==='string'&&UIC_TEST.test(v)?v.replace(UIC_RE,'').replace(/\uFE0F/g,'').replace(/^\s+/,'').replace(/\s{2,}/g,' '):v}
+function uicAttr(root){if(!root||root.nodeType!==1)return;const L_=root.matches('option,[title],[aria-label]')?[root]:[];L_.push(...root.querySelectorAll('option,[title],[aria-label]'));
+  L_.forEach(e=>{if(e.tagName==='OPTION'&&e.childElementCount===0){const v=e.textContent,nv=uicStrip(v);if(nv!==v)e.textContent=nv}['title','aria-label'].forEach(a=>{const v=e.getAttribute(a);if(!v)return;const nv=uicStrip(v);if(nv!==v)e.setAttribute(a,nv)})})}
+function uicPass(root){if(!root||document.documentElement.classList.contains('emoji'))return;try{uicAttr(root)}catch(e){}
   if(root.nodeType===3){uicText(root);return}if(root.nodeType!==1||root.closest&&root.closest(UIC_SKIP))return;
   const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>UIC_TEST.test(n.data)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT});const L_=[];let n;while((n=w.nextNode()))L_.push(n);L_.forEach(uicText);
   /* placeholders cannot hold an icon: the leading emoji is dropped */
