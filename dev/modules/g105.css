@@ -1,0 +1,9 @@
+/* v3.88.0 tables in notes; folded board groups */
+.ntblw{overflow-x:auto;margin:6px 0;max-width:100%}
+.ntbl{border-collapse:collapse;font-size:.95em;min-width:60%}
+.ntbl th,.ntbl td{border:1px solid var(--line);padding:6px 10px;text-align:start;vertical-align:top;overflow-wrap:break-word;word-break:normal;min-width:4.5em}
+.ntbl th{background:color-mix(in srgb,var(--accent) 10%,transparent);font-weight:600}
+.ntbl tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--muted) 7%,transparent)}
+#bworld .bel.wbcoff{display:none!important}
+.wbcchip{position:absolute;z-index:3;transform-origin:0 0;border:1px dashed var(--accent);background:color-mix(in srgb,var(--panel) 92%,transparent);color:var(--text);border-radius:10px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.wbcchip:hover{background:color-mix(in srgb,var(--accent) 14%,var(--panel))}

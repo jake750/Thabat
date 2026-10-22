@@ -11,7 +11,7 @@ let nbMode='notes';
 function renderBoardsView(){$$('#nbSeg button').forEach(b=>b.classList.toggle('on',b.dataset.k===nbMode));$('#notesWrap').hidden=nbMode!=='notes';$('#boardsWrap').hidden=nbMode!=='boards';$('#nTools').hidden=nbMode!=='notes';
   if(nbMode==='notes')renderNotes();else renderBoards()}
 $$('#nbSeg button').forEach(b=>b.onclick=()=>{nbMode=b.dataset.k;renderBoardsView()});
-function renderNotes(){const q=($('#nSearch').value||'').trim().toLowerCase();let L_=sortNotes(NOTES().slice());if(q)L_=L_.filter(n=>(n.title+' '+(n.lock&&!notesUnlocked()?'':n.body)).toLowerCase().includes(q));if(nTag)L_=L_.filter(n=>noteTags(n).includes(nTag));renderNTags();
+function renderNotes(){const q=($('#nSearch').value||'').trim().toLowerCase();let L_=sortNotes(NOTES().slice());if(q)L_=L_.filter(n=>nsNorm(n.title+' '+(n.lock&&!notesUnlocked()?'':n.body)).includes(nsNorm(q)));if(nTag)L_=L_.filter(n=>noteTags(n).includes(nTag));renderNTags();
   $('#notesGrid').innerHTML=L_.length?L_.map(noteCard).join(''):`<div class="empty">${t(q?'notes.none':'notes.empty')}</div>`;notesMasonry($('#notesGrid'));bindNoteCards($('#notesGrid'))}
 $('#nSearch').oninput=()=>renderNotes();$('#nLetter').onclick=()=>openLetters('list');$('#nNew').onclick=()=>openNote(null,todayKey());$('#nObs').onclick=()=>exportObsidian();
 let NE=null;

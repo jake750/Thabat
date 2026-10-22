@@ -131,6 +131,7 @@ css/v3-86-1-the-shooting-star-sits-in-its-own-day-ce.css
 css/v3-86-2-calendar-header-one-row-of-buttons-the-l.css
 css/v3-87-0-youtube-playlists-as-courses.css
 css/v3-87-1-the-month-in-the-summary-fits-a-phone-sc.css
+css/v3-88-0-tables-in-notes-folded-board-groups.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -308,6 +309,7 @@ js/v3-86-0-library-group-part-2-a-want-to-read-list.js
 js/v3-86-2-calendar-header-prev-today-next-and-the.js
 js/v3-87-0-a-youtube-playlist-as-a-course-item-114.js
 js/v3-87-1-the-month-in-the-summary-fits-a-phone-sc.js
+js/v3-88-0-notes-board-pc-notes-search-ignores-diac.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

@@ -49,7 +49,7 @@ function nfBar(filt){const w=$('#notesWrap');if(!w)return;let bar=$('#nfBar'),g=
   g.querySelectorAll('.nfcard').forEach(c=>{const id=c.dataset.nf;c.onclick=e=>{if(e.target.closest('[data-nfm]'))return;nfGo(id)};c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();nfGo(id)}};c.oncontextmenu=e=>{e.preventDefault();nfMenu(c,id)}});
   g.querySelectorAll('[data-nfm]').forEach(b=>b.onclick=e=>{e.stopPropagation();nfMenu(b,b.dataset.nfm)})}
 renderNotes=function(){const q=($('#nSearch').value||'').trim().toLowerCase(),filt=!!(q||nTag);if(NF.cur&&!nfGet(NF.cur))NF.cur=null;
-  let L_=sortNotes(NOTES().filter(n=>NF.arc?n.arc:!n.arc));if(q)L_=L_.filter(n=>(n.title+' '+(n.lock&&!notesUnlocked()?'':n.body)).toLowerCase().includes(q));if(nTag)L_=L_.filter(n=>noteTags(n).includes(nTag));if(!filt&&!NF.arc)L_=L_.filter(n=>nfOf(n)===NF.cur);
+  let L_=sortNotes(NOTES().filter(n=>NF.arc?n.arc:!n.arc));if(q)L_=L_.filter(n=>nsNorm(n.title+' '+(n.lock&&!notesUnlocked()?'':n.body)).includes(nsNorm(q)));if(nTag)L_=L_.filter(n=>noteTags(n).includes(nTag));if(!filt&&!NF.arc)L_=L_.filter(n=>nfOf(n)===NF.cur);
   renderNTags();nfBar(filt);NF.showFd=filt||NF.arc;
   $('#notesGrid').innerHTML=L_.length?L_.map(noteCard).join(''):(NF.cur&&nfKids(NF.cur).length?'':`<div class="empty">${t(q?'notes.none':NF.arc?'nfd.arcNone':NOTES().length?'nfd.empty':'notes.empty')}</div>`);NF.showFd=false;notesMasonry($('#notesGrid'));bindNoteCards($('#notesGrid'))};
 {const _nc=noteCard;noteCard=function(n){let h=_nc(n);try{const f=NF.showFd&&nfGet(n.fd);if(f){const i=h.lastIndexOf('</small>');if(i>0)h=h.slice(0,i)+`<span class="nfchip" style="${nfSwatch(f)}" dir="auto">${esc(f.n)}</span>`+h.slice(i)}}catch(e){}return h}}
