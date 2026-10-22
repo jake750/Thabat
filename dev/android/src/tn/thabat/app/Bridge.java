@@ -17,7 +17,19 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "9"; }
+    public String version() { return "10"; }
+
+    /* 3.93: the Taysir mushafs kept on the phone (TsDl) */
+    @JavascriptInterface
+    public void tsGet(String id) { TsDl.start(a, id); }
+    @JavascriptInterface
+    public void tsStop(String id) { TsDl.stop(id); }
+    @JavascriptInterface
+    public void tsDel(String id) { TsDl.del(a, id); }
+    @JavascriptInterface
+    public String tsState() { return TsDl.state(a); }
+    @JavascriptInterface
+    public String tsRead(String id, double start, int n) { return TsDl.read(a, id, (long) start, n); }
 
     /* 3.59: the next prayer as an ongoing notification; the month widget */
     @JavascriptInterface

@@ -319,6 +319,8 @@ js/v3-90-0-calendar-and-summary-upcoming-occasions.js
 js/v3-90-1-no-emoji-anywhere-his-request-the-window.js
 js/v3-91-1-the-taysir-mushafs-alwa7y-com-for-the-te.js
 js/v3-92-0-taysir-group-sixth-list-1-2-4-5-6-my-mus.js
+js/v3-93-0-the-phone-keeps-a-taysir-mushaf-itself-s.js
+js/v3-93-0-night-on-a-taysir-page-like-the-scanned.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
