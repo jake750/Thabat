@@ -299,6 +299,46 @@ $handler = {
       Move-Item -LiteralPath $part -Destination (Join-Path $audDir "$aid.$ext") -Force
       Json @{ ok = $true; id = $aid; size = $got }; return
     }
+    # 3.91.1: the Taysir mushafs (alwa7y.com). Their site does not let the app read the PDFs, so this PC keeps a copy in tayseer\
+    # and serves it to the app (here and on the phone) like a library file. Only these 18 names on that one site can be fetched;
+    # the id picks the name, nothing from the request reaches a path or the address. Removing a copy: this PC only, with the key.
+    $tsDir = Join-Path (Split-Path $cfgFile) 'tayseer'
+    $tsMap = @{ kaloon = 'TayseerKaloon'; warsh = 'TayseerWarsh'; asbhany = 'TayseerWarshAsbhany'; kathir = 'TayseerKathir'; dory = 'TayseerDoryBasry'; sosy = 'TayseerSosy'; hesham = 'TayseerHesham'; thakwan = 'TayseerThakwan'; asem = 'TayseerAsem'; hafs = 'TayseerHafs'; hafskasr = 'TayseerHafsKasr'; khalaf = 'TayseerKhalafHamza'; khalaft = 'TayseerKhalafHamzaTayeba'; khallad = 'TayseerKhallad'; kesay = 'TayseerKesay'; jafar = 'TayseerJafar'; yakob = 'TayseerYakob'; khalaf10 = 'TayseerKhalaf10' }
+    function TsState($id) {
+      $pdf = Join-Path $tsDir "$id.pdf"; if (Test-Path -LiteralPath $pdf -PathType Leaf) { return @{ s = 'ok'; n = (Get-Item -LiteralPath $pdf).Length } }
+      $part = Join-Path $tsDir "$id.part"; $pidf = Join-Path $tsDir "$id.pid"; $alive = $false
+      if (Test-Path -LiteralPath $pidf) { $w = 0; [void][int]::TryParse(([IO.File]::ReadAllText($pidf)).Trim(), [ref]$w); if ($w -and (Get-Process -Id $w -ErrorAction SilentlyContinue)) { $alive = $true } }
+      if ($alive) { $got = 0; if (Test-Path -LiteralPath $part) { $got = (Get-Item -LiteralPath $part).Length }; $len = 0; $lf = Join-Path $tsDir "$id.len"; if (Test-Path -LiteralPath $lf) { [void][int64]::TryParse(([IO.File]::ReadAllText($lf)).Trim(), [ref]$len) }; return @{ s = 'run'; got = $got; len = $len } }
+      if (Test-Path -LiteralPath (Join-Path $tsDir "$id.err")) { return @{ s = 'err' } }
+      return @{ s = 'none' }
+    }
+    if ($route -eq '/tsr/list') { $o = @{}; foreach ($k in $tsMap.Keys) { $o[$k] = TsState $k }; Json @{ ok = $true; ts = $o }; return }
+    if ($route -eq '/tsr/get' -or $route -eq '/tsr/del') {
+      $tid = ([string]$q['id']).ToLower(); if (-not $tsMap.ContainsKey($tid)) { Fail '400 Bad Request' 'id'; return }
+      if ($route -eq '/tsr/del') {
+        if (-not $local) { Fail '403 Forbidden' 'local'; return }
+        if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
+        foreach ($e in @('pdf', 'part', 'len', 'err', 'pid')) { Remove-Item -LiteralPath (Join-Path $tsDir "$tid.$e") -ErrorAction SilentlyContinue }; Json @{ ok = $true }; return
+      }
+      $st = TsState $tid
+      if ($st.s -ne 'ok' -and $st.s -ne 'run') {
+        $busy = 0; foreach ($k in $tsMap.Keys) { if ((TsState $k).s -eq 'run') { $busy++ } }
+        if ($busy -ge 3) { Fail '429 Too Many Requests' 'busy'; return }
+        New-Item -ItemType Directory -Force -Path $tsDir | Out-Null
+        Remove-Item -LiteralPath (Join-Path $tsDir "$tid.err") -ErrorAction SilentlyContinue
+        $u = 'http://www.alwa7y.com/downloads/' + $tsMap[$tid] + '.pdf'; $b = Join-Path $tsDir $tid
+        $sc = "`$ErrorActionPreference='SilentlyContinue'; `$u='$u'; `$b='$b'`n" +
+          "try { `$r=[Net.HttpWebRequest]::Create(`$u); `$r.Method='HEAD'; `$r.UserAgent='Mozilla/5.0'; `$x=`$r.GetResponse(); [IO.File]::WriteAllText(`$b+'.len', [string]`$x.ContentLength); `$x.Close() } catch {}`n" +
+          "& curl.exe -sS -L -A 'Mozilla/5.0' --retry 3 --retry-delay 5 -o (`$b+'.part') `$u`n" +
+          "`$ok=`$false; try { `$fs=[IO.File]::OpenRead(`$b+'.part'); `$h=New-Object byte[] 5; [void]`$fs.Read(`$h,0,5); `$n=`$fs.Length; `$fs.Close(); `$ok=(`$LASTEXITCODE -eq 0 -and [Text.Encoding]::ASCII.GetString(`$h) -eq '%PDF-' -and `$n -gt 5000000) } catch {}`n" +
+          "if (`$ok) { Move-Item -LiteralPath (`$b+'.part') -Destination (`$b+'.pdf') -Force } else { Remove-Item -LiteralPath (`$b+'.part'); [IO.File]::WriteAllText(`$b+'.err','x') }`n" +
+          "Remove-Item -LiteralPath (`$b+'.len'); Remove-Item -LiteralPath (`$b+'.pid')"
+        $enc = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($sc))
+        $pr = Start-Process powershell.exe -WindowStyle Hidden -PassThru -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-EncodedCommand', $enc)
+        [IO.File]::WriteAllText("$b.pid", [string]$pr.Id); $st = @{ s = 'run'; got = 0; len = 0 }
+      }
+      Json @{ ok = $true; st = $st }; return
+    }
     if ($route -eq '/open') {
       if (-not $local) { Fail '403 Forbidden' 'local'; return }
       if (-not $kOk) { Fail '401 Unauthorized' 'key'; return }
@@ -306,8 +346,9 @@ $handler = {
       if ($q['folder'] -eq '1' -and -not (Test-Path -LiteralPath $full -PathType Container)) { Start-Process explorer.exe -ArgumentList ('/select,"' + $full + '"') } else { Start-Process -FilePath $full }
       Json @{ ok = $true }; return
     }
-    if ($route -eq '/f' -or $route -eq '/aud') {
+    if ($route -eq '/f' -or $route -eq '/aud' -or $route -eq '/tsr') {
       if ($route -eq '/aud') { $full = AudFile ([string]$q['id']) }
+      elseif ($route -eq '/tsr') { $tid = ([string]$q['id']).ToLower(); $full = $null; if ($tsMap.ContainsKey($tid)) { $full = Join-Path $tsDir "$tid.pdf" } }
       elseif ($q['cv'] -eq '1') { $full = Join-Path (Join-Path (Split-Path $cfgFile) 'conv') ((([string]$q['id']) -replace '[^A-Za-z0-9_\-]', '') + '.mp4') } else { $full = Resolve $q['id'] }
       if (-not $full -or -not (Test-Path -LiteralPath $full -PathType Leaf)) { Fail '404 Not Found' 'path'; return }
       $fi = New-Object IO.FileInfo $full; $len = $fi.Length; $e = $fi.Extension.TrimStart('.').ToLower()
