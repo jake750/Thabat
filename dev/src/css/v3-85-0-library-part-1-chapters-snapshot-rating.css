@@ -1,0 +1,31 @@
+/* v3.85.0 library part 1: chapters, snapshot, rating and «important», note search hits, pace, idle course chip */
+.lxchs{display:flex;gap:6px;overflow-x:auto;padding:6px 0 2px;scrollbar-width:thin}
+.lxch{display:inline-flex;align-items:center;flex:none;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--gold,#d8b35a) 8%,transparent)}
+.lxch.on{border-color:var(--gold,#d8b35a);background:color-mix(in srgb,var(--gold,#d8b35a) 22%,transparent)}
+.lxch button{background:none;border:0;color:var(--text);cursor:pointer;font:inherit;font-size:12.5px;padding:5px 10px;white-space:nowrap}
+.lxch button i{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums}.lxch .lxchx{padding:5px 8px 5px 2px;color:var(--muted)}
+html[dir=ltr] .lxch .lxchx{padding:5px 2px 5px 8px}
+.lxchm{position:absolute;inset:0;pointer-events:none}
+.lxchm i{position:absolute;top:50%;width:3px;height:12px;margin:-6px 0 0 -1.5px;border-radius:2px;background:var(--gold,#d8b35a);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.lpvmain.lxsflash{animation:lxsfl .45s ease-out}
+@keyframes lxsfl{0%{filter:brightness(1.8)}100%{filter:none}}
+.lxrbox{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.lxrs{display:inline-flex}.lxrs button{background:none;border:0;cursor:pointer;font-size:19px;line-height:1;padding:4px 2px;color:color-mix(in srgb,var(--muted) 55%,transparent)}
+.lxrs button.on{color:var(--gold,#d8b35a)}
+.lxrimp.on{background:color-mix(in srgb,#e5484d 18%,transparent);border-color:color-mix(in srgb,#e5484d 50%,transparent)}
+.lxrm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:4px 8px}
+.lxrm .lpva{font-size:12.5px;padding:5px 9px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--text);cursor:pointer}
+.lxrb{flex:none;font-size:12px;color:var(--gold,#d8b35a);margin-inline-start:4px;white-space:nowrap}
+.lxnh{margin-top:14px}.lxnh h4{margin:0 0 6px;font-size:14px}
+.lxnr{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:start;background:none;border:0;border-bottom:1px dashed var(--line);padding:8px 4px;color:var(--text);cursor:pointer;font:inherit}
+.lxnr:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.lxnr i{font-style:normal;flex:none;font-variant-numeric:tabular-nums;color:var(--accent);font-size:13px;padding-top:1px}
+.lxnr span{display:flex;flex-direction:column;gap:2px;min-width:0}.lxnr b{font-weight:500;overflow-wrap:anywhere}.lxnr small{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.lxp{color:var(--muted)}
+.lxichip{gap:6px}.lxix{background:none;border:0;color:inherit;opacity:.65;cursor:pointer;font-size:12px;padding:0 0 0 2px;margin-inline-start:2px}
+.lxrimpbox{margin:10px 0 14px}.lxrh{margin:0 0 8px;font-size:15px}
+.lxril{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.lxri{flex:0 0 220px;display:flex;flex-direction:column;gap:3px;text-align:start;border:1px solid var(--line);border-radius:14px;padding:10px 12px;background:color-mix(in srgb,var(--panel) 70%,transparent);color:var(--text);cursor:pointer;font:inherit}
+.lxri b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lxri small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:700px){.lxri{flex-basis:70%}}
+
