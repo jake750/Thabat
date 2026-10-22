@@ -323,6 +323,7 @@ js/v3-93-0-the-phone-keeps-a-taysir-mushaf-itself-s.js
 js/v3-93-0-night-on-a-taysir-page-like-the-scanned.js
 js/v3-94-0-sixth-list-7-8-9-tadabbur-marks-on-pages.js
 js/v3-95-0-the-calendar-s-week-view-seven-day-colum.js
+js/v3-96-0-group-8-part-1-135-a-30-day-challenge-19.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
