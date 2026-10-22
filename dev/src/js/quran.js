@@ -201,7 +201,7 @@ function qLoadImg(im,p,r){const R=RIWAYAT[r];let step=0;
     if(step===3){im.src=R.remote(p);im.onload=()=>{im.onload=null;if(R.cache)qCacheImg(r,p)};return}
     qImgFail(im,p)};
   im.onerror=next;next()}
-async function qCacheImg(r,p){try{if(await idbGet(qImgKey(r,p)))return;const res=await fetch(RIWAYAT[r].remote(p));if(!res.ok)return;await idbSet(qImgKey(r,p),await res.blob());return true}catch(e){return false}}
+async function qCacheImg(r,p){try{if(await idbGet(qImgKey(r,p)))return;const res=await fetch((RIWAYAT[r].fetchUrl||RIWAYAT[r].remote)(p));if(!res.ok)return;await idbSet(qImgKey(r,p),await res.blob());return true}catch(e){return false}}
 let qDl=null;
 async function qDownloadAll(){const r=S.quran.riwaya,R=RIWAYAT[r];if(!R||R.kind!=='img'||qDl)return;qDl={r,done:0,fail:0};renderQSide();
   for(let p=1;p<=604&&qDl;p++){let ok=true;try{if(!await idbGet(qImgKey(r,p))){ok=await qCacheImg(r,p)}}catch(e){ok=false}if(!ok)qDl.fail++;qDl.done=p;if(p%4===0||p===604){const el=$('#qDlSt');if(el)el.textContent=t('q.dlProg',p,604)}}
