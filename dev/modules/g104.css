@@ -1,0 +1,7 @@
+/* v3.87.1 the month in the Summary fits a phone screen */
+@media(max-width:700px){
+.bgrid{grid-template-columns:minmax(0,1fr)!important}.bgrid>*{min-width:0;max-width:100%}
+#v-brief .card h3{flex-wrap:wrap;row-gap:6px}#v-brief .card h3 #bLegend{order:3;flex-basis:100%;flex-wrap:wrap;min-width:0}
+#v-brief .chart,#v-brief .plot{min-width:0}#bPlot .col{min-width:0}
+#bX span{min-width:0}#bX.bxm span{font-size:10.5px;overflow:visible;white-space:nowrap}#bX.bxm span.bxh{visibility:hidden}
+}
