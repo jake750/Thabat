@@ -126,6 +126,7 @@ css/v3-82-0-dialogs-never-taller-than-the-window-at.css
 css/v3-83-0-quran-group-bookmarks-khatma-ring-a-year.css
 css/v3-84-0-the-library-on-the-phone-device-options.css
 css/v3-85-0-library-part-1-chapters-snapshot-rating.css
+css/v3-86-0-library-part-2-the-want-to-read-list.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -299,6 +300,7 @@ js/v3-82-0-dialogs-fit-the-window-at-any-interface.js
 js/v3-83-0-quran-group-the-riwaya-keeps-your-place.js
 js/v3-84-0-the-library-on-the-phone-keep-a-whole-co.js
 js/v3-85-0-library-group-part-1-chapters-inside-a-v.js
+js/v3-86-0-library-group-part-2-a-want-to-read-list.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

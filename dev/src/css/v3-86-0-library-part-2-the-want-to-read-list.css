@@ -1,0 +1,9 @@
+/* v3.86.0 library part 2: the «want to read» list */
+.bkwadd{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1.3fr) auto;gap:8px;margin:8px 0 12px}
+@media(max-width:700px){.bkwadd{grid-template-columns:minmax(0,1fr) auto}.bkwadd #bkwA{grid-column:1;grid-row:2}}
+.bkwl{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.bkwr{display:flex;align-items:center;gap:10px;border:1px dashed var(--line);border-radius:12px;padding:8px 10px}
+.bkwr>span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.bkwr b{font-weight:600;overflow-wrap:anywhere}.bkwr small{color:var(--muted);font-size:12px}
+.bkwi{font-size:20px;flex:none}
+[data-book]{position:relative}.bkwm{position:absolute;top:6px;inset-inline-start:6px;font-size:14px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));pointer-events:none}
+
