@@ -1,0 +1,13 @@
+/* v3.86.1 the shooting star sits in its own day cell (calendar) and stays visible in a day's sky */
+#cal .cell .cmetc{position:absolute;inset-inline-end:10%;top:44%;width:42%;max-width:46px;height:2.5px;border-radius:2px;background:linear-gradient(to right,#fff,rgba(255,236,170,.85) 25%,transparent);transform:rotate(-24deg);transform-origin:0 50%;filter:drop-shadow(0 0 1px rgba(0,0,0,.75)) drop-shadow(0 0 4px rgba(255,236,170,.9));pointer-events:none;z-index:2;animation:cmetc 3.2s ease-in-out infinite}
+#cal .cell .cmetc::before{content:"";position:absolute;left:-3px;top:-2.5px;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35),0 0 8px 2px rgba(255,245,200,.95)}
+html[dir=ltr] #cal .cell .cmetc{transform:rotate(204deg);transform-origin:0 50%;inset-inline-end:auto;inset-inline-start:52%}
+html.mode-light #cal .cell:not(.fl) .cmetc{background:linear-gradient(to right,#b8860b,rgba(209,154,0,.7) 25%,transparent);filter:drop-shadow(0 0 2px rgba(209,154,0,.5))}
+html.mode-light #cal .cell:not(.fl) .cmetc::before{background:#c28a00;box-shadow:0 0 5px rgba(209,154,0,.7)}
+@keyframes cmetc{0%,100%{opacity:1}50%{opacity:.62}}
+html.rmotion #cal .cell .cmetc,html.lite #cal .cell .cmetc{animation:none}
+.skymet i{left:auto!important;inset-inline-end:8%;top:58%;width:min(86px,34%);opacity:.95;transform:rotate(-28deg);animation:skymet2 3.6s ease-in-out infinite}
+html[dir=ltr] .skymet i{transform:rotate(208deg);inset-inline-end:auto;inset-inline-start:58%}
+@keyframes skymet2{0%,100%{opacity:.95}50%{opacity:.55}}
+html.rmotion .skymet i{animation:none!important;opacity:.95;transform:rotate(-28deg)}
+

@@ -127,6 +127,7 @@ css/v3-83-0-quran-group-bookmarks-khatma-ring-a-year.css
 css/v3-84-0-the-library-on-the-phone-device-options.css
 css/v3-85-0-library-part-1-chapters-snapshot-rating.css
 css/v3-86-0-library-part-2-the-want-to-read-list.css
+css/v3-86-1-the-shooting-star-sits-in-its-own-day-ce.css
 css/image-viewer.css
 body.html
 js/core.js
