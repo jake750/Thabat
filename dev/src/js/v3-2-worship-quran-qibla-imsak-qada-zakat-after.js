@@ -45,8 +45,8 @@ function openZakat(){const Z=S.zakat||(S.zakat={cur:S.settings.billCur||'TND',gp
 /* 48/49. duha & witr reminders */
 function dwCfg(){return Object.assign({duha:false,duhaAfter:30,witr:false,witrAt:'22:30'},S.settings.dw||{})}
 function dwTimes(date){const C=dwCfg(),pt=prayerTimes(date);return{duha:C.duha?pt.sunrise+C.duhaAfter*6e4:null,witr:C.witr?atTime(date,C.witrAt):null}}
-function dwCheck(){const k=todayKey(),T=dwTimes(keyToDate(k)),now=Date.now(),d=day(k);d.dwN=d.dwN||{};if(T.duha&&now>=T.duha&&now<T.duha+30*6e4&&!d.dwN.duha){d.dwN.duha=1;save();alertUser('☀️ '+t('dw2.duhaT'),t('dw2.duhaB'))}
-  if(T.witr&&now>=T.witr&&now<T.witr+60*6e4&&!d.dwN.witr&&!(d.qiyam&&d.qiyam.witr)){d.dwN.witr=1;save();alertUser('🌙 '+t('dw2.witrT'),t('dw2.witrB'))}}
+function dwCheck(){const k=todayKey(),T=dwTimes(keyToDate(k)),now=Date.now(),d=day(k);d.dwN=d.dwN||{};if(T.duha&&now>=T.duha&&now<T.duha+30*6e4&&!d.dwN.duha&&!(d.nfl&&+d.nfl.duha)){d.dwN.duha=1;save();alertUser('☀️ '+t('dw2.duhaT'),t('dw2.duhaB'));try{nflDuhaAsk()}catch(e){}}
+  if(T.witr&&now>=T.witr&&now<T.witr+60*6e4&&!d.dwN.witr&&!(d.qiyam&&d.qiyam.witr)&&!(d.nfl&&+d.nfl.witr)){d.dwN.witr=1;save();alertUser('🌙 '+t('dw2.witrT'),t('dw2.witrB'))}}
 setInterval(dwCheck,6e4);
 {const _es2=extraSched;extraSched=function(out,now){_es2(out,now);try{for(let i=0;i<3;i++){const T=dwTimes(addDays(keyToDate(todayKey()),i));if(T.duha&&T.duha>now)out.push({id:9200+i,t:T.duha,title:'☀️ '+t('dw2.duhaT'),body:t('dw2.duhaB')});if(T.witr&&T.witr>now)out.push({id:9210+i,t:T.witr,title:'🌙 '+t('dw2.witrT'),body:t('dw2.witrB')})}}catch(e){}}}
 /* 51. my duas */

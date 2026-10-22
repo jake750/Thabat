@@ -43,7 +43,7 @@ function openMuhasaba(k){k=k||todayKey();const d=day(k),M=d.muhasaba||{},q=qDay(
    <label style="font-size:13px;color:var(--muted);display:block;margin-top:8px">${t('mh.tom')}<textarea class="in" id="mh3" dir="auto">${esc(M.tom||'')}</textarea></label>
    <div class="evact"><span style="flex:1"></span><button class="btn sm ghost" id="mhX">${t('ev.cancel')}</button><button class="btn sm pri" id="mhOk">${t('ev.save')}</button></div>`;
   $('#mhX').onclick=()=>$('#mhModal').classList.remove('on');
-  $('#mhOk').onclick=()=>{d.muhasaba={thanks:$('#mh1').value.trim(),fix:$('#mh2').value.trim(),tom:$('#mh3').value.trim(),at:Date.now()};if(qiyamOn()){const rk=+($('#mhRk').value||0),w=$('#mhW').checked;if(rk||w)d.qiyam={rk,witr:w};else delete d.qiyam}save();$('#mhModal').classList.remove('on');toast(t('mh.saved'));renderTodayEv()};
+  $('#mhOk').onclick=()=>{d.muhasaba={thanks:$('#mh1').value.trim(),fix:$('#mh2').value.trim(),tom:$('#mh3').value.trim(),at:Date.now()};if(qiyamOn()){const rk=+($('#mhRk').value||0),w=$('#mhW').checked;if(rk||w)d.qiyam={rk,witr:w};else delete d.qiyam;nflFromQy(k)}save();$('#mhModal').classList.remove('on');toast(t('mh.saved'));renderTodayEv()};
   $('#mhModal').classList.add('on')}
 function qiyamOn(){return!!S.settings.qiyamLog}
 /* sleep adhkar reminder */
@@ -66,7 +66,7 @@ function mhChip(){const M=mhCfg(),now=Date.now(),k=todayKey();if(!M.on)return'';
 {const _rte2=renderTodayEv;renderTodayEv=function(){_rte2();const box=$('#todayEv');if(!box)return;box.insertAdjacentHTML('afterbegin',laterChip()+virtChip());box.insertAdjacentHTML('beforeend',tsbChip()+qiyamChip()+mhChip());
   const c=box.querySelector('[data-plc]');if(c)c.onclick=e=>{e.stopPropagation();prayLaterAsk(true);setTimeout(()=>{const y=$('#plcYes');if(y)y.click()},30)};
   const tb=box.querySelector('[data-tsb]');if(tb)tb.onclick=()=>openTasbih();const qy=box.querySelector('[data-qy]');if(qy)qy.onclick=()=>openMuhasaba();const mh=box.querySelector('[data-mh]');if(mh)mh.onclick=()=>openMuhasaba()}}
-{const _rbp2=renderBriefPray;renderBriefPray=function(){_rbp2();const box=$('#bPray');if(!box||!qiyamOn())return;const keys=periodKeys(bMode,bAnchor).filter(k=>k<=todayKey());const n=keys.filter(k=>S.days[k]&&S.days[k].qiyam).length,rk=keys.reduce((a,k)=>a+(((S.days[k]||{}).qiyam||{}).rk||0),0);if(n)box.insertAdjacentHTML('beforeend',`<div class="bpcorr">🌌 ${t('qy2.brief',n,rk)}</div>`)}}
+{const _rbp2=renderBriefPray;renderBriefPray=function(){_rbp2();const box=$('#bPray');if(!box||!qiyamOn())return;const keys=periodKeys(bMode,bAnchor).filter(k=>k<=todayKey());const n=keys.filter(k=>S.days[k]&&S.days[k].qiyam).length,rk=keys.reduce((a,k)=>a+(((S.days[k]||{}).qiyam||{}).rk||0),0);void 0/* 3.98: in the nawafil card #bNfl */}}
 /* recitation: speed, compare two reciters, repeat a passage */
 {const _pc=qPlayCur;qPlayCur=function(){QA.cmpDone=false;_pc();const r=qAud().rate||1;if(QA.el){QA.el.defaultPlaybackRate=r;QA.el.playbackRate=r;QA.el.onplay=()=>{QA.el.playbackRate=qAud().rate||1}}}}
 {const _na=qNextAud;qNextAud=function(){const A=qAud(),it=QA.q[QA.i];if(A.cmp&&it&&!QA.cmpDone){QA.cmpDone=true;QA.el.src=qAyUrlR(A.cmp,it[0],it[1]);QA.el.play().catch(()=>{});return}QA.cmpDone=false;

@@ -325,6 +325,7 @@ js/v3-94-0-sixth-list-7-8-9-tadabbur-marks-on-pages.js
 js/v3-95-0-the-calendar-s-week-view-seven-day-colum.js
 js/v3-96-0-group-8-part-1-135-a-30-day-challenge-19.js
 js/v3-97-0-live-sync-with-an-obsidian-vault-folder.js
+js/3-98-nawafil-one-record-for-qiyam-and-witr-taraw.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

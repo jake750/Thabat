@@ -13,16 +13,16 @@ function openPrayMap(tab){tab=tab||'on';const tk=todayKey(),end=keyToDate(tk),st
   for(let i=0;i<365;i++){const dt=addDays(start,i),k=dKey(dt);let v=0,mx=5;
     if(tab==='on')PRAYERS.forEach(p=>{const s=plStatus(k,p);if(s==='on'||s==='auto')v++});
     else if(tab==='jm')PRAYERS.forEach(p=>{if(jmHas(k,p))v++});
-    else{mx=12;Object.keys(RAWATIB).forEach(p=>{v+=snCount(k,p)})}
+    else if(tab==='nf'){mx=20;v=nflRk(k)}else{mx=12;Object.keys(RAWATIB).forEach(p=>{v+=snCount(k,p)})}
     cells.push({k,v,mx,dt})}
   const lv=c=>c.v<=0?0:Math.min(4,Math.ceil(c.v/c.mx*4));
   const grid=`<div class="pmap" dir="ltr">${Array(wd0).fill('<i class="e"></i>').join('')}${cells.map(c=>`<i class="l${lv(c)}" title="${gStr(c.dt)} · ${c.v}"></i>`).join('')}</div>`;
-  const keys=cells.map(c=>c.k),tot=cells.reduce((a,c)=>a+c.v,0),days=cells.filter(c=>c.v>=c.mx).length;
+  const keys=cells.map(c=>c.k),tot=cells.reduce((a,c)=>a+c.v,0),days=cells.filter(c=>tab==='nf'?c.v>0:c.v>=c.mx).length;
   /* last 8 weeks bars */
   const wk=[];for(let w=7;w>=0;w--){let v=0;for(let i=0;i<7;i++){const c=cells[364-w*7-i];if(c)v+=c.v}wk.push(v)}const wm=Math.max(1,...wk);
   const bars=`<div class="pmbars">${wk.map((v,i)=>`<div><b style="height:${Math.round(v/wm*60)+2}px"></b><small>${v}</small></div>`).join('')}</div><small class="muted">${t('pm.weeks')}</small>`;
-  openInfo('🕌 '+t('pm.t'),`<div class="seg pmseg">${[['on','pm.on'],['jm','pm.jm'],['sn','pm.sn']].map(([k,l])=>`<button data-pm="${k}" class="${tab===k?'on':''}">${t(l)}</button>`).join('')}</div>
-    <div class="pmstat"><div><b>${tot}</b><small>${t(tab==='sn'?'pm.rk':'pm.prayers')}</small></div><div><b>${days}</b><small>${t('pm.full')}</small></div></div>${grid}
+  openInfo('🕌 '+t('pm.t'),`<div class="seg pmseg">${[['on','pm.on'],['jm','pm.jm'],['sn','pm.sn'],['nf','pm.nf']].map(([k,l])=>`<button data-pm="${k}" class="${tab===k?'on':''}">${t(l)}</button>`).join('')}</div>
+    <div class="pmstat"><div><b>${tot}</b><small>${t(tab==='sn'||tab==='nf'?'pm.rk':'pm.prayers')}</small></div><div><b>${days}</b><small>${t(tab==='nf'?'pm.nfd':'pm.full')}</small></div></div>${grid}
     <div class="pmleg">${t('pm.less')} <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> ${t('pm.more')}</div>${bars}`);
   $$('[data-pm]').forEach(b=>b.onclick=()=>openPrayMap(b.dataset.pm))}
 {const rv=$('#rvBtn');if(rv&&!$('#pmBtn')){rv.insertAdjacentHTML('beforebegin',`<button class="btn sm ghost" id="pmBtn">🕌 <span>${t('pm.btn')}</span></button>`);$('#pmBtn').onclick=()=>openPrayMap()}}
