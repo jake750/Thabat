@@ -47,7 +47,7 @@ async function tsCache(r,p){const k=qImgKey(r,p);try{const have=await idbGet(k);
 {const _p=qPrefetch;qPrefetch=function(np,dir){const r=S.quran.riwaya,R=RIWAYAT[r];if(!R||!R.ts)return _p(np,dir);
   (window.requestIdleCallback||(g=>setTimeout(g,600)))(()=>{[np+(dir||1),np+2*(dir||1)].filter(p=>p>=1&&p<=604).forEach(p=>{tsCache(r,p).catch(()=>{})})})}}
 /* the page: the saved picture, else drawn from the PDF; when the PC has no copy yet, a box with what to do */
-{const _l=qLoadImg;qLoadImg=function(im,p,r){const R=RIWAYAT[r];if(!R||!R.ts)return _l(im,p,r);im.onerror=null;
+{const _l=qLoadImg;qLoadImg=function(im,p,r){const R=RIWAYAT[r];if(!R||!R.ts)return _l(im,p,r);im.onerror=null;im.classList.add('tsp');
   tsCache(r,p).then(b=>{im.src=typeof b==='string'?b:URL.createObjectURL(b)}).catch(e=>tsFailBox(im,p,r,e&&e.code||'off'))}}
 function tsFailBox(im,p,r,code){const R=RIWAYAT[r],d=document.createElement('div');d.className='fail tsfail';d.dir=LANG==='ar'?'rtl':'ltr';
   const st=TSR.st&&TSR.st[R.ts]||{};const mb=R.mb;
