@@ -67,3 +67,4 @@ html.calwkon #calSky,html.calwkon #calCount,html.calwkon #cal2Box{display:none!i
 .wknf{display:block;font-size:11px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dnfl>b{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.dnfr{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;flex-wrap:wrap}.dnfr>span:first-child{min-width:0}.dnfc{display:inline-flex;align-items:center;gap:6px}.dnfc b{min-width:1.6em;text-align:center;font-variant-numeric:tabular-nums}.dnfc small{color:var(--muted);font-size:12px;min-width:3em}
 #tswRow{margin-bottom:10px}
+.obsfd{margin:8px 0;border:1px solid var(--line);border-radius:12px;padding:8px 12px}.obsfd summary{cursor:pointer;font-weight:600}.obsfr{display:flex;gap:8px;align-items:center;padding:4px 0}

@@ -10,7 +10,7 @@ const obsSub=()=>(S.settings.obsSub||'ثبات').replace(/[\\/:*?"<>|]/g,'-').tr
 function obsSafe(s){return String(s||'').replace(/[\\/:*?"<>|#^[\]\r\n\t]/g,'-').replace(/\s+/g,' ').trim().slice(0,80).replace(/^\.+/,'')||'note'}
 function obsFolderPath(n){const L_=[],F=NFOLD();let f=n.fd&&F.find(x=>x.id===n.fd),g=0;while(f&&g++<20){L_.unshift(obsSafe(f.n));f=f.parent&&F.find(x=>x.id===f.parent)}return L_}
 function obsMd(n){const iso=x=>new Date(x||Date.now()).toISOString().slice(0,19);
-  return`---\nthabat-id: ${n.id}\ntitle: "${String(n.title||'').replace(/"/g,'”').replace(/\s+/g,' ')}"\ncreated: ${iso(n.created)}\nupdated: ${iso(n.updated)}\n---\n${String(n.body||'').replace(/\r\n/g,'\n')}\n`}
+  return`---\nthabat-id: ${n.id}\ntitle: "${String(n.title||'').replace(/"/g,'”').replace(/\s+/g,' ')}"\ncreated: ${iso(n.created)}\nupdated: ${iso(n.updated)}\n---\n${String(n.body||'').replace(/\r\n/g,'\n')}\n${obsImgBlock(n)}`}
 async function obsDirGet(){if(OBS.dir)return OBS.dir;try{OBS.dir=await idbGet('obs:dir')}catch(e){}return OBS.dir}
 async function obsPerm(h,ask){if(!h)return'none';if(!h.queryPermission)return'granted';try{let p=await h.queryPermission({mode:'readwrite'});if(p!=='granted'&&ask)p=await h.requestPermission({mode:'readwrite'});return p}catch(e){return'denied'}}
 async function obsWalk(dir,pre,out){for await(const [name,h] of dir.entries()){if(name.startsWith('.'))continue;const p=pre?pre+'/'+name:name;
@@ -19,31 +19,32 @@ async function obsDirOf(root,parts,create){let d=root;for(const p of parts)d=awa
 async function obsWrite(root,path,text){const parts=path.split('/'),name=parts.pop(),d=await obsDirOf(root,parts,true),fh=await d.getFileHandle(name,{create:true}),w=await fh.createWritable();await w.write(text);await w.close();return(await fh.getFile()).lastModified}
 async function obsRemove(root,path){const parts=path.split('/'),name=parts.pop();try{const d=await obsDirOf(root,parts,false);await d.removeEntry(name)}catch(e){}}
 /* one sync pass; root = the vault folder handle */
-async function obsSync(root,quiet){if(OBS.run||!root)return;OBS.run=true;const st={out:0,in:0,nw:0,arc:0,tr:0};
+async function obsSync(root,quiet){if(OBS.run||!root)return;OBS.run=true;const st={out:0,in:0,nw:0,arc:0,tr:0,cf:0};
   try{const base=await root.getDirectoryHandle(obsSub(),{create:true});const map=(await idbGet('obs:map'))||{},files=await obsWalk(base,'',{}),used=new Set(Object.keys(files));
     const notes=NOTES().filter(n=>!n.lock&&!n._demo),byId=new Map(notes.map(n=>[n.id,n]));
     /* files first: changes made in Obsidian */
     for(const [path,fh] of Object.entries(files)){const f=await fh.getFile();const ent=Object.entries(map).find(([id,m])=>m.f===path);
       if(ent){const [id,m]=ent;if(f.lastModified===m.m)continue;const txt=(await f.text()).replace(/\r\n/g,'\n'),h=bkHash(txt);if(h===m.h){m.m=f.lastModified;continue}
-        const n=byId.get(id);if(!n)continue;const {fm,body}=obsFront(txt);
-        if((n.updated||0)>(m.u||0)&&(n.updated||0)>f.lastModified)continue;/* changed here later: the note wins below */
-        n.body=body.replace(/\n$/,'');if(fm.title)n.title=fm.title;n.updated=Date.now();m.h=bkHash(obsMd(n));m.m=f.lastModified;m.u=n.updated;st.in++}
+        const n=byId.get(id);if(!n||!obsIn(n))continue;const {fm,body}=obsFront(txt);
+        /* changed on both sides (3.100): the newer wins, the other is kept as a «(تعارض)» copy */
+        if((n.updated||0)>(m.u||0)){if((n.updated||0)>f.lastModified){await obsConflict(base,path,txt);st.cf++;continue}await obsConflict(base,path,obsMd(n));st.cf++}
+        {const R_=await obsBodyIn(n,body,root);n.body=R_.body.replace(/\n$/,'');n.imgs=R_.imgs}if(fm.title)n.title=fm.title;n.updated=Date.now();m.h=bkHash(obsMd(n));m.m=f.lastModified;m.u=n.updated;st.in++}
       else{const txt=(await f.text()).replace(/\r\n/g,'\n'),{fm,body}=obsFront(txt);let n=fm['thabat-id']&&byId.get(fm['thabat-id']);
         if(n){map[n.id]={f:path,h:bkHash(txt),m:f.lastModified,u:n.updated||0};continue}
-        n={id:uid(),title:fm.title||path.split('/').pop().replace(/\.md$/i,''),body:body.replace(/\n$/,''),imgs:[],created:f.lastModified,updated:Date.now(),day:dKey(new Date(f.lastModified)),obs:1};
+        const R_=await obsBodyIn({imgs:[]},body,root);n={id:uid(),title:fm.title||path.split('/').pop().replace(/\.md$/i,''),body:R_.body.replace(/\n$/,''),imgs:R_.imgs,created:f.lastModified,updated:Date.now(),day:dKey(new Date(f.lastModified)),obs:1};
         NOTES().push(n);byId.set(n.id,n);const tx=obsMd(n);const lm=await obsWrite(base,path,tx);map[n.id]={f:path,h:bkHash(tx),m:lm,u:n.updated};st.nw++}}
     /* files deleted in the vault: archive their notes */
-    for(const [id,m] of Object.entries(map)){if(files[m.f])continue;const n=byId.get(id);if(n&&!n.arc&&(n.updated||0)<=(m.u||0)){n.arc=Date.now();st.arc++;delete map[id]}else if(!n)delete map[id]}
+    for(const [id,m] of Object.entries(map)){if(files[m.f])continue;const n=byId.get(id);if(n&&!obsIn(n))continue;if(n&&!n.arc&&(n.updated||0)<=(m.u||0)){n.arc=Date.now();st.arc++;delete map[id]}else if(!n)delete map[id]}
     /* notes: new or changed here → written */
-    for(const n of NOTES().filter(x=>!x.lock&&!x._demo&&!x.arc)){const m=map[n.id];const want=[...obsFolderPath(n),obsSafe(n.title)].join('/');
+    for(const n of NOTES().filter(x=>!x.lock&&!x._demo&&!x.arc&&obsIn(x))){const m=map[n.id];const want=[...obsFolderPath(n),obsSafe(n.title)].join('/');
       if(m&&(n.updated||0)<=(m.u||0)&&files[m.f])continue;
       let path=m&&m.f;if(!path||path.replace(/( \(\d+\))?\.md$/,'')!==want){let p=want+'.md',i=2;while(used.has(p)&&(!m||m.f!==p))p=`${want} (${i++}).md`;if(m&&m.f&&m.f!==p&&files[m.f])await obsRemove(base,m.f);path=p}
-      const tx=obsMd(n);const lm=await obsWrite(base,path,tx);used.add(path);map[n.id]={f:path,h:bkHash(tx),m:lm,u:n.updated||0};st.out++}
+      await obsAtt(base,n);const tx=obsMd(n);const lm=await obsWrite(base,path,tx);used.add(path);map[n.id]={f:path,h:bkHash(tx),m:lm,u:n.updated||0};st.out++}
     /* notes deleted here → their files go to the vault's .trash (archived notes keep theirs) */
     for(const [id,m] of Object.entries(map)){const n=byId.get(id);if(n)continue;if(files[m.f]){try{const f=await files[m.f].getFile(),tr=await root.getDirectoryHandle('.trash',{create:true}),fh=await tr.getFileHandle(m.f.split('/').pop(),{create:true}),w=await fh.createWritable();await w.write(await f.text());await w.close();await obsRemove(base,m.f);st.tr++}catch(e){}}delete map[id]}
     await idbSet('obs:map',map);OBS.at=Date.now();OBS.last=st;try{localStorage.setItem('thabat.obsAt',String(OBS.at))}catch(e){}
     if(st.in||st.nw||st.arc){save();try{notesChanged();if(curView()==='boards')renderNotes()}catch(e){}}
-    if(!quiet)toast(t('obs2.done',st.out,st.in+st.nw));}
+    if(!quiet)toast(t('obs2.done',st.out,st.in+st.nw));if(st.cf)toast(t('obs3.cf',st.cf));}
   catch(e){console.error(e);if(!quiet)toast(t('obs2.err'))}finally{OBS.run=false;obsPaint()}}
 async function obsTick(quiet){if(!S.settings.obsLive)return;const h=await obsDirGet();if(!h)return;if(await obsPerm(h,false)!=='granted'){obsPaint();return}await obsSync(h,quiet!==false)}
 /* live: every minute while Thabat is open, a few seconds after a note is saved, and when the window comes back */
