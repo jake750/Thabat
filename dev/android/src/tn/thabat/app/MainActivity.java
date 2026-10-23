@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
         super.onCreate(b);
         inst = this;
         readOpen(getIntent());
+        readShare(getIntent());
         try { getWindow().setStatusBarColor(0xFF0F1115); getWindow().setNavigationBarColor(0xFF0F1115); } catch (Throwable t) {}
         web = new WebView(this);
         web.setBackgroundColor(0xFF0F1115);
@@ -69,11 +70,53 @@ public class MainActivity extends Activity {
         try { if (i != null) { String o = i.getStringExtra("open"); if (o != null && o.length() > 0) pendingOpen = o; } } catch (Throwable t) {}
     }
 
+    /* 3.106: «share to Thabat» — text and up to four pictures from another app wait here until the page takes them (Bridge.takeShare) */
+    static String pendingShare = null;
+    void readShare(Intent i) {
+        try {
+            if (i == null) return;
+            String act = i.getAction();
+            if (!Intent.ACTION_SEND.equals(act) && !Intent.ACTION_SEND_MULTIPLE.equals(act)) return;
+            org.json.JSONObject o = new org.json.JSONObject();
+            CharSequence tx = i.getCharSequenceExtra(Intent.EXTRA_TEXT);
+            if (tx != null && tx.length() > 0) o.put("text", tx.toString());
+            String sub = i.getStringExtra(Intent.EXTRA_SUBJECT);
+            if (sub != null && sub.length() > 0) o.put("subject", sub);
+            java.util.ArrayList<android.net.Uri> us = new java.util.ArrayList<android.net.Uri>();
+            if (Intent.ACTION_SEND.equals(act)) { android.net.Uri u = (android.net.Uri) i.getParcelableExtra(Intent.EXTRA_STREAM); if (u != null) us.add(u); }
+            else { java.util.ArrayList<android.os.Parcelable> L = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM); if (L != null) for (android.os.Parcelable p : L) if (p instanceof android.net.Uri) us.add((android.net.Uri) p); }
+            org.json.JSONArray im = new org.json.JSONArray();
+            for (android.net.Uri u : us) { if (im.length() >= 4) break; String d = imgData(u); if (d != null) im.put(d); }
+            if (im.length() > 0) o.put("imgs", im);
+            if (o.length() > 0) pendingShare = o.toString();
+            i.setAction(null);
+        } catch (Throwable t) {}
+    }
+
+    String imgData(android.net.Uri u) {
+        try {
+            String mt = getContentResolver().getType(u);
+            if (mt != null && !mt.startsWith("image/")) return null;
+            android.graphics.BitmapFactory.Options op = new android.graphics.BitmapFactory.Options(); op.inJustDecodeBounds = true;
+            java.io.InputStream in = getContentResolver().openInputStream(u); android.graphics.BitmapFactory.decodeStream(in, null, op); in.close();
+            int s = 1; while (Math.max(op.outWidth, op.outHeight) / s > 3200) s *= 2;
+            android.graphics.BitmapFactory.Options op2 = new android.graphics.BitmapFactory.Options(); op2.inSampleSize = s;
+            in = getContentResolver().openInputStream(u); android.graphics.Bitmap b = android.graphics.BitmapFactory.decodeStream(in, null, op2); in.close();
+            if (b == null) return null;
+            int w = b.getWidth(), h = b.getHeight(), m = Math.max(w, h);
+            if (m > 1600) { float k = 1600f / m; b = android.graphics.Bitmap.createScaledBitmap(b, Math.round(w * k), Math.round(h * k), true); }
+            java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+            b.compress(android.graphics.Bitmap.CompressFormat.JPEG, 82, bo);
+            return "data:image/jpeg;base64," + android.util.Base64.encodeToString(bo.toByteArray(), android.util.Base64.NO_WRAP);
+        } catch (Throwable t) { return null; }
+    }
+
     @Override
     protected void onNewIntent(Intent i) {
         super.onNewIntent(i);
         setIntent(i);
         readOpen(i);
+        readShare(i);
     }
 
     static class BackCb implements android.window.OnBackInvokedCallback {

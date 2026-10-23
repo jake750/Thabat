@@ -17,7 +17,11 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "10"; }
+    public String version() { return "11"; }
+
+    /* 3.106: what another app shared to Thabat (JSON {text, subject, imgs:[data URLs]}), once; "" when nothing waits */
+    @JavascriptInterface
+    public String takeShare() { String s = MainActivity.pendingShare; MainActivity.pendingShare = null; return s == null ? "" : s; }
 
     /* 3.93: the Taysir mushafs kept on the phone (TsDl) */
     @JavascriptInterface
