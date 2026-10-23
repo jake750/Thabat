@@ -15,7 +15,7 @@ function dqToggle(k,kind){if(k===todayKey()){qToggle(kind);renderCal();return}co
 function dqHTML(k){const d=S.days[k],q=(d&&d.quran)||{},g=qPgsOf(k),w=qWirdDone(q),mem=qMem().length;
   const row=(kind,on,lab,sub)=>`<div class="dq-r"><button class="dq-ck ${on?'on':''}" data-dq="${kind}" aria-pressed="${on}" title="${esc(on?t('dq.unmark'):t('dq.mark'))}">${ICON_CHECK}</button><div class="dq-t"><span>${lab}</span>${sub?`<small>${sub}</small>`:''}</div></div>`;
   return`<div class="sec dq43"><b>${t('d.quran')}</b>`+
-   row('wird',w,t('dq.wird'),t('dq.wirdS',q.read||0,S.quran.wird))+
+   row('wird',w,t('dq.wird'),(S.quran.wirdU==='min'?t('wm.sub',qWirdMinOf(q),+S.quran.wirdM||20):t('dq.wirdS',q.read||0,S.quran.wird)))+
    row('hifz',!!q.hifz,t('d.qHifz'),q.hifzPages&&q.hifzPages.length?t('q.pageS')+' '+rangesStr(q.hifzPages):'')+
    (mem||q.review?row('review',!!q.review,t('d.qReview'),q.rv&&q.rv.length?t('q.pageS')+' '+rangesStr(q.rv):''):'')+
    (g.length?`<div class="dq-pg"><span>${t('dq.pages',g.length)}</span><small dir="auto">${rangesStr(g)}</small></div>`:'')+`</div>`}

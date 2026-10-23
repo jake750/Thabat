@@ -51,7 +51,7 @@ const qEndPage=()=>((qStart()-2+604)%604)+1;
 const qNextPage=p=>p?(p%604)+1:qStart();
 
 function qDay(k){const d=day(k);if(!d.quran)d.quran={read:0,wird:false,hifz:false,hifzNote:'',hifzPages:[],review:false,rv:null};return d.quran}
-const qWirdDone=q=>!!q&&(q.wird||q.read>=S.quran.wird);
+const qWirdDone=q=>!!q&&(q.wird||(S.quran.wirdU==='min'?qWirdMinOf(q)>=(+S.quran.wirdM||20):q.read>=S.quran.wird));/* 3.108: the wird may be in minutes */
 function qMem(){return [...new Set(S.quran.memorized)].sort((a,b)=>a-b)}
 function qReviewSuggest(){const M=qMem();if(!M.length)return[];const n=Math.min(S.quran.review,M.length),p=S.quran.reviewPtr%M.length,out=[];for(let i=0;i<n;i++)out.push(M[(p+i)%M.length]);return out.sort((a,b)=>a-b)}
 function rangesStr(pages){const a=[...new Set(pages)].sort((x,y)=>x-y),r=[];for(let i=0;i<a.length;i++){let j=i;while(j+1<a.length&&a[j+1]===a[j]+1)j++;r.push(j>i?a[i]+'–'+a[j]:''+a[i]);i=j}return r.join('، ')}
@@ -143,7 +143,7 @@ document.addEventListener('copy',e=>{const sel=getSelection();if(!sel||!sel.rang
   e.clipboardData.setData('text/plain',text);e.preventDefault()});
 function qChecklist(withNote){const q=qDay(todayKey()),Q=S.quran,wd=qWirdDone(q),mem=qMem().length,sug=q.review&&q.rv?q.rv:qReviewSuggest();
   const hsub=(q.hifzPages&&q.hifzPages.length)?t('q.hifzPages',rangesStr(q.hifzPages)):(q.hifzNote?esc(q.hifzNote):t('q.hifzHint'));
-  return `<div class="qchk ${wd?'done':''}" data-qk="wird"><button class="qck">${ICON_CHECK}</button><div class="lb"><b>${t('q.wird')}</b><small>${t('q.wirdSub',q.read,Q.wird)}</small></div>${qCovered(Q.page)<604?`<button class="btn sm" data-qa="p1">${t('q.plus1')}</button>`:''}</div>
+  return `<div class="qchk ${wd?'done':''}" data-qk="wird"><button class="qck">${ICON_CHECK}</button><div class="lb"><b>${t('q.wird')}</b><small>${qWirdSub(q)}</small></div>${qCovered(Q.page)<604?`<button class="btn sm" data-qa="p1">${t('q.plus1')}</button>`:''}</div>
   <div class="qchk ${q.hifz?'done':''}" data-qk="hifz"><button class="qck">${ICON_CHECK}</button><div class="lb"><b>${t('q.hifz')}</b><small title="${esc(hsub)}">${hsub}</small></div></div>
   ${withNote?`<input class="in" id="qHifzNote" style="width:100%;margin:2px 0 6px" dir="auto" placeholder="${esc(t('q.hifzNotePh'))}" value="${esc(q.hifzNote||'')}">`:''}
   <div class="qchk ${q.review?'done':''} ${mem?'':'dis'}" data-qk="review"><button class="qck">${ICON_CHECK}</button><div class="lb"><b>${t('q.review')}</b><small>${mem?t('q.reviewSub',rangesStr(sug))+' · '+surahsOf(sug):t('q.noMem')}</small></div></div>`}
@@ -249,7 +249,7 @@ function renderQSide(){const Q=S.quran,p=Q.page,c=qCovered(p),pct=Math.floor(c/6
   $('#qStU').onchange=fillSt;fillSt();
   $('#qStSave').onclick=()=>{const u=$('#qStU').value;const v=u==='page'?+$('#qStP').value:+$('#qStV').value;if(!(v>=1&&v<=604))return;
     const wasCov=qCovered(Q.page);Q.start=v;if(!Q.kStart||wasCov===0){Q.page=0}qStartOpen=false;Q.view=v%2?v:v-1;save();renderQAll()};
-  $('#qToday').innerHTML=`<h3><span>${t('q.today')}</span><span>${t('q.wirdSub',q.read,Q.wird)}</span></h3>${qChecklist(true)}`;bindQ($('#qToday'));
+  $('#qToday').innerHTML=`<h3><span>${t('q.today')}</span><span>${qWirdSub(q)}</span></h3>${qChecklist(true)}`;bindQ($('#qToday'));
   renderQMap()}
 function qMapRows(){const rows=[];if(S.quran.div==='hizb'){const A=qAthman();for(let h=0;h<60;h++){const a=h?Math.max(rows[h-1][2]+1,A[h*8][0]):1,b=h<59?Math.max(a,A[h*8+8][0]-1):604;rows.push([h+1,a,b])}}
   else for(let j=0;j<30;j++)rows.push([j+1,QJ[j],j<29?QJ[j+1]-1:604]);return rows}
