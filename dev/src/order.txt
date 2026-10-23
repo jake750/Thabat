@@ -336,6 +336,7 @@ js/3-105-automation-through-the-helper-other-pc-pro.js
 js/3-106-share-to-thabat-on-android-shell-41-bridge.js
 js/3-107-tenth-list-a-move-a-day-s-tasks-to-any-day.js
 js/3-108-tenth-list-b-hifz-strength-per-page-share.js
+js/3-109-tenth-list-c-the-week-view-gets-the-class.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

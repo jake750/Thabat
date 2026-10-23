@@ -23,7 +23,7 @@ function nflDuhaAsk(){const k=todayKey();toastAct(t('nfl.duhaQ'),t('nfl.did'),()
 
 /* 7th-4: a nawafil card in the Summary, after the prayers card (it replaces the rawatib and qiyam lines there) */
 function nflCard(){const host=$('#bPray');if(!host)return;let c=$('#bNfl');if(!c){host.insertAdjacentHTML('afterend','<div class="card" id="bNfl" style="margin-bottom:18px"></div>');c=$('#bNfl')}
-  const tk=todayKey(),prevA=bMode==='week'?addDays(bAnchor,-7):new Date(bAnchor.getFullYear(),bAnchor.getMonth()-1,1),A=periodKeys(bMode,bAnchor).filter(k=>k<=tk),B=periodKeys(bMode,prevA).filter(k=>k<=tk);
+  const tk=todayKey(),prevA=bMode==='week'?addDays(bAnchor,-7):brPrevAnchor(bAnchor),A=periodKeys(bMode,bAnchor).filter(k=>k<=tk),B=periodKeys(bMode,prevA).filter(k=>k<=tk);
   const sum=(ks,x)=>ks.reduce((s,k)=>s+(x==='rw'?nflRw(k):+(((S.days[k]||{}).nfl||{})[x])||0),0),days=ks=>ks.filter(k=>nflRk(k)||+(((S.days[k]||{}).nfl||{}).witr)).length,rk=ks=>ks.reduce((s,k)=>s+nflRk(k),0);
   const rows=[['rw','📿','nfl.rw','nfl.rk']].concat(NFL.map(([k,ic,l,,u])=>[k,ic,l,u])).map(([x,ic,l,u])=>{const a=sum(A,x),b=sum(B,x);if(!a&&!b)return'';
     return`<div class="nfcr"><span>${ic} ${esc(t(l))}</span><b>${a}</b><small>${esc(t(u))}</small>${a!==b?`<i class="${a>b?'up':'dn'}">${a>b?'▲':'▼'}${Math.abs(a-b)}</i>`:'<i></i>'}</div>`}).join('');

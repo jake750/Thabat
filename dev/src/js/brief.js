@@ -15,7 +15,7 @@ function periodStats(keys){const tk=todayKey();const r={gold:0,run:0,bestRun:0,k
 function niceStep(maxH){return maxH<=4?1:maxH<=8?2:maxH<=16?4:6}
 function renderBrief(){
   const keys=periodKeys(bMode,bAnchor),st=periodStats(keys);st.byRaw=st.by;st.by=rollBy(st.by);st.days.forEach(d=>{d.byRaw=d.by;d.by=rollBy(d.by)});
-  const prevAnchor=bMode==='week'?addDays(bAnchor,-7):new Date(bAnchor.getFullYear(),bAnchor.getMonth()-1,1);
+  const prevAnchor=bMode==='week'?addDays(bAnchor,-7):brPrevAnchor(bAnchor);
   const pv=periodStats(periodKeys(bMode,prevAnchor));
   const s=keyToDate(keys[0]),e=keyToDate(keys[keys.length-1]);
   $$('#bSeg button').forEach(b=>b.classList.toggle('on',b.dataset.m===bMode));

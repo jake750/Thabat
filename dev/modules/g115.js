@@ -11,13 +11,14 @@ function cwkPaint(){const box=$('#cal');if(!box||CAL2.busy)return;const html=doc
   $('#calSub').textContent=hRange(a,z);
   box.innerHTML=days.map(d=>{const k=dKey(d),day=S.days[k]||{},{tot}=totals(k),g=goalMs(k),p=Math.min(1,g?tot/g:0),fut=k>tk,h=hijri(d);
     const pr=PRAYERS.map(pk=>{const s=fut?null:plStatus(k,pk);return`<i class="wkp ${s||''}" title="${esc(t('pr.'+pk))}"></i>`}).join('');
-    const items=[];evsOn(k).forEach(e=>items.push({tm:e.time||'',tx:e.title||e.t||'',c:e.color||'',ev:1}));(day.tasks||[]).forEach(x=>{if(x.at)items.push({tm:x.at,tx:x.text,done:x.done})});
-    items.sort((x,y)=>String(x.tm||'99').localeCompare(String(y.tm||'99')));
+    const items=[];evsOn(k).forEach(e=>{const md=e.d2&&(!e.rep||e.rep==='none')?(k===e.date?'s':k===e.d2?'e':'m'):'',dn=x=>Math.round((keyToDate(x)-keyToDate(e.date))/864e5)+1;items.push({tm:md?'':(e.time||''),tx:e.title||e.t||'',c:e.color||'',ev:1,id:e.id,md,mi:md?dn(k):0,mn:md?dn(e.d2):0})});(day.tasks||[]).forEach(x=>{if(x.at)items.push({tm:x.at,tx:x.text,done:x.done})});
+    try{(typeof stuToday==='function'?stuToday(k):[]).forEach(c=>items.push({tm:c.a,tx:c.n+(c.r?' · '+c.r:''),cls:1}))}catch(e){}/* 3.109: the class timetable, and multi-day pieces first */
+    items.sort((x,y)=>(!!y.md-!!x.md)||String(x.tm||'99').localeCompare(String(y.tm||'99')));
     const loose=(day.tasks||[]).filter(x=>!x.at);
     return`<div class="wkc ${k===tk?'today':''} ${k===sel?'sel':''} ${fut?'fut':''}" data-k="${k}">
       <button class="wkh" data-wk="${k}"><span>${esc(L().days[d.getDay()])}</span><b>${d.getDate()}</b><small>${h.day} ${esc(h.month)}</small></button>
       <div class="wkbar" title="${esc(fmtHM(tot))}"><i style="width:${(p*100).toFixed(0)}%"></i></div><div class="wkm"><span>${fut?'':esc(fmtHM(tot))}</span><span class="wkps">${pr}</span></div>
-      <div class="wkl">${items.map(x=>`<div class="wki ${x.ev?'ev':''} ${x.done?'done':''}"${x.c?` style="--c:${esc(x.c)}"`:''}><time>${esc(x.tm||'')}</time><span dir="auto">${esc(x.tx)}</span></div>`).join('')}
+      <div class="wkl">${items.map(x=>`<div class="wki ${x.ev?'ev':''} ${x.cls?'cls':''} ${x.md?'md'+x.md:''} ${x.done?'done':''}"${x.c?` style="--c:${esc(x.c)}"`:''}${x.id?` data-ev="${esc(x.id)}"`:''}><time>${esc(x.tm||'')}</time><span dir="auto">${esc(x.tx)}${x.md&&x.md!=='s'?` <small>${x.mi}/${x.mn}</small>`:''}</span></div>`).join('')}
       ${loose.length?`<div class="wkt">${loose.slice(0,6).map(x=>`<span class="${x.done?'done':''}" dir="auto">${esc(x.text)}</span>`).join('')}${loose.length>6?`<small>+${loose.length-6}</small>`:''}</div>`:''}
       ${!items.length&&!loose.length?`<div class="wke">—</div>`:''}</div></div>`}).join('');
   box.querySelectorAll('.wkc').forEach(c=>c.onclick=()=>{selKey=c.dataset.k;renderCal()});
