@@ -89,7 +89,7 @@ function Run-SelfUpdate {
   $wc2 = New-Object System.Net.WebClient; $wc2.Headers.Add('User-Agent', 'Thabat/1.0'); $wc2.DownloadFile($url, $zip)
   Add-Type -AssemblyName System.IO.Compression.FileSystem
   $za = [IO.Compression.ZipFile]::OpenRead($zip)
-  $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat', 'Thabat-Roots.js', 'Uninstall-Thabat.ps1')
+  $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat', 'Thabat-Roots.js', 'Uninstall-Thabat.ps1', 'Thabat-Auto.ps1', 'thabat-auto.cmd')
   $new = @{}
   foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
   $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
@@ -245,17 +245,68 @@ function Send-Response($stream, $status, $type, [byte[]]$body) {
   $stream.Flush()
 }
 
+# 3.105: automation — other programs on this PC (with the key from helper.key, e.g. Thabat-Auto.ps1) queue a task, a note or a timer start/stop;
+# Thabat takes the queue every few seconds while it is open (kept in auto.json until then). And a tray icon (tray.json {on}), on by default.
+$global:autoF = Join-Path $kdir 'auto.json'; $global:autoQ = New-Object System.Collections.ArrayList
+try { if (Test-Path -LiteralPath $global:autoF) { $arr = [IO.File]::ReadAllText($global:autoF, [Text.Encoding]::UTF8) | ConvertFrom-Json; foreach ($x in $arr) { if ($x -and $x.t) { [void]$global:autoQ.Add($x) } } } } catch {}
+function Auto-Save() { try { [IO.File]::WriteAllText($global:autoF, (ConvertTo-Json -InputObject @($global:autoQ) -Depth 4 -Compress), (New-Object System.Text.UTF8Encoding($false))) } catch {} }
+function Auto-Push($o) { if ($global:autoQ.Count -ge 200) { $global:autoQ.RemoveAt(0) }; $o['ts'] = [DateTimeOffset]::Now.ToUnixTimeMilliseconds(); [void]$global:autoQ.Add([pscustomobject]$o); Auto-Save }
+function Q-Dec($s) { try { $v = ([string]$s) -replace '\+', ' '; return [Uri]::UnescapeDataString($v) } catch { return '' } }
+$global:tray = $null; $global:trayF = Join-Path $kdir 'tray.json'; $global:trayTick = [DateTime]::MinValue
+function Tray-On() { try { $o = [IO.File]::ReadAllText($global:trayF) | ConvertFrom-Json; return [bool]$o.on } catch { return $true } }
+function App-Open() { return ((Get-Date) - $global:alive).TotalSeconds -lt 100 }
+function Tray-Say($msg) { if ($global:tray) { try { $global:tray.ShowBalloonTip(2500, 'ثبات', $msg, [System.Windows.Forms.ToolTipIcon]::None) } catch {} } }
+function Tray-Open() { if (App-Open) { Tray-Say 'ثبات مفتوح الآن.'; return }; $vbs = Join-Path $PSScriptRoot 'Thabat.vbs'; if (Test-Path -LiteralPath $vbs) { Start-Process 'wscript.exe' -ArgumentList ('"' + $vbs + '"') } }
+function Tray-Task() {
+  try { Add-Type -AssemblyName Microsoft.VisualBasic; $s = [Microsoft.VisualBasic.Interaction]::InputBox('اكتب المهمة، وتظهر في «اليوم» في ثبات:', 'ثبات — مهمة سريعة', '') } catch { $s = '' }
+  $s = ([string]$s).Trim(); if (-not $s) { return }
+  Auto-Push @{ t = 'task'; text = $s.Substring(0, [Math]::Min(500, $s.Length)) }
+  if (App-Open) { Tray-Say 'أُضيفت المهمة.' } else { Tray-Say 'أُضيفت، وتظهر حين تفتح ثبات.' }
+}
+function Tray-Set() {
+  if (-not (Tray-On)) { if ($global:tray) { try { $global:tray.Visible = $false; $global:tray.Dispose() } catch {}; $global:tray = $null }; return }
+  if ($global:tray) { return }
+  try {
+    Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+    $ni = New-Object System.Windows.Forms.NotifyIcon
+    $ico = Join-Path $PSScriptRoot 'Thabat.ico'
+    if (Test-Path -LiteralPath $ico) { $ni.Icon = New-Object System.Drawing.Icon($ico) } else { $ni.Icon = [System.Drawing.SystemIcons]::Application }
+    $ni.Text = 'ثبات'
+    $m = New-Object System.Windows.Forms.ContextMenuStrip; $m.RightToLeft = [System.Windows.Forms.RightToLeft]::Yes
+    $a = $m.Items.Add('افتح ثبات'); $a.add_Click({ Tray-Open })
+    $b = $m.Items.Add('مهمة سريعة…'); $b.add_Click({ Tray-Task })
+    $c = $m.Items.Add('ابدأ جلسة عمل'); $c.add_Click({ Auto-Push @{ t = 'timer'; a = 'start' }; if (App-Open) { Tray-Say 'بدأت الجلسة.' } else { Tray-Open } })
+    $d = $m.Items.Add('أوقف الجلسة'); $d.add_Click({ Auto-Push @{ t = 'timer'; a = 'stop' }; if (App-Open) { Tray-Say 'أُوقفت الجلسة.' } })
+    [void]$m.Items.Add('-')
+    $e = $m.Items.Add('أخفِ هذه الأيقونة'); $e.add_Click({ try { [IO.File]::WriteAllText($global:trayF, '{"on":false}') } catch {}; Tray-Set })
+    $ni.ContextMenuStrip = $m; $ni.add_DoubleClick({ Tray-Open }); $ni.Visible = $true; $global:tray = $ni
+    $global:trayTick = [DateTime]::MinValue
+  } catch { $global:tray = $null }
+}
+function Tray-Tick() {
+  if ($global:tray) { try { [System.Windows.Forms.Application]::DoEvents() } catch {} }
+  if (((Get-Date) - $global:trayTick).TotalSeconds -lt 30) { return }; $global:trayTick = Get-Date
+  Tray-Set; if (-not $global:tray) { return }
+  $now = [DateTimeOffset]::Now.ToUnixTimeMilliseconds(); $nx = $null
+  foreach ($it in $global:sched) { if ($it[0] -gt $now -and $it[3] -eq 1 -and (-not $nx -or $it[0] -lt $nx[0])) { $nx = $it } }
+  $txt = 'ثبات'
+  if ($nx) { $tm = [DateTimeOffset]::FromUnixTimeMilliseconds($nx[0]).LocalDateTime.ToString('HH:mm'); $txt = ('ثبات · ' + ($nx[1] -replace '[^\p{L}\p{N}\s:·—-]', '').Trim() + ' ' + $tm) }
+  if ($txt.Length -gt 63) { $txt = $txt.Substring(0, 63) }
+  try { $global:tray.Text = $txt } catch {}
+}
+Tray-Set
+
 while ($true) {
   if ($global:lan -and (Get-Date) -gt $global:lanUntil) { Lan-Close }
   $isLan = $false
   if ($listener.Pending()) { $client = $listener.AcceptTcpClient() }
   elseif ($global:lan -and $global:lan.Pending()) { $client = $global:lan.AcceptTcpClient(); $isLan = $true }
   else {
-    Start-Sleep -Milliseconds 150
+    Start-Sleep -Milliseconds 150; Tray-Tick
     if (((Get-Date) - $global:lastTick).TotalSeconds -ge 5) { $global:lastTick = Get-Date; Check-Schedule }
     foreach ($k in @($global:ytjobs.Keys)) { if (((Get-Date) - $global:ytjobs[$k].at).TotalHours -gt 2) { Yt-Clean $k } }
     if ($global:ytjobs.Count -eq 0 -and ((Get-Date) - $global:updTick).TotalSeconds -ge 60) { $global:updTick = Get-Date; Check-Update; if ($global:restart) { break } }
-    if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan -and $global:ytjobs.Count -eq 0) { break }
+    if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan -and $global:ytjobs.Count -eq 0 -and -not $global:tray -and $global:autoQ.Count -eq 0) { break }
     continue
   }
   $last = Get-Date
@@ -287,6 +338,23 @@ while ($true) {
       elseif ($path -like '/lan/get*') { $i = [int]$q['i']; $v = [string]$global:blob.pc[$i]; Send-Response $stream '200 OK' 'text/plain' ($utf8.GetBytes($v)) }
       elseif ($path -like '/lan/put*') { $i = [int]$q['i']; $global:blob.ph[$i] = [string]$q['d']; $global:blobN.ph = [int]$q['n']; $global:lanUntil = (Get-Date).AddMinutes(15); Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}')) }
       else { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{}')) }
+    } elseif ($path -match '^/auto/(task|note|timer)\?(.*)$') {
+      # 3.105: queue one command for Thabat (the key is checked above, like every route)
+      $kind = $matches[1]; $q = @{}; foreach ($kv in ($matches[2] -split '&')) { $a = $kv -split '=', 2; if ($a.Count -eq 2) { $q[$a[0]] = Q-Dec $a[1] } }
+      $o = @{ t = $kind }
+      if ($kind -eq 'task') { $o.text = ([string]$q['text']).Trim(); if ($q['after'] -match '^(fajr|dhuhr|asr|maghrib|isha)$') { $o.after = $q['after'] }; if ($q['day'] -match '^\d{4}-\d{2}-\d{2}$') { $o.day = $q['day'] }; if ($q['at'] -match '^\d{2}:\d{2}$') { $o.at = $q['at'] } }
+      elseif ($kind -eq 'note') { $o.title = ([string]$q['title']).Trim(); $o.body = [string]$q['body'] }
+      else { $o.a = [string]$q['a']; if ($q['cat'] -match '^[\w-]{1,40}$') { $o.cat = $q['cat'] } }
+      $bad = ($kind -eq 'task' -and -not $o.text) -or ($kind -eq 'note' -and -not $o.title -and -not $o.body) -or ($kind -eq 'timer' -and $o.a -notmatch '^(start|stop)$')
+      if ($bad -or ("$($o.text)$($o.title)$($o.body)").Length -gt 20000) { Send-Response $stream '400 Bad Request' 'application/json' ($utf8.GetBytes('{"error":"bad"}')) }
+      else { Auto-Push $o; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true,"queued":' + $global:autoQ.Count + ',"open":' + ([string](App-Open)).ToLower() + '}')) }
+    } elseif ($path -like '/auto/take*') {
+      $arr = @($global:autoQ); $global:autoQ.Clear(); Auto-Save
+      $js = if ($arr.Count) { ConvertTo-Json -InputObject $arr -Depth 4 -Compress } else { '[]' }; if ($arr.Count -eq 1 -and $js -notmatch '^\[') { $js = '[' + $js + ']' }
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes($js))
+    } elseif ($path -match '^/tray(\?on=([01]))?$') {
+      if ($matches[2]) { try { [IO.File]::WriteAllText($global:trayF, ('{"on":' + ($(if ($matches[2] -eq '1') { 'true' } else { 'false' })) + '}')) } catch {}; $global:trayTick = [DateTime]::MinValue; Tray-Set }
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"on":' + ([string](Tray-On)).ToLower() + ',"shown":' + ([string]([bool]$global:tray)).ToLower() + '}'))
     } elseif ($path -like '/lanopen*') {
       Lan-Close
       try {
@@ -571,6 +639,7 @@ public static class ThabatFolderPick {
   if ($global:restart) { break }
 }
 Lan-Close
+if ($global:tray) { try { $global:tray.Visible = $false; $global:tray.Dispose() } catch {} }
 $listener.Stop()
 # after an update that changed this file: start the new helper (the port is free now)
 if ($global:restart) { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + (Join-Path $PSScriptRoot 'Thabat-Helper.ps1') + '"') }

@@ -332,6 +332,7 @@ js/3-101-the-phone-switches-between-two-mushafs-on.js
 js/3-102-a-table-on-the-board-a-map-of-the-notes-li.js
 js/3-103-the-theme-editor-own-accent-and-water-colo.js
 js/3-104-import-tasks-from-todoist-csv-ticktick-bac.js
+js/3-105-automation-through-the-helper-other-pc-pro.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
