@@ -252,6 +252,32 @@ try { if (Test-Path -LiteralPath $global:autoF) { $arr = [IO.File]::ReadAllText(
 function Auto-Save() { try { [IO.File]::WriteAllText($global:autoF, (ConvertTo-Json -InputObject @($global:autoQ) -Depth 4 -Compress), (New-Object System.Text.UTF8Encoding($false))) } catch {} }
 function Auto-Push($o) { if ($global:autoQ.Count -ge 200) { $global:autoQ.RemoveAt(0) }; $o['ts'] = [DateTimeOffset]::Now.ToUnixTimeMilliseconds(); [void]$global:autoQ.Add([pscustomobject]$o); Auto-Save }
 function Q-Dec($s) { try { $v = ([string]$s) -replace '\+', ' '; return [Uri]::UnescapeDataString($v) } catch { return '' } }
+# 3.110: the title of a web page pasted into a note (public http/https addresses only; nothing on this PC or the home network)
+function Page-Title($u) {
+  if ($u -notmatch '^https?://[^\s/?#]+') { return $null }
+  try { $uri = [Uri]$u } catch { return $null }
+  try { $ips = [System.Net.Dns]::GetHostAddresses($uri.Host) } catch { return $null }
+  foreach ($ip in $ips) { $b = $ip.GetAddressBytes(); $v4 = $ip.AddressFamily -eq 'InterNetwork'
+    if ([System.Net.IPAddress]::IsLoopback($ip) -or $ip.IsIPv6LinkLocal -or $ip.IsIPv6SiteLocal) { return $null }
+    if ($v4 -and ($b[0] -eq 10 -or $b[0] -eq 127 -or $b[0] -eq 0 -or ($b[0] -eq 169 -and $b[1] -eq 254) -or ($b[0] -eq 172 -and $b[1] -ge 16 -and $b[1] -le 31) -or ($b[0] -eq 192 -and $b[1] -eq 168) -or ($b[0] -eq 100 -and $b[1] -ge 64 -and $b[1] -le 127))) { return $null }
+    if (-not $v4 -and ($b[0] -band 0xfe) -eq 0xfc) { return $null } }
+  try {
+    $rq = [System.Net.HttpWebRequest]::Create($uri); $rq.Timeout = 8000; $rq.ReadWriteTimeout = 8000; $rq.AllowAutoRedirect = $true; $rq.MaximumAutomaticRedirections = 4
+    $rq.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Thabat'; $rq.Accept = 'text/html,*/*;q=0.5'
+    $rs = $rq.GetResponse(); $st = $rs.GetResponseStream(); $buf = New-Object byte[] 307200; $n = 0
+    while ($n -lt $buf.Length) { $r = $st.Read($buf, $n, $buf.Length - $n); if ($r -le 0) { break }; $n += $r }
+    $rs.Close()
+    $html = [Text.Encoding]::UTF8.GetString($buf, 0, $n)
+    $tt = ''
+    if ($html -match '<meta[^>]+property=["'']og:title["''][^>]+content=["'']([^"'']+)') { $tt = $matches[1] }
+    elseif ($html -match '<meta[^>]+content=["'']([^"'']+)["''][^>]+property=["'']og:title') { $tt = $matches[1] }
+    elseif ($html -match '(?is)<title[^>]*>(.*?)</title>') { $tt = $matches[1] }
+    $tt = [System.Net.WebUtility]::HtmlDecode(($tt -replace '\s+', ' ').Trim())
+    if ($tt.Length -gt 200) { $tt = $tt.Substring(0, 200) }
+    return $tt
+  } catch { return $null }
+}
+
 $global:tray = $null; $global:trayF = Join-Path $kdir 'tray.json'; $global:trayTick = [DateTime]::MinValue
 function Tray-On() { try { $o = [IO.File]::ReadAllText($global:trayF) | ConvertFrom-Json; return [bool]$o.on } catch { return $true } }
 function App-Open() { return ((Get-Date) - $global:alive).TotalSeconds -lt 100 }
@@ -355,6 +381,10 @@ while ($true) {
     } elseif ($path -match '^/tray(\?on=([01]))?$') {
       if ($matches[2]) { try { [IO.File]::WriteAllText($global:trayF, ('{"on":' + ($(if ($matches[2] -eq '1') { 'true' } else { 'false' })) + '}')) } catch {}; $global:trayTick = [DateTime]::MinValue; Tray-Set }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"on":' + ([string](Tray-On)).ToLower() + ',"shown":' + ([string]([bool]$global:tray)).ToLower() + '}'))
+    } elseif ($path -match '^/title\?u=(.+)$') {
+      $tt = Page-Title (Q-Dec $matches[1])
+      if ($tt -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"title"}')) }
+      else { Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes((ConvertTo-Json -InputObject @{ t = $tt } -Compress))) }
     } elseif ($path -like '/lanopen*') {
       Lan-Close
       try {
