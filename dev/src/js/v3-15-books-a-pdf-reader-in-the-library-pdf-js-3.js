@@ -48,7 +48,7 @@ function bkHlBind(v){let d=null;
   v.addEventListener('pointerdown',e=>{if(!BK.hl)return;const pe=e.target.closest('.bkp');if(!pe)return;const hi=e.target.closest('.bkhl i');if(hi){const n=+pe.dataset.p,r=BKS()[BK.key];r.hl[n].splice(+hi.dataset.i,1);if(!r.hl[n].length)delete r.hl[n];save();bkDrawHl(n);return}
     const rc=pe.getBoundingClientRect();d={pe,rc,x0:(e.clientX-rc.left)/rc.width,y0:(e.clientY-rc.top)/rc.height,el:document.createElement('i')};d.el.className='draft';pe.querySelector('.bkhl').append(d.el);pe.setPointerCapture&&pe.setPointerCapture(e.pointerId);e.preventDefault()});
   v.addEventListener('pointermove',e=>{if(!d)return;const x=(e.clientX-d.rc.left)/d.rc.width,y=(e.clientY-d.rc.top)/d.rc.height,a=Math.min(d.x0,x),b=Math.min(d.y0,y);Object.assign(d.el.style,{left:a*100+'%',top:b*100+'%',width:Math.abs(x-d.x0)*100+'%',height:Math.max(.012,Math.abs(y-d.y0))*100+'%'});d.box=[a,b,Math.abs(x-d.x0),Math.max(.012,Math.abs(y-d.y0))]});
-  const end=()=>{if(!d)return;const n=+d.pe.dataset.p,r=BKS()[BK.key];if(d.box&&d.box[2]>.01){(r.hl[n]=r.hl[n]||[]).push(d.box.map(z=>Math.round(z*1000)/1000));save()}d.el.remove();bkDrawHl(n);d=null};
+  const end=()=>{if(!d)return;const n=+d.pe.dataset.p,r=BKS()[BK.key];if(d.box&&d.box[2]>.01){(r.hl[n]=r.hl[n]||[]).push(bkHlC(d.box.map(z=>Math.round(z*1000)/1000)));save()}d.el.remove();bkDrawHl(n);d=null};
   v.addEventListener('pointerup',end);v.addEventListener('pointercancel',end)}
 /* bookmarks, notes and highlights of this book; go to a page */
 function bkPanel(){const p=$('#bkPanel');if(!p.hidden){p.hidden=true;return}const r=BKS()[BK.key],pages=[...new Set([...r.bm,...Object.keys(r.nt).map(Number),...Object.keys(r.hl).map(Number)])].sort((a,b)=>a-b);

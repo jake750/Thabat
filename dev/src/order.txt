@@ -328,6 +328,7 @@ js/v3-97-0-live-sync-with-an-obsidian-vault-folder.js
 js/3-98-nawafil-one-record-for-qiyam-and-witr-taraw.js
 js/3-99-taysir-the-mushaf-s-introduction-pages-phon.js
 js/3-100-obsidian-pictures-as-vault-attachments-cho.js
+js/3-101-the-phone-switches-between-two-mushafs-on.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
