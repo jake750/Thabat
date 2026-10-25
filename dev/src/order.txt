@@ -349,6 +349,7 @@ js/3-118-eleventh-list-b-late-prayer-reasons-in-the.js
 js/3-119-eleventh-list-c-calendar-week-on-an-hours.js
 js/3-120-eleventh-list-d-summary-a-toast-on-a-new-r.js
 js/3-121-eleventh-list-e1-notes-renaming-updates-li.js
+js/3-122-eleventh-list-e2-notes-notion-tables-and-p.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

@@ -7,7 +7,7 @@ async function ntnEntries(file){const out=[];const walk=async(f,depth)=>{for(con
 function ntnOpen(){const inp=document.createElement('input');inp.type='file';inp.accept='.zip,application/zip';inp.style.display='none';document.body.append(inp);
   inp.onchange=async()=>{const f=inp.files[0];inp.remove();if(!f)return;let es;try{es=await ntnEntries(f)}catch(e){toast(t('ntn.bad'));return}
     const md=es.filter(e=>/\.md$/i.test(e.path)),csv=es.filter(e=>/\.csv$/i.test(e.path)).length,img=es.filter(e=>/\.(png|jpe?g|gif|webp|bmp)$/i.test(e.path));
-    if(!md.length){toast(t('ntn.none'));return}const have=new Set(NOTES().map(n=>n.id)),fresh=md.filter(e=>!have.has('ntn-'+bkHash(e.path))).length;
+    if(!md.length&&!csv){toast(t('ntn.none'));return}const have=new Set(NOTES().map(n=>n.id)),fresh=es.filter(e=>/\.(md|csv)$/i.test(e.path)&&!have.has('ntn-'+bkHash(e.path))).length;
     openInfo(t('ntn.t'),`<div class="ntnw"><p>${esc(t('ntn.found',md.length,img.length))}</p>${csv?`<p class="muted">${esc(t('ntn.csv',csv))}</p>`:''}${fresh<md.length?`<p class="muted">${esc(t('ntn.dup',md.length-fresh))}</p>`:''}
       <label class="row" style="gap:8px"><input type="checkbox" id="ntnIn" checked> ${esc(t('ntn.inOne'))}</label><button class="btn pri" id="ntnGo" ${fresh?'':'disabled'}>${esc(t('ntn.go',fresh))}</button><p class="muted" id="ntnSt"></p></div>`);
     $('#ntnGo').onclick=()=>ntnRun(es,$('#ntnIn').checked)};inp.click()}
@@ -18,12 +18,13 @@ async function ntnRun(es,inOne){const btn=$('#ntnGo');if(btn)btn.disabled=true;c
   const titleOf=p=>ntnName(p.split('/').pop());let i=0,pics=0;
   for(const e of md){i++;if(st)st.textContent=t('ntn.prog',i,md.length);const id='ntn-'+bkHash(e.path);if(have.has(id))continue;
     let body='';try{body=await (await e.get()).text()}catch(x){continue}const dir=e.path.split('/').slice(0,-1).join('/'),title=titleOf(e.path);
-    body=body.replace(/^﻿/,'').replace(/^#\s+(.+)\n+/,(m,h)=>h.trim()===title?'':m);
+    body=body.replace(/^﻿/,'').replace(/^#\s+(.+)\n+/,(m,h)=>h.trim()===title?'':m);body=ntnProps(body);
     const imgs=[];body=await (async()=>{const re=/!\[([^\]]*)\]\(([^)]+)\)/g;let out='',last=0,m;while((m=re.exec(body))){out+=body.slice(last,m.index);last=re.lastIndex;const src=m[2].trim();
       if(/^https?:/i.test(src)){out+=m[0];continue}const p=(dir?dir+'/':'')+decodeURIComponent(src).replace(/^\.\//,'');const fe=files.get(p);
       if(fe){try{const d=await shrinkImage(await fe.get());const iid=uid();await idbSet('nimg:'+iid,d);imgs.push(iid);pics++;continue}catch(x){}}out+=m[0]}return out+body.slice(last)})();
     body=body.replace(/\[([^\]]+)\]\(([^)]+?\.md)\)/g,(m,tx,href)=>/^https?:/i.test(href)?m:`[[${ntnName(decodeURIComponent(href).split('/').pop())}]]`).replace(/\n{3,}/g,'\n\n').trim();
     const now=Date.now(),fd=folderOf(dir),n={id,title:title.slice(0,200),body,imgs,created:now,updated:now,day:todayKey(),ntn:1};if(fd)n.fd=fd;NOTES().push(n);made.push(id)}
+  for(const e of es.filter(x=>/\.csv$/i.test(x.path))){const id='ntn-'+bkHash(e.path);if(have.has(id))continue;let tx='';try{tx=await (await e.get()).text()}catch(x){continue}const mdT=ntnCsvMd(tx);if(!mdT)continue;const dir=e.path.split('/').slice(0,-1).join('/'),now=Date.now(),fd=folderOf(dir),n={id,title:titleOf(e.path).slice(0,200),body:mdT,imgs:[],created:now,updated:now,day:todayKey(),ntn:1};if(fd)n.fd=fd;NOTES().push(n);made.push(id)}
   /* folders that got no notes and no sub-folders with notes are dropped */
   const used=new Set(NOTES().filter(n=>n.fd).map(n=>n.fd));let changed=true;while(changed){changed=false;NFOLD().forEach(x=>{if(x.parent&&used.has(x.id)&&!used.has(x.parent)){used.add(x.parent);changed=true}})}
   S.nfold=NFOLD().filter(x=>!mkF.includes(x.id)||used.has(x.id));save();try{notesChanged()}catch(e){}$$('.modal.on').forEach(m=>m.classList.remove('on'));
