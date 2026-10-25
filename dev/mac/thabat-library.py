@@ -111,6 +111,73 @@ def walk(ri, root, d, depth, count):
     return kids
 
 
+# 3.124: video conversion (needs ffmpeg, e.g. from Homebrew) and uploads from the phone, as on Windows
+CONV = os.path.join(DIR, 'conv')
+os.makedirs(CONV, exist_ok=True)
+CVJ = {}   # id -> {'s','p','proc'}
+OKEXT = VID | AUD | {'pdf', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'heic'}
+
+
+def ffbin(name):
+    import shutil
+    return shutil.which(name, path=os.environ.get('PATH', '') + os.pathsep + '/opt/homebrew/bin' + os.pathsep + '/usr/local/bin')
+
+
+def cv_state(sid):
+    if os.path.exists(os.path.join(CONV, sid + '.mp4')):
+        return {'s': 'ok', 'p': 100}
+    j = CVJ.get(sid)
+    if j:
+        return {'s': j['s'], 'p': j['p']}
+    return {'s': 'none', 'p': 0}
+
+
+def cv_run(sid, src, lite):
+    ff, fp = ffbin('ffmpeg'), ffbin('ffprobe')
+    part, out = os.path.join(CONV, sid + '.part.mp4'), os.path.join(CONV, sid + '.mp4')
+    dur, vc, ac = 0.0, '', ''
+    try:
+        info = json.loads(subprocess.run([fp, '-v', 'error', '-show_entries', 'stream=codec_type,codec_name:format=duration', '-of', 'json', src], capture_output=True, text=True, timeout=60).stdout or '{}')
+        dur = float((info.get('format') or {}).get('duration') or 0)
+        for st in info.get('streams') or []:
+            if st.get('codec_type') == 'video' and not vc:
+                vc = st.get('codec_name') or ''
+            if st.get('codec_type') == 'audio' and not ac:
+                ac = st.get('codec_name') or ''
+    except Exception:
+        pass
+    a = [ff, '-y', '-hide_banner', '-loglevel', 'error', '-i', src, '-map', '0:v:0?', '-map', '0:a:0?', '-sn', '-dn']
+    if lite:
+        a += ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '28', '-pix_fmt', 'yuv420p', '-vf', "scale=-2:'min(720,trunc(ih/2)*2)'", '-c:a', 'aac', '-b:a', '96k', '-ac', '2']
+    else:
+        a += ['-c:v', 'copy'] if vc == 'h264' else ['-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p', '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2']
+        a += ['-c:a', 'copy'] if ac in ('aac', 'mp3') else ['-c:a', 'aac', '-b:a', '160k', '-ac', '2']
+    a += ['-movflags', '+faststart', '-progress', 'pipe:1', '-nostats', part]
+    j = CVJ[sid]
+    try:
+        p = subprocess.Popen(a, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+        j['proc'] = p
+        for line in p.stdout:
+            m = re.match(r'out_time_(?:us|ms)=(\d+)', line.strip())
+            if m and dur > 0:
+                j['p'] = min(99, round(int(m.group(1)) / 1e6 / dur * 100))
+        p.wait()
+        if p.returncode == 0 and os.path.exists(part):
+            os.replace(part, out)
+            CVJ.pop(sid, None)
+            return
+    except Exception:
+        pass
+    try:
+        os.remove(part)
+    except Exception:
+        pass
+    if j.get('cancel'):
+        CVJ.pop(sid, None)
+    else:
+        j['s'], j['p'] = 'err', 0
+
+
 class H(BaseHTTPRequestHandler):
     protocol_version = 'HTTP/1.1'
 
@@ -216,8 +283,84 @@ class H(BaseHTTPRequestHandler):
             if os.path.exists(tf):
                 return self.send(200, 'image/jpeg', open(tf, 'rb').read(), {'Cache-Control': 'max-age=86400'})
             return self.fail(404, 'none')
+        if r.startswith('/cv/'):
+            sid0 = re.sub(r'[^A-Za-z0-9_\-]', '', q.get('id', ''))
+            if not sid0:
+                return self.fail(400, 'id')
+            lite = q.get('lite') == '1'
+            sid = sid0 + '-lite' if lite else sid0
+            ff = bool(ffbin('ffmpeg') and ffbin('ffprobe'))
+            st = cv_state(sid)
+            if r == '/cv/state':
+                return self.js({'ok': True, 'ff': ff, 'st': st})
+            if r == '/cv/start':
+                if st['s'] not in ('ok', 'run'):
+                    if not ff:
+                        return self.fail(428, 'ffmpeg')
+                    full = resolve(cfg, sid0)
+                    if not full or not os.path.isfile(full):
+                        return self.fail(404, 'path')
+                    CVJ[sid] = {'s': 'run', 'p': 0}
+                    threading.Thread(target=cv_run, args=(sid, full, lite), daemon=True).start()
+                    st = {'s': 'run', 'p': 0}
+                return self.js({'ok': True, 'ff': ff, 'st': st})
+            if r == '/cv/cancel':
+                j = CVJ.get(sid)
+                if j and j.get('proc'):
+                    j['cancel'] = 1
+                    try:
+                        j['proc'].kill()
+                    except Exception:
+                        pass
+                return self.js({'ok': True})
+            return self.fail(404, 'route')
+        if r == '/put':
+            if self.command != 'POST':
+                return self.fail(405, 'method')
+            dq = q.get('dir', '')
+            m = re.match(r'^r(\d+)$', dq)
+            d = os.path.realpath(cfg['roots'][int(m.group(1))]) if m and int(m.group(1)) < len(cfg['roots']) else resolve(cfg, dq)
+            if not d or not os.path.isdir(d):
+                return self.fail(404, 'dir')
+            nm = re.sub(r'[\x00-\x1f<>:"/\\|?*]', '_', os.path.basename(q.get('n', '').replace('\\', '/'))).strip().lstrip('.').rstrip('. ')
+            base, ext = os.path.splitext(nm)
+            if len(nm) > 180:
+                nm = base[:180 - len(ext)] + ext
+                base = os.path.splitext(nm)[0]
+            if not nm or ext.lstrip('.').lower() not in OKEXT:
+                return self.fail(415, 'type')
+            n = int(self.headers.get('Content-Length') or 0)
+            if n <= 0 or n > 2147483648:
+                return self.fail(413, 'size')
+            dst, k = os.path.join(d, nm), 2
+            while os.path.exists(dst) and k < 1000:
+                dst = os.path.join(d, '%s (%d)%s' % (base, k, ext))
+                k += 1
+            part = os.path.join(d, '.thabat-upload-%s.part' % secrets.token_hex(8))
+            got = 0
+            with open(part, 'xb') as fo:
+                while got < n:
+                    b = self.rfile.read(min(262144, n - got))
+                    if not b:
+                        break
+                    fo.write(b)
+                    got += len(b)
+            if got != n:
+                os.remove(part)
+                return self.fail(400, 'short')
+            if os.path.exists(dst):
+                os.remove(part)
+                return self.fail(409, 'exists')
+            os.replace(part, dst)
+            iid = ''
+            for i, root in enumerate(cfg['roots']):
+                rt = os.path.realpath(root)
+                if dst.startswith(rt + os.sep):
+                    iid = id_of(i, os.path.relpath(dst, rt).replace(os.sep, '/'))
+                    break
+            return self.js({'ok': True, 'n': os.path.basename(dst), 'id': iid, 'size': got})
         if r == '/f':
-            full = resolve(cfg, q.get('id', ''))
+            full = os.path.join(CONV, re.sub(r'[^A-Za-z0-9_\-]', '', q.get('id', '')) + '.mp4') if q.get('cv') == '1' else resolve(cfg, q.get('id', ''))
             if not full or not os.path.isfile(full):
                 return self.fail(404, 'path')
             size = os.path.getsize(full)
@@ -250,7 +393,7 @@ class H(BaseHTTPRequestHandler):
                         self.wfile.write(b)
                         left -= len(b)
             return
-        # transcription, OCR, conversion, uploads and the Taysir copies are Windows-only for now
+        # transcription, OCR, recordings and the Taysir copies are Windows-only for now
         return self.fail(404, 'route')
 
 
