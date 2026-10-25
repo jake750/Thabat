@@ -115,3 +115,4 @@ html.calwkon #calSky,html.calwkon #calCount,html.calwkon #cal2Box{display:none!i
 .lxbpop small{color:var(--muted);font-size:11px;margin-inline-start:6px}.lxbf{display:grid;gap:10px}.lxbf label{display:grid;gap:4px}
 html.lxside .lbpl{inset-inline-end:46%}html.lxside .bkr{inset-inline-start:54%;border-inline-start:1px solid #333}
 @media (max-width:900px){html.lxside .lbpl{inset-inline-end:0;bottom:56%}html.lxside .bkr{inset-inline-start:0;top:44%;border-inline-start:0;border-top:1px solid #333}}
+.ntnw{display:grid;gap:10px}.ntnw p{margin:0}
