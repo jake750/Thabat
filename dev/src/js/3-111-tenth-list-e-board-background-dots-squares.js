@@ -38,7 +38,7 @@ function wbTpl3(kind){const[cx,cy]=wbViewCenter(),add=[],rtl=document.documentEl
   if(!add.length)return;wbSnap();wbEls().push(...add);save();wbSetSel([]);wbRender();wbFit()}
 
 /* 10th-59: comments on any element: e.cm=[{id,t,at}]; a small count badge opens them */
-function wbCmPaint(){if(!WB||!WB.nodes)return;wbEls().forEach(e=>{const n=WB.nodes[e.id];if(!n)return;let b=n.querySelector(':scope>.wbcm');const c=(e.cm||[]).length;if(!c){if(b)b.remove();return}
+function wbCmPaint(){if(!WB||!WB.nodes)return;wbEls().forEach(e=>{const n=WB.nodes[e.id];if(!n)return;let b=n.querySelector(':scope>.wbcm');const c=(e.cm||[]).filter(x=>!x.done).length;if(!c){if(b)b.remove();return}
   if(!b){n.insertAdjacentHTML('beforeend',`<button class="wbcm" data-wbcm="${e.id}"></button>`);b=n.querySelector(':scope>.wbcm')}b.textContent='💬 '+c;try{uicPass(b)}catch(x){}})}
 {hookFn('wbRefresh',()=>wbRefresh,f=>{wbRefresh=f},'post',function(){try{wbCmPaint()}catch(e){}})}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-wbcm]');if(!b)return;e.stopPropagation();e.preventDefault();wbCmOpen(b.dataset.wbcm)},true);
