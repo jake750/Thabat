@@ -1,0 +1,29 @@
+/* v3.125.1 own select lists */
+.rpk{position:fixed;inset:0;z-index:9990}
+.rpkbox{position:fixed;display:flex;flex-direction:column;min-width:0;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.42),0 2px 8px rgba(0,0,0,.2);overflow:hidden;animation:rpkIn .14s ease-out}
+html.st-glass .rpkbox{background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(18px) saturate(1.2)}
+@keyframes rpkIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.rpkl{overflow-y:auto;overscroll-behavior:contain;padding:6px;min-height:0;flex:1 1 auto;scrollbar-width:thin}
+.rpks{margin:8px 8px 2px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-size:14px;min-width:0}
+.rpks:focus{outline:2px solid color-mix(in srgb,var(--accent) 60%,transparent);outline-offset:0}
+.rpkg{position:sticky;top:-6px;z-index:1;margin:6px -6px 2px;padding:8px 16px 6px;font-size:11.5px;font-weight:600;color:var(--muted);background:inherit;letter-spacing:.2px;border-top:1px solid var(--line)}
+.rpkl>.rpkg:first-child{border-top:0;margin-top:-6px}
+.rpkbox .rpkg{background:var(--panel)}
+.rpki{display:flex;align-items:center;gap:10px;width:100%;min-height:38px;padding:7px 12px;border:0;border-radius:9px;background:transparent;color:inherit;font:inherit;font-size:14px;text-align:start;cursor:pointer}
+.rpki.act{background:color-mix(in srgb,var(--text) 8%,transparent)}
+.rpki.on{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accInk,var(--accent))}
+.rpki[disabled]{opacity:.45;cursor:default}
+.rpkt{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rpkt b{font-weight:500;overflow-wrap:anywhere}.rpki.on .rpkt b{font-weight:600}
+.rpkt small{font-size:12px;color:var(--muted);font-weight:400}
+.rpkc{font-style:normal;font-weight:700;flex:none}
+.rpke{padding:14px;color:var(--muted);text-align:center;font-size:13px}
+.rpk.mob{background:rgba(0,0,0,.45);animation:rpkFd .16s}
+@keyframes rpkFd{from{opacity:0}}
+.rpk.mob .rpkbox{left:0;right:0;bottom:0;top:auto;max-height:calc(78dvh / var(--uiz,1));border-radius:20px 20px 0 0;border-bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);animation:rpkUp .2s ease-out;transition:transform .18s}
+@keyframes rpkUp{from{transform:translateY(40%);opacity:.4}}
+.rpkgrab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:9px auto 2px;flex:none}
+.rpkh{padding:6px 18px 4px;font-weight:600;font-size:15px;flex:none}
+.rpk.mob .rpki{min-height:48px;font-size:15px;padding:9px 14px}
+.rpk.mob .rpkl{padding:6px 8px 12px}
+html.rmotion .rpkbox,html.rmotion .rpk.mob{animation:none}
