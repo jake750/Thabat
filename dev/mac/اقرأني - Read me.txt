@@ -71,4 +71,8 @@ If you open the files from this zip (macOS 15 and later)
 - Not available on the Mac (they need the Windows helper): link downloads, LAN transfer,
   external calendar by URL, active-app detection, notifications while closed.
 - Sync with your phone through GitHub works.
+- Video library from this Mac: double-click Thabat-Library.command (it needs Python 3; macOS offers
+  to install Apple's command line tools the first time). It asks for your course folders and whether to
+  start at sign-in; then Thabat > Library > Settings shows the pairing code for the phone.
+  المكتبة من الماك: انقر نقرتين على Thabat-Library.command، واختر مجلدات الدورات، ثم خذ رمز الربط من إعدادات المكتبة في ثبات.
 Created by jake750_. See LICENSE.txt.
