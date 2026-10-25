@@ -16,7 +16,9 @@ final class WTheme {
         { {"w3_root"}, {"w3_count"}, {"w3_text"}, {"w3_goal", "w3_next"}, {}, {} },
         { {"w4_root"}, {"w4_lbl"}, {"w4_text"}, {"w4_sub"}, {"w4_done"}, {} },
         { {"w5_root"}, {"w5_ref"}, {"w5_text"}, {}, {}, {} },
-        { {"w6_root"}, {"w6_count"}, {"w6_title"}, {}, {"w6_add"}, {"w6_bar"} }
+        { {"w6_root"}, {"w6_count"}, {"w6_title"}, {}, {"w6_add"}, {"w6_bar"} },
+        { {}, {}, {}, {}, {}, {} },
+        { {"w8_root"}, {"w8_lbl"}, {"w8_title"}, {"w8_sub"}, {}, {"w8_bar"} }
     };
 
     static void apply(Context c, RemoteViews v, int widget) {

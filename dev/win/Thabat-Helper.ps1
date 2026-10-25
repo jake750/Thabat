@@ -251,6 +251,29 @@ $global:autoF = Join-Path $kdir 'auto.json'; $global:autoQ = New-Object System.C
 try { if (Test-Path -LiteralPath $global:autoF) { $arr = [IO.File]::ReadAllText($global:autoF, [Text.Encoding]::UTF8) | ConvertFrom-Json; foreach ($x in $arr) { if ($x -and $x.t) { [void]$global:autoQ.Add($x) } } } } catch {}
 function Auto-Save() { try { [IO.File]::WriteAllText($global:autoF, (ConvertTo-Json -InputObject @($global:autoQ) -Depth 4 -Compress), (New-Object System.Text.UTF8Encoding($false))) } catch {} }
 function Auto-Push($o) { if ($global:autoQ.Count -ge 200) { $global:autoQ.RemoveAt(0) }; $o['ts'] = [DateTimeOffset]::Now.ToUnixTimeMilliseconds(); [void]$global:autoQ.Add([pscustomobject]$o); Auto-Save }
+# 3.125: «Open with Thabat» for PDF files and thabat:// links (this user's registry only); the opened PDF is read once through /lfile
+$global:pdfOk = New-Object 'System.Collections.Generic.HashSet[string]'
+function Assoc-On() { return (Test-Path 'HKCU:\Software\Classes\Thabat.PDF\shell\open\command') }
+function Assoc-Set($on) {
+  $auto = Join-Path $PSScriptRoot 'Thabat-Auto.ps1'; $ico = Join-Path $PSScriptRoot 'Thabat.ico'
+  $pre = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $auto + '" '
+  $C = 'HKCU:\Software\Classes'
+  if ($on) {
+    foreach ($k in @("$C\Thabat.PDF", "$C\Thabat.PDF\shell", "$C\Thabat.PDF\shell\open", "$C\Thabat.PDF\shell\open\command", "$C\Thabat.PDF\DefaultIcon", "$C\.pdf", "$C\.pdf\OpenWithProgids", "$C\thabat", "$C\thabat\shell", "$C\thabat\shell\open", "$C\thabat\shell\open\command")) { if (-not (Test-Path $k)) { New-Item -Path $k | Out-Null } }
+    Set-ItemProperty -Path "$C\Thabat.PDF" -Name '(default)' -Value 'PDF (Thabat)'
+    Set-ItemProperty -Path "$C\Thabat.PDF\DefaultIcon" -Name '(default)' -Value $ico
+    Set-ItemProperty -Path "$C\Thabat.PDF\shell\open\command" -Name '(default)' -Value ($pre + 'pdf "%1"')
+    New-ItemProperty -Path "$C\.pdf\OpenWithProgids" -Name 'Thabat.PDF' -Value '' -PropertyType String -Force | Out-Null
+    Set-ItemProperty -Path "$C\thabat" -Name '(default)' -Value 'URL:Thabat'
+    New-ItemProperty -Path "$C\thabat" -Name 'URL Protocol' -Value '' -PropertyType String -Force | Out-Null
+    Set-ItemProperty -Path "$C\thabat\shell\open\command" -Name '(default)' -Value ($pre + 'open "%1"')
+  } else {
+    if (Test-Path "$C\Thabat.PDF") { Remove-Item -Path "$C\Thabat.PDF" -Recurse -Force }
+    if (Test-Path "$C\.pdf\OpenWithProgids") { Remove-ItemProperty -Path "$C\.pdf\OpenWithProgids" -Name 'Thabat.PDF' -ErrorAction SilentlyContinue }
+    if (Test-Path "$C\thabat") { Remove-Item -Path "$C\thabat" -Recurse -Force }
+  }
+}
+
 function Q-Dec($s) { try { $v = ([string]$s) -replace '\+', ' '; return [Uri]::UnescapeDataString($v) } catch { return '' } }
 # 3.110: the title of a web page pasted into a note (public http/https addresses only; nothing on this PC or the home network)
 function Page-Title($u) {
@@ -364,16 +387,25 @@ while ($true) {
       elseif ($path -like '/lan/get*') { $i = [int]$q['i']; $v = [string]$global:blob.pc[$i]; Send-Response $stream '200 OK' 'text/plain' ($utf8.GetBytes($v)) }
       elseif ($path -like '/lan/put*') { $i = [int]$q['i']; $global:blob.ph[$i] = [string]$q['d']; $global:blobN.ph = [int]$q['n']; $global:lanUntil = (Get-Date).AddMinutes(15); Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}')) }
       else { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{}')) }
-    } elseif ($path -match '^/auto/(task|note|timer)\?(.*)$') {
+    } elseif ($path -match '^/auto/(task|note|timer|pdf|open)\?(.*)$') {
       # 3.105: queue one command for Thabat (the key is checked above, like every route)
       $kind = $matches[1]; $q = @{}; foreach ($kv in ($matches[2] -split '&')) { $a = $kv -split '=', 2; if ($a.Count -eq 2) { $q[$a[0]] = Q-Dec $a[1] } }
       $o = @{ t = $kind }
       if ($kind -eq 'task') { $o.text = ([string]$q['text']).Trim(); if ($q['after'] -match '^(fajr|dhuhr|asr|maghrib|isha)$') { $o.after = $q['after'] }; if ($q['day'] -match '^\d{4}-\d{2}-\d{2}$') { $o.day = $q['day'] }; if ($q['at'] -match '^\d{2}:\d{2}$') { $o.at = $q['at'] } }
       elseif ($kind -eq 'note') { $o.title = ([string]$q['title']).Trim(); $o.body = [string]$q['body'] }
       else { $o.a = [string]$q['a']; if ($q['cat'] -match '^[\w-]{1,40}$') { $o.cat = $q['cat'] } }
-      $bad = ($kind -eq 'task' -and -not $o.text) -or ($kind -eq 'note' -and -not $o.title -and -not $o.body) -or ($kind -eq 'timer' -and $o.a -notmatch '^(start|stop)$')
+      if ($kind -eq 'pdf') { $o.Remove('a'); $o.p = [string]$q['p']; if ($o.p -match '\.pdf$' -and (Test-Path -LiteralPath $o.p -PathType Leaf)) { [void]$global:pdfOk.Add($o.p) } else { $o.p = '' } }
+      if ($kind -eq 'open') { $o.Remove('a'); $o.u = [string]$q['u']; if ($o.u -notmatch '^thabat://[a-zA-Z]+/' -or $o.u.Length -gt 600) { $o.u = '' } }
+      $bad = ($kind -eq 'pdf' -and -not $o.p) -or ($kind -eq 'open' -and -not $o.u) -or ($kind -eq 'task' -and -not $o.text) -or ($kind -eq 'note' -and -not $o.title -and -not $o.body) -or ($kind -eq 'timer' -and $o.a -notmatch '^(start|stop)$')
       if ($bad -or ("$($o.text)$($o.title)$($o.body)").Length -gt 20000) { Send-Response $stream '400 Bad Request' 'application/json' ($utf8.GetBytes('{"error":"bad"}')) }
       else { Auto-Push $o; Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true,"queued":' + $global:autoQ.Count + ',"open":' + ([string](App-Open)).ToLower() + '}')) }
+    } elseif ($path -match '^/lfile\?p=(.+)$') {
+      $lp = Q-Dec $matches[1]
+      if ($global:pdfOk.Contains($lp) -and (Test-Path -LiteralPath $lp -PathType Leaf) -and (Get-Item -LiteralPath $lp).Length -lt 400MB) { Send-Response $stream '200 OK' 'application/pdf' ([IO.File]::ReadAllBytes($lp)) }
+      else { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"file"}')) }
+    } elseif ($path -match '^/assoc(\?on=([01]))?$') {
+      $err = ''; if ($matches[2]) { try { Assoc-Set ($matches[2] -eq '1') } catch { $err = 'reg' } }
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":' + $(if ($err) { 'false' } else { 'true' }) + ',"on":' + ([string](Assoc-On)).ToLower() + '}'))
     } elseif ($path -like '/auto/take*') {
       $arr = @($global:autoQ); $global:autoQ.Clear(); Auto-Save
       $js = if ($arr.Count) { ConvertTo-Json -InputObject $arr -Depth 4 -Compress } else { '[]' }; if ($arr.Count -eq 1 -and $js -notmatch '^\[') { $js = '[' + $js + ']' }

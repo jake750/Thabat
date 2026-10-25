@@ -17,7 +17,7 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "11"; }
+    public String version() { return "12"; }
 
     /* 3.106: what another app shared to Thabat (JSON {text, subject, imgs:[data URLs]}), once; "" when nothing waits */
     @JavascriptInterface
@@ -167,6 +167,12 @@ public class Bridge {
     @JavascriptInterface
     public void stopAdhan() { try { Intent s = new Intent(a, AdhanService.class); s.setAction(AdhanService.STOP); a.startService(s); } catch (Throwable t) {} }
 
+    /** 3.125: the «continue» widget (the lesson or book being followed) */
+    @JavascriptInterface
+    public void contWidget(String json) { try { a.getSharedPreferences("thabat", 0).edit().putString("cont", json == null ? "{}" : json).apply(); Widget8.render(a); } catch (Throwable t) {} }
+    /** 3.125: keep the screen on (the mushaf open) */
+    @JavascriptInterface
+    public void keepOn(final boolean on) { try { a.runOnUiThread(new Runnable() { public void run() { try { if (on) a.getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); else a.getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); } catch (Throwable t) {} } }); } catch (Throwable t) {} }
     @JavascriptInterface
     public String takeOpen() { String o = a.pendingOpen; a.pendingOpen = null; return o == null ? "" : o; }
 

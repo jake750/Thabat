@@ -68,6 +68,8 @@ public class MainActivity extends Activity {
 
     void readOpen(Intent i) {
         try { if (i != null) { String o = i.getStringExtra("open"); if (o != null && o.length() > 0) pendingOpen = o; } } catch (Throwable t) {}
+        /* 3.125: thabat://… links (a mushaf page, a note, a lesson, a book) */
+        try { if (i != null && Intent.ACTION_VIEW.equals(i.getAction()) && i.getData() != null && "thabat".equals(i.getData().getScheme())) pendingOpen = "url:" + i.getData().toString(); } catch (Throwable t) {}
     }
 
     /* 3.106: «share to Thabat» — text and up to four pictures from another app wait here until the page takes them (Bridge.takeShare) */
