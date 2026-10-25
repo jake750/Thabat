@@ -137,6 +137,7 @@ css/v3-90-0-calendar-and-summary-occasions-two-month.css
 css/v3-90-0-phones-two-months-only-on-pc-the-occasio.css
 css/v3-90-0-the-calendar-header-keeps-one-row-at-any.css
 css/v3-125-1-own-select-lists.css
+css/v3-125-2-own-time-and-date-pickers.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -355,6 +356,7 @@ js/3-123-eleventh-list-f-board-search-inside-a-boar.js
 js/3-124-eleventh-list-g-library-frame-stepping-and.js
 js/3-125-eleventh-list-h-pause-a-habit-tasks-tied-t.js
 js/v3-125-1-g146-every-select-opens-thabat-s-own-li.js
+js/v3-125-2-g147-time-and-date-fields-open-thabat-s.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
