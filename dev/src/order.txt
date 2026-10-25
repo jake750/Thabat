@@ -340,6 +340,7 @@ js/3-109-tenth-list-c-the-week-view-gets-the-class.js
 js/3-110-tenth-list-d-a-pasted-link-gets-its-page-t.js
 js/3-111-tenth-list-e-board-background-dots-squares.js
 js/3-112-tenth-list-f-library-a-speed-kept-per-cour.js
+js/3-113-tenth-list-g-theme-colours-taken-from-a-pi.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
