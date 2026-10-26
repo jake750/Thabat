@@ -1,0 +1,10 @@
+/* v3.133 notes (twelfth list D) */
+.nfdbar{display:flex;align-items:center;gap:6px;padding:6px 8px;margin:0 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--panel);position:sticky;top:0;z-index:3}
+.nfdbar .in{flex:1;min-width:0;min-height:34px}.nfdbar small{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}.nfdbar .in.nfdno{border-color:#ef4444}
+mark.nfdm{background:color-mix(in srgb,var(--gold,#f5c400) 45%,transparent);color:inherit;border-radius:3px}mark.nfdm.on{background:var(--gold,#f5c400);color:#111}
+.tgsl{display:grid;gap:6px;margin-top:10px}.tgsr{display:grid;grid-template-columns:minmax(0,auto) minmax(40px,1fr) auto auto;gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:none;color:var(--text);font:inherit;cursor:pointer;text-align:start}
+.tgsr:hover{border-color:var(--accent)}.tgsr>i{height:6px;border-radius:3px;background:color-mix(in srgb,var(--muted) 14%,transparent);position:relative;overflow:hidden}.tgsr>i::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:var(--w);background:var(--accent);border-radius:3px}
+.tgsr b{font-variant-numeric:tabular-nums}.tgsr small{color:var(--muted);font-size:11.5px;white-space:nowrap}.tgsr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dnts{margin-top:14px;display:grid;gap:6px}.dnts h4{margin:0 0 2px;font-size:14px}.dnts h4 small{color:var(--muted);font-weight:400}
+.dntr{display:grid;gap:2px;text-align:start;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:none;color:var(--text);font:inherit;cursor:pointer;min-width:0}
+.dntr:hover{border-color:var(--accent)}.dntr b{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dntr small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
