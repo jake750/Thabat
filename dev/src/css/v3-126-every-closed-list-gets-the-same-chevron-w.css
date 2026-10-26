@@ -1,0 +1,12 @@
+/* v3.126 every closed list gets the same chevron, well inside the edge (the browser's own arrow sat at the very edge) */
+select:not([multiple]):not([size]):not(#qbTop select){-webkit-appearance:none!important;appearance:none!important;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1.5 1.5 6 6l4.5-4.5' fill='none' stroke='%23939aa6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")!important;background-repeat:no-repeat!important;background-size:11px 8px!important;background-position:right 13px center!important;padding-right:34px!important}
+html[dir=rtl] select:not([multiple]):not([size]):not(#qbTop select){background-position:left 13px center!important;padding-left:34px!important;padding-right:12px!important}
+html.qfs #uxNet{display:none!important}
+#tpk .tpkd,.adhf .aftx{overflow-wrap:anywhere}
+.qtbbar{display:flex;gap:4px;padding:4px;margin:0 0 10px;border-radius:12px;background:color-mix(in srgb,var(--text) 6%,transparent)}
+.qtbbar button{flex:1;min-height:36px;border:0;border-radius:9px;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;cursor:pointer}
+.qtbbar button.on{background:var(--panel);color:var(--text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#qbTools .qbshb>.qtboff{display:none!important}.qtbe{grid-column:1/-1;padding:14px;text-align:center;color:var(--muted);font-size:13px}
+/* the task box: the text field gets its own full row, the buttons sit under it */
+.addtask{flex-wrap:wrap!important}.addtask #taskIn{flex:1 1 100%;min-width:0;min-height:44px;font-size:15px}
+.addtask #taskAdd{margin-inline-start:auto}

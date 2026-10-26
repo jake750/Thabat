@@ -32,7 +32,7 @@ function cmkOpen(){const L_=S.calMarks||[],tk=todayKey();
     <h4>${esc(t('cmk.add'))}</h4><div class="cmka"><select class="in" id="cmkK">${['travel','exams','rest','other'].map(k=>`<option value="${k}">${esc(t('cmk.'+k))}</option>`).join('')}</select><input class="in" id="cmkN" placeholder="${esc(t('cmk.nameP'))}" dir="auto"><input type="date" class="in" id="cmkF" value="${selKey||tk}"><input type="date" class="in" id="cmkT" value="${selKey||tk}"><button class="btn pri" id="cmkGo">${esc(t('add'))}</button></div></div>`);
   $$('#infoBox [data-cmx]').forEach(b=>b.onclick=()=>{S.calMarks=(S.calMarks||[]).filter(m=>m.id!==b.dataset.cmx);save();renderCal();cmkOpen()});
   $('#cmkGo').onclick=()=>{let f=$('#cmkF').value,to=$('#cmkT').value;if(!f)return;if(!to||to<f)to=f;(S.calMarks=S.calMarks||[]).push({id:uid(),k:$('#cmkK').value,n:$('#cmkN').value.trim().slice(0,40),from:f,to});save();renderCal();cmkOpen()}}
-function cmkBtn(){const tb=$('#calTools3');if(!tb||$('#cmkBtn'))return;tb.insertAdjacentHTML('beforeend',`<button class="btn sm ghost" id="cmkBtn" title="${esc(t('cmk.t'))}">⛳ <span>${esc(t('cmk.b'))}</span></button>`);$('#cmkBtn').onclick=cmkOpen}
+function cmkBtn(){const tb=$('#calTools3');if(!tb||$('#cmkBtn'))return;tb.insertAdjacentHTML('beforeend',`<button class="btn sm ghost" id="cmkBtn" title="${esc(t('cmk.t'))}">⚑ <span>${esc(t('cmk.b'))}</span></button>`);$('#cmkBtn').onclick=cmkOpen}
 
 /* 11th-35: multi-day events as connected pieces in the month cells */
 function cmbPaint(){const cells=$$('#cal .cell[data-k]');if(!cells.length)return;const evs=EVS().filter(e=>e.d2&&(!e.rep||e.rep==='none')&&e.d2>e.date);cells.forEach(c=>c.querySelectorAll('.cmb').forEach(x=>x.remove()));if(!evs.length)return;
