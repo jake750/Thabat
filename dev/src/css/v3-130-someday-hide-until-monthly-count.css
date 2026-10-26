@@ -1,0 +1,13 @@
+/* v3.130 someday, hide until, monthly count */
+#infoBox.sdybox{width:min(620px,calc(100vw - 32px))}
+.sdyw{display:grid;gap:10px}.sdyadd{display:flex;gap:8px}.sdyadd .in{flex:1;min-width:0}
+#sdyList,#snzList,.sdyl{display:grid;gap:6px}
+.sdyr{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:color-mix(in srgb,var(--panel) 70%,transparent)}
+.sdyr span{overflow-wrap:anywhere;min-width:0}.sdyr small{color:var(--muted);font-size:11.5px;white-space:nowrap}
+@media (max-width:700px){.sdyr{grid-template-columns:minmax(0,1fr) auto auto}.sdyr small{grid-column:1/-1;grid-row:2}}
+.wrsdy{margin-top:16px;display:grid;gap:8px}.wrsdy h4{margin:0;font-size:14px}.ibsdy{margin-top:10px}
+.snzw{display:grid;gap:12px}.snzb{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.snzb .btn{display:flex;flex-direction:column;gap:2px;height:auto;padding:10px}.snzb small{color:var(--muted);font-size:11.5px}
+.snzd{display:flex;gap:8px}.snzd .in{flex:1;min-width:0}
+.snzline{display:block;margin:8px 0 0;background:none;border:1px dashed var(--line);border-radius:10px;padding:7px 12px;color:var(--muted);font:inherit;font-size:12.5px;cursor:pointer;width:100%;text-align:start}
+.snzline:hover{color:var(--text);border-color:var(--accent)}
+.tkmon{font-size:11px;color:var(--muted);margin-inline-start:6px;white-space:nowrap}
