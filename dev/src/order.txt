@@ -144,6 +144,7 @@ css/v3-130-someday-hide-until-monthly-count.css
 css/v3-131-worship-quran-twelfth-list-b.css
 css/v3-132-calendar-summary-twelfth-list-c.css
 css/v3-133-notes-twelfth-list-d.css
+css/v3-134-board-twelfth-list-e.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -371,6 +372,7 @@ js/3-130-twelfth-list-a-tasks-a-someday-list-for-un.js
 js/3-131-twelfth-list-b-worship-quran-i-ll-fast-the.js
 js/3-132-twelfth-list-c-calendar-summary-an-event-e.js
 js/3-133-twelfth-list-d-notes-more-line-formats-on.js
+js/3-134-twelfth-list-e-board-text-inside-shapes-at.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

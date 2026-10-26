@@ -1,0 +1,13 @@
+/* v3.134 board (twelfth list E) */
+.bel.b-shape.va-t{align-items:start}.bel.b-shape.va-b{align-items:end}
+.bel.b-sticky.va-b,.bel.b-sticky.va-t{display:flex;flex-direction:column}.bel.b-sticky.va-b{justify-content:flex-end}
+.wbcolg{position:absolute;inset:0 4%;pointer-events:none;z-index:0;--cw:calc((100% - (var(--n) - 1) * var(--g)) / var(--n));
+  background:repeating-linear-gradient(to right,rgba(236,72,153,.13) 0,rgba(236,72,153,.13) var(--cw),transparent var(--cw),transparent calc(var(--cw) + var(--g)))}
+html[dir=rtl] .wbcolg{background:repeating-linear-gradient(to left,rgba(236,72,153,.13) 0,rgba(236,72,153,.13) var(--cw),transparent var(--cw),transparent calc(var(--cw) + var(--g)))}
+.wbfp{position:absolute;top:56px;inset-inline-end:10px;width:220px;max-height:calc(100% - 120px);display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.28);z-index:30;overflow:hidden}
+.wbfph{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line)}.wbfph b{font-size:13.5px}
+.wbfpl{overflow-y:auto;padding:6px;display:grid;gap:4px}.wbfpl p{margin:6px;font-size:12.5px}
+.wbfpr{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:10px;border:1px solid transparent;background:none;color:var(--text);font:inherit;font-size:13px;cursor:pointer;text-align:start;min-width:0}
+.wbfpr:hover{border-color:var(--line)}.wbfpr.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.wbfpr small{color:var(--muted);font-variant-numeric:tabular-nums;min-width:1.4em}.wbfpr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:700px){.wbfp{width:min(240px,70vw);top:auto;bottom:80px;max-height:45vh}}
