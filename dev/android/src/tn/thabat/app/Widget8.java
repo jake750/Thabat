@@ -25,6 +25,14 @@ public class Widget8 extends AppWidgetProvider {
             v.setTextViewText(Widget.rid(c, "w8_title", "id"), o.optString("title", ""));
             v.setTextViewText(Widget.rid(c, "w8_sub", "id"), o.optString("sub", ""));
             v.setProgressBar(Widget.rid(c, "w8_bar", "id"), 100, Math.max(0, Math.min(100, o.optInt("pct", 0))), false);
+            /* 3.135: the book's cover beside it (a small JPEG in base64), hidden when there is none */
+            int cid = Widget.rid(c, "w8_cover", "id");
+            String img = o.optString("img", "");
+            boolean shown = false;
+            if (cid != 0 && img.length() > 0) {
+                try { byte[] b = android.util.Base64.decode(img, 0); android.graphics.Bitmap bm = android.graphics.BitmapFactory.decodeByteArray(b, 0, b.length); if (bm != null) { v.setImageViewBitmap(cid, bm); shown = true; } } catch (Throwable t) {}
+            }
+            if (cid != 0) v.setViewVisibility(cid, shown ? 0 : 8);
             v.setOnClickPendingIntent(Widget.rid(c, "w8_root", "id"), Ongoing.open(c, "cont", 7891));
             WTheme.apply(c, v, 8);
             m.updateAppWidget(ids, v);

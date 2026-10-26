@@ -1,0 +1,5 @@
+/* v3.135 library (twelfth list F) */
+.bkom{position:absolute;inset-inline:6px;bottom:6px;display:flex;justify-content:space-between;z-index:3;pointer-events:none}
+.bkom button{pointer-events:auto;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 88%,transparent);color:var(--text);font:inherit;font-size:16px;cursor:pointer}
+.bkom button:hover{border-color:var(--accent)}
+.bkmn{color:var(--accent);font-size:12.5px;margin-inline-start:4px}.bkme{margin-inline-start:auto;padding:0 6px;color:var(--muted);cursor:pointer}.bkme:hover{color:var(--text)}
