@@ -1,0 +1,25 @@
+/* v3.127 countdowns */
+#infoBox.cdnbox{width:min(760px,calc(100vw - 32px))}
+.cdnbar{display:flex;justify-content:flex-end;margin:0 0 12px}
+.cdng{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.cdnc{position:relative;overflow:hidden;border-radius:18px;padding:14px 16px 10px;min-height:170px;display:flex;flex-direction:column;gap:10px;color:#fff;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--cc) 78%,#000) 0%,color-mix(in srgb,var(--cc) 38%,#0b0c10) 100%)}
+.cdnc::before{content:"";position:absolute;inset:0;background:var(--ci,none) center/cover no-repeat;opacity:.55;pointer-events:none}
+.cdnc::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.55));pointer-events:none}
+.cdnc>*{position:relative;z-index:1}
+.cdnct b{display:block;font-size:17px;font-weight:700;overflow-wrap:anywhere;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.cdnct small{display:block;font-size:12px;opacity:.85;margin-top:2px}
+.cdnnum{display:flex;gap:6px;align-items:stretch;direction:rtl;flex-wrap:wrap}
+html[dir=ltr] .cdnnum{direction:ltr}
+.cdnu{flex:1 1 0;min-width:52px;display:flex;flex-direction:column;align-items:center;padding:8px 4px;border-radius:12px;background:rgba(0,0,0,.28);backdrop-filter:blur(2px)}
+.cdnu b{font-size:26px;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.cdnu small{font-size:11px;opacity:.85}
+.cdnago{flex-basis:100%;font-size:12px;opacity:.9}
+.cdnc.past .cdnu b{opacity:.8}
+.cdnca{display:flex;gap:6px;justify-content:flex-end;margin-top:auto}
+.cdnca .btn{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(0,0,0,.18);min-height:32px}
+.cdnf{display:grid;gap:12px}.cdnf label{display:grid;gap:5px;font-size:13px;color:var(--muted)}.cdnf2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.cdncols{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.cdncols button{width:32px;height:32px;border-radius:50%;border:2px solid transparent;background:var(--c);cursor:pointer}.cdncols button.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg) inset}
+.cdnimgrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cdnimgrow small{color:var(--muted)}
+.cdnfa{display:flex;gap:8px;justify-content:flex-end}
+#infoBox.cdnbox~.evact,#infoBox.cdnbox .evact{display:none}
