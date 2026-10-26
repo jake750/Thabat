@@ -141,6 +141,7 @@ css/v3-125-2-own-time-and-date-pickers.css
 css/v3-126-every-closed-list-gets-the-same-chevron-w.css
 css/v3-127-countdowns.css
 css/v3-130-someday-hide-until-monthly-count.css
+css/v3-131-worship-quran-twelfth-list-b.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -365,6 +366,7 @@ js/v3-126-0-g149-the-mushaf-tools-sheet-in-three-ta.js
 js/v3-127-0-g150-countdowns-like-the-event-countdow.js
 js/v3-128-0-g151-the-countdowns-widget-on-the-phone.js
 js/3-130-twelfth-list-a-tasks-a-someday-list-for-un.js
+js/3-131-twelfth-list-b-worship-quran-i-ll-fast-the.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
