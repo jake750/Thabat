@@ -25,4 +25,6 @@
     <string name="w7_desc">الشهر مع الأيام الذهبية</string>
     <string name="w8_name">تابع</string>
     <string name="w8_desc">الدرس أو الكتاب الذي تتابعه</string>
+    <string name="w9_name">العدّ التنازلي</string>
+    <string name="w9_desc">الأيام الباقية لما تنتظره</string>
 </resources>
