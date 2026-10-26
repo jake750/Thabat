@@ -10,6 +10,39 @@ import android.content.Intent;
 
 public class AlarmReceiver extends BroadcastReceiver {
     static final String LATER = "tn.thabat.app.PRAY_LATER";
+    static final String GRP = "tn.thabat.app.REM";
+    static final int SUM_ID = 7899;
+    /** 3.129: two or more Thabat reminders showing → one summary that holds them (Android folds the rest under it). */
+    static void groupSummary(Context c, NotificationManager nm, String chId) {
+        try {
+            android.service.notification.StatusBarNotification[] act = nm.getActiveNotifications();
+            java.util.ArrayList<String> lines = new java.util.ArrayList<>();
+            for (android.service.notification.StatusBarNotification sb : act) {
+                if (sb.getId() == SUM_ID) continue;
+                Notification x = sb.getNotification();
+                if (!GRP.equals(x.getGroup())) continue;
+                CharSequence tt = x.extras.getCharSequence(Notification.EXTRA_TITLE);
+                lines.add(tt == null ? "" : tt.toString());
+            }
+            if (lines.size() < 2) { nm.cancel(SUM_ID); return; }
+            Notification.InboxStyle st = new Notification.InboxStyle();
+            for (int i = 0; i < lines.size() && i < 6; i++) st.addLine(lines.get(i));
+            Intent open = new Intent(c, MainActivity.class); open.addFlags(0x10000000 | 0x20000000);
+            Notification sm = new Notification.Builder(c, chId)
+                    .setSmallIcon(c.getApplicationInfo().icon)
+                    .setContentTitle(c.getString(Widget.rid(c, "app_name", "string")))
+                    .setContentText(lines.size() + " ·  " + lines.get(0))
+                    .setStyle(st.setSummaryText(String.valueOf(lines.size())))
+                    .setColor(0xFFFDDB00)
+                    .setGroup(GRP).setGroupSummary(true)
+                    .setGroupAlertBehavior(Notification.GROUP_ALERT_CHILDREN)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(true)
+                    .setContentIntent(PendingIntent.getActivity(c, SUM_ID, open, 0x08000000 | 0x04000000))
+                    .build();
+            nm.notify(SUM_ID, sm);
+        } catch (Throwable t) {}
+    }
     @Override
     public void onReceive(Context c, Intent in) {
         try {
@@ -109,8 +142,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setColor(0xFFFDDB00)
                     .setShowWhen(true)
                     .setCategory("reminder")
+                    .setGroup(GRP)
                     .build();
             nm.notify(in.getIntExtra("id", 1), n);
+            groupSummary(c, nm, chId);
         } catch (Throwable t) {}
     }
 }

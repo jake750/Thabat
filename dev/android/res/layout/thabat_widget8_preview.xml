@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="12dp" android:background="@drawable/widget_bg" android:gravity="center_vertical" android:layoutDirection="rtl">
+  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#EB6834" android:textSize="12sp" android:maxLines="1" android:text="تابع الدرس"/>
+  <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#F3F0E6" android:textSize="15sp" android:textStyle="bold" android:maxLines="2" android:ellipsize="end"  android:text="الأسبوع الأول · الطبقات"/>
+  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#A9A497" android:textSize="12sp" android:maxLines="1" android:text="12:30 من 24:10"/>
+  <ProgressBar style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="6dp" android:layout_marginTop="6dp" android:max="100" android:progress="52" android:progressTint="#EB6834" android:progressBackgroundTint="#44FFFFFF"/>
+</LinearLayout>

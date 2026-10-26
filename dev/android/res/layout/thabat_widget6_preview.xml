@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:padding="12dp" android:background="@drawable/widget_bg" android:gravity="center" android:layoutDirection="rtl">
+  <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#F3F0E6" android:textSize="15sp" android:maxLines="2" android:ellipsize="end" android:gravity="center" android:text="ورد اليوم"/>
+  <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#EB6834" android:textSize="20sp" android:textStyle="bold" android:maxLines="2" android:ellipsize="end" android:gravity="center" android:text="3 / 5 صفحات"/>
+  <ProgressBar style="@android:style/Widget.ProgressBar.Horizontal" android:layout_width="match_parent" android:layout_height="8dp" android:layout_marginTop="6dp" android:max="100" android:progress="60" android:progressTint="#EB6834" android:progressBackgroundTint="#44FFFFFF"/>
+  <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:background="@drawable/widget_btn" android:gravity="center" android:paddingTop="7dp" android:paddingBottom="7dp" android:paddingLeft="18dp" android:paddingRight="18dp" android:textColor="#111111" android:textSize="13sp" android:textStyle="bold" android:text="+1"/>
+</LinearLayout>
