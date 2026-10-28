@@ -276,7 +276,8 @@ function Assoc-Set($on) {
 
 function Q-Dec($s) { try { $v = ([string]$s) -replace '\+', ' '; return [Uri]::UnescapeDataString($v) } catch { return '' } }
 # 3.110: the title of a web page pasted into a note (public http/https addresses only; nothing on this PC or the home network)
-function Page-Title($u) {
+function Page-Title($u) { $m = Page-Meta $u; if ($m -eq $null) { return $null }; return $m.t }
+function Page-Meta($u) {
   if ($u -notmatch '^https?://[^\s/?#]+') { return $null }
   try { $uri = [Uri]$u } catch { return $null }
   try { $ips = [System.Net.Dns]::GetHostAddresses($uri.Host) } catch { return $null }
@@ -297,7 +298,15 @@ function Page-Title($u) {
     elseif ($html -match '(?is)<title[^>]*>(.*?)</title>') { $tt = $matches[1] }
     $tt = [System.Net.WebUtility]::HtmlDecode(($tt -replace '\s+', ' ').Trim())
     if ($tt.Length -gt 200) { $tt = $tt.Substring(0, 200) }
-    return $tt
+    $dd = ''; $im = ''
+    if ($html -match '<meta[^>]+(?:property|name)=["''](?:og:description|description)["''][^>]+content=["'']([^"'']+)') { $dd = $matches[1] }
+    elseif ($html -match '<meta[^>]+content=["'']([^"'']+)["''][^>]+(?:property|name)=["''](?:og:description|description)') { $dd = $matches[1] }
+    $dd = [System.Net.WebUtility]::HtmlDecode(($dd -replace '\s+', ' ').Trim()); if ($dd.Length -gt 300) { $dd = $dd.Substring(0, 300) }
+    if ($html -match '<meta[^>]+property=["'']og:image(?::url)?["''][^>]+content=["'']([^"'']+)') { $im = $matches[1] }
+    elseif ($html -match '<meta[^>]+content=["'']([^"'']+)["''][^>]+property=["'']og:image') { $im = $matches[1] }
+    if ($im) { try { $abs = New-Object System.Uri($rs.ResponseUri, [System.Net.WebUtility]::HtmlDecode($im)); if ($abs.Scheme -eq 'https' -or $abs.Scheme -eq 'http') { $im = $abs.AbsoluteUri } else { $im = '' } } catch { $im = '' } }
+    if ($im.Length -gt 600) { $im = '' }
+    return @{ t = $tt; d = $dd; img = $im }
   } catch { return $null }
 }
 
@@ -447,6 +456,10 @@ while ($true) {
     } elseif ($path -match '^/tray(\?on=([01]))?$') {
       if ($matches[2]) { try { [IO.File]::WriteAllText($global:trayF, ('{"on":' + ($(if ($matches[2] -eq '1') { 'true' } else { 'false' })) + '}')) } catch {}; $global:trayTick = [DateTime]::MinValue; Tray-Set }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"on":' + ([string](Tray-On)).ToLower() + ',"shown":' + ([string]([bool]$global:tray)).ToLower() + '}'))
+    } elseif ($path -match '^/meta\?u=(.+)$') {
+      $mt = Page-Meta (Q-Dec $matches[1])
+      if ($mt -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"meta"}')) }
+      else { Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes((ConvertTo-Json -InputObject $mt -Compress))) }
     } elseif ($path -match '^/title\?u=(.+)$') {
       $tt = Page-Title (Q-Dec $matches[1])
       if ($tt -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"title"}')) }

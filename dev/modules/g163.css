@@ -1,0 +1,17 @@
+/* v3.139.0 Notion list B: link cards, embeds, date chips */
+.nlcard{display:flex;gap:10px;align-items:stretch;margin:6px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--text);background:color-mix(in srgb,var(--text) 3%,var(--panel));min-height:64px}
+.nlcard:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.nlci{flex:0 0 120px;max-width:34%;background:color-mix(in srgb,var(--text) 6%,transparent)}.nlci img{width:100%;height:100%;object-fit:cover;display:block}
+.nlcb{display:flex;flex-direction:column;gap:2px;padding:9px 12px;min-width:0;flex:1}
+.nlcb .nlt{font-size:13.5px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.nlcb .nld{font-size:11.5px;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.nlcb .nlh{font-size:11px;color:var(--muted);direction:ltr;text-align:start}
+.nemb{display:block;margin:8px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:color-mix(in srgb,var(--text) 3%,var(--panel));width:100%;max-width:560px;padding:0;color:var(--text);text-align:start}
+.nyt .nytp{position:relative;display:block;width:100%;aspect-ratio:16/9;padding:0;border:0;background:#000;cursor:pointer}.nyt .nytp img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.nyt .nytb{position:absolute;inset:0;margin:auto;width:58px;height:40px;border-radius:12px;background:#e5484d;color:#fff;display:grid;place-items:center;font-size:18px}
+.nyt .nlt{display:block;padding:8px 12px 0;font-size:13.5px}.nyt>small{display:block;padding:0 12px 8px;color:var(--muted);font-size:11px}
+.nmap .nmapm{display:block;width:100%;height:220px;background:color-mix(in srgb,var(--text) 6%,transparent);z-index:0}.nmap .nmapo{display:block;width:100%;padding:7px;border:0;border-top:1px solid var(--line);background:none;color:var(--accent);cursor:pointer;font-size:12.5px}
+.nbkc{display:flex!important;gap:10px;align-items:center;padding:8px!important;cursor:pointer;max-width:360px}.nbkcv{width:44px;height:58px;border-radius:5px;background:color-mix(in srgb,var(--text) 8%,transparent);overflow:hidden;flex:0 0 auto}.nbkcv img{width:100%;height:100%;object-fit:cover}
+.nbkc b{display:block;font-size:13px}.nbkc small{color:var(--muted);font-size:11.5px}
+.ndate{display:inline-block;padding:0 7px;border-radius:7px;background:color-mix(in srgb,var(--water) 16%,transparent);color:var(--text);text-decoration:none;cursor:pointer;font-size:.94em;white-space:nowrap}
+.ndate.tdy{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+@media (max-width:700px){.nlci{flex-basis:86px}.nmap .nmapm{height:180px}}
