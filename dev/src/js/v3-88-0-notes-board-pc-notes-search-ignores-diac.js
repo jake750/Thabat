@@ -14,7 +14,7 @@ function ntbHTML(rows,al){const td=(c,i,h)=>`<${h?'th':'td'}${al[i]?` style="tex
     const al=ntbCells(L_[i+1]).map(c=>/^:-+:$/.test(c)?'center':/^-+:$/.test(c)?(document.documentElement.dir==='rtl'?'left':'right'):/^:-+$/.test(c)?(document.documentElement.dir==='rtl'?'right':'left'):'');
     const rows=[ntbCells(L_[i]),...L_.slice(i+2,j).map(ntbCells)];T.push(ntbHTML(rows,al));L_[i]='⟦NTB'+(T.length-1)+'⟧';for(let k=i+1;k<j;k++)L_[k]='⟦NTB-⟧';i=j-1}
   let h=_m(T.length?L_.join('\n'):src,...a);if(!T.length)return h;
-  return h.replace(/<div>⟦NTB-⟧<\/div>/g,'').replace(/<div>⟦NTB(\d+)⟧<\/div>/g,(m,n)=>T[+n])}}
+  return h.replace(/<div[^>]*>⟦NTB-⟧<\/div>/g,'').replace(/<div[^>]*>⟦NTB(\d+)⟧<\/div>/g,(m,n)=>T[+n])}}
 {const _p=mdPlain;mdPlain=function(b,...a){return _p(String(b||'').split('\n').filter(l=>!NTB_SEP.test(l)||!l.includes('-')).map(l=>/^\s*\|.*\|\s*$/.test(l)?ntbCells(l).filter(Boolean).join(' · '):l).join('\n'),...a)}}
 
 /* fifth-list 19: yt-dlp updated once a week in the background, only on a PC where it already worked (the update route installs it otherwise) */

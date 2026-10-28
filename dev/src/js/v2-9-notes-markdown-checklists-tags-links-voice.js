@@ -7,10 +7,10 @@ function mdInline(x){return x.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(
   .replace(/\[\[([^\]]+)\]\]/g,(m,a)=>`<a class="nlink" data-nl="${a}">${a}</a>`).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>').replace(TAG_RE,'$1<span class="ntag" data-tag="$2">#$2</span>')}
 function mdLite(src){const L_=String(src||'').split('\n');let out='',kind=null;const close=()=>{if(kind){out+=kind==='ol'?'</ol>':'</ul>';kind=null}},open=k=>{if(kind!==k){close();out+=k==='ol'?'<ol>':`<ul${k==='chk'?' class="nchk"':''}>`;kind=k}};
   L_.forEach((ln,i)=>{let m;
-    if(m=ln.match(/^\s*[-*] \[( |x|X)\]\s?(.*)$/)){open('chk');const on=m[1]!==' ';out+=`<li class="${on?'dn':''}"><input type="checkbox" data-ln="${i}" ${on?'checked':''}><span>${mdInline(esc(m[2]))}</span></li>`}
-    else if(m=ln.match(/^\s*[-*•] (.*)$/)){open('ul');out+=`<li>${mdInline(esc(m[1]))}</li>`}
-    else if(m=ln.match(/^\s*\d+[.)] (.*)$/)){open('ol');out+=`<li>${mdInline(esc(m[1]))}</li>`}
-    else{close();if(m=ln.match(/^(#{1,3}) (.*)$/))out+=`<div class="nh${m[1].length}">${mdInline(esc(m[2]))}</div>`;else if(!ln.trim())out+='<div class="nbr"></div>';else out+=`<div>${mdInline(esc(ln))}</div>`}});
+    if(m=ln.match(/^\s*[-*] \[( |x|X)\]\s?(.*)$/)){open('chk');const on=m[1]!==' ';out+=`<li data-l="${i}" class="${on?'dn':''}"><input type="checkbox" data-ln="${i}" ${on?'checked':''}><span>${mdInline(esc(m[2]))}</span></li>`}
+    else if(m=ln.match(/^\s*[-*•] (.*)$/)){open('ul');out+=`<li data-l="${i}">${mdInline(esc(m[1]))}</li>`}
+    else if(m=ln.match(/^\s*\d+[.)] (.*)$/)){open('ol');out+=`<li data-l="${i}">${mdInline(esc(m[1]))}</li>`}
+    else{close();if(m=ln.match(/^(#{1,3}) (.*)$/))out+=`<div class="nh${m[1].length}" data-l="${i}">${mdInline(esc(m[2]))}</div>`;else if(!ln.trim())out+='<div class="nbr"></div>';else out+=`<div data-l="${i}">${mdInline(esc(ln))}</div>`}});
   close();return out}
 function mdPlain(b){return String(b||'').replace(/^\s*[-*] \[[xX]\]\s?/gm,'☑ ').replace(/^\s*[-*] \[ \]\s?/gm,'☐ ').replace(/^#{1,3} /gm,'').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\[\[([^\]]+)\]\]/g,'$1')}
 function chkCount(b){const a=String(b||'').match(/^\s*[-*] \[( |x|X)\]/gm)||[];return{n:a.length,d:a.filter(x=>/x/i.test(x)).length}}

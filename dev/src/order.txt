@@ -149,6 +149,7 @@ css/v3-135-library-twelfth-list-f.css
 css/v3-136-health-twelfth-list-g.css
 css/v3-136-1-fixes-legend-colours-weekday-cells-imag.css
 css/v3-137-0-twelfth-list-h-journey-panel-pictures-i.css
+css/v3-138-0-notion-list-a-blocks-in-the-reading-vie.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -382,6 +383,7 @@ js/3-136-twelfth-list-g-health-a-walk-reminder-in-l.js
 js/v3-136-1-the-notes-tools-added-since-3-97-live-i.js
 js/v3-136-2-phones-the-line-being-typed-stays-above.js
 js/v3-137-0-twelfth-list-h-print-a-note-today-s-goa.js
+js/v3-138-0-notion-list-a-the-reading-view-shows-qu.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
