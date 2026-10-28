@@ -9,5 +9,5 @@ function renderBriefAdh(keys){const box=$('#bAdh');if(!box)return;const tk=today
   /* heatmap: 26 weeks */
   const W=Math.max(8,Math.min(26,Math.floor(((box.clientWidth||600)-40)/16))),end=keyToDate(tk),mon=addDays(end,-((end.getDay()+6)%7)),start=addDays(mon,-(W-1)*7);let cells='';
   for(let w=0;w<W;w++)for(let d=0;d<7;d++){const dt=addDays(start,w*7+d),k=dKey(dt),fut=k>tk,l=fut?-1:lv(k);cells+=`<i class="hm l${l}" title="${esc(gStr(dt))}${fut?'':' · '+t(l?'adh.lvl'+l:'ab.none')}"></i>`}
-  h+=`<div class="hmwrap"><div class="hmdays">${[1,3,5].map(i=>`<span style="grid-row:${i+1}">${L().days[(i+1)%7].slice(0,3)}</span>`).join('')}</div><div class="ahmap">${cells}</div></div><div class="hmleg"><span>${t('ab.less')}</span><i class="hm l0"></i><i class="hm l1"></i><i class="hm l2"></i><i class="hm l3"></i><span>${t('ab.more')}</span></div>`;
+  h+=`<div class="hmwrap"><div class="hmdays">${[1,3,5].map(i=>`<span style="grid-row:${i+1}">${L().sdays[(i+1)%7]}</span>`).join('')}</div><div class="ahmap">${cells}</div></div><div class="hmleg"><span>${t('ab.less')}</span><i class="hm l0"></i><i class="hm l1"></i><i class="hm l2"></i><i class="hm l3"></i><span>${t('ab.more')}</span></div>`;
   box.innerHTML=h}

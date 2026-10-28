@@ -1,0 +1,10 @@
+/* v3.136.1 fixes: legend colours, weekday cells, image viewer arrows */
+.fyleg i.slws{background:#6366f1}.fyleg i.slww{background:var(--accent)}
+.wdct{padding:2px}
+.wdcr em.hi{outline:none;box-shadow:inset 0 0 0 1.5px var(--accent)}
+.wdch em{font-size:11px;overflow:hidden;text-overflow:clip;white-space:nowrap}
+.slwc small{white-space:nowrap}
+html[dir=rtl] .lbox .lbprev{left:auto;right:10px}html[dir=rtl] .lbox .lbnext{right:auto;left:10px}
+
+@media (max-width:700px){#v-cal .calhead>.row{flex-wrap:wrap!important;min-width:0;max-width:100%}#v-cal #calTools3{flex:1 1 100%;min-width:0;display:flex;flex-wrap:wrap;gap:6px;margin-inline-start:0}#v-cal #calTools3>*{flex:0 0 auto;white-space:nowrap}}
+
