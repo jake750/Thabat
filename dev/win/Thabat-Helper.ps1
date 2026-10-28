@@ -329,8 +329,33 @@ function Tray-Set() {
     [void]$m.Items.Add('-')
     $e = $m.Items.Add('أخفِ هذه الأيقونة'); $e.add_Click({ try { [IO.File]::WriteAllText($global:trayF, '{"on":false}') } catch {}; Tray-Set })
     $ni.ContextMenuStrip = $m; $ni.add_DoubleClick({ Tray-Open }); $ni.Visible = $true; $global:tray = $ni
-    $global:trayTick = [DateTime]::MinValue
+    $global:trayTick = [DateTime]::MinValue; $global:trayB = -1
   } catch { $global:tray = $null }
+}
+$global:trayGoal = $null; $global:trayB = -1
+function Tray-Fm($m) { $h = [Math]::Floor($m / 60); $r = $m % 60; if ($h -and $r) { return ([string]$h + ' س ' + $r + ' د') } elseif ($h) { return ([string]$h + ' س') } else { return ([string]$r + ' د') } }
+$global:trayLogo = $null
+function Tray-Logo() {
+  if ($global:trayLogo) { return $global:trayLogo }
+  try {
+    $by = [IO.File]::ReadAllBytes((Join-Path $PSScriptRoot 'Thabat.ico')); $n = [BitConverter]::ToUInt16($by, 4); $best = $null
+    for ($i = 0; $i -lt $n; $i++) { $e = 6 + 16 * $i; $w = [int]$by[$e]; if ($w -eq 0) { $w = 256 }; $sz = [BitConverter]::ToInt32($by, $e + 8); $of = [BitConverter]::ToInt32($by, $e + 12); if ($w -ge 32 -and (-not $best -or $w -lt $best.w)) { $best = @{ w = $w; sz = $sz; of = $of } } }
+    if ($best -and $best.w -lt 64) { foreach ($i in 0..($n - 1)) { $e = 6 + 16 * $i; if ([int]$by[$e] -eq 64) { $best = @{ w = 64; sz = [BitConverter]::ToInt32($by, $e + 8); of = [BitConverter]::ToInt32($by, $e + 12) } } } }
+    $ms = New-Object IO.MemoryStream(,$by[$best.of..($best.of + $best.sz - 1)]); $global:trayLogo = [System.Drawing.Image]::FromStream($ms)
+  } catch { $global:trayLogo = $null }
+  return $global:trayLogo
+}
+function Tray-Icon($b) {
+  if ($b -eq $global:trayB -or -not $global:tray) { return }; $global:trayB = $b
+  try {
+    $ico = Join-Path $PSScriptRoot 'Thabat.ico'
+    if ($b -lt 0) { if (Test-Path -LiteralPath $ico) { $global:tray.Icon = New-Object System.Drawing.Icon($ico) }; return }
+    $bmp = New-Object System.Drawing.Bitmap 32, 32; $gr = [System.Drawing.Graphics]::FromImage($bmp); $gr.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+    $lg = Tray-Logo; if ($lg) { $gr.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic; $gr.DrawImage($lg, (New-Object System.Drawing.Rectangle 3, 0, 26, 26)) }
+    $bg = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 60, 60, 60)); $gr.FillRectangle($bg, 2, 27, 28, 5)
+    $w = [int][Math]::Round(28 * $b / 10); if ($w -gt 0) { $fg = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 253, 219, 0)); $gr.FillRectangle($fg, (30 - $w), 27, $w, 5); $fg.Dispose() }
+    $bg.Dispose(); $gr.Dispose(); $global:tray.Icon = [System.Drawing.Icon]::FromHandle($bmp.GetHicon()); $bmp.Dispose()
+  } catch {}
 }
 function Tray-Tick() {
   if ($global:tray) { try { [System.Windows.Forms.Application]::DoEvents() } catch {} }
@@ -340,6 +365,12 @@ function Tray-Tick() {
   foreach ($it in $global:sched) { if ($it[0] -gt $now -and $it[3] -eq 1 -and (-not $nx -or $it[0] -lt $nx[0])) { $nx = $it } }
   $txt = 'ثبات'
   if ($nx) { $tm = [DateTimeOffset]::FromUnixTimeMilliseconds($nx[0]).LocalDateTime.ToString('HH:mm'); $txt = ('ثبات · ' + ($nx[1] -replace '[^\p{L}\p{N}\s:·—-]', '').Trim() + ' ' + $tm) }
+  $tg = $global:trayGoal
+  if ($tg -and $tg.d -eq (Get-Date).ToString('yyyy-MM-dd') -and $tg.g -gt 0) {
+    $pc = [int][Math]::Min(100, [Math]::Round(100 * $tg.w / $tg.g)); $l2 = (Tray-Fm $tg.w) + ' من ' + (Tray-Fm $tg.g) + ' · ' + $pc + '%'
+    $room = 62 - $l2.Length; if ($txt.Length -gt $room) { $txt = $txt.Substring(0, [Math]::Max(0, $room)) }; $txt = $txt + "`n" + $l2
+    Tray-Icon ([int][Math]::Floor($pc / 10))
+  } else { Tray-Icon -1 }
   if ($txt.Length -gt 63) { $txt = $txt.Substring(0, 63) }
   try { $global:tray.Text = $txt } catch {}
 }
@@ -410,6 +441,9 @@ while ($true) {
       $arr = @($global:autoQ); $global:autoQ.Clear(); Auto-Save
       $js = if ($arr.Count) { ConvertTo-Json -InputObject $arr -Depth 4 -Compress } else { '[]' }; if ($arr.Count -eq 1 -and $js -notmatch '^\[') { $js = '[' + $js + ']' }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes($js))
+    } elseif ($path -match '^/tray/goal\?w=(\d{1,5})&g=(\d{1,5})&d=(\d{4}-\d{2}-\d{2})$') {
+      $global:trayGoal = @{ w = [int]$matches[1]; g = [int]$matches[2]; d = $matches[3] }; $global:trayTick = [DateTime]::MinValue
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}'))
     } elseif ($path -match '^/tray(\?on=([01]))?$') {
       if ($matches[2]) { try { [IO.File]::WriteAllText($global:trayF, ('{"on":' + ($(if ($matches[2] -eq '1') { 'true' } else { 'false' })) + '}')) } catch {}; $global:trayTick = [DateTime]::MinValue; Tray-Set }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"on":' + ([string](Tray-On)).ToLower() + ',"shown":' + ([string]([bool]$global:tray)).ToLower() + '}'))
