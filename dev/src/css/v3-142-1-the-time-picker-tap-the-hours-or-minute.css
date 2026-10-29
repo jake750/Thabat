@@ -1,0 +1,5 @@
+/* v3.142.1 the time picker: tap the hours or minutes to type them */
+.tpkd b.tpkb{cursor:text;border-bottom:2px dashed color-mix(in srgb,var(--accent) 45%,transparent);padding:0 2px;border-radius:2px}
+.tpkd b.tpkb:hover{border-bottom-color:var(--accent)}
+.tpkin{font:inherit;font-weight:600;width:2.4ch;text-align:center;border:0;border-bottom:2px solid var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--text);padding:0;border-radius:4px 4px 0 0;outline:none}
+
