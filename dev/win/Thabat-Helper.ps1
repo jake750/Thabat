@@ -309,6 +309,42 @@ function Page-Meta($u) {
     return @{ t = $tt; d = $dd; img = $im }
   } catch { return $null }
 }
+# 3.142: the whole page for «save an article» — public addresses only (checked again at every redirect), at most 3 MB, decoded by its charset
+function Host-Bad($hn) {
+  try { $ips = [System.Net.Dns]::GetHostAddresses($hn) } catch { return $true }
+  if (-not $ips -or $ips.Count -eq 0) { return $true }
+  foreach ($ip in $ips) { $b = $ip.GetAddressBytes(); $v4 = $ip.AddressFamily -eq 'InterNetwork'
+    if ([System.Net.IPAddress]::IsLoopback($ip) -or $ip.IsIPv6LinkLocal -or $ip.IsIPv6SiteLocal) { return $true }
+    if ($v4 -and ($b[0] -eq 10 -or $b[0] -eq 127 -or $b[0] -eq 0 -or ($b[0] -eq 169 -and $b[1] -eq 254) -or ($b[0] -eq 172 -and $b[1] -ge 16 -and $b[1] -le 31) -or ($b[0] -eq 192 -and $b[1] -eq 168) -or ($b[0] -eq 100 -and $b[1] -ge 64 -and $b[1] -le 127))) { return $true }
+    if (-not $v4 -and ($b[0] -band 0xfe) -eq 0xfc) { return $true } }
+  return $false
+}
+function Page-Get($pu) {
+  for ($hop = 0; $hop -lt 5; $hop++) {
+    if ($pu -notmatch '^https?://[^\s/?#]+') { return $null }
+    try { $puri = [Uri]$pu } catch { return $null }
+    if (Host-Bad $puri.Host) { return $null }
+    $prs = $null
+    try {
+      $prq = [System.Net.HttpWebRequest]::Create($puri); $prq.Timeout = 12000; $prq.ReadWriteTimeout = 12000; $prq.AllowAutoRedirect = $false
+      $prq.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36 Thabat'; $prq.Accept = 'text/html,application/xhtml+xml,*/*;q=0.5'
+      try { $prs = $prq.GetResponse() } catch [System.Net.WebException] { $prs = $_.Exception.Response; if ($prs -eq $null) { return $null } }
+      $pcode = [int]$prs.StatusCode
+      if ($pcode -ge 300 -and $pcode -lt 400) { $loc = $prs.Headers['Location']; $prs.Close(); if (-not $loc) { return $null }; $pu = (New-Object System.Uri($puri, $loc)).AbsoluteUri; continue }
+      if ($pcode -ge 400) { $prs.Close(); return $null }
+      $pct = [string]$prs.ContentType
+      if ($pct -and $pct -notmatch '(?i)html|xml|text') { $prs.Close(); return $null }
+      $pst = $prs.GetResponseStream(); $pms = New-Object IO.MemoryStream; $pbuf = New-Object byte[] 65536; $ptot = 0
+      while ($true) { $pr = $pst.Read($pbuf, 0, $pbuf.Length); if ($pr -le 0) { break }; $pms.Write($pbuf, 0, $pr); $ptot += $pr; if ($ptot -gt 3145728) { break } }
+      $prs.Close(); $pbytes = $pms.ToArray()
+      $pcs = ''; if ($pct -match '(?i)charset=["'']?([\w-]+)') { $pcs = $matches[1] }
+      if (-not $pcs) { $phead = [Text.Encoding]::ASCII.GetString($pbytes, 0, [Math]::Min(4096, $pbytes.Length)); if ($phead -match '(?i)charset=["'']?([\w-]+)') { $pcs = $matches[1] } }
+      $penc = [Text.Encoding]::UTF8; if ($pcs -and $pcs -notmatch '(?i)^utf-?8$') { try { $penc = [Text.Encoding]::GetEncoding($pcs) } catch {} }
+      return @{ html = $penc.GetString($pbytes); url = $puri.AbsoluteUri }
+    } catch { if ($prs -ne $null) { try { $prs.Close() } catch {} }; return $null }
+  }
+  return $null
+}
 
 $global:tray = $null; $global:trayF = Join-Path $kdir 'tray.json'; $global:trayTick = [DateTime]::MinValue
 function Tray-On() { try { $o = [IO.File]::ReadAllText($global:trayF) | ConvertFrom-Json; return [bool]$o.on } catch { return $true } }
@@ -456,6 +492,10 @@ while ($true) {
     } elseif ($path -match '^/tray(\?on=([01]))?$') {
       if ($matches[2]) { try { [IO.File]::WriteAllText($global:trayF, ('{"on":' + ($(if ($matches[2] -eq '1') { 'true' } else { 'false' })) + '}')) } catch {}; $global:trayTick = [DateTime]::MinValue; Tray-Set }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"on":' + ([string](Tray-On)).ToLower() + ',"shown":' + ([string]([bool]$global:tray)).ToLower() + '}'))
+    } elseif ($path -match '^/page\?u=(.+)$') {
+      $pg = Page-Get (Q-Dec $matches[1])
+      if ($pg -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"page"}')) }
+      else { Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes((ConvertTo-Json -InputObject $pg -Compress))) }
     } elseif ($path -match '^/meta\?u=(.+)$') {
       $mt = Page-Meta (Q-Dec $matches[1])
       if ($mt -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"meta"}')) }

@@ -1,0 +1,22 @@
+/* v3.142.0 Notion list E: publish, comments, save an article */
+.npbu{margin:6px 0 10px;word-break:break-all}
+.npbu a{color:var(--accent);cursor:pointer}
+.npbn{font-size:12.5px;margin-top:8px}
+mark.ncmk{background:color-mix(in srgb,var(--gold,#e0b43a) 28%,transparent);color:inherit;border-bottom:2px solid color-mix(in srgb,var(--gold,#e0b43a) 80%,transparent);border-radius:3px 3px 0 0;padding:0 1px;cursor:pointer}
+mark.ncmk.ncmfl{animation:ncmfl 1.4s ease}
+@keyframes ncmfl{0%,60%{background:color-mix(in srgb,var(--gold,#e0b43a) 70%,transparent)}}
+.ncmbar{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin:4px 0;padding:5px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--gold,#e0b43a) 55%,var(--line));background:color-mix(in srgb,var(--gold,#e0b43a) 10%,transparent);color:var(--text);font:inherit;font-size:13px;cursor:pointer;min-height:34px}
+.ncmbar small{color:var(--muted)}
+.ncmi{color:var(--gold,#e0b43a);font-weight:700}
+.ncmfab{position:fixed;z-index:95;transform:translateX(-50%);padding:7px 14px;border-radius:999px;border:0;background:var(--accent);color:#111;font:inherit;font-size:13px;font-weight:600;box-shadow:0 6px 18px #0006;cursor:pointer;min-height:38px;white-space:nowrap}
+.ncmpop{max-width:min(320px,92vw)}
+.ncmq{color:var(--muted);font-size:12.5px;line-height:1.6;overflow-wrap:anywhere;margin-bottom:4px}
+.ncmt{font-size:14px;line-height:1.7;overflow-wrap:anywhere;white-space:pre-wrap}
+.ncml{display:flex;flex-direction:column;gap:8px;max-height:min(60vh,520px);overflow:auto}
+.ncmr{border:1px solid var(--line);border-inline-start:3px solid var(--gold,#e0b43a);border-radius:10px;padding:8px 10px}
+.ncmr.dn{opacity:.6;border-inline-start-color:var(--line)}
+.ncmf{display:flex;align-items:center;gap:4px;margin-top:4px}
+.ncmf small{color:var(--muted)}
+.narv{display:block;margin-top:8px;line-height:1.6}
+#narSt{margin-top:8px;font-size:13px}
+
