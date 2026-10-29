@@ -1,0 +1,20 @@
+/* v3.142.2 phones: the note editor's head and a short tool row */
+@media (max-width:700px){
+#noteBox .nehead{display:grid!important;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:center}
+#noteBox .nehead>*{min-width:0;grid-column:1/-1}
+#noteBox .nehead>#nicB{grid-column:1;grid-row:1}
+#noteBox .nehead>#neTitle{grid-column:2;grid-row:1;width:100%!important;max-width:none!important;font-size:18px}
+#noteBox .nehead>#neDay{width:100%!important;max-width:none!important;text-align:center;text-align-last:center}
+#noteBox .nehead>#neDay::-webkit-datetime-edit{justify-content:center}
+#noteBox .nehead>.hdl{text-align:center;margin-top:-4px}
+.netb.ntbmob{gap:6px}
+.netb .ntbx{display:none!important}
+.ntbmore{display:inline-flex;align-items:center;gap:4px;padding-inline:12px;min-height:40px}
+.ntbmore i{font-style:normal;font-size:11px;opacity:.8}
+.ntbmore[hidden]{display:none!important}
+}
+.ntbmenu{max-width:min(320px,92vw);max-height:min(70vh,560px);overflow:auto}
+.ntbmenu button{display:flex;align-items:center;gap:10px;text-align:start;min-height:42px}
+.ntbmi{display:inline-grid;place-items:center;min-width:26px;color:var(--accent);font-weight:700}
+.ntbmi svg{width:18px;height:18px}
+

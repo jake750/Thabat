@@ -156,6 +156,8 @@ css/v3-140-0-notion-list-c-sub-pages-note-icons-sync.css
 css/v3-141-0-notion-list-d-note-properties-folder-ta.css
 css/v3-142-0-notion-list-e-publish-comments-save-an.css
 css/v3-142-1-the-time-picker-tap-the-hours-or-minute.css
+css/v3-142-2-phones-the-note-editor-s-head-and-a-sho.css
+css/v3-142-2-note-templates-are-off-for-now-his-requ.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -396,6 +398,7 @@ js/v3-140-0-notion-list-c-sub-pages-an-icon-per-not.js
 js/v3-141-0-notion-list-d-note-properties-a-folder.js
 js/v3-142-0-notion-list-e-publish-a-note-as-a-web-p.js
 js/v3-142-1-phones-the-saved-tick-only-after-editin.js
+js/v3-142-2-phones-the-note-editor-s-head-and-tool.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
