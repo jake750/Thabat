@@ -1,0 +1,49 @@
+/* v3.140.0 Notion list C: sub-pages, note icons, synced pieces, recently opened, live tasks */
+.nic{display:inline-grid;place-items:center;width:var(--ics,16px);height:var(--ics,16px);margin-inline-end:5px;vertical-align:-2px;color:var(--accent)}
+.nic svg{width:100%;height:100%}
+.nsubc{color:var(--accent)}
+.nsbp{display:block;font-size:11.5px;color:var(--muted);margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nrcbar{display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px;margin-bottom:4px}
+.nrcbar::-webkit-scrollbar{display:none}
+.nrcbar>small{color:var(--muted);flex:none;font-size:12px}
+.nrcc{flex:none;display:inline-flex;align-items:center;max-width:220px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--panel) 80%,transparent);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer}
+.nrcc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.nrcc:hover{border-color:var(--accent)}
+.nicb{flex:none;min-width:38px;height:38px;padding:0;display:inline-grid;place-items:center;color:var(--accent)}
+.nicb svg{width:20px;height:20px}
+.nicph{color:var(--muted);font-size:16px}
+.nicg{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;margin-bottom:10px}
+.nicc{height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer}
+.nicc svg{width:22px;height:22px}
+.nicc.on,.nicc:hover{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.nsbcrumb{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;max-width:100%;border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;padding:2px 4px;cursor:pointer}
+.nsbcrumb span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.nsbcrumb:hover{color:var(--accent)}
+.nsubbox{margin:10px 0 4px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;gap:4px}
+.nsubbox.empty{padding:4px 10px;border-style:dashed}
+.nsubbox.empty .nsubh b{color:var(--muted);font-weight:500;font-size:12.5px}
+.nsubh{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13.5px}
+.nsubr{display:flex;align-items:center;gap:6px;width:100%;text-align:start;border:0;border-radius:8px;background:none;color:var(--text);font:inherit;font-size:14px;padding:7px 6px;cursor:pointer;min-width:0}
+.nsubr>span:not(.nic):not(.nsubd){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nsubr small{color:var(--muted);font-size:11.5px;flex:none}
+.nsubr:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.nsubd{color:var(--muted);width:16px;text-align:center;flex:none}
+.nnpl{display:flex;flex-direction:column;gap:2px;margin-top:8px;max-height:min(52vh,420px);overflow:auto}
+.nnpr{display:flex;align-items:center;gap:6px;width:100%;text-align:start;border:0;border-radius:8px;background:none;color:var(--text);font:inherit;font-size:14px;padding:9px 8px;cursor:pointer;min-width:0}
+.nnpr>span:not(.nic){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nnpr small{color:var(--muted);flex:none;font-size:11.5px}
+.nnpr:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.nnpr.nnpnew{color:var(--accent)}
+.nsync{margin:8px 0;border-inline-start:3px solid color-mix(in srgb,var(--accent) 55%,transparent);border-radius:4px 10px 10px 4px;background:color-mix(in srgb,var(--accent) 5%,transparent);padding:6px 12px 8px}
+.nsynch{display:inline-flex;align-items:center;font-size:12px;color:var(--muted);text-decoration:none;cursor:pointer;margin-bottom:4px}
+.nsynch:hover{color:var(--accent)}
+.nsyncb{min-width:0;overflow-wrap:anywhere}
+.nltk{margin:8px 0;border:1px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.nltkh{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-bottom:2px}
+.nltkr{display:flex;align-items:center;gap:8px;padding:5px 2px;font-size:14px;cursor:pointer;min-width:0}
+.nltkr>span{flex:1;min-width:0;overflow-wrap:anywhere}
+.nltkr input{width:18px;height:18px;accent-color:var(--accent);flex:none;margin:0}
+.nltkr.dn>span{text-decoration:line-through;color:var(--muted)}
+.nltkr small{color:var(--muted);font-size:11.5px;flex:none}
+.nltkr small.late{color:#e0605a}
+

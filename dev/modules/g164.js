@@ -24,7 +24,7 @@ function nsbPaint(){const box=$('#noteBox');if(!box||!NE)return;const head=box.q
   const ib=$('#nicB');if(ib)ib.innerHTML=NE.ic&&UIC_P[NE.ic]?uicSvg(NE.ic,''):'<span class="nicph">＋</span>';
   box.querySelector('#nsbCrumb')?.remove();const p=NE.parent&&nsbNote(NE.parent);if(p&&head){const c=document.createElement('button');c.type='button';c.id='nsbCrumb';c.className='nsbcrumb';c.innerHTML=`‹ ${nsbIco(p,13)}<span dir="auto">${esc(p.title||t('notes.untitled'))}</span>`;c.onclick=()=>nsbGo(p.id);head.before(c)}
   box.querySelector('#nsubBox')?.remove();if(NE._new&&!NE.title)return;const ks=nsbKids(NE.id);const anchor=$('#nePrev')||$('#neBody');if(!anchor)return;
-  const d=document.createElement('div');d.id='nsubBox';d.className='nsubbox';d.innerHTML=`<div class="nsubh"><b>${esc(t('nsb.t'))}</b><button type="button" class="btn sm ghost" id="nsbNew">＋ ${esc(t('nsb.new'))}</button></div>${ks.map(n=>`<button type="button" class="nsubr" data-nsb="${n.id}">${nsbIco(n,14)||'<span class="nsubd">▤</span>'}<span dir="auto">${esc(n.title||t('notes.untitled'))}</span><small>${esc(t('nsb.kids',nsbKids(n.id).length))}</small></button>`).join('')}`;
+  const d=document.createElement('div');d.id='nsubBox';d.className='nsubbox';d.innerHTML=`<div class="nsubh"><b>${esc(t('nsb.t'))}</b><button type="button" class="btn sm ghost" id="nsbNew">＋ ${esc(t('nsb.new'))}</button></div>${ks.map(n=>`<button type="button" class="nsubr" data-nsb="${n.id}">${nsbIco(n,14)||'<span class="nsubd">▤</span>'}<span dir="auto">${esc(n.title||t('notes.untitled'))}</span>${nsbKids(n.id).length?`<small>${esc(t('nsb.kids',nsbKids(n.id).length))}</small>`:''}</button>`).join('')}`;
   if(!ks.length)d.classList.add('empty');anchor.parentElement.insertBefore(d,anchor.nextSibling);d.querySelector('#nsbNew').onclick=nsbNew;d.querySelectorAll('[data-nsb]').forEach(b=>b.onclick=()=>nsbGo(b.dataset.nsb))}
 function nsbGo(id){if(!NE)return openNote(id);neRead();const keep=NE.title||NE.body;closeNote(!!keep);setTimeout(()=>openNote(id),60)}
 function nsbNew(){if(!NE)return;neRead();if(!(NE.title||'').trim()&&!(NE.body||'').trim()){toast(t('nsb.needT'));return}const pid=NE.id;closeNote(true);setTimeout(()=>{openNote(null);if(NE){NE.parent=pid;NE.fd=(nsbNote(pid)||{}).fd;nsbPaint()}},60)}
@@ -65,9 +65,11 @@ function nsyncSection(body,h){if(!h)return body;const L_=String(body||'').split(
   for(let i=0;i<L_.length;i++){const m=L_[i].match(/^(#{1,4})\s+(.*)$/);if(m&&lshNorm(m[2])===hn){s=i;lv=m[1].length;break}}if(s<0)return null;let e=L_.length;
   for(let i=s+1;i<L_.length;i++){const m=L_[i].match(/^(#{1,4})\s+/);if(m&&m[1].length<=lv){e=i;break}}return L_.slice(s,e).join('\n')}
 function ltkTasks(tag){const out=[],td=todayKey(),d0=keyToDate(td),tg=tag?lshNorm(tag.replace(/^#/,'')):'';
-  for(let o=-30;o<=14;o++){const d=new Date(d0);d.setDate(d.getDate()+o);const k=dKey(d),day=S.days&&S.days[k];if(!day||!day.tasks)continue;
+  for(let o=-14;o<=14;o++){const d=new Date(d0);d.setDate(d.getDate()+o);const k=dKey(d),day=S.days&&S.days[k];if(!day||!day.tasks)continue;
     day.tasks.forEach(x=>{if(!x||!x.text||x.pp)return;if(x.done&&k!==td)return;if(tg&&!(lshNorm(x.text).includes('#'+tg)))return;out.push({k,x})})}
-  return out.slice(0,60)}
+  /* today first, then the late ones (newest first), then the coming ones */
+  const rk=k=>k===td?0:k<td?1:2;out.sort((a,b)=>rk(a.k)-rk(b.k)||(rk(a.k)===1?(a.k<b.k?1:a.k>b.k?-1:0):(a.k<b.k?-1:a.k>b.k?1:0)));
+  return out.slice(0,40)}
 function ltkHTML(tag){const L_=ltkTasks(tag),td=todayKey();return`<div class="nltk"><div class="nltkh"><b>${esc(t('ltk.t'))}</b>${tag?`<span class="ntag">${esc(tag.startsWith('#')?tag:'#'+tag)}</span>`:''}</div>${L_.length?L_.map(({k,x})=>`<label class="nltkr${x.done?' dn':''}"><input type="checkbox" data-ltk="${k}|${esc(x.id)}"${x.done?' checked':''}><span dir="auto">${mdInline(esc(x.text))}</span>${k!==td?`<small class="${k<td?'late':''}">${esc(gShort(keyToDate(k)))}</small>`:''}</label>`).join(''):`<small class="muted">${esc(t('ltk.none'))}</small>`}</div>`}
 {const _m=mdLite;mdLite=function(src,...a){const L_=String(src||'').split('\n'),B=[];let inCode=false;
   for(let i=0;i<L_.length;i++){const l=L_[i];if(/^\s*```/.test(l)){inCode=!inCode;continue}if(inCode)continue;let m;

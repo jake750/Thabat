@@ -152,6 +152,7 @@ css/v3-137-0-twelfth-list-h-journey-panel-pictures-i.css
 css/v3-138-0-notion-list-a-blocks-in-the-reading-vie.css
 css/v3-139-0-notion-list-b-link-cards-embeds-date-ch.css
 css/v3-139-1-the-book-title-in-the-middle-of-the-rea.css
+css/v3-140-0-notion-list-c-sub-pages-note-icons-sync.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -388,6 +389,7 @@ js/v3-137-0-twelfth-list-h-print-a-note-today-s-goa.js
 js/v3-138-0-notion-list-a-the-reading-view-shows-qu.js
 js/v3-139-0-notion-list-b-a-link-alone-on-its-line.js
 js/v3-139-1-the-book-title-in-the-middle-of-the-rea.js
+js/v3-140-0-notion-list-c-sub-pages-an-icon-per-not.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
