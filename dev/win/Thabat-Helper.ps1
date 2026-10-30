@@ -247,6 +247,7 @@ function Send-Response($stream, $status, $type, [byte[]]$body) {
 
 # 3.105: automation — other programs on this PC (with the key from helper.key, e.g. Thabat-Auto.ps1) queue a task, a note or a timer start/stop;
 # Thabat takes the queue every few seconds while it is open (kept in auto.json until then). And a tray icon (tray.json {on}), on by default.
+$global:bkbuf = @{}
 $global:autoF = Join-Path $kdir 'auto.json'; $global:autoQ = New-Object System.Collections.ArrayList
 try { if (Test-Path -LiteralPath $global:autoF) { $arr = [IO.File]::ReadAllText($global:autoF, [Text.Encoding]::UTF8) | ConvertFrom-Json; foreach ($x in $arr) { if ($x -and $x.t) { [void]$global:autoQ.Add($x) } } } } catch {}
 function Auto-Save() { try { [IO.File]::WriteAllText($global:autoF, (ConvertTo-Json -InputObject @($global:autoQ) -Depth 4 -Compress), (New-Object System.Text.UTF8Encoding($false))) } catch {} }
@@ -482,6 +483,49 @@ while ($true) {
     } elseif ($path -match '^/assoc(\?on=([01]))?$') {
       $err = ''; if ($matches[2]) { try { Assoc-Set ($matches[2] -eq '1') } catch { $err = 'reg' } }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":' + $(if ($err) { 'false' } else { 'true' }) + ',"on":' + ([string](Assoc-On)).ToLower() + '}'))
+    } elseif ($path -match '^/bk(dir|put|ls|rm)(\?|$)') {
+      # 3.143: the backup folder is written by the helper, so Chrome's folder permission (lost at every restart) is not needed.
+      # The folder is chosen once (path kept in %LOCALAPPDATA%\Thabat\bkdir.txt); file names are one plain name, with at most one sub-folder.
+      $bkK = $matches[1]; $bkQ = @{}
+      if ($path -match '\?(.*)$') { foreach ($kv in ($matches[1] -split '&')) { $a = $kv -split '=', 2; if ($a.Count -eq 2) { $bkQ[$a[0]] = Q-Dec $a[1] } } }
+      $bkF = Join-Path $kdir 'bkdir.txt'; $bkOk = $false; $bkNames = @(); $bkErr = ''
+      try {
+        if ($bkK -eq 'dir') {
+          if ($bkQ['clear']) { Remove-Item -LiteralPath $bkF -ErrorAction SilentlyContinue }
+          elseif ($bkQ['set']) { $sp = [string]$bkQ['set']; if ([IO.Path]::IsPathRooted($sp) -and (Test-Path -LiteralPath $sp -PathType Container)) { [IO.File]::WriteAllText($bkF, $sp, $utf8) } }
+          $bkOk = $true
+        } else {
+          $bkDir = ''; if (Test-Path -LiteralPath $bkF) { $bkDir = ([IO.File]::ReadAllText($bkF, $utf8)).Trim(); if (-not (Test-Path -LiteralPath $bkDir -PathType Container)) { $bkDir = '' } }
+          $bkN = [string]$bkQ['n']; $bkS = [string]$bkQ['sub']
+          $badN = '[\\/:*?"<>|]'
+          $okS = ($bkS -eq '') -or (($bkS -notmatch $badN) -and $bkS.Length -le 60 -and $bkS -ne '.' -and $bkS -ne '..' -and $bkS -notmatch '\.$')
+          $okN = ($bkN -notmatch $badN) -and $bkN.Length -ge 1 -and $bkN.Length -le 120 -and $bkN -ne '.' -and $bkN -ne '..' -and $bkN -notmatch '\.$' -and $bkN -match '\.(json|md)$'
+          $tdir = if ($bkS) { Join-Path $bkDir $bkS } else { $bkDir }
+          if ($bkDir -and $okS -and $bkK -eq 'ls') {
+            if (Test-Path -LiteralPath $tdir -PathType Container) { $bkNames = @(Get-ChildItem -LiteralPath $tdir -File | Where-Object { $_.Name -match '\.(json|md)$' } | ForEach-Object { $_.Name }) }
+            $bkOk = $true
+          } elseif ($bkDir -and $okS -and $okN -and $bkK -eq 'rm') {
+            Remove-Item -LiteralPath (Join-Path $tdir $bkN) -ErrorAction SilentlyContinue; $bkOk = $true
+          } elseif ($bkDir -and $okS -and $okN -and $bkK -eq 'put') {
+            $bkI = [int]$bkQ['i']; $bkC = [int]$bkQ['c']; $bkKey = $bkS + '/' + $bkN
+            if ($bkC -ge 1 -and $bkC -le 2000 -and $bkI -ge 0 -and $bkI -lt $bkC -and ($bkI -eq 0 -or $global:bkbuf.ContainsKey($bkKey))) {
+              if ($bkI -eq 0) { $global:bkbuf[$bkKey] = New-Object System.IO.MemoryStream }
+              $bkD64 = ([string]$bkQ['d']) -replace ' ', '+'; $bkB = [Convert]::FromBase64String($bkD64)
+              $global:bkbuf[$bkKey].Write($bkB, 0, $bkB.Length)
+              if ($global:bkbuf[$bkKey].Length -gt 200MB) { $global:bkbuf.Remove($bkKey) }
+              elseif ($bkI -eq $bkC - 1) {
+                New-Item -ItemType Directory -Force -Path $tdir | Out-Null
+                $fp = Join-Path $tdir $bkN; $tp = $fp + '.part'
+                [IO.File]::WriteAllBytes($tp, $global:bkbuf[$bkKey].ToArray()); Move-Item -LiteralPath $tp -Destination $fp -Force
+                $global:bkbuf.Remove($bkKey); $bkOk = $true
+              } else { $bkOk = $true }
+            }
+          }
+        }
+      } catch { $bkOk = $false; $bkErr = [string]$_.Exception.Message }
+      $bkCur = ''; try { if (Test-Path -LiteralPath $bkF) { $bkCur = ([IO.File]::ReadAllText($bkF, $utf8)).Trim(); if (-not (Test-Path -LiteralPath $bkCur -PathType Container)) { $bkCur = '' } } } catch {}
+      $bkO = @{ ok = $bkOk; path = $bkCur; names = $bkNames; err = $bkErr }
+      Send-Response $stream $(if ($bkOk) { '200 OK' } else { '400 Bad Request' }) 'application/json; charset=utf-8' ($utf8.GetBytes((ConvertTo-Json -InputObject $bkO -Compress)))
     } elseif ($path -like '/auto/take*') {
       $arr = @($global:autoQ); $global:autoQ.Clear(); Auto-Save
       $js = if ($arr.Count) { ConvertTo-Json -InputObject $arr -Depth 4 -Compress } else { '[]' }; if ($arr.Count -eq 1 -and $js -notmatch '^\[') { $js = '[' + $js + ']' }

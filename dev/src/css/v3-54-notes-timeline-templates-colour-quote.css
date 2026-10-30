@@ -12,3 +12,5 @@
 .ntpr{display:flex;gap:8px;align-items:center}.ntpr .in{flex:1;min-width:0}
 .ntpb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}.ntpb small{width:100%}
 
+/* 3.142.3: colour swatches stayed round on phones (a general phone button rule stretched them into ovals) */
+.nfsw button{width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;flex:0 0 30px!important;padding:0!important;border-radius:50%!important;aspect-ratio:1/1}
