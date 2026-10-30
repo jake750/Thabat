@@ -1,0 +1,60 @@
+/* v3.145 g172: UX list C — prayers and Quran */
+/* 29. one meaning for the prayer colours everywhere: green on time, amber late, red missed, grey not logged */
+:root{--pOn:#22c55e;--pLate:#f59e0b;--pMiss:#ef4444;--pNone:var(--muted)}
+html.mode-light{--pOn:#16a34a;--pLate:#d97706;--pMiss:#dc2626}
+.plm.s-on,.plm.s-auto{color:var(--pOn)}.plm.s-late{color:var(--pLate)}.plm.s-miss{color:var(--pMiss)}.plm.s-q{color:var(--pNone)}
+.wkp.on{background:var(--pOn)}.wkp.late{background:var(--pLate)}.wkp.miss{background:var(--pMiss)}.wkp.auto{background:color-mix(in srgb,var(--pOn) 55%,transparent)}
+.cr2p.on,.cr2p.auto{background:var(--pOn)}.cr2p.late{background:var(--pLate)}.cr2p.miss{background:var(--pMiss)}
+.tdld.on{background:var(--pOn);border-color:var(--pOn)}.tdld.late{background:var(--pLate);border-color:var(--pLate)}.tdld.miss{background:var(--pMiss);border-color:var(--pMiss)}
+.prxseg button.on.s-on{border-color:var(--pOn);background:color-mix(in srgb,var(--pOn) 22%,transparent)}
+.prxseg button.on.s-late{border-color:var(--pLate);background:color-mix(in srgb,var(--pLate) 22%,transparent)}
+.prxseg button.on.s-miss{border-color:var(--pMiss);background:color-mix(in srgb,var(--pMiss) 22%,transparent)}
+.prxwhy button.on{border-color:var(--pLate);background:color-mix(in srgb,var(--pLate) 22%,transparent)}
+/* 21 */
+#prayers [data-pk]{cursor:pointer;-webkit-touch-callout:none;user-select:none}
+/* 22 */
+#v-today .tdpr #prayers.ux3fold,#prayers.ux3fold{display:none!important}
+.ux3line{display:flex;align-items:center;gap:8px;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:14px;border:1px solid color-mix(in srgb,var(--pOn) 40%,var(--line));background:color-mix(in srgb,var(--pOn) 9%,transparent);color:var(--text);font:inherit;cursor:pointer;text-align:start;animation:ux3in .3s ease}
+.ux3line b{font-size:14.5px}.ux3line small{margin-inline-start:auto;color:var(--muted);font-size:12px}
+.ux3ok{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--pOn);color:#fff;font-style:normal;font-size:12px;font-weight:800;flex:none}
+@keyframes ux3in{from{opacity:0;transform:translateY(-4px)}}
+/* 23 */
+.ux3ring{position:relative;display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;flex:none;background:conic-gradient(var(--accent) var(--f,0%),color-mix(in srgb,var(--text) 14%,transparent) 0)}
+.ux3ring::before{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--panel)}
+.ux3ring>svg{position:relative;width:16px!important;height:16px!important}
+.ux3ring.full{background:conic-gradient(var(--gold) 100%,transparent 0)}
+/* 27 */
+.ux3rm{display:flex;flex-direction:column;gap:4px;width:100%;flex-basis:100%;padding:6px 2px;border:0;background:none;color:inherit;font:inherit;cursor:pointer;text-align:start}
+.ux3rmg{display:grid;grid-template-columns:repeat(var(--c,30),minmax(0,1fr));gap:2px}
+.ux3rmg i{height:10px;border-radius:3px;background:color-mix(in srgb,var(--text) 12%,transparent)}
+.ux3rmg i.on{background:color-mix(in srgb,#8b5cf6 calc(35% + var(--n) * 11%),transparent)}
+.ux3rmg i.fut{background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 14%,transparent)}
+.ux3rmg i.td{outline:2px solid var(--accent);outline-offset:1px}
+.ux3rm small{color:var(--muted);font-size:11.5px}
+/* 28 */
+.ux3pm{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:0 0 12px;padding:12px 14px;border-radius:14px;background:color-mix(in srgb,var(--pOn) 9%,transparent)}
+.ux3pm b{font-size:38px;line-height:1;font-variant-numeric:tabular-nums;color:var(--text)}
+.ux3pm span{font-size:15px}.ux3pm small{flex-basis:100%;color:var(--muted);font-size:12px}
+/* 30 */
+.ux3bed{opacity:.8}
+/* 31 */
+.ux3jn{font-style:normal;font-size:12px;color:var(--gold);white-space:nowrap}
+#qjBar.ux3near>i>b{background:var(--gold)}
+/* 32 */
+.navbtn[data-v="quran"]{position:relative}
+.ux3dot{position:absolute;top:6px;inset-inline-end:8px;width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px var(--panel);pointer-events:none}
+/* 36 */
+.ux3mile{font-size:12.5px;color:var(--muted);margin:6px 2px 2px}.ux3mile b{color:var(--gold);font-weight:600}
+/* 37. memorisation counter: +1 big at the thumb, −1 small and away */
+.qrpr2 .qrpplus{min-width:92px;min-height:64px;font-size:26px!important}
+.qrpr2 .qrpmin{min-height:30px;min-width:38px;padding:2px 8px;font-size:12px;opacity:.7;align-self:flex-start}
+@media(max-width:700px){.qrpbox.qrpfs .qrpr2 .qrpplus{min-width:64px;min-height:52px;font-size:22px!important}.qrpbox.qrpfs .qrpr2 .qrpmin{min-height:28px;min-width:32px;margin-inline-start:10px;align-self:center}}
+/* 38 */
+.hidetest .ml span[data-k].wrev{animation:ux3rev .45s ease}
+@keyframes ux3rev{from{opacity:0;filter:blur(2px)}to{opacity:1;filter:none}}
+#spread .ml span[data-k].ux3mis{text-decoration:underline wavy var(--pMiss);text-decoration-thickness:1.5px;text-underline-offset:6px}
+html.rmotion .hidetest .ml span[data-k].wrev,html.rmotion .ux3line{animation:none}
+/* 39 */
+.rpki.ux3mine{min-height:60px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));margin-bottom:8px}
+.rpki.ux3mine .rpkt b{font-size:19px}
+
