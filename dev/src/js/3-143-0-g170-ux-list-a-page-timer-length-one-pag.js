@@ -1,0 +1,8 @@
+/* ============ 3.143.0 (g170): UX list A — page timer length, one-page bar ============ */
+function qrdOne(){let best=null,bv=0;document.querySelectorAll('#spread .qpage').forEach(x=>{const r=x.getBoundingClientRect(),v=Math.max(0,Math.min(r.right,innerWidth)-Math.max(r.left,0))*Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,0));if(v>bv){bv=v;best=x}});return best}
+function qrsSet(sec){sec=Math.round(+sec);if(!(sec>=10&&sec<=600))return;S.settings.qRdSec=sec;QRD_MS=sec*1000;QRD.t0=Date.now();save();toast(t('qrs.set',sec));try{qrdUi()}catch(e){}}
+function qrsOpen(el){const cur=Math.round(QRD_MS/1000),r=el.getBoundingClientRect(),z=uiZoom();
+  const p=qPopAt(`<div class="aymh">${t('qrs.t')}</div><small class="qrssub">${t('qrs.sub')}</small><div class="qrsrow">${[20,30,40,60,90,120].map(s=>`<button data-qrs="${s}" class="${s===cur?'on':''}">${s}</button>`).join('')}</div><button data-qrs="own">${t('qrs.own')}</button>`,(r.left+r.width/2)/z,r.bottom/z,'aymenu qrspop');
+  p.querySelectorAll('[data-qrs]').forEach(b=>b.onclick=e=>{e.stopPropagation();const v=b.dataset.qrs;closePP();if(v==='own'){const a=prompt(t('qrs.ask'),cur);if(a!=null)qrsSet(a)}else qrsSet(v)})}
+{const el=$('#qRdSt');if(el){el.title=t('qrs.tip');el.setAttribute('role','button');el.tabIndex=0;el.addEventListener('click',e=>{e.stopPropagation();qrsOpen(el)});el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();qrsOpen(el)}})}}
+

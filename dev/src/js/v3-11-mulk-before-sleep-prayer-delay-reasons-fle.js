@@ -6,10 +6,10 @@ function ensureMulk(){if(S.settings.mulk===false)return;const k=todayKey(),d=day
 /* ---- why was a prayer late? asked once when it is logged late ---- */
 const LATE_WHY=['sleep','work','forgot','travel','other'];
 function lateAsk(dk,k){const d=day(dk);if((d.lateWhy||{})[k])return;const z=uiZoom(),x=innerWidth/2,y=innerHeight/3;
-  const p=qPopAt(`<div class="aymh">${t('lw.q',t('pr.'+k))}</div>${LATE_WHY.map(w=>`<button data-w="${w}">${t('lw.'+w)}</button>`).join('')}`,x,y,'aymenu');
+  const p=qPopAt(`<div class="aymh">${t(((d.prayLog||{})[k]||plStatus(dk,k))==='miss'?'lw.qm':'lw.q',t('pr.'+k))}</div>${LATE_WHY.map(w=>`<button data-w="${w}">${t('lw.'+w)}</button>`).join('')}`,x,y,'aymenu');
   p.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{closePP();(d.lateWhy=d.lateWhy||{})[k]=b.dataset.w;save()})}
-{const _ps=plSet;plSet=function(dk,k,v){_ps(dk,k,v);try{if(v==='late')setTimeout(()=>lateAsk(dk,k),250);else if(S.days[dk]&&S.days[dk].lateWhy)delete S.days[dk].lateWhy[k]}catch(e){}}}
-{const _pd=prayDone;prayDone=function(...a){const P=S.prayPop;const r=_pd(...a);try{if(P){const dk=P.dk||todayKey();setTimeout(()=>{if(plStatus(dk,P.k)==='late')lateAsk(dk,P.k)},900)}}catch(e){}return r}}
+{const _ps=plSet;plSet=function(dk,k,v){_ps(dk,k,v);try{if(v==='late'||v==='miss')setTimeout(()=>lateAsk(dk,k),250);else if(S.days[dk]&&S.days[dk].lateWhy)delete S.days[dk].lateWhy[k]}catch(e){}}}
+{const _pd=prayDone;prayDone=function(...a){const P=S.prayPop;const r=_pd(...a);try{if(P){const dk=P.dk||todayKey();setTimeout(()=>{const st=plStatus(dk,P.k);if(st==='late'||st==='miss')lateAsk(dk,P.k)},900)}}catch(e){}return r}}
 function lateStats(keys){const c={};keys.forEach(k=>{const w=(S.days[k]||{}).lateWhy;if(w)Object.values(w).forEach(v=>c[v]=(c[v]||0)+1)});return Object.entries(c).sort((a,b)=>b[1]-a[1])}
 {const _rbp=renderBriefPray;renderBriefPray=function(){_rbp();try{const box=$('#bPray');if(!box)return;const L_=lateStats(periodKeys(bMode,bAnchor));if(!L_.length)return;box.insertAdjacentHTML('beforeend',`<div class="lwst">${t('lw.st')} ${L_.map(([w,n])=>`<span>${t('lw.'+w)} <b>${n}</b></span>`).join(' · ')}</div>`)}catch(e){console.error(e)}}}
 

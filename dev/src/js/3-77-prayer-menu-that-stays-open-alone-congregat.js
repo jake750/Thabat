@@ -12,7 +12,7 @@ function prxHTML(dk,k){const st=prxStatus(dk,k),kind=prxKind(dk,k),lw=((S.days[d
   const seg=(a)=>`<div class="prxseg">${a.join('')}</div>`;
   let h=`<div class="aymh prxh"><b>${t('pr.'+k)}</b><button class="prxx" data-prx="done" aria-label="${esc(t('prx.done'))}">✕</button></div>`;
   h+=`<small class="prxl">${t('prx.st')}</small>`+seg(['on','late','miss'].map(v=>`<button data-prs="${v}" class="${st===v||(v==='on'&&st==='auto')?'on s-'+v:''}">${PLICON[v]} ${t('pl.'+v)}</button>`));
-  if(st==='late')h+=`<div class="prxwhy">${LATE_WHY.map(w=>`<button data-prw="${w}" class="${lw===w?'on':''}">${t('lw.'+w)}</button>`).join('')}</div>`;
+  if(st==='late'||st==='miss')h+=`<div class="prxwhy">${LATE_WHY.map(w=>`<button data-prw="${w}" class="${lw===w?'on':''}">${t('lw.'+w)}</button>`).join('')}</div>`;
   h+=`<small class="prxl">${t('prx.how')}</small>`+seg([[0,'user','prx.alone'],[1,'users','prx.jm'],[2,'mosque','prx.msq']].map(([v,ic,l])=>`<button data-prk="${v}" class="${kind===v?'on k'+v:''}">${prxIco(ic)}<span>${t(l)}</span></button>`));
   if(mx){h+=`<small class="prxl">${t('sn.lbl')} <span>(${t('sn.'+k)})</span></small>`;
     if(mx<=2)h+=`<button class="prxck ${sn?'on':''}" data-prn="${sn?0:mx}"><i>${sn?'✓':''}</i>${t('prx.snDid')}</button>`;

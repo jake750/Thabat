@@ -39,15 +39,15 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&QHL.on)qhlToggle(fa
   $$('#ltBox [data-hp]').forEach(b=>b.onclick=()=>{closeLt();showView('quran');qShow(+b.dataset.hp)})}}
 
 /* ---- full screen: 40 s on a page marks it read; each day keeps the list of pages read ---- */
-const QRD={key:'',t0:0,done:false},QRD_MS=40000;
+const QRD={key:'',t0:0,done:false};var QRD_MS=(+((typeof S!=='undefined'&&S.settings&&S.settings.qRdSec)||40))*1000;
 function qVisPages(){const Q=S.quran,v=Q.view||1,one=MOB.matches||document.documentElement.classList.contains('qfs-one');return one?[Math.max(1,Math.min(604,Q.pv||v))]:[v,v+1].filter(p=>p>=1&&p<=604)}
 function qPgsOf(k){const d=S.days[k];return(d&&d.quran&&d.quran.pgs)||[]}
 var qReadMark;
 /* 3.78.2: two pages on screen = one 40-s timer per page, the right page (the lower number) first, then the left; each page shows its own bar */
 function qrdUi(){const el=$('#qRdSt');if(!el)return;const g=qPgsOf(todayKey()),ps=qVisPages(),ok=ps.every(p=>g.includes(p));
   el.hidden=false;el.classList.toggle('ok',ok);qrdBars(ps,g);if(ok){el.textContent='✓ '+t('rd.read');return}const left=Math.max(0,Math.ceil((QRD_MS-(Date.now()-QRD.t0))/1000));el.textContent=QRD.key&&QRD.cur?'📖 '+(ps.length>1?t('q.pageS')+QRD.cur+' · ':'')+left+'s':''}
-function qrdBars(ps,g){const two=ps.length>1&&document.documentElement.classList.contains('qfs');
-  ['r','l'].forEach((s,i)=>{const pg=$('#spread .qpage.'+s);if(!pg)return;let b=pg.querySelector(':scope>.qrdbar');
+function qrdBars(ps,g){const two=document.documentElement.classList.contains('qfs'),one=ps.length===1,po=one?qrdOne():null;if(one)$$('#spread .qpage>.qrdbar').forEach(b=>{if(b.parentNode!==po)b.remove()});
+  (one?[po]:['r','l'].map(s=>$('#spread .qpage.'+s))).forEach((pg,i)=>{if(!pg)return;let b=pg.querySelector(':scope>.qrdbar');
     if(!two){if(b)b.remove();return}const n=ps[i];if(!n){if(b)b.remove();return}
     if(!b){pg.insertAdjacentHTML('beforeend','<div class="qrdbar" aria-hidden="true"><i></i></div>');b=pg.querySelector(':scope>.qrdbar')}
     const done=g.includes(n),f=done?1:n===QRD.cur&&QRD.key?Math.min(1,(Date.now()-QRD.t0)/QRD_MS):0;b.classList.toggle('ok',done);b.classList.toggle('on',n===QRD.cur&&!done);b.firstChild.style.width=(f*100).toFixed(1)+'%'})}

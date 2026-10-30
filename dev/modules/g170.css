@@ -1,0 +1,5 @@
+/* v3.143 g170: page timer */
+#qRdSt{cursor:pointer}
+.qrspop .qrssub{display:block;color:var(--muted);font-size:12px;margin:0 4px 6px;max-width:240px;line-height:1.5}
+.qrspop .qrsrow{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
+.qrspop .qrsrow button.on{background:color-mix(in srgb,var(--accent) 22%,transparent);color:var(--accent)}
