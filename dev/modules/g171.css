@@ -1,0 +1,27 @@
+/* v3.144 g171: UX list B */
+#glPct.glnear{font-size:clamp(20px,2.4vw,30px);letter-spacing:0}
+.glat{font-size:12px;color:var(--gold);margin-top:2px;font-variant-numeric:tabular-nums}
+.glrisk{font-size:12.5px;color:var(--gold);margin-top:6px;line-height:1.5}
+.glwk7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:8px auto 0;align-self:stretch;width:min(100%,320px);box-sizing:border-box}
+.glwk7 i{display:block;height:6px;border-radius:3px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden}
+.glwk7 i b{display:block;height:100%;background:var(--water)}
+.glwk7 i.ok b{background:var(--gold)}
+.glwk7 i.fut{background:transparent;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--text) 16%,transparent)}
+.tkst{font-size:11px;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);border-radius:999px;padding:0 7px;margin-inline-start:6px;white-space:nowrap}
+#tasks .task .del{opacity:.45;margin-inline-start:6px;transition:opacity .15s,color .15s}
+#tasks .task .del:hover,#tasks .task .del:focus-visible{opacity:1;color:#ef4444}
+#tasks .task.uxbjust .tx{text-decoration:line-through;opacity:.6;transition:opacity .3s}
+.uxrc-miss{font-size:12.5px;color:var(--muted);margin:8px 2px 4px}
+.uxbslot .uxbx{border:0;background:none;color:var(--muted);cursor:pointer;padding:2px 6px;font-size:12px}
+details.evmore{border-top:1px solid var(--line);margin-top:4px;padding-top:6px}
+details.evmore>summary{cursor:pointer;color:var(--muted);font-size:13px;padding:6px 2px;list-style:none}
+details.evmore>summary::-webkit-details-marker{display:none}
+details.evmore>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;transition:transform .2s}
+details.evmore[open]>summary::before{transform:rotate(90deg)}
+html[dir=rtl] details.evmore>summary::before{content:'◂'}
+html[dir=rtl] details.evmore[open]>summary::before{transform:rotate(-90deg)}
+.evmorein{display:flex;flex-direction:column;gap:10px;padding-top:8px}
+.tkmsep{height:1px;background:var(--line);margin:4px 6px}
+.uxselh{display:block;flex-basis:100%;color:var(--muted);font-size:12px;min-height:1em}
+.tqch{position:fixed;left:8px;right:8px;z-index:90;display:flex;gap:6px;overflow-x:auto;padding:6px;border-radius:14px;background:color-mix(in srgb,var(--panel) 94%,transparent);box-shadow:0 4px 18px rgba(0,0,0,.25);scrollbar-width:none}
+.tqch button{flex:0 0 auto;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-size:14px}
