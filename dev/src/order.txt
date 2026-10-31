@@ -169,6 +169,7 @@ css/v3-149-ux-list-g-first-run-and-settings.css
 css/v3-150-ux-list-h-the-look.css
 css/v3-151-ux-list-i-the-hifz-map-under-the-mushaf-i.css
 css/v3-152-hifz-map-details-panel-his-pick.css
+css/v3-152-3-fold-the-five-again.css
 css/image-viewer.css
 body.html
 js/core.js
