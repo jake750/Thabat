@@ -3,4 +3,6 @@ function prmLate(){const ld=logicalDate(Date.now()),n=new Date();return ld.toDat
 {hookFn('renderPrayers',()=>renderPrayers,f=>{renderPrayers=f},'post',function(){try{if(!prmLate())return;const ks=['fajr','sunrise','dhuhr','asr','maghrib','isha'];
   $$('#prayers .pr').forEach((c,i)=>{const k=ks[i];if(!k||k==='sunrise')return;c.classList.add('past');c.dataset.pk=k});
   bindPrayChips();try{ux3Fold()}catch(e){}}catch(e){console.error(e)}})}
+/* v3.152.2 «your day in lines» counts the prayers again whenever a prayer is logged from its chip (it waited for the next full render) */
+{hookFn('renderPrayers',()=>renderPrayers,f=>{renderPrayers=f},'post',function(){try{if($('#uxRecap'))uxRecap()}catch(e){console.error(e)}})}
 
