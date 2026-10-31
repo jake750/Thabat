@@ -168,6 +168,7 @@ css/v3-148-ux-list-f-the-library.css
 css/v3-149-ux-list-g-first-run-and-settings.css
 css/v3-150-ux-list-h-the-look.css
 css/v3-151-ux-list-i-the-hifz-map-under-the-mushaf-i.css
+css/v3-152-hifz-map-details-panel-his-pick.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -418,6 +419,7 @@ js/v3-147-g174b-the-board-scrolls-by-itself-while-s.js
 js/v3-148-ux-list-f-the-library-lessons-left-and-th.js
 js/v3-149-ux-list-g-first-run-and-settings-what-the.js
 js/v3-150-ux-list-h-the-look-one-primary-button-spa.js
+js/v3-152-hifz-map-details-panel-the-space-beside-t.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

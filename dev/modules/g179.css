@@ -1,0 +1,18 @@
+/* v3.152 hifz map details panel (his pick «ج») */
+#qMap{container-type:inline-size}
+.qmdw{display:flex;gap:24px;align-items:flex-start}
+.qmdw>.hmap{flex:none}
+.qmdp{display:none;flex:1;min-width:0;position:sticky;top:12px;border:1px solid var(--line);border-radius:14px;padding:16px;background:color-mix(in srgb,var(--panel2) 55%,transparent);font-size:13px;line-height:1.5}
+@container (min-width:640px){.qmdp{display:block}}
+.qmdh{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.qmdh b{font-size:17px}.qmdh small{color:var(--muted);font-variant-numeric:tabular-nums}
+.qmds{color:var(--muted);margin:2px 0 12px;overflow-wrap:anywhere}
+.qmdbar{height:6px;border-radius:4px;background:var(--panel2);overflow:hidden}.qmdbar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.qmdk{color:var(--muted);margin:4px 0 12px;font-variant-numeric:tabular-nums}
+.qmdlv{display:flex;flex-wrap:wrap;gap:4px 12px;margin-bottom:12px}.qmdlv span{display:inline-flex;align-items:center;gap:4px}.qmdlv span.z{opacity:.45}.qmdlv i{width:10px;height:10px;border-radius:3px}.qmdlv b{font-variant-numeric:tabular-nums}
+.qmdr{display:flex;gap:8px;padding:8px 0;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);align-items:baseline}.qmdr>span{flex:0 0 108px;color:var(--muted)}.qmdr>div{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:4px;align-items:baseline}.qmdr small{color:var(--muted)}
+.qmdpg{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:8px;padding:2px 8px;font:inherit;font-size:12px;cursor:pointer;font-variant-numeric:tabular-nums}.qmdpg:hover{border-color:var(--accent);color:var(--accent)}
+.qmde{color:var(--muted);padding:8px 0 12px}
+.qmdact{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.qmdhint{color:var(--muted);font-size:11.5px;margin-top:8px}
+.hmap .hrow.qmdon .jl{color:var(--accent);font-weight:700}
+.hmap .hrow .jl{cursor:pointer}
