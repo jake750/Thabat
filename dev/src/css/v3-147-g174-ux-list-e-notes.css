@@ -1,0 +1,26 @@
+/* v3.147 g174: UX list E — notes */
+#neTitle.ux5auto::placeholder{color:var(--text);opacity:.42}
+/* 70 */
+#neMode.ux5tabs{display:inline-flex;padding:3px;gap:2px;border-radius:12px;background:color-mix(in srgb,var(--text) 7%,transparent);border:1px solid var(--line)}
+#neMode.ux5tabs button{min-width:84px;padding:6px 14px;border-radius:9px;border:0;background:none;color:var(--muted);font-weight:600;transition:background .18s ease,color .18s ease,box-shadow .18s ease}
+#neMode.ux5tabs button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.22),inset 0 -2px 0 var(--accent)}
+/* 65 */
+.ux5pg{position:sticky;top:0;z-index:5;height:3px;margin:-2px 0 4px;border-radius:3px;background:color-mix(in srgb,var(--text) 8%,transparent);overflow:hidden}
+.ux5pg i{display:block;height:100%;background:var(--accent);transform-origin:0 50%;transition:transform .12s linear}
+html[dir=rtl] .ux5pg i{transform-origin:100% 50%}
+/* 63 */
+#noteBox .netools.ux5kb{position:fixed;left:0;right:0;z-index:120;margin:0;padding:6px 10px;background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(0,0,0,.22);flex-wrap:nowrap;overflow-x:auto}
+/* 64 */
+.ncard .ux5hd{padding:16px 14px 10px;font-size:19px;font-weight:800;line-height:1.3;color:var(--text);background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 16%,transparent),transparent 75%);border-bottom:1px solid var(--line);overflow-wrap:anywhere;text-align:start}
+@media (max-width:700px){.ncard .ux5hd{font-size:16px;padding:12px 11px 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
+/* 66 */
+.ncck.ux5ring{display:inline-flex;align-items:center;gap:5px;color:var(--accent)}
+.ncck.ux5ring.full{color:var(--pOn,#22c55e)}
+.ncck.ux5ring b{color:var(--text);font-weight:600;font-size:11.5px;font-variant-numeric:tabular-nums}
+.ncck.ux5ring svg circle+circle{transition:stroke-dasharray .4s ease}
+/* 67 */
+.ux5ld{opacity:.85}
+/* 68 */
+.ux5new{display:flex;margin:12px auto;max-width:100%;gap:4px;justify-content:center;overflow:hidden;white-space:nowrap}
+.ux5new span{overflow:hidden;text-overflow:ellipsis}
+

@@ -162,6 +162,8 @@ css/v3-143-g170-page-timer.css
 css/v3-144-g171-ux-list-b.css
 css/v3-145-g172-ux-list-c-prayers-and-quran.css
 css/v3-146-g173-ux-list-d-calendar-and-summary.css
+css/v3-147-g174-ux-list-e-notes.css
+css/v3-147-g174b-the-board-fits-the-window-at-any-in.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -407,6 +409,8 @@ js/3-143-0-g170-ux-list-a-page-timer-length-one-pag.js
 js/3-144-0-g171-ux-list-b-today-goal-card-tasks-eve.js
 js/3-145-0-g172-ux-list-c-prayers-and-quran-21-23-2.js
 js/v3-146-g173-ux-list-d-calendar-and-summary.js
+js/v3-147-g174-ux-list-e-notes.js
+js/v3-147-g174b-the-board-scrolls-by-itself-while-s.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
