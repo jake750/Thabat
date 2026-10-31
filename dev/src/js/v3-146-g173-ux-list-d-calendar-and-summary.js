@@ -66,9 +66,9 @@ function ux4Pray(){const box=$('#bPray');if(!box)return;const keys=periodKeys(bM
 function ux4Order(){const v=$('#v-brief');if(!v)return;const on=!!S.settings.brOrd;v.classList.toggle('ux4ord',on);const kids=[...v.children];
   if(!on){kids.forEach(c=>c.style.order='');return}
   const sc=c=>{let m=-1;(c.textContent.match(/[▲▼]\s?\d+%/g)||[]).forEach(s=>{m=Math.max(m,+s.replace(/\D/g,''))});return m};
-  const fixed=new Set([...v.querySelectorAll(':scope>.bhead,:scope>#ux4Top,:scope>.tiles,:scope>.bgrid')]);let i=0;
+  const fixed=new Set([...v.querySelectorAll(':scope>.pgt,:scope>.pgtip,:scope>.bhead,:scope>#ux4Top,:scope>.tiles,:scope>.bgrid')]);let i=0;
   const cards=kids.filter(c=>!fixed.has(c)).map(c=>({c,s:sc(c)}));cards.filter(o=>o.s>=0).sort((a,b)=>b.s-a.s).forEach(o=>o.c.style.order=10+(i++));cards.filter(o=>o.s<0).forEach(o=>o.c.style.order=500);
-  kids.forEach(c=>{if(fixed.has(c))c.style.order=c.classList.contains('bgrid')?5:c.id==='ux4Top'?1:c.classList.contains('tiles')?2:0})}
+  kids.forEach(c=>{if(fixed.has(c))c.style.order=c.classList.contains('pgt')||c.classList.contains('pgtip')?-1:c.classList.contains('bgrid')?5:c.id==='ux4Top'?1:c.classList.contains('tiles')?2:0})}
 {hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{ux4Top();ux4Chart();ux4Refs();ux4Rec();ux4Cols();ux4Round();ux4Pray();ux4Order()}catch(e){console.error(e)}})}
 /* commands */
 {const _c=cmdCommands;cmdCommands=function(...a){const r=_c.apply(this,a);try{r.push({icon:'📅',label:t('ux4.fb'),kw:'calendar fill bar تقويم امتلاء شريط',run:()=>{ux4FbToggle();if(curView()==='cal')renderCal()}})}catch(e){}return r}}

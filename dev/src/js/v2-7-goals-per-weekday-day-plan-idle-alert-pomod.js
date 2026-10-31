@@ -1,5 +1,5 @@
 /* ============ v2.7: goals per weekday, day plan, idle alert, pomodoro, distractions, undo, session notes, day timeline, brief insights ============ */
-function toastAct(msg,label,fn,ms=8000){const el=document.createElement('div');el.className='toast act';el.innerHTML=`<span>${esc(msg)}</span><button class="btn sm pri">${esc(label)}</button>`;$('#toasts').append(el);const tm=setTimeout(()=>el.remove(),ms);el.querySelector('button').onclick=()=>{clearTimeout(tm);el.remove();fn()}}
+function toastAct(msg,label,fn,ms=8000){const el=document.createElement('div');el.className='toast act';el.innerHTML=`<span>${esc(msg)}</span><button class="btn sm pri">${esc(label)}</button>`;$('#toasts').append(el);const tm=ux8Tm(el,ux8Ms(ms));el.querySelector('button').onclick=()=>{tm.stop();el.remove();fn()}}
 /* session log with notes and undo */
 function sessNoteEdit(li,s){if(typeof dsOpen==='function'){dsOpen(todayKey(),'note:'+s.id,s.id);return}li.innerHTML=`<i style="background:${catOf(s.cat).color}"></i><input class="in" dir="auto" placeholder="${esc(t('sess.notePh'))}" value="${esc(s.note||'')}">`;const inp=li.querySelector('input');inp.focus();
   const done=ok=>{if(ok){const v=inp.value.trim();if(v)s.note=v;else delete s.note;save()}renderLog()};inp.onkeydown=e=>{if(e.key==='Enter')done(true);if(e.key==='Escape')done(false)};inp.onblur=()=>done(true)}

@@ -1,0 +1,50 @@
+/* v3.150 UX list H, the look */
+/* 91 one filled button per window */
+html .btn.pri.ux8sec,html.st-glass .btn.pri.ux8sec{background:transparent;color:var(--text);border:1px solid color-mix(in srgb,var(--accent) 55%,var(--line));box-shadow:none;font-weight:600}
+html .btn.pri.ux8sec:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+/* 93 card titles in one style */
+.view .card>h3{font-size:14px;font-weight:650;color:var(--text);letter-spacing:0;line-height:1.35;margin-bottom:12px}
+.view .card>h3>svg.uic:first-child,.view .card>h3>span:first-child>svg.uic:first-child{color:var(--accent);opacity:.9}
+.view .card>h3 small{font-weight:400;color:var(--muted)}
+/* 94 PC: Today, Summary and Settings never stretch past 1400 px of content */
+@media(min-width:1100px){html:not(.wide4) #v-today,#v-brief,#v-set{max-width:1400px;margin-inline:auto}}
+/* 97 phones: the page title shrinks into a bar at the top */
+@media(max-width:700px){
+  #v-today>.pgt,#v-cal>.pgt,#v-brief>.pgt,#v-boards>.pgt{position:sticky;top:-14px;z-index:20;transition:font-size .22s,padding .22s,background-color .22s}
+  html.ux8sh #v-today>.pgt,html.ux8sh #v-cal>.pgt,html.ux8sh #v-brief>.pgt,html.ux8sh #v-boards>.pgt{font-size:15px;padding-top:22px;padding-bottom:8px;margin-inline:-12px;padding-inline-start:16px;background:color-mix(in srgb,var(--bg) 93%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+  html.ux8sh #v-today>.pgt .tdaring{transform:scale(.8)}
+  html.android.ux8sh #v-today>.pgt,html.android.ux8sh #v-cal>.pgt,html.android.ux8sh #v-brief>.pgt,html.android.ux8sh #v-boards>.pgt{padding-top:calc(max(env(safe-area-inset-top,0px),30px) + 8px)}
+}
+/* 98 numbers that matter: tabular figures, one bold weight; their labels muted */
+.gl-pct,#glPct,.timer-disp,.tile b,.tile strong,.mtile b,.mtile strong,.cmpd b,.ux4rd,.crx b,.qrpn,.stnum,.lshpct,.bkcv em,.lshring b,.tdaring b,#glAt,.ux6left,.ux3jn b,.catrow em,.c30n b,.jrn b,.qkr,.wkh,.ndbcp b{font-variant-numeric:tabular-nums}
+.tile b,.tile strong,.mtile b,.mtile strong,.cmpd b,.ux4rd,.crx b,.gl-pct{font-weight:700}
+.tile small,.mtile small,.tile span:not(:has(b)),.mtile span:not(:has(b)){color:var(--muted)}
+/* 99 placeholders */
+.ux8skr{display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.ux8skr .skel{height:12px;width:62%}.ux8skr .skel.s2{height:10px;width:38%}
+#bkPs .bkp:not(:has(canvas)){background-image:linear-gradient(90deg,transparent 0,color-mix(in srgb,#000 5%,transparent) 50%,transparent 100%);background-size:200% 100%;animation:skel 1.3s linear infinite}
+/* 100 toasts: the action button always at the end, a soft entrance and exit */
+.toast.act{display:flex;align-items:center;gap:12px}
+.toast.act>span{flex:1;min-width:0}
+.toast.act>button,.toast.act>.btn{order:9;flex:none;margin-inline-start:auto}
+/* (e) light motion everywhere, off with «less motion» */
+html:not(.rmotion) .toast{animation:ux8tin .34s cubic-bezier(.2,.9,.25,1.08)}
+html:not(.rmotion) .toast.ux8out{animation:ux8tout .22s ease-in forwards}
+@keyframes ux8tin{from{opacity:0;transform:translateY(12px) scale(.97)}}
+@keyframes ux8tout{to{opacity:0;transform:translateY(8px) scale(.98)}}
+html:not(.rmotion) .btn,html:not(.rmotion) .chip,html:not(.rmotion) .navbtn,html:not(.rmotion) .qck,html:not(.rmotion) .suitem{transition:transform .18s cubic-bezier(.2,.8,.2,1),background-color .2s,border-color .2s,box-shadow .2s,color .2s,opacity .2s}
+html:not(.rmotion) .btn:active,html:not(.rmotion) .chip:active,html:not(.rmotion) .qck:active,html:not(.rmotion) .suitem:active{transform:scale(.96)}
+html:not(.rmotion) .navbtn:active{transform:scale(.92)}
+@media(min-width:701px){html:not(.rmotion) .modal.on:not(.uxsheet)>.box{animation:ux8pop .3s cubic-bezier(.2,.9,.25,1.04)}}
+@keyframes ux8pop{from{opacity:0;transform:translateY(10px) scale(.965)}}
+html:not(.rmotion) .modal.on{animation:ux8fade .22s ease-out}
+@keyframes ux8fade{from{background-color:transparent}}
+html:not(.rmotion) .pppop,html:not(.rmotion) .qbpop,html:not(.rmotion) .lshmenu,html:not(.rmotion) .rpkbox{animation:ux8menu .2s cubic-bezier(.2,.9,.25,1.05)}
+@keyframes ux8menu{from{opacity:0;transform:translateY(-4px) scale(.97)}}
+html:not(.rmotion) .view.ux8enter .card{animation:ux8card .38s cubic-bezier(.2,.8,.2,1) both}
+html:not(.rmotion) .view.ux8enter .card:nth-child(2){animation-delay:.03s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(3){animation-delay:.06s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(n+4){animation-delay:.09s}
+@keyframes ux8card{from{opacity:0;transform:translateY(8px)}}
+html:not(.rmotion) .sw-toggle::after,html:not(.rmotion) .sw-toggle{transition:all .24s cubic-bezier(.3,1.3,.5,1)}
+@media(hover:hover){html:not(.rmotion) .lshc,html:not(.rmotion) .bkc,html:not(.rmotion) .ncard{transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s}html:not(.rmotion) .lshc:hover,html:not(.rmotion) .bkc:hover,html:not(.rmotion) .ncard:hover{transform:translateY(-2px)}}
