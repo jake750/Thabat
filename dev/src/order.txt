@@ -420,6 +420,7 @@ js/v3-148-ux-list-f-the-library-lessons-left-and-th.js
 js/v3-149-ux-list-g-first-run-and-settings-what-the.js
 js/v3-150-ux-list-h-the-look-one-primary-button-spa.js
 js/v3-152-hifz-map-details-panel-the-space-beside-t.js
+js/v3-152-1-prayer-chips-after-midnight-until-the-d.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
