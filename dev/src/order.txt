@@ -167,6 +167,7 @@ css/v3-147-g174b-the-board-fits-the-window-at-any-in.css
 css/v3-148-ux-list-f-the-library.css
 css/v3-149-ux-list-g-first-run-and-settings.css
 css/v3-150-ux-list-h-the-look.css
+css/v3-151-ux-list-i-the-hifz-map-under-the-mushaf-i.css
 css/image-viewer.css
 body.html
 js/core.js

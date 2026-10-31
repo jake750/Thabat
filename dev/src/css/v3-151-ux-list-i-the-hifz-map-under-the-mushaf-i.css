@@ -1,0 +1,12 @@
+/* v3.151 UX list I: the hifz map under the mushaf, in the mushaf column, the side cards beside it (his pick «أ») */
+#v-quran .qwrap:has(>.qmapw){align-items:start}
+#v-quran .qwrap>.qmapw{grid-column:1;grid-row:2;margin-top:0}
+#v-quran .qwrap:has(>.qmapw)>:first-child{grid-column:1;grid-row:1}
+#v-quran .qwrap:has(>.qmapw)>.stack{grid-column:2;grid-row:1 / span 2}
+/* the two pages never grow wider than the mushaf column, so the page arrows stay beside them */
+@media(min-width:701px){
+  html:not(.qfs) #v-quran .mushaf{container-type:inline-size;position:relative}
+  html:not(.qfs) #v-quran .mushaf .spread:not(.one) .qimg{max-height:max(380px,calc((100cqw - 176px) * .8))}
+  html:not(.qfs) #v-quran .mushaf .spread.one .qimg{max-height:calc((100cqw - 144px) * 1.6)}
+}
+@container (max-width:780px){html:not(.qfs) #v-quran .mushaf>.qnav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:34px;height:72px;opacity:.7;background:color-mix(in srgb,var(--panel) 82%,transparent)}html:not(.qfs) #v-quran .mushaf>#qPrevP{right:0}html:not(.qfs) #v-quran .mushaf>#qNextP{left:0}html:not(.qfs) #v-quran .mushaf>.qnav:hover{opacity:1}}
