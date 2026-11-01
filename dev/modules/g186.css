@@ -1,0 +1,9 @@
+/* v3.157.1 Today chip row: no scrollbar on PC, fades at the edges that have more chips */
+html.tdc #v-today .tdev{scrollbar-width:none!important}
+html.tdc #v-today .tdev::-webkit-scrollbar{display:none}
+#v-today .tdev.evfL{-webkit-mask-image:linear-gradient(to right,transparent,#000 48px);mask-image:linear-gradient(to right,transparent,#000 48px)}
+#v-today .tdev.evfR{-webkit-mask-image:linear-gradient(to left,transparent,#000 48px);mask-image:linear-gradient(to left,transparent,#000 48px)}
+#v-today .tdev.evfL.evfR{-webkit-mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent);mask-image:linear-gradient(to right,transparent,#000 48px,#000 calc(100% - 48px),transparent)}
+@media (hover:hover){html.tdc #v-today .tdev{cursor:grab}}
+#v-today .tdev.evfdrag{cursor:grabbing;user-select:none}
+#v-today .tdev.evfdrag .evchip{pointer-events:none}
