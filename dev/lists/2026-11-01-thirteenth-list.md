@@ -331,3 +331,11 @@ Checked against the code and against every rejected list in CLAUDE.md and `dev/l
 298. «إنجازات» صامتة تُكتشف (أول ختمة، 100 يوم ذهبي) تظهر في «رحلتك مع ثبات».
 299. بطاقة «اليوم في الإسلام» من المناسبات الهجرية في هذا اليوم (من مصدر تختاره).
 300. لوحة «سنتي» في آخر السنة الميلادية مثل مراجعة السنة الهجرية.
+
+## His picks (2026-11-01)
+
+From 1–105 he picked: 1, 2, 4, 6, 7, 8, 9, 11, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 29, 32, 33, 34, 36, 37, 39, 41, 42, 44, 45, 48, 49, 54, 55, 58, 59, 60, 61, 62, 66, 69, 70, 71, 72, 76, 77, 78, 80, 81, 82, 84, 87, 88, 89, 90, 91, 93, 94, 95, 97, 99, 101, 102, 103, 105. Every other item of 1–105 counts as rejected.
+With 4 («every day except…») he asked to make the repeat popup («مهمة متكررة») cleaner: it is too crowded now (show options first).
+Items 106–300: not decided. He will read them later; show them again only when he asks.
+
+Order (one release each): A1 tasks 1, 2, 6, 7, 8, 9, 11, 13, 14, 15, 16 → A2 tasks 4 (+ the repeat popup), 19, 20, 21, 22, 23, 24, 25 → B worship 29, 32, 33, 34, 36, 37, 39, 41, 42, 44, 45, 48, 49 → C1 Quran 54, 55, 58, 59, 60, 61, 62, 66 → C2 Quran 69, 70, 71, 72, 76, 77, 78, 80, 81, 82, 84 → D calendar 87, 88, 89, 90, 91, 93, 94, 95, 97, 99, 101, 102, 103, 105.
