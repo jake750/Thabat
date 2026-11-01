@@ -171,6 +171,7 @@ css/v3-151-ux-list-i-the-hifz-map-under-the-mushaf-i.css
 css/v3-152-hifz-map-details-panel-his-pick.css
 css/v3-152-3-fold-the-five-again.css
 css/v3-153-0-thirteenth-list-a1-task-picture-link-bu.css
+css/v3-154-0-thirteenth-list-a2-repeat-window-as-a-s.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -424,6 +425,7 @@ js/v3-150-ux-list-h-the-look-one-primary-button-spa.js
 js/v3-152-hifz-map-details-panel-the-space-beside-t.js
 js/v3-152-1-prayer-chips-after-midnight-until-the-d.js
 js/v3-153-0-thirteenth-list-a1-tasks-a-picture-on-a.js
+js/v3-154-0-the-repeat-popup-as-a-sentence-his-pick.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
