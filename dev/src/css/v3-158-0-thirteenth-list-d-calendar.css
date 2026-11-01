@@ -1,0 +1,40 @@
+/* v3.158.0 thirteenth list D: calendar */
+.cd13pr{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:2px 0 4px}
+.cd13pr>span:first-child{color:var(--muted);font-size:13px}
+.cd13pr select{flex:1 1 180px;min-width:0}
+.cd13off{display:inline-flex;align-items:center;gap:6px}.cd13off[hidden]{display:none!important}
+.cd13off input{width:84px}
+.cd13pr small{flex:1 1 100%;color:var(--muted);font-size:12px}
+.cd13prb{font-size:11px;color:var(--muted);margin-inline-start:6px;white-space:nowrap}
+#detail .evli.cd13past{opacity:.45}
+#detail .evli.cd13past span[dir]{text-decoration:line-through;text-decoration-thickness:1px}
+.cd13ag{font-size:10px;font-weight:600;opacity:.75;font-variant-numeric:tabular-nums}
+.cevt.cd13dr{cursor:grab}
+#cal .cell.cd13cnt{box-shadow:inset 0 0 0 2px var(--gold)!important}
+#cd13Tip{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:300;background:var(--panel);border:1px solid var(--gold);color:var(--text);padding:6px 14px;border-radius:999px;font-size:13px;pointer-events:none}
+#cal.cd13hm .cd13blank{visibility:hidden;pointer-events:none}
+.cd13ybox{width:min(940px,calc(100vw / var(--uiz,1) - 32px))!important;max-width:none!important}
+.cd13yhd{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:10px}
+.cd13yr{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.cd13ym b{display:block;font-size:12px;margin-bottom:4px;color:var(--muted);font-weight:500}
+.cd13yg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;direction:ltr}
+html[dir=rtl] .cd13yg{direction:rtl}
+.cd13yg i,.cd13yl i{aspect-ratio:1;border-radius:3px;background:color-mix(in srgb,var(--line) 70%,transparent);cursor:pointer}
+.cd13yg i.e{background:none;cursor:default}.cd13yg i.f{background:color-mix(in srgb,var(--line) 30%,transparent);cursor:default}
+.cd13yg i.p,.cd13yl i.p{background:color-mix(in srgb,var(--gold) 22%,var(--panel))}
+.cd13yg i.g1,.cd13yl i.g1{background:var(--gold)}
+.cd13yg i.g2,.cd13yl i.g2{background:var(--gold);box-shadow:0 0 0 1.5px var(--text) inset}
+.cd13yl{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+.cd13yl i{display:inline-block;width:12px;height:12px;cursor:default}
+.cd13hg{display:grid;grid-template-columns:80px minmax(0,1fr) 100px;gap:8px}
+.pppop.cd13mm{width:250px;z-index:400}
+.cd13mmh{display:flex;align-items:center;justify-content:space-between}
+.cd13mmh button,.cd13mmg button{background:none;border:0;color:var(--text);cursor:pointer;border-radius:8px;font:inherit}
+.cd13mmh button{width:32px;height:32px}
+.cd13mmg{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cd13mmg b{font-size:11px;color:var(--muted);font-weight:500}
+.cd13mmg button{height:30px;font-variant-numeric:tabular-nums}
+.cd13mmg button:hover{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.cd13mmg button.wk{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.cd13mmg button.td{box-shadow:inset 0 0 0 1.5px var(--accent)}
+
