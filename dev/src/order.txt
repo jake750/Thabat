@@ -176,6 +176,7 @@ css/v3-155-0-thirteenth-list-b-worship.css
 css/v3-156-0-thirteenth-list-c1-quran.css
 css/v3-157-0-thirteenth-list-c2-quran.css
 css/v3-157-1-today-chip-row-no-scrollbar-on-pc-fades.css
+css/v3-157-2-event-editor-action-row-one-line.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -434,6 +435,7 @@ js/v3-155-0-thirteenth-list-b-worship-12-hijri-mont.js
 js/v3-156-0-thirteenth-list-c1-quran-khatma-schedul.js
 js/v3-157-0-thirteenth-list-c2-quran-surah-juz-hizb.js
 js/v3-157-1-the-today-chip-row-on-pc-no-scrollbar-e.js
+js/v3-157-2-event-editor-extra-buttons-go-into-one.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

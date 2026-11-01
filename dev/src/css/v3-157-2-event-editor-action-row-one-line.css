@@ -1,0 +1,8 @@
+/* v3.157.2 event editor action row: one line */
+#evBox .evact .evxh{display:none!important}
+#evBox .evact{flex-wrap:nowrap;align-items:center;gap:8px}
+#evBox .evact>.btn{flex:none;white-space:nowrap}
+#evxMore{order:-1}
+#evEvL[hidden]{display:none!important}
+.pppop.evxpop{z-index:400}
+
