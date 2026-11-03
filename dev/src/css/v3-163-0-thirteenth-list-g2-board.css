@@ -1,0 +1,22 @@
+/* v3.163.0 thirteenth list G2: board */
+#bwrap.wbbg-iso{background-image:var(--wiso);background-size:calc(var(--wisoW,28px)*var(--wz,1)) calc(var(--wisoH,32px)*var(--wz,1));background-position:var(--wx,0) var(--wy,0)}
+#bwrap.wb17gs.wbbg-grid,#bwrap.wb17gs.wbbg-dots{background-size:calc(var(--wgs,32px)*var(--wz,1)) calc(var(--wgs,32px)*var(--wz,1))}
+.wb17r{position:absolute;z-index:4;pointer-events:auto;cursor:copy;touch-action:none}
+.wb17rh{top:0;left:0;right:0;width:100%;height:20px;border-bottom:1px solid var(--line);cursor:row-resize}
+.wb17rv{top:0;left:0;bottom:0;width:20px;height:100%;border-inline-end:1px solid var(--line);cursor:col-resize}
+.wb17rc{position:absolute;top:0;left:0;width:20px;height:20px;z-index:5;background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer}
+.wb17rc::after{content:'';position:absolute;inset:6px;border:1.5px solid var(--muted);border-radius:2px}
+.wb17gl{position:absolute;inset:0;pointer-events:none;z-index:3}
+.wb17g{position:absolute;pointer-events:auto;touch-action:none}
+.wb17gx{top:0;bottom:0;width:11px;margin-left:-5px;cursor:col-resize}.wb17gy{left:0;right:0;height:11px;margin-top:-5px;cursor:row-resize}
+.wb17g::after{content:'';position:absolute;background:#22b8cf;opacity:.85}
+.wb17gx::after{top:0;bottom:0;left:5px;width:1px}.wb17gy::after{left:0;right:0;top:5px;height:1px}
+.wb17g.on::after,.wb17g:hover::after{opacity:1;box-shadow:0 0 0 1px color-mix(in srgb,#22b8cf 40%,transparent)}
+.wb17tp{position:fixed;z-index:120;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;font-variant-numeric:tabular-nums}
+#bwrap.wb17pk,#bwrap.wb17pk *{cursor:crosshair!important}
+.wb17ed{align-self:stretch;display:flex;align-items:center;justify-content:center;gap:6px}
+.wb17st{display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.wb17pv{width:120px;height:120px;align-self:center}.wb17pv path,.wb17pre path{fill:color-mix(in srgb,var(--accent) 30%,transparent);stroke:var(--accent);stroke-width:2}
+.wb17st label{display:flex;flex-direction:column;gap:4px;font-size:13px}.wb17st label b{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
+.wb17pre{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.wb17pre button{width:46px;height:46px;padding:3px}.wb17pre svg{width:100%;height:100%}.wb17pre path{stroke-width:1.2}
+

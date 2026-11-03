@@ -510,17 +510,17 @@ function wbPip(p,poly){let ins=false;for(let i=0,j=poly.length-1;i<poly.length;j
     if(o.k==='pinch'&&WB.ptrs.size>=2){const p=pinch(),r=wrap.getBoundingClientRect(),nz=Math.max(.1,Math.min(5,o.z0*p.d/o.d0));const px=o.cx-r.left,py=o.cy-r.top;v.z=nz;v.x=px-(px-o.vx)*nz/o.z0+(p.cx-o.cx);v.y=py-(py-o.vy)*nz/o.z0+(p.cy-o.cy);wbApplyView();return}
     if(o.k==='pan'){v.x=o.vx+e.clientX-o.sx;v.y=o.vy+e.clientY-o.sy;wbApplyView();return}
     const w=wbToWorld(e.clientX,e.clientY);
-    if(o.k==='move'){if(!o.moved){if(Math.hypot(w[0]-o.sx,w[1]-o.sy)*v.z<3)return;wbSnap();o.moved=true}let D=[w[0]-o.sx,w[1]-o.sy];if(wbSnapOn()&&!e.altKey)D=wbGuides(o,D);else wbClearGuides();
+    if(o.k==='move'){if(!o.moved){if(Math.hypot(w[0]-o.sx,w[1]-o.sy)*v.z<3)return;wbSnap();o.moved=true}let D=[w[0]-o.sx,w[1]-o.sy];if(wbSnapOn()&&!e.altKey)D=wbGuides(o,D);else wbClearGuides();if(!e.altKey)D=wb17Snap(o,D);
       for(const id of o.ids){const el=wbFind(id),or=o.orig[id];if(!el||!or)continue;wbShift(el,or,D[0],D[1]);const n=WB.nodes[id];if(n){if(el.pts||el.type==='arrow')wbRefresh([id]);else wbPlace(n,el)}}
       wbRefreshArrows(o.ids);return}
-    if(o.k==='resize'){const el=wbFind(o.id);if(!el)return;let nw=Math.max(o.pts0?6:30,o.w0+w[0]-o.sx),nh=Math.max(o.pts0?6:24,o.h0+w[1]-o.sy);const lock=o.img||e.shiftKey||(WB.lock&&(wbIsShape(el)||['frame','stroke'].includes(el.type)));if(lock){const k=Math.max(nw/o.w0,nh/o.h0);nw=o.w0*k;nh=o.h0*k}
+    if(o.k==='resize'){const el=wbFind(o.id);if(!el)return;let nw=Math.max(o.pts0?6:30,o.w0+w[0]-o.sx),nh=Math.max(o.pts0?6:24,o.h0+w[1]-o.sy);const lock=o.img||e.shiftKey||(WB.lock&&(wbIsShape(el)||['frame','stroke'].includes(el.type)));if(lock){const k=Math.max(nw/o.w0,nh/o.h0);nw=o.w0*k;nh=o.h0*k}if(!e.altKey)[nw,nh]=wb17Rs(el,nw,nh,lock);
       if(o.pts0){const kx=nw/o.w0,ky=nh/o.h0,b=o.b0;el.pts=o.pts0.map(p=>{const q=p.slice();q[0]=b.x+(p[0]-b.x)*kx;q[1]=b.y+(p[1]-b.y)*ky;return q})}else{el.w=nw;el.h=nh}wbRefresh([o.id]);wbRefreshArrows([o.id]);return}
     if(o.k==='marq'){const x=Math.min(o.sx,w[0]),y=Math.min(o.sy,w[1]);o.temp.style.cssText=`left:${x}px;top:${y}px;width:${Math.abs(w[0]-o.sx)}px;height:${Math.abs(w[1]-o.sy)}px`;o.ex=w[0];o.ey=w[1];return}
     if(o.k==='lasso'){const l=o.pts[o.pts.length-1];if(Math.hypot(w[0]-l[0],w[1]-l[1])*v.z<3)return;o.pts.push(w);o.temp.firstChild.setAttribute('d','M'+o.pts.map(p=>F1(p[0])+' '+F1(p[1])).join('L')+'Z');o.temp.firstChild.setAttribute('stroke-width',1.5/v.z);return}
     if(o.k==='draw'){const wp=o.pr?[w[0],w[1],e.pressure||.5]:w;if(e.shiftKey){o.pts=[o.pts[0],wp]}else{const l=o.pts[o.pts.length-1];if(Math.hypot(w[0]-l[0],w[1]-l[1])*v.z<1.6)return;if(o.str)o.pts=[o.pts[0]];o.pts.push(wp)}o.str=e.shiftKey;
       const tmp={type:'stroke',pts:o.pts,sw:o.sw,color:o.col,hl:o.hl,op:o.op,pr:o.pr};o.temp.innerHTML=wbNodeHTML(tmp);wbPlace(o.temp,tmp);return}
     if(o.k==='erase'){wbEraseAt(w);return}
-    if(o.k==='shape'){o.ex=w[0];o.ey=w[1];o.shift=e.shiftKey||WB.lock;const tmp=wbShapeFromOp(o);o.temp.innerHTML=wbNodeHTML(tmp);wbPlace(o.temp,tmp)}});
+    if(o.k==='shape'){o.ex=e.altKey?w[0]:wb17V(w[0],'x');o.ey=e.altKey?w[1]:wb17V(w[1],'y');if(!o.g17){o.g17=1;o.sx=wb17V(o.sx,'x');o.sy=wb17V(o.sy,'y')}o.shift=e.shiftKey||WB.lock;const tmp=wbShapeFromOp(o);o.temp.innerHTML=wbNodeHTML(tmp);wbPlace(o.temp,tmp)}});
   const end=e=>{WB.ptrs.delete(e.pointerId);if(e.pointerType==='touch')cur.hidden=true;const o=WB.op;if(!o)return;if(o.k==='pinch'){if(WB.ptrs.size<2){WB.op=null;save()}return}
     WB.op=null;wrap.classList.remove('panning');
     if(o.k==='pan'){if(o.tap&&Math.hypot(e.clientX-o.sx,e.clientY-o.sy)<6)wbSetSel([]);save();return}
