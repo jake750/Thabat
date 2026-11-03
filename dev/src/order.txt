@@ -179,6 +179,7 @@ css/v3-157-1-today-chip-row-no-scrollbar-on-pc-fades.css
 css/v3-157-2-event-editor-action-row-one-line.css
 css/v3-158-0-thirteenth-list-d-calendar.css
 css/v3-159-0-thirteenth-list-e-summary.css
+css/v3-160-0-thirteenth-list-f1-notes.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -440,6 +441,7 @@ js/v3-157-1-the-today-chip-row-on-pc-no-scrollbar-e.js
 js/v3-157-2-event-editor-extra-buttons-go-into-one.js
 js/v3-158-0-thirteenth-list-d-calendar-87-89-90-91.js
 js/v3-159-0-thirteenth-list-e-summary-cards-quran-t.js
+js/v3-160-0-thirteenth-list-f1-notes-sortable-table.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
