@@ -310,7 +310,7 @@ function wbOpenCanvasImport(){$('#ltBox').innerHTML=`<h2>${t('wb.canvasIn')}</h2
   $('#ltModal').classList.add('on');$('#wbCvX').onclick=closeLt;$('#wbCvIn').onchange=e=>{const fl=[...e.target.files];if(fl.length)wbImportCanvas(fl)}}
 /* ---- menus ---- */
 function wbMenu(btn,items){closePP();const p=document.createElement('div');p.className='pppop wbmenu';p.id='ppPop';p.innerHTML=items.map((it,i)=>it?`<button data-i="${i}">${it[0]}</button>`:'<hr>').join('');document.body.append(p);
-  const r=btn.getBoundingClientRect(),w=p.offsetWidth,h=p.offsetHeight;let x=document.documentElement.dir==='rtl'?r.right-w:r.left;x=Math.max(8,Math.min(innerWidth-w-8,x));let y=r.bottom+6;if(y+h>innerHeight-8)y=r.top-h-6;p.style.left=x+'px';p.style.top=y+'px';
+  const r=btn.getBoundingClientRect(),w=p.offsetWidth,h=p.offsetHeight;let x=document.documentElement.dir==='rtl'?r.right-w:r.left;x=Math.max(8,Math.min(innerWidth-w-8,x));let y=r.bottom+6;if(y+h>innerHeight-8)y=r.top-h-6;p.style.left=x+'px';p.style.top=y+'px';wbPopFit(p,btn,false);
   p.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{closePP();items[+b.dataset.i][1]()});setTimeout(()=>document.addEventListener('mousedown',ppOut,true),0)}
 /* ---- toolbar ---- */
 const WB_ICONS={select:'<path d="M5 3l14 8-6 2-2 6z"/>',lasso:'<path d="M8.5 17.5C5 16.6 3 14.4 3 11.5 3 7.4 7 4 12 4s9 3.4 9 7.5-4 7.5-9 7.5c-.9 0-1.8-.1-2.6-.3"/><path d="M9 17.5c0 2-1.3 3.5-3 3.5"/><circle cx="9" cy="17.5" r="1.6"/>',hand:'<path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V11M16 11V8.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-3l-2.5-4a1.5 1.5 0 0 1 2.5-1.6L7 14"/>',pen:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',hl:'<path d="M9 11l-6 6v3h9l3-3M22 12l-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/>',erase:'<path d="M20 20H7L3 16l10-10 7 7-7 7M9 10l6 6"/>',
@@ -322,7 +322,7 @@ const wbIco=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 const WB_FILLS=[null,'auto','accent','#ef4444','#3b82f6','#22c55e','#f59e0b','#a855f7','#ffffff','#111111'];
 function wbSwatch(c){return c?`<i style="background:${wbCol(c)}"></i>`:'<i class="none"></i>'}
 function wbPop(btn,html,cls){closePP();const p=document.createElement('div');p.className='pppop '+(cls||'');p.id='ppPop';p.innerHTML=html;document.body.append(p);
-  const r=btn.getBoundingClientRect(),w=p.offsetWidth,h=p.offsetHeight;let x=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2)),y=r.top-h-8;if(y<8)y=r.bottom+8;p.style.left=x+'px';p.style.top=y+'px';
+  const r=btn.getBoundingClientRect(),w=p.offsetWidth,h=p.offsetHeight;let x=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2)),y=r.top-h-8;if(y<8)y=r.bottom+8;p.style.left=x+'px';p.style.top=y+'px';wbPopFit(p,btn,true);
   setTimeout(()=>document.addEventListener('mousedown',ppOut,true),0);return p}
 function wbColorPop(btn,k,cur){const fcs=wbSelFor('fc'),stickyOnly=k==='fc'&&(fcs.length?fcs.every(e=>e.type==='sticky'):WB.tool==='sticky');
   const list=stickyOnly?NOTE_COLORS:k==='fc'?WB_FILLS:WB_COLORS.concat(['#ffffff','#111111']);
