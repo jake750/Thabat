@@ -1,0 +1,22 @@
+/* v3.161.0 thirteenth list F2: notes */
+.n15tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 10px}
+.n15tags>small{color:var(--muted);font-size:12px;margin-inline-end:4px}
+.n15chip{cursor:pointer;font:inherit;font-size:13px;border:1px solid transparent;transition:transform .12s,box-shadow .12s}
+.n15chip small{opacity:.7;font-size:11px}
+.n15chip.on{border-color:currentColor}
+.n15chip.n15over{transform:scale(1.12);box-shadow:0 0 0 2px var(--accent)}
+.n15tree{display:flex;flex-direction:column;gap:2px;margin-top:8px;max-height:60vh;overflow:auto}
+.n15tr{display:flex;align-items:center;gap:4px;padding-inline-start:calc(var(--d,0) * 20px)}
+.n15tr[hidden]{display:none!important}
+.n15tt{width:26px;height:30px;border:0;background:none;color:var(--muted);cursor:pointer;font-size:13px}.n15tt:disabled{cursor:default}
+.n15tg{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;border:0;background:none;color:var(--text);font:inherit;padding:5px 8px;border-radius:9px;cursor:pointer;text-align:start}
+.n15tg:hover{background:color-mix(in srgb,var(--accent) 9%,transparent)}.n15tg small{color:var(--muted);font-variant-numeric:tabular-nums}
+.n15ed .nnpr>span{display:flex;flex-direction:column;min-width:0;flex:1}.n15ed .nnpr>span small{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.n15ck{display:flex;flex-direction:column;gap:4px;margin:10px 0;max-height:50vh;overflow:auto}
+.n15cr{display:flex;justify-content:space-between;gap:10px;padding:7px 10px;border-radius:9px;background:color-mix(in srgb,var(--line) 30%,transparent);overflow-wrap:anywhere}
+.n15cr small{color:var(--muted);white-space:nowrap}.n15cr.had{opacity:.55}
+.n15impf{display:flex;flex-direction:column;gap:6px;margin-top:12px}.n15impf span{font-size:13px}.n15imph{display:block;margin:4px 0 8px;font-size:12px}
+.nfic.n15fi svg{width:22px;height:22px}
+.nfpdot.n15fd{background:none!important;width:auto;height:auto;display:inline-flex}.nfpdot.n15fd svg{width:15px;height:15px}
+.n15icg button.on{outline:2px solid var(--accent)}
+
