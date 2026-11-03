@@ -46,6 +46,11 @@ function bkPhotoTiles(c){const W=c.width,H=c.height;if(W<50||H<50)return{};let d
 /* the ring tiles: the picture's own pixels go back, the paper around it stays dark */
 function bkRingPaint(x,o,ring){const ox=o.getContext('2d');ring.forEach(r=>{const w=r[2]-r[0],h=r[3]-r[1];if(w<1||h<1)return;let a,b;try{a=x.getImageData(r[0],r[1],w,h);b=ox.getImageData(r[0],r[1],w,h)}catch(e){return}const A=a.data,B=b.data;
   for(let i=0;i<A.length;i+=4){const R=B[i],G=B[i+1],Bl=B[i+2],mx=Math.max(R,G,Bl),mn=Math.min(R,G,Bl),l=(R*3+G*6+Bl)/10;if(l<212||mx-mn>28){A[i]=R*.86;A[i+1]=G*.86;A[i+2]=Bl*.86}}x.putImageData(a,r[0],r[1])})}
+/* 3.162: night text was thin grey on grey — lift the light strokes with a curve (pictures are drawn back after it) */
+function bkNightText(x,W,H,bg){try{const d=x.getImageData(0,0,W,H),a=d.data,top=232,sp=top-bg,lut=new Float32Array(256);
+  for(let l=0;l<256;l++){if(l<=bg+4){lut[l]=1;continue}const t=Math.min(1,(l-bg)/sp),v=bg+Math.pow(t,.45)*sp;lut[l]=Math.max(1,v/l)}
+  for(let i=0;i<a.length;i+=4){const r=a[i],g=a[i+1],b=a[i+2],l=r>g?(r>b?r:b):(g>b?g:b);if(l<=bg+4)continue;const k=lut[l];if(k===1)continue;a[i]=Math.min(255,r*k);a[i+1]=Math.min(255,g*k);a[i+2]=Math.min(255,b*k)}
+  x.putImageData(d,0,0)}catch(e){}}
 bkNightPaint=async function(c,pg,vp){try{if(typeof bkxLoad==='function'){await bkxLoad();await bkxIsScanned()}}catch(e){}
   const scan=typeof BKX!=='undefined'&&!!BKX.scanned,W=c.width,H=c.height,x=c.getContext('2d');
   let rects=(await bkImgRects(pg,vp)).map(r=>[Math.max(0,r[0]),Math.max(0,r[1]),Math.min(W,r[2]),Math.min(H,r[3])]).filter(r=>r[2]-r[0]>6&&r[3]-r[1]>6);
@@ -54,6 +59,7 @@ bkNightPaint=async function(c,pg,vp){try{if(typeof bkxLoad==='function'){await b
   const PT=bkPhotoTiles(c);rects=rects.concat(PT.core||[]);
   const o=document.createElement('canvas');o.width=W;o.height=H;o.getContext('2d').drawImage(c,0,0);
   x.save();x.globalCompositeOperation='difference';x.fillStyle=scan?'#dedad2':'#e4e1da';x.fillRect(0,0,W,H);x.globalCompositeOperation='hue';x.drawImage(o,0,0);x.globalCompositeOperation='source-over';
+  bkNightText(x,W,H,scan?46:38);
   if(rects.length){try{x.filter='brightness(.86)'}catch(e){}rects.forEach(r=>{const w=r[2]-r[0],h=r[3]-r[1];if(w>0&&h>0)x.drawImage(o,r[0],r[1],w,h,r[0],r[1],w,h)})}
   x.restore();if(PT.ring&&PT.ring.length)bkRingPaint(x,o,PT.ring);o.width=o.height=0};
 /* after the reader is built: icons, the highlight bar, the night button repaints its icon */

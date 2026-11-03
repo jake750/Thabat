@@ -478,7 +478,7 @@ function wbPip(p,poly){let ins=false;for(let i=0,j=poly.length-1;i<poly.length;j
   const skip=el=>el.closest('.btbar,.bmini,.bpres,.blink');
   const pinch=()=>{const p=[...WB.ptrs.values()];return{d:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),cx:(p[0].x+p[1].x)/2,cy:(p[0].y+p[1].y)/2}};
   const cancelOp=()=>{const o=WB.op;if(o&&o.temp){o.temp.remove()}wbClearGuides();WB.op=null};
-  const startMove=(ids0,w,id,pt)=>{const moving=new Set(ids0.filter(i=>{const e=wbFind(i);return e&&!e.lock}));wbEls().forEach(f=>{if(f.type==='frame'&&moving.has(f.id))wbEls().forEach(o=>{if(o.id!==f.id&&o.type!=='arrow'&&!o.lock&&wbInside(o,f))moving.add(o.id)})});
+  const startMove=(ids0,w,id,pt)=>{const moving=new Set(ids0.filter(i=>{const e=wbFind(i);return e&&!e.lock}));wbEls().forEach(f=>{if(f.type==='frame'&&moving.has(f.id))wbEls().forEach(o=>{if(o.id!==f.id&&o.type!=='arrow'&&!o.lock&&(wbInside(o,f)||o.pf===f.id))moving.add(o.id)})});
     const ids=[...moving],orig={};ids.forEach(i=>orig[i]=JSON.parse(JSON.stringify(wbFind(i))));WB.op={k:'move',ids,orig,sx:w[0],sy:w[1],moved:false,id,pt}};
   wrap.addEventListener('pointerdown',e=>{if(skip(e.target))return;
     if(WB.present){if(e.button===0||e.pointerType!=='mouse'){const r=wrap.getBoundingClientRect(),rtl=document.documentElement.dir==='rtl',z=e.clientX<r.left+r.width*.25?'L':e.clientX>r.left+r.width*.75?'R':'C';wbPresStep(z==='C'?1:(z==='L')===rtl?1:-1)}return}
