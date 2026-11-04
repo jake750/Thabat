@@ -1,0 +1,16 @@
+/* v3.169.1 windows open and close smoothly */
+html:not(.mdx0) .modal.on,html:not(.mdx0) .praymodal.on{animation:mdxin .28s cubic-bezier(.25,.8,.3,1) both}
+.modal.mdxout,.praymodal.mdxout{display:grid;pointer-events:none;animation:mdxo .22s ease-in both}
+html.rmotion .modal.mdxout,html.rmotion .praymodal.mdxout{animation-duration:.15s}
+@keyframes mdxin{from{opacity:0}}
+@keyframes mdxo{from{opacity:1}to{opacity:0}}
+@media(min-width:701px){
+  html:not(.rmotion) .modal.on>.box{animation:mdxpop .36s cubic-bezier(.2,.9,.3,1.02) both}
+  html:not(.rmotion) .modal.mdxout>.box{animation:mdxpopo .22s ease-in both}
+  html.rmotion .modal.on>.box{animation:mdxin .2s ease-out both}
+}
+@keyframes mdxpop{from{opacity:0;transform:translateY(16px) scale(.955)}}
+@keyframes mdxpopo{to{opacity:0;transform:translateY(10px) scale(.97)}}
+@media(max-width:700px){html:not(.rmotion) .modal.mdxout.uxsheet>.box{animation:mdxdown .22s ease-in both}}
+@keyframes mdxdown{to{transform:translateY(28%);opacity:.2}}
+
