@@ -1,0 +1,23 @@
+/* v3.169.0 the board «⋯» menu in sub-menus; own lists without a scrollbar */
+.wbmenu.wbsm{min-width:230px}
+.wbsm .wbsmrow{display:flex;align-items:center;gap:8px}
+.wbsm .wbsmrow>span{flex:1 1 auto;min-width:0;text-align:start}
+.wbsm .wbsmrow em{font-style:normal;font-size:11.5px;color:var(--muted);min-width:18px;text-align:center;padding:1px 6px;border-radius:99px;background:color-mix(in srgb,var(--text) 7%,transparent)}
+.wbsm .wbsmrow .wbsmar{font-style:normal;color:var(--muted);order:3}
+.wbsm .wbsmrow.on{background:color-mix(in srgb,var(--accent) 14%,transparent)}
+.wbsmsub{position:absolute;z-index:2;min-width:220px;max-width:min(340px,calc(100vw / var(--uiz,1) - 16px));overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:1px;padding:6px;border-radius:14px;background:var(--panel);border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.38);animation:wbsmIn .14s ease-out}
+.wbsmsub::-webkit-scrollbar{display:none}
+.wbsmsub>button{text-align:start}
+@keyframes wbsmIn{from{opacity:0;transform:translateX(calc(var(--wbsmd,1) * 6px))}}
+html[dir=rtl] .wbsmsub{--wbsmd:-1}
+@media (max-width:700px){.wbsmsub{position:static;box-shadow:none;border:0;padding:0;max-width:none;min-width:0;animation:none}.wbsmback{font-weight:600}.wbsmh{padding:4px 12px 6px;font-size:12px;color:var(--muted)}}
+html.rmotion .wbsmsub{animation:none}
+/* his report 2026-11-04: the scrollbar of the own lists looked ugly */
+.rpkl,.tpk .rpkbox{scrollbar-width:none!important}
+.rpkl::-webkit-scrollbar,.tpk .rpkbox::-webkit-scrollbar{display:none}
+.rpkl.rpkft{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 26px);mask-image:linear-gradient(to bottom,transparent,#000 26px)}
+.rpkl.rpkfb{-webkit-mask-image:linear-gradient(to top,transparent,#000 26px);mask-image:linear-gradient(to top,transparent,#000 26px)}
+.rpkl.rpkft.rpkfb{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 26px,#000 calc(100% - 26px),transparent);mask-image:linear-gradient(to bottom,transparent,#000 26px,#000 calc(100% - 26px),transparent)}
+/* the two-months view: both grids start level; the second month's title sits in the space above */
+#cal2Box{position:relative}
+#cal2Box .cal2t{position:absolute;bottom:100%;inset-inline-start:0;margin:0 4px 6px;white-space:nowrap}
