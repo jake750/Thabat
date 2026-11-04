@@ -1,0 +1,23 @@
+/* v3.169.3 «⋯» menus open and close smoothly */
+html:not(.mdx0) .pppop:not(.ppout){animation:ppin .34s cubic-bezier(.16,1,.3,1) both;transform-origin:50% 0}
+html:not(.mdx0) .pppop.ppout{animation:ppout .2s cubic-bezier(.4,0,.7,.4) both;transform-origin:50% 0}
+html.rmotion .pppop:not(.ppout){animation-name:ppsoft;animation-duration:.3s!important}
+html.rmotion .pppop.ppout{animation-duration:.18s!important}
+@keyframes ppin{from{opacity:0;transform:translateY(-6px) scale(.95);filter:blur(3px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes ppsoft{from{opacity:0;transform:scale(.98)}}
+@keyframes ppout{to{opacity:0;transform:translateY(-4px) scale(.97)}}
+html.lite .pppop:not(.ppout){animation-name:ppsoft}
+html:not(.mdx0) .rpk:not(.fxout) .rpkbox{animation:ppin .34s cubic-bezier(.16,1,.3,1) both;transform-origin:50% 0}
+html:not(.mdx0) .rpk.fxout{pointer-events:none!important;animation:ppout .2s cubic-bezier(.4,0,.7,.4) both}
+html:not(.mdx0) .rpk.mob:not(.fxout){animation:mdxin .4s cubic-bezier(.16,1,.3,1) both}
+html:not(.mdx0) .rpk.mob:not(.fxout) .rpkbox{animation:mdxup .46s cubic-bezier(.16,1,.3,1) both}
+html:not(.mdx0) .rpk.mob.fxout{animation:mdxo .26s cubic-bezier(.4,0,.7,.4) both}
+html:not(.mdx0) .rpk.mob.fxout .rpkbox{animation:mdxdown .26s cubic-bezier(.4,0,.7,.4) both}
+html.rmotion .rpk:not(.fxout) .rpkbox,html.rmotion .rpk.mob:not(.fxout) .rpkbox{animation-name:ppsoft;animation-duration:.3s!important}
+html.rmotion .rpk.mob:not(.fxout){animation-duration:.3s!important}
+html.rmotion .rpk.fxout,html.rmotion .rpk.fxout .rpkbox{animation-duration:.18s!important}
+html.rmotion .rpk.mob.fxout .rpkbox{animation-name:ppout}
+html:not(.mdx0) .sheet.on{animation:mdxin .4s cubic-bezier(.16,1,.3,1) both}
+.sheet.mdxout{display:flex;pointer-events:none;animation:mdxo .26s cubic-bezier(.4,0,.7,.4) both}
+html.rmotion .sheet.on{animation-duration:.34s!important}
+html.rmotion .sheet.mdxout{animation-duration:.2s!important}

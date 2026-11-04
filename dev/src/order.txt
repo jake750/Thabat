@@ -193,6 +193,7 @@ css/v3-169-0-thirteenth-list-l-the-look.css
 css/v3-169-0-the-board-menu-in-sub-menus-own-lists-w.css
 css/v3-169-0-the-board-menu-in-sub-menus-own-lists-w-2.css
 css/v3-169-1-windows-open-and-close-smoothly-curve-w.css
+css/v3-169-3-menus-open-and-close-smoothly.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -467,6 +468,7 @@ js/v3-168-0-thirteenth-list-k-pc-and-data.js
 js/v3-169-0-thirteenth-list-l-the-look.js
 js/v3-169-0-his-picks-2026-11-04-the-board-menu-in.js
 js/v3-169-1-his-request-2026-11-04-windows-open-and.js
+js/v3-169-3-his-report-2026-11-04-menus-open-and-cl.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html

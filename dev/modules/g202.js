@@ -9,6 +9,6 @@ function mdxOut(m){clearTimeout(MDX.t.get(m));m.classList.add('mdxout');MDX.t.se
 {const mo=new MutationObserver(rs=>{for(const r of rs){const m=r.target,was=/(^|\s)on(\s|$)/.test(r.oldValue||''),now=m.classList.contains('on');
    if(was&&!now&&m.isConnected&&!m.classList.contains('mdxout'))mdxOut(m);
    else if(now&&m.classList.contains('mdxout')){clearTimeout(MDX.t.get(m));m.classList.remove('mdxout')}}});
- const watch=el=>{if(el&&el.classList&&(el.classList.contains('modal')||el.classList.contains('praymodal'))&&!MDX.seen.has(el)){MDX.seen.add(el);mo.observe(el,{attributes:true,attributeFilter:['class'],attributeOldValue:true})}};
- document.querySelectorAll('.modal,.praymodal').forEach(watch);
+ const watch=el=>{if(el&&el.classList&&(el.classList.contains('modal')||el.classList.contains('praymodal')||el.classList.contains('sheet'))&&!MDX.seen.has(el)){MDX.seen.add(el);mo.observe(el,{attributes:true,attributeFilter:['class'],attributeOldValue:true})}};
+ document.querySelectorAll('.modal,.praymodal,.sheet').forEach(watch);
  new MutationObserver(rs=>{for(const r of rs)r.addedNodes.forEach(watch)}).observe(document.body,{childList:true})}
