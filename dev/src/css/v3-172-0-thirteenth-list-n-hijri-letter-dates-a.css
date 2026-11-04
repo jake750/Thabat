@@ -1,0 +1,39 @@
+/* v3.172.0 thirteenth list N: Hijri letter dates, a year ago today, the simple countdown, hidden achievements, my year */
+.n17tmb{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);display:inline-grid;place-items:center;cursor:pointer;margin-inline-start:6px;vertical-align:middle;padding:0}
+.n17tmb:hover{color:var(--text);border-color:var(--accent)}
+.n17tmb.on{color:var(--accent);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.n17tmb svg.uic{width:17px;height:17px}
+.n17tmp .n17tms{display:block;margin:-2px 0 8px;font-size:12px}
+.n17tmo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:6px}
+.n17tmp .btn{width:100%}
+.n17pill{position:fixed;z-index:68;inset-inline-end:16px;bottom:16px;display:flex;align-items:center;gap:4px;padding:6px 6px 6px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--line);box-shadow:0 8px 26px rgba(0,0,0,.28);font-variant-numeric:tabular-nums;overflow:hidden}
+html[dir=rtl] .n17pill{padding:6px 12px 6px 6px}
+.n17pill::before{content:"";position:absolute;inset:auto 0 0 0;height:3px;background:var(--accent);transform-origin:0 50%;transform:scaleX(var(--n17p,0))}
+html[dir=rtl] .n17pill::before{transform-origin:100% 50%}
+.n17pill.pz b{opacity:.55}
+.n17pill .n17pi{color:var(--accent);display:inline-grid}
+.n17pill b{font-size:16px;min-width:52px;text-align:center;direction:ltr}
+.n17pill button{min-width:34px;height:32px;border-radius:999px;border:0;background:transparent;color:var(--text);cursor:pointer;font:inherit;font-size:13px}
+.n17pill button:hover{background:color-mix(in srgb,var(--text) 9%,transparent)}
+@media (max-width:700px){.n17pill{bottom:calc(96px + env(safe-area-inset-bottom,0px));inset-inline-end:12px}html.navhide .n17pill{bottom:calc(16px + env(safe-area-inset-bottom,0px))}}
+html.qfs .n17pill,html.solo .n17pill{display:none}
+.n17cats{display:flex;flex-wrap:wrap;gap:6px 12px;margin:10px 0;font-size:13px}
+.n17cats span{display:inline-flex;align-items:center;gap:6px}
+.n17cats i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.n17h4{font-size:14px;margin:14px 0 8px}
+.n17nts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.n17nts .btn{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.n17jr{margin-top:14px}
+.n17ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.n17a{display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;padding:10px 6px;border-radius:12px;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:color-mix(in srgb,var(--gold) 8%,transparent)}
+.n17a .n17ai{color:var(--gold);display:inline-grid}.n17a .n17ai svg.uic{width:22px;height:22px}
+.n17a b{font-size:12.5px;line-height:1.3}.n17a small{font-size:11px;color:var(--muted)}
+.n17hid{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-top:8px}
+.n17hid i{width:16px;height:16px;border-radius:5px;border:1px dashed var(--line)}
+.n17hid small{color:var(--muted);margin-inline-start:4px}
+.n17ltr{display:flex;align-items:center;gap:10px;margin:14px 0;padding:10px 12px;border-radius:12px;border:1px solid var(--line)}
+.n17ltr>span{color:#e879f9;display:inline-grid}.n17ltr>div{flex:1;min-width:0;display:flex;flex-direction:column}.n17ltr small{color:var(--muted)}
+.n17yl{margin:10px 0;padding-inline-start:20px;line-height:1.8}
+.ltrwhen .n17lw{border-style:dashed}
+#ltrBox .ltrwhen{flex-wrap:wrap}
+
