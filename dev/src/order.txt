@@ -184,6 +184,7 @@ css/v3-161-0-thirteenth-list-f2-notes.css
 css/v3-162-0-thirteenth-list-g1-board.css
 css/v3-162-1-board-menus-scroll-inside-the-window.css
 css/v3-163-0-thirteenth-list-g2-board.css
+css/v3-164-0-thirteenth-list-h1-library.css
 css/image-viewer.css
 body.html
 js/core.js
@@ -450,6 +451,7 @@ js/v3-161-0-thirteenth-list-f2-notes-plain-text-cop.js
 js/v3-162-0-thirteenth-list-g1-board-snapping-conne.js
 js/v3-162-1-board-menus-stay-inside-the-window.js
 js/v3-163-0-thirteenth-list-g2-board-rulers-and-gui.js
+js/v3-164-0-thirteenth-list-h1-library-weekly-lesso.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/loop.js
 tail.html
