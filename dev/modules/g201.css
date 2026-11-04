@@ -21,3 +21,4 @@ html.rmotion .wbsmsub{animation:none}
 /* the two-months view: both grids start level; the second month's title sits in the space above */
 #cal2Box{position:relative}
 #cal2Box .cal2t{position:absolute;bottom:100%;inset-inline-start:0;margin:0 4px 6px;white-space:nowrap}
+#cal2Btn.c2on{color:var(--accInk,var(--accent));border-color:color-mix(in srgb,var(--accent) 60%,transparent);background:color-mix(in srgb,var(--accent) 16%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}

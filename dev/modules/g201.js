@@ -56,3 +56,6 @@ document.addEventListener('scroll',e=>{const l=e.target;if(l&&l.classList&&l.cla
 function cal2Level(){const b=$('#cal2Box'),c=$('#cal'),c2=b&&b.querySelector('.cal2');if(!b||!c2||!c||!S.settings.cal2||MOB.matches)return;
   const z=uiZoom()||1;b.style.marginTop='0px';const d=(c.getBoundingClientRect().top-c2.getBoundingClientRect().top)/z;if(Math.abs(d)>1)b.style.marginTop=Math.round(d)+'px'}
 {hookFn('renderCal',()=>renderCal,f=>{renderCal=f},'post',function(){setTimeout(cal2Level,0);setTimeout(cal2Level,350)});addEventListener('resize',()=>{clearTimeout(window._c2l);window._c2l=setTimeout(cal2Level,120)})}
+/* his request 2026-11-04: the «شهران» button shows when it is on */
+function cal2BtnPaint(){const b=$('#cal2Btn');if(!b)return;const on=!!S.settings.cal2;b.classList.toggle('c2on',on);b.setAttribute('aria-pressed',on?'true':'false')}
+{hookFn('renderCal',()=>renderCal,f=>{renderCal=f},'post',function(){cal2BtnPaint();setTimeout(cal2BtnPaint,0)})}
