@@ -1,0 +1,11 @@
+/* v3.167.0 thirteenth list J: Android */
+/* 226: a phone turned sideways shows the lesson list beside the player (full screen still shows the picture alone) */
+@media(max-height:560px) and (orientation:landscape) and (min-width:600px){
+  .lbpl.lpv:not(.max) .lpvmain{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(220px,38%);flex:1;min-height:0}
+  .lbpl.lpv:not(.max) .lpvside{display:flex!important;min-height:0;overflow:hidden;border-top:0;border-inline-start:1px solid #ffffff14}
+  .lbpl.lpv:not(.max) .lpvside .lpvbody{overflow-y:auto;min-height:0;flex:1}
+  .lbpl.lpv:not(.max) .lpvcol{min-height:0}
+}
+.an8nm{display:flex;flex-direction:column;gap:8px}.an8nm>small{color:var(--muted);overflow-wrap:anywhere}.an8nmb{justify-content:flex-end;gap:8px;margin-top:4px}
+#infoBox.an8nmbox>.evact{display:none}
+

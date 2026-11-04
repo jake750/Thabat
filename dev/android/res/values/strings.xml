@@ -27,4 +27,6 @@
     <string name="w8_desc">الدرس أو الكتاب الذي تتابعه</string>
     <string name="w9_name">العدّ التنازلي</string>
     <string name="w9_desc">الأيام الباقية لما تنتظره</string>
+    <string name="w10_name">مهام الفترة</string>
+    <string name="w10_desc">مهام الفترة الحالية بين الصلوات مع زرّ إنجاز</string>
 </resources>

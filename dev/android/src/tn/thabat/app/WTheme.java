@@ -19,8 +19,29 @@ final class WTheme {
         { {"w6_root"}, {"w6_count"}, {"w6_title"}, {}, {"w6_add"}, {"w6_bar"} },
         { {}, {}, {}, {}, {}, {} },
         { {"w8_root"}, {"w8_lbl"}, {"w8_title"}, {"w8_sub"}, {}, {"w8_bar"} },
-        { {"w9_root"}, {}, {"w9_title"}, {"w9_unit", "w9_sub", "w9_more"}, {}, {} }
+        { {"w9_root"}, {}, {"w9_title"}, {"w9_unit", "w9_sub", "w9_more"}, {}, {} },
+        { {"w10_root"}, {"w10_title", "w10_c0", "w10_c1", "w10_c2", "w10_c3"}, {"w10_t0", "w10_t1", "w10_t2", "w10_t3"}, {"w10_count", "w10_empty"}, {}, {} }
     };
+    /* 3.167: each layout's text sizes (px), read once from the layout itself, so a size step scales them all */
+    static final java.util.HashMap<Integer, java.util.ArrayList<float[]>> SZ = new java.util.HashMap<>();
+
+    static java.util.ArrayList<float[]> sizes(Context c, int widget) {
+        java.util.ArrayList<float[]> L = SZ.get(widget);
+        if (L != null) return L;
+        L = new java.util.ArrayList<>();
+        try {
+            int lay = Widget.rid(c, widget == 1 ? "thabat_widget" : "thabat_widget" + widget, "layout");
+            android.view.View root = android.view.LayoutInflater.from(c).inflate(lay, null);
+            walk(root, L);
+        } catch (Throwable t) {}
+        SZ.put(widget, L);
+        return L;
+    }
+
+    static void walk(android.view.View x, java.util.ArrayList<float[]> L) {
+        if (x instanceof android.widget.TextView && x.getId() != android.view.View.NO_ID) L.add(new float[]{x.getId(), ((android.widget.TextView) x).getTextSize()});
+        if (x instanceof android.view.ViewGroup) { android.view.ViewGroup g = (android.view.ViewGroup) x; for (int i = 0; i < g.getChildCount(); i++) walk(g.getChildAt(i), L); }
+    }
 
     static void apply(Context c, RemoteViews v, int widget) {
         try {
@@ -31,12 +52,16 @@ final class WTheme {
             int acc = Color.parseColor(o.getString("acc")), bg = Color.parseColor(o.getString("bg")),
                 txt = Color.parseColor(o.getString("text")), mut = Color.parseColor(o.getString("muted")), on = Color.parseColor(o.getString("on"));
             String[][] w = W[widget - 1];
+            double fs = o.optDouble("fs", 1);
+            if (fs > 0.5 && fs < 2 && Math.abs(fs - 1) > 0.01) for (float[] z : sizes(c, widget)) try { v.setTextViewTextSize((int) z[0], android.util.TypedValue.COMPLEX_UNIT_PX, (float) (z[1] * fs)); } catch (Throwable t) {}
+            boolean tr = o.optBoolean("tr", false);
+            if (tr) for (String n : w[0]) { int id = Widget.rid(c, n, "id"); if (id != 0) try { v.setInt(id, "setBackgroundColor", 0); } catch (Throwable t) {} }
             for (String n : w[1]) text(c, v, n, acc);
             for (String n : w[2]) text(c, v, n, txt);
             for (String n : w[3]) text(c, v, n, mut);
             for (String n : w[4]) text(c, v, n, on);
             if (Build.VERSION.SDK_INT >= 31) {
-                for (String n : w[0]) tint(c, v, n, "setBackgroundTintList", bg);
+                if (!tr) for (String n : w[0]) tint(c, v, n, "setBackgroundTintList", bg);
                 for (String n : w[4]) tint(c, v, n, "setBackgroundTintList", acc);
                 for (String n : w[5]) tint(c, v, n, "setProgressTintList", acc);
             }
@@ -60,5 +85,8 @@ final class WTheme {
         try { Widget4.render(c); } catch (Throwable t) {}
         try { Widget5.render(c); } catch (Throwable t) {}
         try { Widget6.render(c); } catch (Throwable t) {}
+        try { Widget8.render(c); } catch (Throwable t) {}
+        try { Widget9.render(c); } catch (Throwable t) {}
+        try { Widget10.render(c); } catch (Throwable t) {}
     }
 }

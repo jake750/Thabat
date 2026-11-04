@@ -78,8 +78,15 @@ public class MainActivity extends Activity {
         try {
             if (i == null) return;
             String act = i.getAction();
-            if (!Intent.ACTION_SEND.equals(act) && !Intent.ACTION_SEND_MULTIPLE.equals(act)) return;
             org.json.JSONObject o = new org.json.JSONObject();
+            /* 3.167: a PDF opened with Thabat from a file manager (Open with) becomes a book and opens */
+            if (Intent.ACTION_VIEW.equals(act) && i.getData() != null && !"thabat".equals(i.getData().getScheme())) {
+                org.json.JSONObject p = pdfIn(i.getData());
+                if (p != null) { org.json.JSONArray pa = new org.json.JSONArray(); pa.put(p); o.put("pdfs", pa); o.put("open", 1); pendingShare = o.toString(); }
+                i.setAction(null);
+                return;
+            }
+            if (!Intent.ACTION_SEND.equals(act) && !Intent.ACTION_SEND_MULTIPLE.equals(act)) return;
             CharSequence tx = i.getCharSequenceExtra(Intent.EXTRA_TEXT);
             if (tx != null && tx.length() > 0) o.put("text", tx.toString());
             String sub = i.getStringExtra(Intent.EXTRA_SUBJECT);
@@ -87,11 +94,84 @@ public class MainActivity extends Activity {
             java.util.ArrayList<android.net.Uri> us = new java.util.ArrayList<android.net.Uri>();
             if (Intent.ACTION_SEND.equals(act)) { android.net.Uri u = (android.net.Uri) i.getParcelableExtra(Intent.EXTRA_STREAM); if (u != null) us.add(u); }
             else { java.util.ArrayList<android.os.Parcelable> L = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM); if (L != null) for (android.os.Parcelable p : L) if (p instanceof android.net.Uri) us.add((android.net.Uri) p); }
-            org.json.JSONArray im = new org.json.JSONArray();
-            for (android.net.Uri u : us) { if (im.length() >= 4) break; String d = imgData(u); if (d != null) im.put(d); }
+            org.json.JSONArray im = new org.json.JSONArray(), pa = new org.json.JSONArray();
+            for (android.net.Uri u : us) {
+                String mt = null; try { mt = getContentResolver().getType(u); } catch (Throwable t) {}
+                if ("application/pdf".equals(mt) || u.toString().toLowerCase().endsWith(".pdf")) { if (pa.length() < 4) { org.json.JSONObject p = pdfIn(u); if (p != null) pa.put(p); } continue; }
+                if (im.length() >= 4) continue; String d = imgData(u); if (d != null) im.put(d);
+            }
             if (im.length() > 0) o.put("imgs", im);
+            if (pa.length() > 0) o.put("pdfs", pa);
             if (o.length() > 0) pendingShare = o.toString();
             i.setAction(null);
+        } catch (Throwable t) {}
+    }
+
+    /* 3.167: a shared or opened PDF is copied into the app's own «inbox» folder; the page reads it in pieces (inRead) and deletes it (inDel) */
+    static java.io.File inDir(android.content.Context c) { java.io.File d = new java.io.File(c.getFilesDir(), "inbox"); d.mkdirs(); return d; }
+
+    org.json.JSONObject pdfIn(android.net.Uri u) {
+        try {
+            String name = null; long size = -1;
+            try (android.database.Cursor cu = getContentResolver().query(u, null, null, null, null)) {
+                if (cu != null && cu.moveToFirst()) {
+                    int ni = cu.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME), si = cu.getColumnIndex(android.provider.OpenableColumns.SIZE);
+                    if (ni >= 0) name = cu.getString(ni);
+                    if (si >= 0 && !cu.isNull(si)) size = cu.getLong(si);
+                }
+            } catch (Throwable t) {}
+            if (name == null || name.length() == 0) { String p = u.getLastPathSegment(); name = p == null ? "book.pdf" : p; }
+            if (size > 400L * 1024 * 1024) return null;
+            String f = System.currentTimeMillis() + "-" + Math.abs(name.hashCode()) + ".pdf";
+            java.io.File out = new java.io.File(inDir(this), f);
+            long n = 0;
+            try (java.io.InputStream in = getContentResolver().openInputStream(u); java.io.FileOutputStream fo = new java.io.FileOutputStream(out)) {
+                byte[] b = new byte[65536]; int k;
+                while ((k = in.read(b)) > 0) { fo.write(b, 0, k); n += k; if (n > 400L * 1024 * 1024) throw new java.io.IOException("big"); }
+            }
+            byte[] head = new byte[5];
+            try (java.io.FileInputStream fi = new java.io.FileInputStream(out)) { if (fi.read(head) < 5 || !new String(head, "ISO-8859-1").equals("%PDF-")) { out.delete(); return null; } }
+            org.json.JSONObject o = new org.json.JSONObject(); o.put("n", name); o.put("f", f); o.put("s", n);
+            return o;
+        } catch (Throwable t) { return null; }
+    }
+
+    static boolean inOk(String f) {
+        if (f == null || f.length() > 60 || !f.endsWith(".pdf")) return false;
+        for (int i = 0; i < f.length() - 4; i++) { char ch = f.charAt(i); if (!(ch == '-' || (ch >= '0' && ch <= '9'))) return false; }
+        return true;
+    }
+
+    static String inRead(android.content.Context c, String f, long start, int n) {
+        try {
+            if (!inOk(f)) return "";
+            java.io.File x = new java.io.File(inDir(c), f);
+            if (!x.exists()) return "";
+            n = Math.max(1, Math.min(n, 4 * 1024 * 1024));
+            try (java.io.RandomAccessFile r = new java.io.RandomAccessFile(x, "r")) {
+                if (start >= r.length()) return "";
+                int len = (int) Math.min(n, r.length() - start); byte[] b = new byte[len]; r.seek(start); r.readFully(b);
+                return android.util.Base64.encodeToString(b, android.util.Base64.NO_WRAP);
+            }
+        } catch (Throwable t) { return ""; }
+    }
+
+    static void inDel(android.content.Context c, String f) {
+        try { if (inOk(f)) new java.io.File(inDir(c), f).delete(); } catch (Throwable t) {}
+        try { java.io.File[] L = inDir(c).listFiles(); long old = System.currentTimeMillis() - 2 * 86400000L; if (L != null) for (java.io.File x : L) if (x.lastModified() < old) x.delete(); } catch (Throwable t) {}
+    }
+
+    /* 3.167: the book reader at night lowers this window's brightness (k = a share of the system brightness; 0 = back to the system's) */
+    void dim(double k) {
+        try {
+            android.view.WindowManager.LayoutParams lp = getWindow().getAttributes();
+            if (k <= 0) lp.screenBrightness = android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+            else {
+                float sys = 0.5f;
+                try { sys = android.provider.Settings.System.getInt(getContentResolver(), android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255f; } catch (Throwable t) {}
+                lp.screenBrightness = (float) Math.max(0.01, Math.min(1, sys * k));
+            }
+            getWindow().setAttributes(lp);
         } catch (Throwable t) {}
     }
 

@@ -17,5 +17,5 @@ function shrOpen(o){const P_=shrParts(o),imgs=(o.imgs||[]).slice(0,4),recent=NOT
   b.querySelectorAll('[data-shn]').forEach(x=>x.onclick=async()=>{close();await shrNote(o,x.dataset.shn)})}
 {hookFn('openInfo',()=>openInfo,f=>{openInfo=f},'pre',function(){try{const b=$('#infoBox');if(b)b.classList.remove('shr2box')}catch(e){}})}
 {const _r=window.thabatResume;window.thabatResume=function(...a){let r;try{r=_r&&_r.apply(this,a)}catch(e){}setTimeout(shrCheck,350);return r}}
-setTimeout(shrCheck,1500);
+setTimeout(()=>shrCheck(),1500);
 

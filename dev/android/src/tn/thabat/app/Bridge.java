@@ -17,7 +17,21 @@ public class Bridge {
     Bridge(MainActivity a) { this.a = a; }
 
     @JavascriptInterface
-    public String version() { return "13"; }
+    public String version() { return "14"; }
+
+    /* 3.167: the «tasks of this period» widget, «snooze everything an hour», the reader's own screen brightness, PDFs shared to Thabat */
+    @JavascriptInterface
+    public void ptkWidget(String json) { try { a.getSharedPreferences("thabat", 0).edit().putString("ptk", json == null ? "{}" : json).apply(); Widget10.render(a.getApplicationContext()); } catch (Throwable t) {} }
+    @JavascriptInterface
+    public String takeSnz() { android.content.SharedPreferences p = a.getSharedPreferences("thabat", 0); long v = p.getLong("snzAll", 0); if (v > 0) p.edit().remove("snzAll").apply(); return v > 0 ? String.valueOf(v) : ""; }
+    @JavascriptInterface
+    public void snzClear() { a.getSharedPreferences("thabat", 0).edit().remove("snzUntil").remove("snzAll").apply(); }
+    @JavascriptInterface
+    public void dim(final double k) { a.runOnUiThread(new Runnable() { public void run() { a.dim(k); } }); }
+    @JavascriptInterface
+    public String inRead(String f, double start, int n) { return MainActivity.inRead(a, f, (long) start, n); }
+    @JavascriptInterface
+    public void inDel(String f) { MainActivity.inDel(a, f); }
 
     /* 3.106: what another app shared to Thabat (JSON {text, subject, imgs:[data URLs]}), once; "" when nothing waits */
     @JavascriptInterface

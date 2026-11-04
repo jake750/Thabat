@@ -28,7 +28,9 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification.InboxStyle st = new Notification.InboxStyle();
             for (int i = 0; i < lines.size() && i < 6; i++) st.addLine(lines.get(i));
             Intent open = new Intent(c, MainActivity.class); open.addFlags(0x10000000 | 0x20000000);
-            Notification sm = new Notification.Builder(c, chId)
+            Notification.Builder smb = new Notification.Builder(c, chId);
+            saAction(c, smb, c.getSharedPreferences("thabat", 0).getString("saLbl", ""), 7939);
+            Notification sm = smb
                     .setSmallIcon(c.getApplicationInfo().icon)
                     .setContentTitle(c.getString(Widget.rid(c, "app_name", "string")))
                     .setContentText(lines.size() + " ·  " + lines.get(0))
@@ -43,6 +45,48 @@ public class AlarmReceiver extends BroadcastReceiver {
             nm.notify(SUM_ID, sm);
         } catch (Throwable t) {}
     }
+    /* 3.167: «snooze everything an hour» — the reminders showing come back in an hour, and every reminder that rings before then waits for it */
+    static final String[] KEEP = {"title", "body", "open", "tk", "doneLbl", "tkLaterLbl", "tone", "ch", "chName", "saLbl"};
+    static void remember(Context c, Intent in, int id) {
+        try {
+            android.content.SharedPreferences sp = c.getSharedPreferences("thabat", 0);
+            org.json.JSONObject all = new org.json.JSONObject(sp.getString("shown", "{}")), o = new org.json.JSONObject();
+            for (String k : KEEP) { String v = in.getStringExtra(k); if (v != null) o.put(k, v); }
+            all.put(String.valueOf(id), o);
+            if (all.length() > 40) { java.util.Iterator<String> it = all.keys(); if (it.hasNext()) { it.next(); it.remove(); } }
+            sp.edit().putString("shown", all.toString()).apply();
+        } catch (Throwable t) {}
+    }
+
+    static void snoozeAll(Context c) {
+        try {
+            long until = System.currentTimeMillis() + 3600000L;
+            android.content.SharedPreferences sp = c.getSharedPreferences("thabat", 0);
+            sp.edit().putLong("snzUntil", until).putLong("snzAll", until).apply();
+            NotificationManager nm = (NotificationManager) c.getSystemService("notification");
+            org.json.JSONObject all; try { all = new org.json.JSONObject(sp.getString("shown", "{}")); } catch (Throwable t) { all = new org.json.JSONObject(); }
+            int k = 0;
+            for (android.service.notification.StatusBarNotification sb : nm.getActiveNotifications()) {
+                if (!GRP.equals(sb.getNotification().getGroup())) continue;
+                int id = sb.getId();
+                nm.cancel(id);
+                if (id == SUM_ID) continue;
+                org.json.JSONObject o = all.optJSONObject(String.valueOf(id));
+                Intent i = new Intent(c, AlarmReceiver.class);
+                if (o != null) { java.util.Iterator<String> it = o.keys(); while (it.hasNext()) { String key = it.next(); i.putExtra(key, o.optString(key)); } }
+                else { CharSequence tt = sb.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE), bb = sb.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT); i.putExtra("title", tt == null ? "Thabat" : tt.toString()); i.putExtra("body", bb == null ? "" : bb.toString()); }
+                Sched.again(c, i, 9940 + (k++ % 40), until + k * 2000L);
+            }
+            nm.cancel(SUM_ID);
+        } catch (Throwable t) {}
+    }
+
+    static void saAction(Context c, Notification.Builder nb, String lbl, int req) {
+        if (lbl == null || lbl.length() == 0) return;
+        Intent sa = new Intent(c, ActReceiver.class); sa.setAction(ActReceiver.SNZ_ALL);
+        nb.addAction(0, lbl, PendingIntent.getBroadcast(c, req, sa, 0x08000000 | 0x04000000));
+    }
+
     @Override
     public void onReceive(Context c, Intent in) {
         try {
@@ -75,7 +119,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (dnd != null) { try { Ongoing.dndStart(c, Integer.parseInt(dnd)); } catch (Throwable t) {} }
             if ("1".equals(in.getStringExtra("quiet"))) sp.edit().putLong("quietUntil", now + 20 * 60000L).apply();
             else if (!"1".equals(in.getStringExtra("adhan"))) {
-                long qu = sp.getLong("quietUntil", 0);
+                long qu = sp.getLong("quietUntil", 0), su = sp.getLong("snzUntil", 0);
+                if (su > now) { Sched.again(c, in, in.getIntExtra("id", 0), su + 5000); return; }
                 if (qu > now) {
                     /* prayer quiet time: postpone this reminder until it ends */
                     android.app.AlarmManager am = (android.app.AlarmManager) c.getSystemService("alarm");
@@ -133,6 +178,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 nb.addAction(0, in.getStringExtra("doneLbl"), PendingIntent.getBroadcast(c, nid * 2 + 60001, dn, 0x08000000 | 0x04000000));
                 nb.addAction(0, in.getStringExtra("tkLaterLbl"), PendingIntent.getBroadcast(c, nid * 2 + 60002, lt, 0x08000000 | 0x04000000));
             }
+            String saL = in.getStringExtra("saLbl");
+            if (saL != null && saL.length() > 0) { sp.edit().putString("saLbl", saL).apply(); saAction(c, nb, saL, 7940 + (in.getIntExtra("id", 1) % 50)); }
             Notification n = nb
                     .setSmallIcon(c.getApplicationInfo().icon)
                     .setContentTitle(title == null ? "Thabat" : title)
@@ -145,6 +192,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setGroup(GRP)
                     .build();
             nm.notify(in.getIntExtra("id", 1), n);
+            remember(c, in, in.getIntExtra("id", 1));
             groupSummary(c, nm, chId);
         } catch (Throwable t) {}
     }

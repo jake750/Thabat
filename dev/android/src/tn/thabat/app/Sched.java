@@ -23,6 +23,7 @@ public class Sched {
         if (o != null && o.optInt("wake", 0) == 1) { i.putExtra("wake", "1"); i.putExtra("snz", String.valueOf(o.optInt("snz", 5))); i.putExtra("snzLbl", o.optString("snzLbl", "Snooze")); i.putExtra("stopLbl", o.optString("stopLbl", "Stop")); i.putExtra("snd", o.optString("snd", "alarm")); i.putExtra("vol", String.valueOf(o.optInt("vol", 100))); }
         if (o != null && o.optString("tk", "").length() > 0) { i.putExtra("tk", o.optString("tk")); i.putExtra("doneLbl", o.optString("doneLbl", "Done")); i.putExtra("tkLaterLbl", o.optString("tkLaterLbl", "Later")); }
         if (o != null && o.optInt("quiet", 0) == 1) i.putExtra("quiet", "1");
+        if (o != null && o.optString("saLbl", "").length() > 0) i.putExtra("saLbl", o.optString("saLbl"));
         if (o != null && o.optString("tone", "").length() > 0) { i.putExtra("tone", o.optString("tone")); i.putExtra("ch", o.optString("ch", "other")); i.putExtra("chName", o.optString("chName", "Thabat")); }
         if (o != null && o.optInt("dnd", 0) > 0) i.putExtra("dnd", String.valueOf(o.optInt("dnd", 20)));
         if (o != null && o.optString("pk", "").length() > 0) { i.putExtra("pk", o.optString("pk")); i.putExtra("laterLbl", o.optString("laterLbl", "Later")); i.putExtra("laterT", o.optString("laterT", "")); i.putExtra("laterB", o.optString("laterB", "")); }

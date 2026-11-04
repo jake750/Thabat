@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tn.thabat.app" android:versionCode="45" android:versionName="3.135.0" android:compileSdkVersion="33">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="tn.thabat.app" android:versionCode="46" android:versionName="3.167.0" android:compileSdkVersion="33">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -41,6 +41,18 @@
                 <action android:name="android.intent.action.SEND_MULTIPLE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <data android:mimeType="image/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/pdf"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="content"/>
+                <data android:scheme="file"/>
+                <data android:mimeType="application/pdf"/>
             </intent-filter>
             <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts"/>
         </activity>
@@ -104,6 +116,12 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/thabat_widget8_info"/>
+        </receiver>
+        <receiver android:name="tn.thabat.app.Widget10" android:exported="true" android:label="@string/w10_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/thabat_widget10_info"/>
         </receiver>
         <service android:name="tn.thabat.app.MediaSvc" android:exported="false" android:foregroundServiceType="mediaPlayback"/>
         <service android:name="tn.thabat.app.ThabatTile" android:exported="true" android:label="@string/tile_label" android:icon="@drawable/ic_tile" android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
