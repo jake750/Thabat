@@ -192,7 +192,7 @@ css/v3-168-0-thirteenth-list-k-pc-and-data.css
 css/v3-169-0-thirteenth-list-l-the-look.css
 css/v3-169-0-the-board-menu-in-sub-menus-own-lists-w.css
 css/v3-169-0-the-board-menu-in-sub-menus-own-lists-w-2.css
-css/v3-169-1-windows-open-and-close-smoothly.css
+css/v3-169-1-windows-open-and-close-smoothly-curve-w.css
 css/image-viewer.css
 body.html
 js/core.js

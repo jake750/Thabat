@@ -1,0 +1,27 @@
+/* v3.169.1 windows open and close smoothly (curve without bounce, longer, blur that clears, backdrop that deepens, a little motion with reduce motion too) */
+html:not(.mdx0) .modal.on,html:not(.mdx0) .praymodal.on{animation:mdxin .45s cubic-bezier(.16,1,.3,1) both}
+.modal.mdxout,.praymodal.mdxout{display:grid;pointer-events:none;animation:mdxo .28s cubic-bezier(.4,0,.7,.4) both}
+html.rmotion .modal.on,html.rmotion .praymodal.on,html.rmotion .modal.on>.box{animation-duration:.4s!important}
+html.rmotion .modal.mdxout,html.rmotion .praymodal.mdxout,html.rmotion .modal.mdxout>.box{animation-duration:.22s!important}
+@keyframes mdxin{from{opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+@keyframes mdxo{from{opacity:1}to{opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+@media(min-width:701px){
+  html:not(.rmotion) .modal.on>.box{animation:mdxpop .45s cubic-bezier(.16,1,.3,1) both}
+  html:not(.rmotion) .modal.mdxout>.box{animation:mdxpopo .28s cubic-bezier(.4,0,.7,.4) both}
+  html.rmotion .modal.on>.box{animation:mdxsoft .4s cubic-bezier(.16,1,.3,1) both}
+  html.rmotion .modal.mdxout>.box{animation:mdxsofto .22s ease-in both}
+  html.lite:not(.rmotion) .modal.on>.box{animation-name:mdxpopl}
+}
+@keyframes mdxpop{from{opacity:0;transform:translateY(18px) scale(.94);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes mdxpopl{from{opacity:0;transform:translateY(18px) scale(.94)}}
+@keyframes mdxpopo{to{opacity:0;transform:translateY(10px) scale(.965);filter:blur(3px)}}
+@keyframes mdxsoft{from{opacity:0;transform:scale(.985)}}
+@keyframes mdxsofto{to{opacity:0;transform:scale(.99)}}
+@media(max-width:700px){
+  html:not(.rmotion) .modal.on.uxsheet>.box{animation:mdxup .46s cubic-bezier(.16,1,.3,1) both}
+  html:not(.rmotion) .modal.mdxout.uxsheet>.box{animation:mdxdown .28s cubic-bezier(.4,0,.7,.4) both}
+  html.rmotion .modal.on.uxsheet>.box{animation:mdxsoft .36s cubic-bezier(.16,1,.3,1) both}
+}
+@keyframes mdxup{from{transform:translateY(36%);opacity:.3}to{transform:none;opacity:1}}
+@keyframes mdxdown{to{transform:translateY(30%);opacity:.15}}
+
