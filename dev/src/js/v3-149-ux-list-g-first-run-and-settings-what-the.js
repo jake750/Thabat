@@ -9,12 +9,12 @@ function su7Method(){return SU.mUser||CC_METHOD[SU.cc||SU.gcc]||'mwl'}
 function su7DevCard(){if(SU.gcc===undefined)SU.gcc=su7GuessCc();const M=METHODS[su7Method()]||METHODS.mwl,ch=k=>`<button class="link su7ch" data-su7="${k}">${t('ux7.change')}</button>`;
   return`<div class="su7dev"><small class="su7h">${t('ux7.devH')}</small>
     <div class="su7r"><span>${t('ux7.tz')}</span><b dir="ltr">${esc(su7Tz()||'—')}</b></div>
-    <div class="su7r"><span>${t('ux7.lang')}</span><b>${LANG==='ar'?'العربية':'English'}</b>${ch('lang')}</div>
+    <div class="su7r"><span>${t('ux7.lang')}</span><b dir="auto">${esc(lngName(LANG))}</b>${ch('lang')}</div>
     <div class="su7r"><span>${t('ux7.cc')}</span><b dir="auto">${esc(su7CcName(SU.gcc))}</b>${ch('cc')}</div>
-    <div class="su7r"><span>${t('ux7.method')}</span><b dir="auto">${esc(M[LANG]||M.en)}</b>${ch('m')}</div></div>`}
+    <div class="su7r"><span>${t('ux7.method')}</span><b dir="auto">${esc(lx(M)||M.en)}</b>${ch('m')}</div></div>`}
 function su7Pick(k,btn){const row=btn.closest('.su7r');if(!row)return;
-  if(k==='lang'){setLang(LANG==='ar'?'en':'ar');renderSetup();return}
-  const opts=k==='cc'?Object.keys(CC_METHOD).map(c=>[c,su7CcName(c)]).sort((a,b)=>a[1].localeCompare(b[1])):Object.keys(METHODS).map(m=>[m,METHODS[m][LANG]||METHODS[m].en]);
+  if(k==='lang'){row.querySelector('b').outerHTML=`<select class="in su7sel" aria-label="${esc(t('ux7.lang'))}">${lngOpts(LANG)}</select>`;btn.remove();const s=row.querySelector('select');s.onchange=()=>Promise.resolve(setLang(s.value)).then(()=>renderSetup());s.focus();return}
+  const opts=k==='cc'?Object.keys(CC_METHOD).map(c=>[c,su7CcName(c)]).sort((a,b)=>a[1].localeCompare(b[1])):Object.keys(METHODS).map(m=>[m,lx(METHODS[m])||METHODS[m].en]);
   const cur=k==='cc'?SU.gcc:su7Method();row.querySelector('b').outerHTML=`<select class="in su7sel" aria-label="${esc(t(k==='cc'?'ux7.cc':'ux7.method'))}">${opts.map(([v,n])=>`<option value="${v}"${v===cur?' selected':''}>${esc(n)}</option>`).join('')}</select>`;btn.remove();
   const s=row.querySelector('select');s.onchange=()=>{if(k==='cc'){SU.gcc=s.value;SU.mUser=''}else SU.mUser=s.value;renderSetup()};s.focus()}
 /* the location flow keeps the guessed country when it finds none, and the method you chose */
@@ -32,8 +32,8 @@ function su7Mock(){const pt=prayerTimes(new Date()),now=Date.now(),nx=PRAYERS.fi
     <div class="su7mc wide"><span class="su7mck on">✓</span><span>${esc(t('ux7.mTask1'))}</span><span class="su7mck">○</span><span>${esc(t('ux7.mTask2'))}</span><button class="btn sm pri" tabindex="-1">▶ ${esc(t('ux7.mStart'))}</button></div></div>`}
 function su7ColorHTML(){const st=S.settings,keys=Object.keys(COLORS).filter(k=>COLORS[k]&&COLORS[k].n&&COLORS[k].d&&!['sys','custom'].includes(k)&&!COLORS[k].msh);
   return`<div class="su7steps">${su7Dots(1)}</div><h2>${t('ux7.colT')}</h2><p class="susub">${t('ux7.colS')}</p>${su7Mock()}
-    <div class="su7sw" role="radiogroup" aria-label="${esc(t('ux7.colT'))}">${keys.map(k=>`<button class="su7c${st.color===k?' on':''}" data-su7c="${k}" role="radio" aria-checked="${st.color===k}" title="${esc(COLORS[k].n[LANG]||k)}" aria-label="${esc(COLORS[k].n[LANG]||k)}" style="--c:${COLORS[k].d}"></button>`).join('')}</div>
-    <div class="su7md">${Object.keys(MODES).map(m=>`<button class="btn sm${st.mode===m?' on':''}" data-su7m="${m}">${esc(MODES[m][LANG]||m)}</button>`).join('')}</div>
+    <div class="su7sw" role="radiogroup" aria-label="${esc(t('ux7.colT'))}">${keys.map(k=>`<button class="su7c${st.color===k?' on':''}" data-su7c="${k}" role="radio" aria-checked="${st.color===k}" title="${esc(lx(COLORS[k].n)||k)}" aria-label="${esc(lx(COLORS[k].n)||k)}" style="--c:${COLORS[k].d}"></button>`).join('')}</div>
+    <div class="su7md">${Object.keys(MODES).map(m=>`<button class="btn sm${st.mode===m?' on':''}" data-su7m="${m}">${esc(lx(MODES[m])||m)}</button>`).join('')}</div>
     <div class="suopts"><button class="btn pri" data-su7go="cats">${t('ux7.next')}</button></div>`}
 function su7Dots(n){return[1,2].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}
 function su7CatsHTML(){const top=(S.settings.categories||[]).filter(c=>!c.parent),sel=UX7.sel||(UX7.sel=new Set(['quran']));

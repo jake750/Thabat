@@ -21,7 +21,7 @@ function rcwEnd(r){openInfo(t('rcw.end'),`<div class="rcwe"><label><input type="
 
 /* 11th-8: a task's history in its «⋯»; and «repeat rules» there for a repeating task */
 function tkHist(k,x){const L_=[];if(x.created)L_.push(t('thi.made',gShort(new Date(x.created))));let n=0,q=x,g=0;const map=new Map();Object.values(S.days).forEach(d=>(d.tasks||[]).forEach(z=>map.set(z.id,z)));while(q&&q.fromId&&g++<60){n++;q=map.get(q.fromId)}
-  if(q&&q!==x&&q.created)L_[0]=t('thi.made',gShort(new Date(q.created)));if(n)L_.push(t('thi.pp',n));if(x.done&&x.doneAt)L_.push(t('thi.done',gShort(new Date(x.doneAt))+' '+new Date(x.doneAt).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})));return L_.join(' · ')}
+  if(q&&q!==x&&q.created)L_[0]=t('thi.made',gShort(new Date(q.created)));if(n)L_.push(t('thi.pp',n));if(x.done&&x.doneAt)L_.push(t('thi.done',gShort(new Date(x.doneAt))+' '+new Date(x.doneAt).toLocaleTimeString(lngLoc(),{hour:'2-digit',minute:'2-digit'})));return L_.join(' · ')}
 {const _ux=uxMenuExtras;uxMenuExtras=function(k,id,...a){const r=_ux(k,id,...a);try{const p=$('#ppPop'),x=day(k).tasks.find(q=>q.id===id);if(!p||!x||p.querySelector('.thist'))return r;
   if(x.recurId){const b=document.createElement('button');b.innerHTML=`🔁 ${esc(t('rcw.t'))}`;b.onclick=e=>{e.stopPropagation();closePP();rcwOpen()};p.append(b)}
   const h=tkHist(k,x);if(h)p.insertAdjacentHTML('beforeend',`<div class="thist">${esc(h)}</div>`)}catch(e){console.error(e)}return r}}

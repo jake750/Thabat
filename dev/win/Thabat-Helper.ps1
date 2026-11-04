@@ -91,7 +91,7 @@ function Run-SelfUpdate {
   $za = [IO.Compression.ZipFile]::OpenRead($zip)
   $names = @('Thabat.html', 'Thabat-Helper.ps1', 'Thabat-Library.ps1', 'Thabat-Transcribe.ps1', 'Thabat.bat', 'Thabat.vbs', 'Thabat.ico', 'LICENSE.txt', 'Install-Thabat.bat', 'Create-Shortcut.bat', 'Download-Mushaf-Images.bat', 'Thabat-Roots.js', 'Uninstall-Thabat.ps1', 'Thabat-Auto.ps1', 'thabat-auto.cmd')
   $new = @{}
-  foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
+  foreach ($e in $za.Entries) { $n = $e.FullName -replace '^Thabat/', ''; if ($names -contains $n -or ($n -match '^Thabat-lang-[a-z]{2,3}\.js$') -or ($n -like 'pdfjs/*' -and -not $n.EndsWith('/') -and $n -notmatch '\.\.')) { $ms = New-Object IO.MemoryStream; $st = $e.Open(); $st.CopyTo($ms); $st.Close(); $new[$n] = $ms.ToArray() } }
   $za.Dispose(); Remove-Item -LiteralPath $zip -ErrorAction SilentlyContinue
   if (-not $new.ContainsKey('Thabat.html')) { throw 'nohtml' }
   $ver = ''; if ([Text.Encoding]::UTF8.GetString($new['Thabat.html']) -match "APP_VER='([0-9.]+)'") { $ver = $matches[1] }

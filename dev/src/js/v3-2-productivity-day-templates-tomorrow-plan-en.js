@@ -52,7 +52,7 @@ function bestWindow(){const H=Array(24).fill(0),F=Array(24).fill(0),N=Array(24).
 /* 67. daily limit */
 setInterval(()=>{const m=+S.settings.maxH||0;if(!m)return;const k=todayKey(),d=day(k);if(d.maxWarn)return;if(totals(k).tot>=m*36e5){d.maxWarn=1;save();alertUser('🛑 '+t('mx2.t'),t('mx2.b',m))}},6e4);
 /* 68. monthly PDF */
-function monthPdf(keys){const st=periodStats(keys.filter(k=>k<=todayKey())),W=1190,H=1684,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),ff=getComputedStyle(document.documentElement).fontFamily,rtl=LANG==='ar',X=v=>rtl?W-v:v;g.fillStyle='#fff';g.fillRect(0,0,W,H);g.direction=rtl?'rtl':'ltr';
+function monthPdf(keys){const st=periodStats(keys.filter(k=>k<=todayKey())),W=1190,H=1684,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),ff=getComputedStyle(document.documentElement).fontFamily,rtl=isRtl(),X=v=>rtl?W-v:v;g.fillStyle='#fff';g.fillRect(0,0,W,H);g.direction=rtl?'rtl':'ltr';
   const tx=(s,x,y,sz,w,col,al)=>{g.font=`${w||400} ${sz}px ${ff}`;g.fillStyle=col||'#111';g.textAlign=al||(rtl?'right':'left');g.fillText(s,X(x),y)};const d0=keyToDate(keys[0]);
   tx(t('mp.t'),90,150,52,700);tx(L().months[d0.getMonth()]+' '+d0.getFullYear()+' · '+hRange(d0,keyToDate(keys[keys.length-1])),90,205,26,400,'#666');
   const tiles=[[t('mp.hours'),fmtHM(st.tot)],[t('mp.gold'),st.gold+' / '+st.elapsed],[t('mp.tasks'),st.tasksDone+' / '+st.tasksAll],[t('mp.quran'),st.q.read+' '+t('wn.pages')],[t('mp.pray'),(onTimePct(keys.filter(k=>k<=todayKey()))??'—')+'%'],[t('mp.media'),fmtHM((st.mHow.watch||0)+(st.mHow.listen||0)+(st.mHow.read||0))]];

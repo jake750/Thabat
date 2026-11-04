@@ -25,7 +25,7 @@ bkOpen=async function(b){let ov=$('#bkReader');if(!ov){ov=document.createElement
 /* the page direction: Arabic text → pages turn to the left side like a printed Arabic book */
 async function bkDirOf(){const r=BKS()[BK.key];if(r&&r.dir)return r.dir;let ar=0,la=0;const doc=BK.doc;
   for(let n=1;n<=Math.min(4,doc.numPages);n++){try{const tc=await(await doc.getPage(n)).getTextContent();tc.items.forEach(i=>{const s=i.str||'';ar+=(s.match(/[؀-ۿ]/g)||[]).length;la+=(s.match(/[A-Za-z]/g)||[]).length})}catch(e){}}
-  return ar>la?'rtl':la>ar?'ltr':(LANG==='ar'?'rtl':'ltr')}
+  return ar>la?'rtl':la>ar?'ltr':(isRtl()?'rtl':'ltr')}
 /* rendering: a queue, nearest page first, two at a time; a new canvas replaces the old one when ready (no blank flash while zooming) */
 bkRender=function(n){if(!BK.doc||BK.rendered.has(n)||!BK.pages[n-1])return;if(bkMode()==='flip'&&Math.abs(n-BK.cur)>3)return;BK2.q.add(n);bkPump()};
 function bkPump(){while(BK2.act<2&&BK2.q.size){let best=null,bd=1e9;BK2.q.forEach(n=>{const d=Math.abs(n-BK.cur)+(n<BK.cur?.5:0);if(d<bd){bd=d;best=n}});BK2.q.delete(best);if(!BK.doc||BK.rendered.has(best))continue;BK2.act++;bkDraw(best).finally(()=>{BK2.act=Math.max(0,BK2.act-1);bkPump()})}}

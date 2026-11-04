@@ -65,7 +65,7 @@ function hm2Open(a,b){const h=hNum(keyToDate(todayKey()));a=a||{y:h.y,m:h.m};b=b
   const KA=hmFind(a.y,a.m),KB=hmFind(b.y,b.m),A=crSum(KA),B=crSum(KB),lab=v=>hMonthName(v.m)+' '+v.y;
   openInfo('⇆ '+esc(t('hm2.t')),`<div class="crwk crr"><div><b>${esc(t('crx.wkA'))}</b>${sel('hmA',a)}<small>${esc(t('crr.days',KA.length))}</small></div><div><b>${esc(t('crx.wkB'))}</b>${sel('hmB',b)}<small>${esc(t('crr.days',KB.length))}</small></div></div><table class="crt2"><thead><tr><th></th><th>${esc(lab(a))}</th><th>${esc(lab(b))}</th><th></th></tr></thead><tbody>${crRows(A,B)}</tbody></table>`);
   ['#hmAm','#hmAy','#hmBm','#hmBy'].forEach(s=>$(s).onchange=()=>hm2Open({y:+$('#hmAy').value,m:+$('#hmAm').value},{y:+$('#hmBy').value,m:+$('#hmBm').value}))}
-function hMonthName(m){const L_=HMN11[LANG]||HMN11.ar;return L_[m-1]||String(m)}
+function hMonthName(m){const L_=lx(HMN11)||HMN11.ar;return L_[m-1]||String(m)}
 function hm2Btn(){const w=$('#crrBtn');if(!w||$('#hm2Btn'))return;w.insertAdjacentHTML('afterend',`<button class="btn sm ghost" id="hm2Btn">⇆ ${esc(t('hm2.t'))}</button>`);$('#hm2Btn').onclick=()=>hm2Open()}
 {hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){try{hm2Btn()}catch(e){}})}
 {hookFn('btPanel',()=>btPanel,f=>{btPanel=f},'post',function(){try{hm2Btn()}catch(e){}})}

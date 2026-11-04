@@ -74,7 +74,7 @@ function cd13Year(y){y=y||(+(selKey||todayKey()).slice(0,4));const tk=todayKey()
   $$('#infoBox .cd13yg i[data-k]').forEach(i=>i.onclick=()=>{selKey=i.dataset.k;calM=new Date(keyToDate(selKey).getFullYear(),keyToDate(selKey).getMonth(),1);closeInfo2();renderCal()})}
 {hookFn('openInfo',()=>openInfo,f=>{openInfo=f},'pre',function(){const ib=$('#infoBox');if(ib)ib.classList.remove('cd13ybox')})}
 /* 103: go to a Hijri date */
-function cd13HijriGo(){const h=hNum(keyToDate(selKey||todayKey())),N=HMN11[LANG==='ar'?'ar':'en'];
+function cd13HijriGo(){const h=hNum(keyToDate(selKey||todayKey())),N=lx(HMN11);
   openInfo(t('cd13.hgH'),`<div class="cd13hg"><input class="in" type="number" id="cd13Hd" min="1" max="30" value="${h.d}"><select class="in" id="cd13Hm">${N.map((n,i)=>`<option value="${i+1}" ${i+1===h.m?'selected':''}>${esc(n)}</option>`).join('')}</select><input class="in" type="number" id="cd13Hy" min="1300" max="1600" value="${h.y}"></div><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn pri" id="cd13HgGo">${esc(t('cd13.hgGo'))}</button></div>`);
   $('#cd13HgGo').onclick=()=>{const d=+$('#cd13Hd').value,m=+$('#cd13Hm').value,y=+$('#cd13Hy').value;if(!d||!m||!y)return;const k=cd13FromHijri(y,m,d);if(!k){toast(t('cd13.hgNo'));return}
     selKey=k;const g=keyToDate(k);calM=new Date(g.getFullYear(),g.getMonth(),1);CD13.anc=k;closeInfo2();renderCal()}}
@@ -89,7 +89,7 @@ function cd13HPaint(){if(CD13.busy||!cd13HOn())return;const box=$('#cal');if(!bo
   try{calM=new Date(g0.getFullYear(),g0.getMonth(),1);renderCal();grab();if(g1.getMonth()!==g0.getMonth()){calM=new Date(g1.getFullYear(),g1.getMonth(),1);renderCal();grab()}}finally{CD13.busy=0;calM=new Date(g0.getFullYear(),g0.getMonth(),1)}
   const dows=[...box.querySelectorAll('.dow')].map(x=>x.outerHTML).join(''),lead=(g0.getDay()+6)%7;
   box.innerHTML=dows+'<div class="cell out cd13blank"></div>'.repeat(lead)+ks.map(k=>(cells[k]||'').replace(/\bout\b/,'')).join('');box.classList.add('cd13hm');
-  $('#calTtl').textContent=HMN11[LANG==='ar'?'ar':'en'][h.m-1]+' '+h.y+' '+t('hijriSuffix');$('#calSub').textContent=gStr(g0)+' – '+gStr(g1);
+  $('#calTtl').textContent=lx(HMN11)[h.m-1]+' '+h.y+' '+t('hijriSuffix');$('#calSub').textContent=gStr(g0)+' – '+gStr(g1);
   box.querySelectorAll('.cell[data-k]').forEach(c=>c.onclick=()=>{selKey=c.dataset.k;renderCal()});try{cd13CellDrag()}catch(x){}try{requestAnimationFrame(placeCalSky)}catch(x){}}
 document.addEventListener('click',e=>{if(!cd13HOn())return;const b=e.target.closest&&e.target.closest('#calPrev,#calNext,#calToday');if(!b)return;e.stopImmediatePropagation();e.preventDefault();
   const{ks}=cd13HMonth(CD13.anc||selKey||todayKey());CD13.anc=b.id==='calToday'?todayKey():b.id==='calPrev'?dKey(addDays(keyToDate(ks[0]),-1)):dKey(addDays(keyToDate(ks[ks.length-1]),1));if(b.id==='calToday')selKey=todayKey();renderCal()},true);

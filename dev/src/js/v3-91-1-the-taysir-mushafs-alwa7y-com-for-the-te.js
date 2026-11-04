@@ -49,7 +49,7 @@ async function tsCache(r,p){const k=qImgKey(r,p);try{const have=await idbGet(k);
 /* the page: the saved picture, else drawn from the PDF; when the PC has no copy yet, a box with what to do */
 {const _l=qLoadImg;qLoadImg=function(im,p,r){const R=RIWAYAT[r];if(!R||!R.ts)return _l(im,p,r);im.onerror=null;im.classList.add('tsp');
   tsCache(r,p).then(b=>{im.src=typeof b==='string'?b:URL.createObjectURL(b)}).catch(e=>tsFailBox(im,p,r,e&&e.code||'off'))}}
-function tsFailBox(im,p,r,code){const R=RIWAYAT[r],d=document.createElement('div');d.className='fail tsfail';d.dir=LANG==='ar'?'rtl':'ltr';
+function tsFailBox(im,p,r,code){const R=RIWAYAT[r],d=document.createElement('div');d.className='fail tsfail';d.dir=isRtl()?'rtl':'ltr';
   const st=TSR.st&&TSR.st[R.ts]||{};const mb=R.mb;
   let msg,btn='';
   if(code==='run'){const pc=st.len?Math.floor(st.got/st.len*100):0;msg=t('ts.run',pc);tsPollStart()}

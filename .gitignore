@@ -19,6 +19,7 @@ dev/src.html
 /mushaf/
 /tafsir/
 /Thabat-Roots.js
+/Thabat-lang-*.js
 /Thabat-Setup.exe
 !dev/android/src/tn/thabat/
 /LICENSE-itshover.txt

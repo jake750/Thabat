@@ -13,7 +13,7 @@ const RIWAYAT={
   qaloontj:{ar:'قالون — مصحف ملوّن بالتجويد (صور)',en:'Qalun — tajweed-coloured mushaf (scans)',kind:'img',local:'mushaf/qaloon-tj/',ext:'.png',cache:true,transparent:true,remote:p=>'https://archive.org/download/quran_qaloon/images_1260.zip/width_1260%2Fpage'+String(p).padStart(3,'0')+'.png'},
   hafsimg:{ar:'حفص — صور مصحف المدينة',en:'Hafs — Madinah mushaf scans',kind:'img',local:'mushaf/hafs-img/',ext:'.png',remote:p=>'https://android.quran.com/data/width_1024/page'+String(p).padStart(3,'0')+'.png',transparent:true}
 };
-const riwName=r=>(RIWAYAT[r]||RIWAYAT.hafs)[LANG];
+const riwName=r=>lx((RIWAYAT[r]||RIWAYAT.hafs));
 var qRiwOptions;
 const pad3=p=>String(p).padStart(3,'0');
 
@@ -193,7 +193,7 @@ function qHydrate(root){const Q=S.quran,R=RIWAYAT[Q.riwaya]||RIWAYAT.hafs;
   root.querySelectorAll('[data-mem]').forEach(b=>b.onclick=()=>qToggleMem(+b.dataset.mem))}
 /* images: local folder → saved copy on this device → internet (and keep a copy) */
 const qImgKey=(r,p)=>'qimg:'+r+':'+p;
-function qImgFail(im,p){const d=document.createElement('div');d.className='fail';d.dir=LANG==='ar'?'rtl':'ltr';d.innerHTML=esc(t('q.fail',p)).replace('\n','<br>');im.replaceWith(d)}
+function qImgFail(im,p){const d=document.createElement('div');d.className='fail';d.dir=isRtl()?'rtl':'ltr';d.innerHTML=esc(t('q.fail',p)).replace('\n','<br>');im.replaceWith(d)}
 function qLoadImg(im,p,r){const R=RIWAYAT[r];let step=0;
   const next=async()=>{step++;
     if(step===1){im.src=R.local+pad3(p)+R.ext;return}

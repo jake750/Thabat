@@ -53,7 +53,7 @@ function openInvoice(p){const mk=todayKey().slice(0,7);
   const prev=()=>{const R=ivRows(p,$('#ivM').value),ms=R.reduce((a,r)=>a+r.ms,0);$('#ivPrev').innerHTML=R.length?`${t('bill.days',R.length)} · <b>${fmtHM(ms)}</b> × ${p.rate||0} = <b>${money(ms/36e5*(p.rate||0),p.cur)}</b>`:t('bill.none')};
   $('#ivM').onchange=prev;prev();$('#ivBack').onclick=renderProjects;
   $('#ivGo').onclick=()=>{p.client=$('#ivC').value.trim();S.settings.billName=$('#ivF').value.trim();save();const R=ivRows(p,$('#ivM').value);if(!R.length){toast(t('bill.none'));return}invoicePdf(p,$('#ivM').value,R)}}
-function invoicePdf(p,mk,R){const W=1190,H=1684,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d'),rtl=LANG==='ar',ff=getComputedStyle(document.documentElement).fontFamily;
+function invoicePdf(p,mk,R){const W=1190,H=1684,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d'),rtl=isRtl(),ff=getComputedStyle(document.documentElement).fontFamily;
   g.fillStyle='#fff';g.fillRect(0,0,W,H);g.fillStyle='#111';g.direction=rtl?'rtl':'ltr';const M=90,X=v=>rtl?W-v:v,al=a=>rtl?(a==='left'?'right':a==='right'?'left':a):a;
   const txt=(s,x,y,size,w,a,col)=>{g.font=`${w||400} ${size}px ${ff}`;g.textAlign=al(a||'left');g.fillStyle=col||'#111';g.fillText(s,X(x),y)};
   txt(t('bill.inv'),M,150,54,700);txt(p.name,M,205,28,500,'left','#555');
@@ -143,7 +143,7 @@ const ABRK={ar:['🧘 قف ومدّ ظهرك وذراعيك للأعلى ٣٠ ث
 {const _sb=startBreak;startBreak=function(min){_sb(min);const T=S.timer;T.brkTip=Math.floor(Math.random()*12);save();renderTimer()}}
 /* every-second updates */
 {hookFn('renderTimer',()=>renderTimer,f=>{renderTimer=f},'post',function(){const T=S.timer,tip=$('#brkTip');
-  if(tip){let h='';if(T.mode==='brk'&&abrkOn()){h=(ABRK[LANG]||ABRK.ar)[(T.brkTip||0)%12];if(waterOn()){const d=S.days[todayKey()],last=d&&d.waterAt;if(!last||Date.now()-last>60*6e4)h+=' · '+t('wt.brk')}}tip.hidden=!h;if(tip.textContent!==h)tip.textContent=h}
+  if(tip){let h='';if(T.mode==='brk'&&abrkOn()){h=(lx(ABRK)||ABRK.ar)[(T.brkTip||0)%12];if(waterOn()){const d=S.days[todayKey()],last=d&&d.waterAt;if(!last||Date.now()-last>60*6e4)h+=' · '+t('wt.brk')}}tip.hidden=!h;if(tip.textContent!==h)tip.textContent=h}
   if(NZ.src&&T.mode!=='work'&&(T.mode==='pray'||S.settings.nzAuto!==false))nzStop();
   if(T.deep)deepRender();else if($('#deepOv').classList.contains('on'))$('#deepOv').classList.remove('on');pipRender()})}
 /* floating timer window (PC, Document Picture-in-Picture) */

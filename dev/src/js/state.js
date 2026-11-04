@@ -14,7 +14,7 @@ const DEF={
 let S;
 const ANDROID=!!window.ThabatAndroid;if(ANDROID)document.documentElement.classList.add('android');const MAC=!ANDROID&&/Macintosh|Mac OS X/.test(navigator.userAgent)&&!(navigator.maxTouchPoints>1);if(MAC)document.documentElement.classList.add('mac');
 const MOB=matchMedia('(max-width:700px)');
-const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.170.3';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=(window.__THABAT_BOOT&&window.__THABAT_BOOT.o)||JSON.parse(localStorage.getItem(KEY))}catch(e){}
+const FIRST_RUN=!localStorage.getItem(KEY);const APP_VER='3.171.0';let PRE_UPD=null;try{const ov=localStorage.getItem('thabat.ver');if(!FIRST_RUN&&ov!==APP_VER)PRE_UPD={from:ov||'2.4',raw:localStorage.getItem(KEY)}}catch(e){}try{S=(window.__THABAT_BOOT&&window.__THABAT_BOOT.o)||JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=deepMerge(structuredClone(DEF),S||{});
 function deepMerge(a,b){for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k])&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],b[k]);else a[k]=b[k]}return a}
 if(S.settings.theme){const MAP={midnight:['dark','yellow'],amoled:['black','yellow'],paper:['light','yellow'],nord:['dark','lightblue'],dracula:['dark','purple'],forest:['dark','green'],mocha:['dark','pink'],ember:['dark','orange']};const m=MAP[S.settings.theme]||MAP.midnight;S.settings.mode=m[0];S.settings.color=m[1];delete S.settings.theme}
@@ -23,7 +23,7 @@ if((S.migr||0)<2){const OLD={study:'#7aa2f7',course:'#bb9af7',gym:'#9ece6a',work
 if((S.migr||0)<4){if(S.settings.style==='minimal')S.settings.style='glass';S.migr=4}
 if((S.migr||0)<5){if(!S.settings.categories.some(c=>c.id==='quran'))S.settings.categories.push({id:'quran',name:'قرآن',color:'#eb6834'},{id:'q-hifz',name:'حفظ',color:'#eb6834',parent:'quran'},{id:'q-review',name:'مراجعة',color:'#eb6834',parent:'quran'},{id:'q-wird',name:'ورد',color:'#eb6834',parent:'quran'},{id:'q-tilawa',name:'تلاوة عشوائية',color:'#eb6834',parent:'quran'});S.migr=5}
 if((S.migr||0)<6){S.settings.carry=false;S.migr=6}
-LANG=S.settings.lang||'ar';
+LANG=S.settings.lang||'ar';if(!lngApply(LANG)){const _w=LANG;LANG='en';lngLoad(_w).then(ok=>{try{if(ok&&!sessionStorage.getItem('thabat.lngRl')){sessionStorage.setItem('thabat.lngRl','1');location.reload()}}catch(e){}})}try{localStorage.setItem('thabat.lang',S.settings.lang||'ar')}catch(e){}
 let saveT;
 let lsT=null;function flushSave(){clearTimeout(lsT);lsT=null;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 window.thabatFlush=flushSave;document.addEventListener('visibilitychange',()=>{if(document.hidden&&lsT)flushSave()});window.addEventListener('pagehide',()=>{if(lsT)flushSave()});

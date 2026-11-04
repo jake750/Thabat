@@ -7,6 +7,9 @@
   var snap=false;try{var sn=JSON.parse(localStorage.getItem('thabat.tdSnap')||'null'),v=document.getElementById('v-today');if(sn&&sn.h&&v&&(sn.d===new Date().toDateString()||Date.now()-sn.at<3*36e5)){var de=document.documentElement;if(sn.cls)de.className=sn.cls;if(sn.st)de.setAttribute('style',sn.st);if(sn.bst)document.body.setAttribute('style',sn.bst);if(sn.dir)de.dir=sn.dir;if(sn.lang)de.lang=sn.lang;
     var d=document.createElement('div');d.id='tdSnap';d.setAttribute('aria-hidden','true');d.innerHTML=sn.h;v.classList.add('m16snap');v.insertBefore(d,v.firstChild);snap=true}}catch(e){}
   if(snap){var go0=go;go=function(){var r=function(){setTimeout(go0,0)};try{requestAnimationFrame(r)}catch(e){}setTimeout(go0,120)}}
+  /* 3.171: a language other than Arabic or English: its file is loaded before the app runs */
+  var lg='';try{lg=localStorage.getItem('thabat.lang')||''}catch(e){}
+  if(/^[a-z]{2,3}$/.test(lg)&&lg!=='ar'&&lg!=='en'){var go2=go,gd=false;go=function(){var f=function(){if(gd)return;gd=true;go2()};try{var sc=document.createElement('script');sc.src='Thabat-lang-'+lg+'.js';sc.onload=f;sc.onerror=f;document.head.appendChild(sc)}catch(e){f()}setTimeout(f,3000)}}
   var meta=null;try{meta=JSON.parse(localStorage.getItem('thabat.v1.meta')||'null')}catch(e){}
   if(!meta||!meta.slim||localStorage.getItem('thabat.idb2')!=='1'||!window.indexedDB){go();return}
   var done=false,fin=function(o){if(done)return;done=true;if(o)window.__THABAT_BOOT=o;go()};setTimeout(function(){fin(null)},4000);

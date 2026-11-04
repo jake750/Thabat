@@ -29,7 +29,7 @@ function ntbOpen(){const ta=$('#neBody');if(!ta)return;const f=ntbFind(ta.value,
 
 /* 11th-48: template variables in a note: {date} {hijri} {weekday} {time} {prayer} (and their Arabic names) are filled when they appear */
 function tvVals(){const n=new Date(),k=todayKey();let pr='';try{const T=prayerTimes(n),nx=PRAYERS.find(p=>T[p]>Date.now());pr=nx?t('pr.'+nx):t('pr.fajr')}catch(e){}
-  return{'date':gStr(n),'التاريخ':gStr(n),'hijri':hStr(n),'الهجري':hStr(n),'weekday':L().days[n.getDay()],'اليوم':L().days[n.getDay()],'time':n.toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'}),'الوقت':n.toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'}),'prayer':pr,'الصلاة':pr}}
+  return{'date':gStr(n),'التاريخ':gStr(n),'hijri':hStr(n),'الهجري':hStr(n),'weekday':L().days[n.getDay()],'اليوم':L().days[n.getDay()],'time':n.toLocaleTimeString(lngLoc(),{hour:'2-digit',minute:'2-digit'}),'الوقت':n.toLocaleTimeString(lngLoc(),{hour:'2-digit',minute:'2-digit'}),'prayer':pr,'الصلاة':pr}}
 const TV_RE=/\{(date|hijri|weekday|time|prayer|التاريخ|الهجري|اليوم|الوقت|الصلاة)\}/g;
 function tvFill(){const ta=$('#neBody'),ti=$('#neTitle');[ta,ti].forEach(el=>{if(!el||!TV_RE.test(el.value)){TV_RE.lastIndex=0;return}TV_RE.lastIndex=0;const V=tvVals(),p=el.selectionStart,before=el.value.slice(0,p),nb=before.replace(TV_RE,(m,k)=>V[k]||m);el.value=nb+el.value.slice(p).replace(TV_RE,(m,k)=>V[k]||m);try{el.setSelectionRange(nb.length,nb.length)}catch(e){}});neRead()}
 document.addEventListener('input',e=>{if(e.target&&(e.target.id==='neBody'||e.target.id==='neTitle')&&/\}/.test(e.data||e.target.value.slice(-1)))tvFill()},true);

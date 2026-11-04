@@ -69,9 +69,9 @@ function lkOpen(){const st=S.settings,P={color:st.color||'yellow',mode:st.mode||
   openInfo('🎨 '+T('t'),`<div class="lkwrap"><div class="lkpv" id="lkPv"><div class="lkpvbg"><div class="card"><h3><span>${T('pvT')}</span></h3><div class="l15pvo"></div><div class="lkpvtask"><i class="ck"></i><span>${T('pvTask')}</span><small>17:30</small></div><div class="lkpvtask done"><i class="ck on">✓</i><span>${T('pvDone')}</span></div><div class="lkpvn"><b>68%</b><span>${T('pvWall')}</span></div><div class="l15pvbar"><i></i></div><div class="row" style="gap:6px"><span class="lkpvbtn">${T('pvBtn')}</span><span class="lkpvchip">${T('pvChip')}</span></div><hr></div></div></div>
    <div class="lkctl">
     <div class="lkh">${T('gTheme')}</div>
-    <div class="lkcols">${Object.keys(COLORS).filter(k=>COLORS[k].n).map(k=>{const C=COLORS[k];return`<button type="button" class="lkc ${P.color===k?'on':''}" data-c="${k}" title="${esc(C.n[LANG]||C.n.ar)}" style="--c:${C.d}"></button>`}).join('')}</div>
-    ${row(T('mode'),seg('mode',Object.keys(MODES).map(k=>[k,MODES[k][LANG]||MODES[k].ar]),P.mode))}
-    ${row(T('style'),seg('style',Object.keys(STYLES).map(k=>[k,STYLES[k][LANG]||STYLES[k].ar]),P.style))}
+    <div class="lkcols">${Object.keys(COLORS).filter(k=>COLORS[k].n).map(k=>{const C=COLORS[k];return`<button type="button" class="lkc ${P.color===k?'on':''}" data-c="${k}" title="${esc(lx(C.n)||C.n.ar)}" style="--c:${C.d}"></button>`}).join('')}</div>
+    ${row(T('mode'),seg('mode',Object.keys(MODES).map(k=>[k,lx(MODES[k])||MODES[k].ar]),P.mode))}
+    ${row(T('style'),seg('style',Object.keys(STYLES).map(k=>[k,lx(STYLES[k])||STYLES[k].ar]),P.style))}
     ${row(T('calm'),seg('calm',[[false,T('off')],[true,T('on')]],P.lk.calm))}
     <div class="lkh">${T('gShape')}</div>
     ${row(T('shape'),seg('shape',[['',T('shDef')],['flat',T('shFlat')],['line',T('shLine')],['raised',T('shRaised')],['bare',t('l15.bare')]],P.lk.shape))}

@@ -1,7 +1,7 @@
 /* ============ v3.1 notes & insights: dictation, timeline board, note image, letters to future self, year-over-year, weak days ============ */
 const DICT={rec:null,target:null,btn:null};
 function dictOk(){return ANDROID?!!(window.ThabatAndroid&&window.ThabatAndroid.dictate):!!(window.SpeechRecognition||window.webkitSpeechRecognition)}
-function dictLang(){return S.settings.dictLang||(LANG==='ar'?'ar-TN':'en-US')}
+function dictLang(){return S.settings.dictLang||(LANG==='ar'?'ar-TN':LANG==='en'?'en-US':LANG)}
 function dictStart(target,btn){if(!target)return;if(DICT.rec){try{DICT.rec.stop()}catch(e){}return}DICT.target=target;DICT.btn=btn;
   if(ANDROID){try{window.ThabatAndroid.dictate(dictLang(),t('dc.prompt'))}catch(e){toast(t('dc.err'))}return}
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){toast(t('dc.noApp'));return}const R=new SR();R.lang=dictLang();R.interimResults=true;R.continuous=true;
@@ -16,7 +16,7 @@ function dictBtn(id){return dictOk()?`<button class="btn sm ghost dictb" id="${i
 {hookFn('renderInbox',()=>renderInbox,f=>{renderInbox=f},'post',function(){const g=$('#ibGo');if(g&&dictOk()){g.insertAdjacentHTML('beforebegin',dictBtn('ibDict'));$('#ibDict').onclick=e=>dictStart($('#ibIn'),e.currentTarget)}})}
 /* project timeline board template */
 const TL_PH={ar:['البحث والفكرة','السكريبت','الستوري بورد','التصميم (Styleframes)','التحريك','الصوت والموسيقى','المراجعات','التسليم 🏁'],en:['Research & idea','Script','Storyboard','Design (styleframes)','Animation','Sound & music','Revisions','Delivery 🏁']};
-{const _wt=wbTemplate;wbTemplate=function(kind){if(kind!=='timeline')return _wt(kind);const[cx,cy]=wbViewCenter(),rtl=document.documentElement.dir==='rtl',P=TL_PH[LANG]||TL_PH.ar,n=P.length,W=250,H=300,G=26,x0=cx-(n*W+(n-1)*G)/2,y0=cy-H/2+40,add=[],M=i=>rtl?n-1-i:i;let d=keyToDate(todayKey());
+{const _wt=wbTemplate;wbTemplate=function(kind){if(kind!=='timeline')return _wt(kind);const[cx,cy]=wbViewCenter(),rtl=document.documentElement.dir==='rtl',P=lx(TL_PH)||TL_PH.ar,n=P.length,W=250,H=300,G=26,x0=cx-(n*W+(n-1)*G)/2,y0=cy-H/2+40,add=[],M=i=>rtl?n-1-i:i;let d=keyToDate(todayKey());
   add.push({id:uid(),type:'text',x:x0,y:y0-110,w:n*W+(n-1)*G,h:48,text:t('wb.tlTitle'),fs:28,color:'auto'});
   P.forEach((ph,i)=>{const days=i===n-1?1:i===4?5:2,a=d,b=addDays(d,days-1);const x=x0+M(i)*(W+G);add.push({id:uid(),type:'frame',x,y:y0,w:W,h:H,title:(i+1)+' · '+ph,color:i===n-1?'#22c55e':'accent',kind:'phase'});
     add.push({id:uid(),type:'text',x:x+14,y:y0+44,w:W-28,h:28,text:'📅 '+gShort(a)+(days>1?' – '+gShort(b):''),fs:14,color:'auto'});add.push({id:uid(),type:'sticky',x:x+14,y:y0+84,w:W-28,h:120,text:t('wb.tlTask'),color:NOTE_COLORS[i%NOTE_COLORS.length]});d=addDays(b,1)});
@@ -24,7 +24,7 @@ const TL_PH={ar:['البحث والفكرة','السكريبت','الستوري 
 {const _bm=wbMenu;wbMenu=function(anchor,items){if(anchor&&anchor.id==='wbTpl'&&!items.some(x=>x&&String(x[0]).includes('📈')))items=items.concat([['📈 '+t('wb.tTimeline'),()=>wbTemplate('timeline')]]);return _bm(anchor,items)}}
 /* note → image card */
 function wrapLines(g,text,maxW){const out=[];String(text).split('\n').forEach(par=>{if(!par.trim()){out.push('');return}let line='';par.split(/\s+/).forEach(w=>{const tst=line?line+' '+w:w;if(g.measureText(tst).width>maxW&&line){out.push(line);line=w}else line=tst});if(line)out.push(line)});return out}
-async function noteImage(){if(typeof neRead==='function')try{neRead()}catch(e){}const n=NE;if(!n)return;const W=1080,P=90,ff=getComputedStyle(document.documentElement).fontFamily,rtl=/[؀-ۿ]/.test(n.title+n.body)||LANG==='ar';
+async function noteImage(){if(typeof neRead==='function')try{neRead()}catch(e){}const n=NE;if(!n)return;const W=1080,P=90,ff=getComputedStyle(document.documentElement).fontFamily,rtl=/[؀-ۿ]/.test(n.title+n.body)||isRtl();
   const cv=document.createElement('canvas'),g=cv.getContext('2d');g.font=`700 54px ${ff}`;const TL=wrapLines(g,n.title||'',W-2*P);g.font=`400 36px ${ff}`;const BL=wrapLines(g,mdPlain(n.body||''),W-2*P).slice(0,60);
   let img=null;if(n.imgs&&n.imgs[0]){const d=await nImg(n.imgs[0]);if(d)img=await new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=d})}
   const ih=img?Math.min(700,Math.round((W-2*P)*img.naturalHeight/img.naturalWidth)):0,H=Math.max(1080,P+TL.length*70+(TL.length?30:0)+(ih?ih+50:0)+BL.length*58+170);cv.width=W;cv.height=H;

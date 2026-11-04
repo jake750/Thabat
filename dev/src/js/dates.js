@@ -9,7 +9,7 @@ function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
 function dayBoundaryAfter(ts){const ld=logicalDate(ts);return new Date(ld.getFullYear(),ld.getMonth(),ld.getDate()+1,S.settings.dayStart).getTime()}
 function day(k){if(!S.days[k])S.days[k]={tasks:[],summary:'',sessions:[],media:[],goal:wdGoal(k)};if(!S.days[k].media)S.days[k].media=[];return S.days[k]}
 const HF={};
-function hFmt(){if(!HF[LANG]){const loc=LANG==='ar'?'ar':'en';try{HF[LANG]=new Intl.DateTimeFormat(loc+'-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'})}catch(e){HF[LANG]=new Intl.DateTimeFormat(loc+'-u-ca-islamic-nu-latn',{day:'numeric',month:'long',year:'numeric'})}}return HF[LANG]}
+function hFmt(){if(!HF[LANG]){const loc=LANG==='ar'?'ar':LANG;try{HF[LANG]=new Intl.DateTimeFormat(loc+'-u-ca-islamic-umalqura-nu-latn',{day:'numeric',month:'long',year:'numeric'})}catch(e){HF[LANG]=new Intl.DateTimeFormat(loc+'-u-ca-islamic-nu-latn',{day:'numeric',month:'long',year:'numeric'})}}return HF[LANG]}
 function hijri(date){const d=new Date(date);d.setDate(d.getDate()+S.settings.hijriAdj);d.setHours(12);const p=hFmt().formatToParts(d);const g=x=>(p.find(q=>q.type===x)||{}).value||'';return{day:+g('day').replace(/\D/g,''),month:g('month'),year:g('year').replace(/\D/g,'')}}
 function hStr(date){const h=hijri(date);return h.day+' '+h.month+' '+h.year+' '+t('hijriSuffix')}
 function gStr(date){return date.getDate()+' '+L().months[date.getMonth()]+' '+date.getFullYear()}

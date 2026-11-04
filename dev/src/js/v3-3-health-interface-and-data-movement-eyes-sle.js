@@ -99,7 +99,7 @@ function openLan(){if(!ANDROID&&!MOB.matches){lanPcOpen();return}
 async function storyImg(kind){try{await document.fonts.ready}catch(e){}const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),acc=themeAccent();
   const grd=g.createLinearGradient(0,0,0,H);grd.addColorStop(0,'#0d1015');grd.addColorStop(1,'#1a1f29');g.fillStyle=grd;g.fillRect(0,0,W,H);
   g.fillStyle=acc;g.globalAlpha=.12;g.beginPath();g.arc(W*.85,H*.12,360,0,7);g.fill();g.globalAlpha=1;
-  const F=(w,s)=>`${w} ${s}px "IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif`;g.direction=LANG==='ar'?'rtl':'ltr';g.textAlign='center';
+  const F=(w,s)=>`${w} ${s}px "IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif`;g.direction=isRtl()?'rtl':'ltr';g.textAlign='center';
   const keys=kind==='year'?(()=>{const y=new Date().getFullYear(),o=[];for(let d=new Date(y,0,1);dKey(d)<=todayKey();d=addDays(d,1))o.push(dKey(d));return o})():periodKeys('week',keyToDate(todayKey())).filter(k=>k<=todayKey());let st;try{st=periodStats(keys)}catch(e){st={tot:keys.reduce((a,k)=>a+totals(k).tot,0),gold:0,tasksDone:0,q:{read:0}}}
   const pr=onTimePct(keys);g.fillStyle='#e6e9ef';g.font=F(700,64);g.fillText(kind==='year'?t('st3.year',new Date().getFullYear()):t('st3.week'),W/2,260);g.fillStyle='#8b95a5';g.font=F(400,36);g.fillText(gShort(keyToDate(keys[0]))+' — '+gShort(keyToDate(keys[keys.length-1])),W/2,330);
   const tiles=[['⏱',fmtHM(st.tot),t('st3.work')],['⭐',String(st.gold||0),t('st3.gold')],['✅',String(st.tasksDone||0),t('st3.tasks')],['🕌',pr!=null?pr+'%':'—',t('st3.pray')],['📖',String((st.q&&st.q.read)||0),t('st3.quran')]];

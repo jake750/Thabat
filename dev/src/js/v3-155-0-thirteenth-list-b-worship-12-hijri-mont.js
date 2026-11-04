@@ -11,7 +11,7 @@ function w13Months(){const tk=todayKey(),out=[],seen={};let d=keyToDate(tk);
   for(let i=0;i<380;i++){const k=dKey(d),h=hNum(d),id=h.y+'-'+h.m;if(!seen[id]){if(out.length>=12)break;seen[id]={y:h.y,m:h.m,on:0,all:0};out.push(seen[id])}
     const M=seen[id];if(k>=plSince())PRAYERS.forEach(p=>{const s=plStatus(k,p);if(!s||s==='q')return;M.all++;if(w13On(s))M.on++});d=addDays(d,-1)}
   return out.reverse()}
-function w13MonthsHTML(){const M=w13Months().filter(x=>x.all);if(!M.length)return'';const N=HMN11[LANG==='ar'?'ar':'en'];
+function w13MonthsHTML(){const M=w13Months().filter(x=>x.all);if(!M.length)return'';const N=lx(HMN11);
   return`<h4 class="w13h">${esc(t('w13.mT'))}</h4><div class="w13bars w13mo">${M.map(x=>{const p=w13Pct(x.on,x.all);return w13Bar(N[x.m-1]+(x.y!==hNum(new Date()).y?' '+x.y:''),p,p+'% · '+x.on+'/'+x.all,p>=90?'hi':p<60?'lo':'')}).join('')}</div>`}
 /* 13th-36: congregation share per prayer, last 365 days */
 function w13JmHTML(){const tk=todayKey(),end=keyToDate(tk),R={};PRAYERS.forEach(p=>R[p]={j:0,n:0});
@@ -103,7 +103,7 @@ function w13NoJm(){const tk=todayKey(),end=keyToDate(tk);for(let i=0;i<365;i++){
 
 /* 13th-48: nawafil this Hijri month against the same month a year ago */
 function w13NflCmp(){const tk=todayKey(),K=hmKeysOf(keyToDate(tk)),idx=K.indexOf(tk),cur=K.slice(0,idx+1).reduce((a,k)=>a+nflRk(k),0),P=hmLastYear(keyToDate(K[0]));
-  if(!P)return'';const same=P.slice(0,idx+1).reduce((a,k)=>a+nflRk(k),0),full=P.reduce((a,k)=>a+nflRk(k),0);if(!cur&&!full)return'';const h=hNum(keyToDate(tk)),N=HMN11[LANG==='ar'?'ar':'en'][h.m-1];
+  if(!P)return'';const same=P.slice(0,idx+1).reduce((a,k)=>a+nflRk(k),0),full=P.reduce((a,k)=>a+nflRk(k),0);if(!cur&&!full)return'';const h=hNum(keyToDate(tk)),N=lx(HMN11)[h.m-1];
   return`<p class="w13nf">${esc(t('w13.nfl',N,cur,h.y-1,same,full))}${cur!==same?` <i class="${cur>same?'up':'dn'}">${cur>same?'▲':'▼'}${Math.abs(cur-same)}</i>`:''}</p>`}
 {hookFn('nflOpen',()=>nflOpen,f=>{nflOpen=f},'post',function(){try{const w=$('#infoBox .nflw');if(!w||w.querySelector('.w13nf'))return;const h=w13NflCmp();if(h)w.insertAdjacentHTML('beforeend',h)}catch(e){}})}
 

@@ -23,7 +23,7 @@ function sum11Cards(){const host=$('#bLate')||$('#bNfl')||$('#bPray');if(!host)r
 function catFind(name){return(S.settings.categories||[]).find(c=>{try{return catName(c)===name}catch(e){return false}})}
 function catSessOpen(cid){const cats=S.settings.categories||[],c=cats.find(x=>x.id===cid);if(!c)return;const tk=todayKey(),A=periodKeys(bMode,bAnchor).filter(k=>k<=tk),inC=s=>{if(s.cat===cid)return true;const q=cats.find(x=>x.id===s.cat);return!!(q&&q.parent===cid)};
   const L_=[];A.forEach(k=>((S.days[k]||{}).sessions||[]).forEach(s=>{if(inC(s))L_.push({k,s})}));L_.sort((a,b)=>b.s.start-a.s.start);const tot=L_.reduce((a,x)=>a+x.s.end-x.s.start,0);
-  const tm=ms=>new Date(ms).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'});
+  const tm=ms=>new Date(ms).toLocaleTimeString(lngLoc(),{hour:'2-digit',minute:'2-digit'});
   openInfo(catName(c),`<p class="muted">${esc(t('cses.sum',L_.length,fmtHM(tot)))}</p><div class="cses">${L_.slice(0,200).map(({k,s})=>{const sub=s.cat!==cid?cats.find(x=>x.id===s.cat):null;return`<div class="csesr"><span>${esc(gShort(keyToDate(k)))}</span><span>${tm(s.start)}–${tm(s.end)}</span><b>${esc(fmtHM(s.end-s.start))}</b>${sub||s.note?`<small dir="auto">${esc([sub?catName(sub):'',s.note||''].filter(Boolean).join(' · '))}</small>`:''}</div>`}).join('')||`<p class="muted">${esc(t('cses.none'))}</p>`}</div>`)}
 function legPaint(){$$('#bLegend span').forEach(sp=>{if(sp.dataset.cid)return;const c=catFind(sp.textContent.trim());if(!c)return;sp.dataset.cid=c.id;sp.classList.add('legb');sp.title=t('cses.tip');sp.onclick=()=>catSessOpen(c.id)})}
 

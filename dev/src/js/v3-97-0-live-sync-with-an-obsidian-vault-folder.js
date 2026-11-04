@@ -61,7 +61,7 @@ async function obsPaint(){const box=$('#obsBox');if(!box)return;const h=await ob
    <div class="field"><div><label>${esc(t('obs2.subL'))}</label><small>${esc(t('obs2.subS'))}</small></div><input class="in" id="obsSubIn" dir="auto" style="width:130px" value="${esc(obsSub())}"></div>
    <div class="field"><div><label>${esc(t('obs2.live'))}</label><small>${esc(t('obs2.liveS'))}</small></div><button class="sw-toggle ${S.settings.obsLive?'on':''}" data-ob="live" aria-label="${esc(t('obs2.live'))}"></button></div>
    ${h&&perm!=='granted'?`<div class="tsmtop warn"><span>${esc(t('obs2.perm'))}</span><button class="btn sm pri" data-ob="perm">${esc(t('obs2.allow'))}</button></div>`:''}
-   <div class="obsst">${OBS.run?esc(t('obs2.running')):at?esc(t('obs2.last',new Date(at).toLocaleTimeString(LANG==='ar'?'ar':'en',{hour:'2-digit',minute:'2-digit'})))+(st?' · '+esc(t('obs2.stat',st.out,st.in+st.nw,st.arc,st.tr)):''):esc(t('obs2.never'))}</div>
+   <div class="obsst">${OBS.run?esc(t('obs2.running')):at?esc(t('obs2.last',new Date(at).toLocaleTimeString(lngLoc(),{hour:'2-digit',minute:'2-digit'})))+(st?' · '+esc(t('obs2.stat',st.out,st.in+st.nw,st.arc,st.tr)):''):esc(t('obs2.never'))}</div>
    <div class="row" style="justify-content:flex-start"><button class="btn pri" data-ob="now" ${h?'':'disabled'}>${esc(t('obs2.now'))}</button></div>
    <p class="muted" style="font-size:12px">${esc(t('obs2.rules'))}</p>`;
   box.querySelectorAll('[data-ob]').forEach(b=>b.onclick=async()=>{const a=b.dataset.ob;

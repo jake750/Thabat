@@ -60,7 +60,7 @@ function jrnStats(){const tk=todayKey(),ks=Object.keys(S.days||{}).filter(k=>k<=
     ms+=tot;sn+=(d.sessions||[]).length;td+=tasks;pg+=p;pr+=ok;if(d.fast)fast++;let gl=false;try{gl=tot>0&&tot>=goalMs(k)}catch(e){}if(gl){gold++;run++;best=Math.max(best,run)}else if(k<tk)run=0});
   const notes=(S.notes||[]).length,kh=((S.quran||{}).khatmas||[]).length,L=S.lib||{},bk=Object.values(L.bk||{}).filter(b=>b&&b.done).length,ls=Object.values(L.prog||{}).filter(p=>p&&p.done).length;
   const days=first?Math.round((keyToDate(tk)-keyToDate(first))/864e5)+1:0;return{first,days,act,h:ms/36e5,sn,td,notes,pg,kh,pr,fast,gold,best,bk,ls}}
-function jrnNum(v){return Math.round(v).toLocaleString(LANG==='ar'?'ar-u-nu-latn':'en')}
+function jrnNum(v){return Math.round(v).toLocaleString(LANG==='ar'?'ar-u-nu-latn':lngLoc())}
 function jrnHTML(o,mini){const T=[['⏱',jrnNum(o.h),'jrn.h'],['☑',jrnNum(o.td),'jrn.td'],['📝',jrnNum(o.notes),'jrn.notes'],['📖',jrnNum(o.pg),'jrn.pg'],['🕌',jrnNum(o.pr),'jrn.pr'],['✦',jrnNum(o.gold),'jrn.gold'],['🔥',jrnNum(o.best),'jrn.best'],['🎯',jrnNum(o.sn),'jrn.sn'],['🌙',jrnNum(o.fast),'jrn.fast'],['🏁',jrnNum(o.kh),'jrn.kh'],['🎬',jrnNum(o.ls),'jrn.ls'],['📚',jrnNum(o.bk),'jrn.bk']];
   const list=mini?T.slice(0,4):T.filter((x,i)=>i<6||+String(x[1]).replace(/\D/g,'')>0);
   return`<div class="jrn${mini?' mini':''}">${o.first?`<div class="jrnhd"><b>${esc(t('jrn.since',hStr(keyToDate(o.first)),gStr(keyToDate(o.first))))}</b><small>${esc(t('jrn.days',jrnNum(o.days),jrnNum(o.act)))}</small></div>`:`<p class="crsub">${esc(t('jrn.none'))}</p>`}

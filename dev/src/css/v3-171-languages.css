@@ -1,0 +1,6 @@
+/* v3.171 languages */
+.lnghelp{margin:6px 0 2px;font-size:12.5px;line-height:1.5}
+.lnghelp .link{font-size:12.5px}
+
+/* longer labels in other languages: buttons in a card title shrink with an ellipsis, so the card «⋯» stays inside */
+html:not([lang=ar]):not([lang=en]) .card>h3>.btn.sm{flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

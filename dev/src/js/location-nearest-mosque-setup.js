@@ -7,7 +7,7 @@ async function mqGet(url,text){const r=ANDROID?await fetch(url,{cache:'no-store'
 const METHODS={mwl:{ar:'رابطة العالم الإسلامي',en:'Muslim World League',f:18,i:17},tn:{ar:'تونس',en:'Tunisia',f:18,i:18},dz:{ar:'الجزائر',en:'Algeria',f:18,i:17},ma:{ar:'المغرب',en:'Morocco',f:19,i:17},eg:{ar:'الهيئة المصرية العامة للمساحة',en:'Egyptian General Authority',f:19.5,i:17.5},mk:{ar:'أم القرى (مكة)',en:'Umm al-Qura (Makkah)',f:18.5,im:90},gulf:{ar:'الخليج',en:'Gulf region',f:19.5,im:90},kw:{ar:'الكويت',en:'Kuwait',f:18,i:17.5},tr:{ar:'تركيا (ديانت)',en:'Turkey (Diyanet)',f:18,i:17},ka:{ar:'كراتشي',en:'Karachi',f:18,i:18,asr:2},sg:{ar:'جنوب شرق آسيا',en:'Southeast Asia',f:20,i:18},isna:{ar:'أمريكا الشمالية (ISNA)',en:'North America (ISNA)',f:15,i:15},fr:{ar:'فرنسا (UOIF)',en:'France (UOIF)',f:12,i:12}};
 const CC_METHOD={TN:'tn',DZ:'dz',MA:'ma',LY:'eg',EG:'eg',SD:'eg',SY:'eg',LB:'eg',JO:'eg',PS:'eg',IQ:'eg',SA:'mk',YE:'mk',AE:'gulf',QA:'gulf',BH:'gulf',OM:'gulf',KW:'kw',TR:'tr',PK:'ka',IN:'ka',BD:'ka',AF:'ka',MY:'sg',SG:'sg',ID:'sg',BN:'sg',US:'isna',CA:'isna',FR:'fr'};
 function applyMethod(key){const M=METHODS[key]||METHODS.mwl,P=S.settings.prayer;P.method=METHODS[key]?key:'mwl';P.fajr=M.f;P.isha=M.i||18;P.ishaMin=M.im||0;P.asr=M.asr||1}
-function locLabel(){const P=S.settings.prayer;if(P.source==='mosque')return t('src.mosque');if(P.source==='mawaqit'&&P.mq)return P.mq.name+(P.mq.loc?' — '+P.mq.loc:'');return (P.place||(Number(P.lat).toFixed(3)+', '+Number(P.lng).toFixed(3)))+(P.method&&METHODS[P.method]?' · '+METHODS[P.method][LANG]:'')}
+function locLabel(){const P=S.settings.prayer;if(P.source==='mosque')return t('src.mosque');if(P.source==='mawaqit'&&P.mq)return P.mq.name+(P.mq.loc?' — '+P.mq.loc:'');return (P.place||(Number(P.lat).toFixed(3)+', '+Number(P.lng).toFixed(3)))+(P.method&&METHODS[P.method]?' · '+lx(METHODS[P.method]):'')}
 function extractConf(html){const i=html.indexOf('confData');if(i<0)return null;const j=html.indexOf('{',i);if(j<0)return null;let d=0,inS=false,es=false;
   for(let k=j;k<html.length;k++){const c=html[k];if(inS){if(es)es=false;else if(c==='\\')es=true;else if(c==='"')inS=false;continue}
     if(c==='"')inS=true;else if(c==='{')d++;else if(c==='}'){d--;if(!d){try{return JSON.parse(html.slice(j,k+1))}catch(e){return null}}}}return null}
@@ -41,7 +41,7 @@ function renderSetup(){const b=$('#setupBox');let h='';
       ${!SU.loading&&SU.noHelper?`<div class="suwarn">${t('su.noHelper')}<button class="btn sm" data-go="retry">${t('su.retry')}</button></div>`:''}
       ${!SU.loading&&SU.mqErr?`<div class="suerr">${SU.mqErr}</div>`:''}
       ${!SU.loading&&!SU.noHelper&&!SU.mqErr&&SU.mosques&&!SU.mosques.length?`<div class="suwarn">${t('su.none')}</div>`:''}
-      <button class="suitem calc" data-go="calc"><b>🧭 ${t('su.useCalc')}</b><small>${t('su.calcSub',M[LANG])}</small></button></div>`}
+      <button class="suitem calc" data-go="calc"><b>🧭 ${t('su.useCalc')}</b><small>${t('su.calcSub',lx(M))}</small></button></div>`}
   else if(SU.step==='saving'){h=`<div class="suspin"></div><p>${t('su.saving')}</p>`}
   else if(SU.step==='done'){h=`<div class="suic ok">✓</div><h2>${t('su.doneT')}</h2><p>${esc(SU.doneMsg||'')}</p><div class="suprev">${suPreview()}</div><button class="btn pri" data-go="close">${t('ok')}</button>`}
   else if(SU.step==='geoerr'){h=`${back}<div class="suic warn">!</div><h2>${t('su.geoErrT')}</h2><p>${t('su.geoErr')}</p><div class="suopts"><button class="btn pri" data-go="manual">✍️ ${t('su.manual')}</button><button class="btn" data-go="locate">${t('su.retry')}</button></div>`}

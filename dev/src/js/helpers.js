@@ -1,5 +1,7 @@
 /* ============ helpers ============ */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+/* 3.171: the start-up picture of Today (3.170, #tdSnap) copies its classes (.grid, .stack…) without ids, so layout code that looks for «#v-today .grid>.stack» found the copy first: on a wide PC the three-column pass moved the timer and task cards into it and they went away with it. It goes as soon as the app runs; nothing is painted before the real Today is drawn. */
+try{const sn=document.getElementById('tdSnap');if(sn){sn.remove();const v=document.getElementById('v-today');if(v)v.classList.remove('m16snap')}}catch(e){}
 const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
 /* hooks: code that runs before/after a function, kept in flat lists instead of wrappers stacked one inside another.
    hookFn('name',()=>name,f=>{name=f},'pre'|'post',fn). Order is the order of registration (later 'pre' hooks run first,
