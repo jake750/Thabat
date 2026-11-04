@@ -31,7 +31,7 @@ bkRender=function(n){if(!BK.doc||BK.rendered.has(n)||!BK.pages[n-1])return;if(bk
 function bkPump(){while(BK2.act<2&&BK2.q.size){let best=null,bd=1e9;BK2.q.forEach(n=>{const d=Math.abs(n-BK.cur)+(n<BK.cur?.5:0);if(d<bd){bd=d;best=n}});BK2.q.delete(best);if(!BK.doc||BK.rendered.has(best))continue;BK2.act++;bkDraw(best).finally(()=>{BK2.act=Math.max(0,BK2.act-1);bkPump()})}}
 async function bkDraw(n){const el=BK.pages[n-1],doc=BK.doc,key=BK.key;if(!el||!doc)return;BK.rendered.add(n);
   try{const pg=await doc.getPage(n);if(doc!==BK.doc||!BK.rendered.has(n))return;
-    const dpr=Math.min(2,window.devicePixelRatio||1),v1=pg.getViewport({scale:1}),w=parseFloat(el.style.width)||BK.w||600;let sc=w*dpr/v1.width;const mx=14e6;if(v1.width*v1.height*sc*sc>mx)sc=Math.sqrt(mx/(v1.width*v1.height));
+    const dpr=Math.min(3,(window.devicePixelRatio||1)*(typeof uiZoom==='function'?uiZoom():1)),v1=pg.getViewport({scale:1}),w=parseFloat(el.style.width)||BK.w||600;let sc=w*dpr/v1.width;const mx=14e6;if(v1.width*v1.height*sc*sc>mx)sc=Math.sqrt(mx/(v1.width*v1.height));
     const vp=pg.getViewport({scale:sc}),c=document.createElement('canvas');c.width=Math.floor(vp.width);c.height=Math.floor(vp.height);
     const task=pg.render({canvasContext:c.getContext('2d',{alpha:false}),viewport:vp});BK2.tasks.set(n,task);await task.promise;BK2.tasks.delete(n);
     if(n===1&&BK2.cov[key]==null)bkCovFromCanvas(key,c);
