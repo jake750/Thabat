@@ -109,3 +109,9 @@ function l15NoteDays(){(S.notes||[]).forEach(n=>{if(n&&typeof n.day!=='string'){
 {hookFn('renderNotes',()=>renderNotes,f=>{renderNotes=f},'pre',function(){try{l15NoteDays()}catch(e){}})}
 try{l15NoteDays()}catch(e){}
 
+/* his request 2026-11-04: «يوم خفيف» beside «خطة اليوم» on the wall card (lightToggle: half the goal, the run kept) */
+function l15LtPaint(){const p=$('#planBtn');if(!p)return;let b=$('#l15Lt');if(!b){b=document.createElement('button');b.className='btn sm ghost plan-btn';b.id='l15Lt';p.after(b);b.onclick=()=>{lightToggle();l15LtPaint()}}
+  const on=!!(S.days[todayKey()]&&S.days[todayKey()].light);b.classList.toggle('l15lton',on);b.setAttribute('aria-pressed',String(on));b.title=t('lt3.sub');b.textContent='🍃 '+t('lt3.s')}
+{hookFn('renderGlass',()=>renderGlass,f=>{renderGlass=f},'post',function(){try{l15LtPaint()}catch(e){}})}
+setTimeout(()=>{try{l15LtPaint()}catch(e){}},900);
+

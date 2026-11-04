@@ -50,4 +50,6 @@ html.rmotion #l15Nav{transition:none}
 .palsw button{flex:1 1 0;transition:flex-grow .42s cubic-bezier(.25,.9,.3,1);will-change:flex-grow}
 .palsw button:hover{flex-grow:1.6}
 html.rmotion .palsw button{transition:none}
+/* the light-day button on the wall card */
+#l15Lt.l15lton{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 55%,transparent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
 
