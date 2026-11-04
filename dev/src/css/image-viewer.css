@@ -19,4 +19,4 @@
 .cnight{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 60%,rgba(20,26,60,.82),rgba(6,8,22,.92));opacity:0;animation:night 4.6s ease forwards}
 @keyframes night{0%{opacity:0}20%,80%{opacity:1}100%{opacity:0}}
 .cstar{color:#fff3c4;filter:drop-shadow(0 0 18px rgba(255,236,170,.8))}
-@media (prefers-reduced-motion:reduce){.skyst,.cst,.brick.lay,.cnight{animation-duration:.01s!important}}
+html.rmotion .skyst,html.rmotion .cst,html.rmotion .brick.lay,html.rmotion .cnight{animation-duration:.01s!important}

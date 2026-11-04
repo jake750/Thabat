@@ -426,7 +426,7 @@ html.st-glass .boardarea{background-color:color-mix(in srgb,var(--bg) 80%,transp
 html.st-glass .minibar,html.st-glass .catrow .bar,html.st-glass .brow .bar{background:color-mix(in srgb,#fff 8%,transparent)}
 html.st-glass .navbtn.on{background:color-mix(in srgb,var(--accent) 18%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 12%,transparent)}
 html.st-glass.mode-light .card,html.st-glass.mode-light .tile,html.st-glass.mode-light nav.side,html.st-glass.mode-light .pr,html.st-glass.mode-light .adhkar-btn,html.st-glass.mode-light .mtile,html.st-glass.mode-light .cell,html.st-glass.mode-light .sheet-box,html.st-glass.mode-light .modal .box{background:color-mix(in srgb,#fff 52%,transparent);border-color:rgba(255,255,255,.7);box-shadow:0 10px 30px rgba(30,30,60,.1),inset 0 1px 0 #fff}
-@media (prefers-reduced-motion:reduce){html.st-glass,#aurora i{animation:none}}
+html.rmotion.st-glass,html.rmotion #aurora i{animation:none}
 
 .qtext{width:100%;max-height:100%;overflow:hidden;line-height:2.02;text-align:justify;text-align-last:center;color:#1d1a14;direction:rtl;word-spacing:1px}
 .qtext .sh{font-family:"IBM Plex Sans Arabic",Tahoma,sans-serif;text-align:center;border:1.5px solid #c2a468;border-radius:8px;padding:.08em 0;margin:.25em 0 .1em;font-size:.62em;line-height:1.9;color:#6e5522;background:#f2e8cf}
@@ -505,7 +505,7 @@ html.st-glass.mode-light .card,html.st-glass.mode-light .tile,html.st-glass.mode
 .col .over{position:absolute;left:50%;transform:translateX(-50%);width:min(24px,70%);border-radius:4px 4px 0 0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);background-size:250% 100%;animation:shimmer 2.6s linear infinite;box-shadow:0 0 12px color-mix(in srgb,var(--gold) 55%,transparent)}
 @keyframes shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
 .tile .v .gdot{color:var(--gold)}
-@media (prefers-reduced-motion:reduce){.drops i,.col .over,.cwater,.ctext{animation-duration:.01s}}
+html.rmotion .drops i,html.rmotion .col .over,html.rmotion .cwater,html.rmotion .ctext{animation-duration:.01s}
 
 .alldone{text-align:center;padding:20px;color:var(--ok);font-size:15px}
 

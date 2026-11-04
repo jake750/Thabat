@@ -32,7 +32,7 @@ function lkPass(){const L_=LK();const rules=[];const walk=list=>{for(const r of 
 function lkApply(){const L_=LK(),h=document.documentElement,r=h.style;
   h.classList.toggle('cs-flat',L_.shape==='flat');h.classList.toggle('cs-raised',L_.shape==='raised');h.classList.toggle('cs-line',L_.shape==='line');
   r.setProperty('--icw',L_.icw);r.setProperty('--gB',Math.round(6+L_.glass*.4)+'px');r.setProperty('--gBr',(.92-L_.glass*.0015).toFixed(3));
-  const rm=L_.motion==='less'||(L_.motion==='auto'&&matchMedia('(prefers-reduced-motion: reduce)').matches);h.classList.toggle('rmotion',rm);
+  const rm=L_.motion==='less';h.classList.toggle('rmotion',rm);
   if(L_.calFill)r.setProperty('--calFill',L_.calFill);else r.removeProperty('--calFill');h.classList.toggle('calfill',!!L_.calFill);
   h.classList.toggle('lkstrike',L_.strike);h.classList.toggle('au-acc',L_.auC==='accent');h.classList.toggle('au-off',L_.auC==='off');h.classList.toggle('au-slow',L_.auS==='slow');h.classList.toggle('au-still',L_.auS==='still');
   h.classList.toggle('nvs-edge',L_.navS==='edge');h.classList.toggle('nvs-clear',L_.navS==='clear');h.classList.toggle('hdlogo',L_.hdLogo);

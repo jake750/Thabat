@@ -100,7 +100,7 @@ openKeys=function(){openInfo('⌨ '+t('ks.t'),`<p class="muted" style="margin:0 
 
 /* ---- pages slide in from the side you are heading to ---- */
 const NAV_ORD=['today','quran','cal','brief','boards','lib','set'];
-{const _sv=showView;showView=function(v,...a){const was=curView();const r=_sv(v,...a);try{if(was&&was!==v&&!document.documentElement.classList.contains('lite')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const el=$('#v-'+v),fw=NAV_ORD.indexOf(v)>NAV_ORD.indexOf(was);if(el){el.classList.remove('uxsl-f','uxsl-b');void el.offsetWidth;el.classList.add(fw?'uxsl-f':'uxsl-b');setTimeout(()=>el.classList.remove('uxsl-f','uxsl-b'),320)}}}catch(e){}return r}}
+{const _sv=showView;showView=function(v,...a){const was=curView();const r=_sv(v,...a);try{if(was&&was!==v&&!document.documentElement.classList.contains('lite')&&!document.documentElement.classList.contains('rmotion')){const el=$('#v-'+v),fw=NAV_ORD.indexOf(v)>NAV_ORD.indexOf(was);if(el){el.classList.remove('uxsl-f','uxsl-b');void el.offsetWidth;el.classList.add(fw?'uxsl-f':'uxsl-b');setTimeout(()=>el.classList.remove('uxsl-f','uxsl-b'),320)}}}catch(e){}return r}}
 
 /* ---- presentation mode: blur private text when sharing the screen (Ctrl+Shift+H) ---- */
 function privToggle(on){on=on==null?!document.documentElement.classList.contains('privm'):on;document.documentElement.classList.toggle('privm',on);toast(t(on?'pv3.on':'pv3.off'))}
