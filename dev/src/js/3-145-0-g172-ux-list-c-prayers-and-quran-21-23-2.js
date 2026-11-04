@@ -2,7 +2,8 @@
 /* 21. a tap on a prayer chip logs it «on time» at once (with undo); a long press or right click opens the full menu.
    Only when nothing was logged by hand yet; a logged prayer opens the menu as before. */
 function ux3Hand(dk,k){const d=S.days[dk];return !!(d&&((d.prayLog&&d.prayLog[k])||(d.prayed&&d.prayed[k])))}
-function ux3Tap(c){const k=c.dataset.pk,dk=todayKey();if(ux3Hand(dk,k)){prxOpen(c);return}
+/* 3.169: his request — one tap opens the prayer menu at once (S.settings.prQuick brings back «tap = on time») */
+function ux3Tap(c){const k=c.dataset.pk,dk=todayKey();if(ux3Hand(dk,k)||!S.settings.prQuick){prxOpen(c);return}
   plSet(dk,k,'on');vib(12);renderPrayers();try{if(curView()==='brief')renderBrief()}catch(e){}
   toastAct(t('ux3.onT',t('pr.'+k)),t('undo'),()=>{plSet(dk,k,'');renderPrayers()},6000);
   try{if(!localStorage['thabat.ux3tip']){localStorage['thabat.ux3tip']=1;setTimeout(()=>toast(t('ux3.tip')),900)}}catch(e){}}
