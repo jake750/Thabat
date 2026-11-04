@@ -1,0 +1,20 @@
+/* v3.168.0 thirteenth list K: PC and data */
+.k14dz{position:fixed;inset-inline:0;bottom:28px;margin:auto;width:max-content;max-width:90vw;z-index:95;padding:12px 20px;border-radius:14px;background:var(--panel);color:var(--text);border:2px dashed var(--accent);box-shadow:0 10px 30px #0006;font-weight:600;pointer-events:none;display:none}
+html.k14dz .k14dz{display:block}
+.k14cmd{background:color-mix(in srgb,var(--bg) 70%,#000);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:12.5px/1.6 ui-monospace,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0;text-align:left;max-height:180px;overflow:auto}
+.k14ol{margin:6px 0 4px;padding-inline-start:22px;line-height:1.8}
+.k14hrs{display:flex;align-items:center;gap:6px}
+.k14bkf{margin-top:10px}.k14bkh{margin:4px 0 6px;font-size:13px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+.k14mv{display:flex;flex-direction:column;gap:10px}
+.k14tabs{display:flex;gap:4px;padding:4px;border-radius:12px;background:color-mix(in srgb,var(--line) 55%,transparent)}
+.k14tabs button{flex:1;border:0;background:transparent;color:var(--muted);padding:9px 8px;border-radius:9px;font:inherit;font-weight:600;cursor:pointer}
+.k14tabs button.on{background:var(--panel);color:var(--text);box-shadow:0 1px 4px #0003}
+.k14bar{height:5px;border-radius:5px;background:var(--line);overflow:hidden}.k14bar i{display:block;height:100%;background:var(--accent);border-radius:5px;transition:width .3s}
+.k14st{border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.k14st.done{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.k14st.done .k14stl b{color:var(--muted);text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 50%,transparent)}
+.k14stl{display:flex;align-items:center;gap:10px;cursor:pointer}.k14stl input{width:20px;height:20px;accent-color:var(--accent);flex-shrink:0}
+.k14stb{padding-inline-start:30px;display:flex;flex-direction:column;gap:4px;min-width:0}.k14stb small{color:var(--muted);line-height:1.6}
+.k14r{gap:6px;flex-wrap:wrap}
+#infoBox.k14mvbox{max-width:620px}
+

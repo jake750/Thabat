@@ -148,10 +148,23 @@ function Check-Schedule() {
   $keep = @()
   foreach ($it in $global:sched) {
     if ($it[0] -le $now) {
-      if (-not $appOpen -and ($now - $it[0]) -lt 600000) { Show-Toast $it[1] $it[2]; if ($it[3] -eq 1) { Play-Adhan } }
+      if (-not $appOpen -and ($now - $it[0]) -lt 600000) {
+        # 3.168: the adhan shows and plays at once; other alerts that come close together wait a moment and show as one
+        if ($it[3] -eq 1) { Show-Toast $it[1] $it[2]; Play-Adhan } else { [void]$global:tq.Add(@([string]$it[1], [string]$it[2])); $global:tqLast = Get-Date; if ($global:tq.Count -eq 1) { $global:tqFirst = Get-Date } }
+      }
     } else { $keep += ,$it }
   }
   $global:sched = $keep
+}
+$global:tq = New-Object System.Collections.ArrayList; $global:tqLast = Get-Date; $global:tqFirst = Get-Date
+function Toast-Flush() {
+  if ($global:tq.Count -eq 0) { return }
+  if (((Get-Date) - $global:tqLast).TotalSeconds -lt 4 -and ((Get-Date) - $global:tqFirst).TotalSeconds -lt 20) { return }
+  $L = $global:tq.ToArray(); $global:tq.Clear()
+  if ($L.Count -eq 1) { Show-Toast $L[0][0] $L[0][1]; return }
+  $lines = @(); foreach ($x in ($L | Select-Object -First 4)) { $a = ($x[0] -replace '[^\p{L}\p{N}\s:·—\-]', '').Trim(); if ($x[1]) { $a = $a + ' — ' + $x[1] }; $lines += $a }
+  if ($L.Count -gt 4) { $lines += ('و' + ($L.Count - 4) + ' أخرى') }
+  Show-Toast ('ثبات · ' + $L.Count + ' تنبيهات') ($lines -join "`n")
 }
 
 # load the last schedule (so notifications keep working after a restart)
@@ -320,6 +333,28 @@ function Host-Bad($hn) {
     if (-not $v4 -and ($b[0] -band 0xfe) -eq 0xfc) { return $true } }
   return $false
 }
+# 3.168: a picture dragged from a web page into Thabat (the browser itself may not read it); same address checks as /page, pictures only, at most 15 MB
+function Img-Get($pu) {
+  for ($hop = 0; $hop -lt 5; $hop++) {
+    if ($pu -notmatch '^https?://[^\s/?#]+') { return $null }
+    try { $puri = [Uri]$pu } catch { return $null }
+    if (Host-Bad $puri.Host) { return $null }
+    $prs = $null
+    try {
+      $prq = [System.Net.HttpWebRequest]::Create($puri); $prq.Timeout = 15000; $prq.ReadWriteTimeout = 15000; $prq.AllowAutoRedirect = $false
+      $prq.UserAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36 Thabat'; $prq.Accept = 'image/*'
+      try { $prs = $prq.GetResponse() } catch [System.Net.WebException] { $prs = $_.Exception.Response; if ($prs -eq $null) { return $null } }
+      $pcode = [int]$prs.StatusCode
+      if ($pcode -ge 300 -and $pcode -lt 400) { $loc = $prs.Headers['Location']; $prs.Close(); if (-not $loc) { return $null }; $pu = (New-Object System.Uri($puri, $loc)).AbsoluteUri; continue }
+      $pct = ([string]$prs.ContentType -split ';')[0].Trim().ToLower()
+      if ($pcode -ge 400 -or $pct -notmatch '^image/(png|jpeg|jpg|gif|webp|bmp|avif)$') { $prs.Close(); return $null }
+      $pst = $prs.GetResponseStream(); $pms = New-Object IO.MemoryStream; $pbuf = New-Object byte[] 65536; $ptot = 0
+      while ($true) { $pr = $pst.Read($pbuf, 0, $pbuf.Length); if ($pr -le 0) { break }; $pms.Write($pbuf, 0, $pr); $ptot += $pr; if ($ptot -gt 15728640) { $prs.Close(); return $null } }
+      $prs.Close(); return @{ ct = $pct; b = $pms.ToArray() }
+    } catch { if ($prs -ne $null) { try { $prs.Close() } catch {} }; return $null }
+  }
+  return $null
+}
 function Page-Get($pu) {
   for ($hop = 0; $hop -lt 5; $hop++) {
     if ($pu -notmatch '^https?://[^\s/?#]+') { return $null }
@@ -358,6 +393,13 @@ function Tray-Task() {
   Auto-Push @{ t = 'task'; text = $s.Substring(0, [Math]::Min(500, $s.Length)) }
   if (App-Open) { Tray-Say 'أُضيفت المهمة.' } else { Tray-Say 'أُضيفت، وتظهر حين تفتح ثبات.' }
 }
+function Tray-Inbox() {
+  try { Add-Type -AssemblyName Microsoft.VisualBasic; $s = [Microsoft.VisualBasic.Interaction]::InputBox('اكتب الفكرة، وتُحفظ في صندوق الوارد في ثبات:', 'ثبات — ملاحظة سريعة', '') } catch { $s = '' }
+  $s = ([string]$s).Trim(); if (-not $s) { return }
+  Auto-Push @{ t = 'inbox'; text = $s.Substring(0, [Math]::Min(2000, $s.Length)) }
+  if (App-Open) { Tray-Say 'حُفظت في صندوق الوارد.' } else { Tray-Say 'حُفظت، وتظهر في صندوق الوارد حين تفتح ثبات.' }
+}
+function Tray-Sync() { Auto-Push @{ t = 'sync' }; if (App-Open) { Tray-Say 'تجري المزامنة الآن.' } else { Tray-Say 'يُزامن ثبات حين يُفتح.'; Tray-Open } }
 function Tray-Set() {
   if (-not (Tray-On)) { if ($global:tray) { try { $global:tray.Visible = $false; $global:tray.Dispose() } catch {}; $global:tray = $null }; return }
   if ($global:tray) { return }
@@ -370,8 +412,10 @@ function Tray-Set() {
     $m = New-Object System.Windows.Forms.ContextMenuStrip; $m.RightToLeft = [System.Windows.Forms.RightToLeft]::Yes
     $a = $m.Items.Add('افتح ثبات'); $a.add_Click({ Tray-Open })
     $b = $m.Items.Add('مهمة سريعة…'); $b.add_Click({ Tray-Task })
+    $b2 = $m.Items.Add('ملاحظة سريعة إلى صندوق الوارد…'); $b2.add_Click({ Tray-Inbox })
     $c = $m.Items.Add('ابدأ جلسة عمل'); $c.add_Click({ Auto-Push @{ t = 'timer'; a = 'start' }; if (App-Open) { Tray-Say 'بدأت الجلسة.' } else { Tray-Open } })
     $d = $m.Items.Add('أوقف الجلسة'); $d.add_Click({ Auto-Push @{ t = 'timer'; a = 'stop' }; if (App-Open) { Tray-Say 'أُوقفت الجلسة.' } })
+    $s2 = $m.Items.Add('زامن الآن'); $s2.add_Click({ Tray-Sync })
     [void]$m.Items.Add('-')
     $e = $m.Items.Add('أخفِ هذه الأيقونة'); $e.add_Click({ try { [IO.File]::WriteAllText($global:trayF, '{"on":false}') } catch {}; Tray-Set })
     $ni.ContextMenuStrip = $m; $ni.add_DoubleClick({ Tray-Open }); $ni.Visible = $true; $global:tray = $ni
@@ -429,7 +473,7 @@ while ($true) {
   elseif ($global:lan -and $global:lan.Pending()) { $client = $global:lan.AcceptTcpClient(); $isLan = $true }
   else {
     Start-Sleep -Milliseconds 150; Tray-Tick
-    if (((Get-Date) - $global:lastTick).TotalSeconds -ge 5) { $global:lastTick = Get-Date; Check-Schedule }
+    if (((Get-Date) - $global:lastTick).TotalSeconds -ge 5) { $global:lastTick = Get-Date; Check-Schedule; Toast-Flush }
     foreach ($k in @($global:ytjobs.Keys)) { if (((Get-Date) - $global:ytjobs[$k].at).TotalHours -gt 2) { Yt-Clean $k } }
     if ($global:ytjobs.Count -eq 0 -and ((Get-Date) - $global:updTick).TotalSeconds -ge 60) { $global:updTick = Get-Date; Check-Update; if ($global:restart) { break } }
     if (((Get-Date) - $last).TotalMinutes -gt 20 -and $global:sched.Count -eq 0 -and -not $global:lan -and $global:ytjobs.Count -eq 0 -and -not $global:tray -and $global:autoQ.Count -eq 0) { break }
@@ -483,12 +527,12 @@ while ($true) {
     } elseif ($path -match '^/assoc(\?on=([01]))?$') {
       $err = ''; if ($matches[2]) { try { Assoc-Set ($matches[2] -eq '1') } catch { $err = 'reg' } }
       Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":' + $(if ($err) { 'false' } else { 'true' }) + ',"on":' + ([string](Assoc-On)).ToLower() + '}'))
-    } elseif ($path -match '^/bk(dir|put|ls|rm)(\?|$)') {
+    } elseif ($path -match '^/bk(dir|put|ls|rm|get)(\?|$)') {
       # 3.143: the backup folder is written by the helper, so Chrome's folder permission (lost at every restart) is not needed.
       # The folder is chosen once (path kept in %LOCALAPPDATA%\Thabat\bkdir.txt); file names are one plain name, with at most one sub-folder.
       $bkK = $matches[1]; $bkQ = @{}
       if ($path -match '\?(.*)$') { foreach ($kv in ($matches[1] -split '&')) { $a = $kv -split '=', 2; if ($a.Count -eq 2) { $bkQ[$a[0]] = Q-Dec $a[1] } } }
-      $bkF = Join-Path $kdir 'bkdir.txt'; $bkOk = $false; $bkNames = @(); $bkErr = ''
+      $bkF = Join-Path $kdir 'bkdir.txt'; $bkOk = $false; $bkNames = @(); $bkFiles = @(); $bkRaw = $null; $bkErr = ''
       try {
         if ($bkK -eq 'dir') {
           if ($bkQ['clear']) { Remove-Item -LiteralPath $bkF -ErrorAction SilentlyContinue }
@@ -502,8 +546,11 @@ while ($true) {
           $okN = ($bkN -notmatch $badN) -and $bkN.Length -ge 1 -and $bkN.Length -le 120 -and $bkN -ne '.' -and $bkN -ne '..' -and $bkN -notmatch '\.$' -and $bkN -match '\.(json|md)$'
           $tdir = if ($bkS) { Join-Path $bkDir $bkS } else { $bkDir }
           if ($bkDir -and $okS -and $bkK -eq 'ls') {
-            if (Test-Path -LiteralPath $tdir -PathType Container) { $bkNames = @(Get-ChildItem -LiteralPath $tdir -File | Where-Object { $_.Name -match '\.(json|md)$' } | ForEach-Object { $_.Name }) }
+            if (Test-Path -LiteralPath $tdir -PathType Container) { $bkL = @(Get-ChildItem -LiteralPath $tdir -File | Where-Object { $_.Name -match '\.(json|md)$' }); $bkNames = @($bkL | ForEach-Object { $_.Name })
+              $bkFiles = @($bkL | Where-Object { $_.Name -match '\.json$' } | ForEach-Object { @{ n = $_.Name; s = $_.Length; m = ([DateTimeOffset]$_.LastWriteTimeUtc).ToUnixTimeMilliseconds() } }) }
             $bkOk = $true
+          } elseif ($bkDir -and $okS -and $okN -and $bkK -eq 'get' -and $bkN -match '\.json$') {
+            $gp = Join-Path $tdir $bkN; if ((Test-Path -LiteralPath $gp -PathType Leaf) -and (Get-Item -LiteralPath $gp).Length -le 200MB) { $bkRaw = [IO.File]::ReadAllBytes($gp); $bkOk = $true }
           } elseif ($bkDir -and $okS -and $okN -and $bkK -eq 'rm') {
             Remove-Item -LiteralPath (Join-Path $tdir $bkN) -ErrorAction SilentlyContinue; $bkOk = $true
           } elseif ($bkDir -and $okS -and $okN -and $bkK -eq 'put') {
@@ -524,8 +571,9 @@ while ($true) {
         }
       } catch { $bkOk = $false; $bkErr = [string]$_.Exception.Message }
       $bkCur = ''; try { if (Test-Path -LiteralPath $bkF) { $bkCur = ([IO.File]::ReadAllText($bkF, $utf8)).Trim(); if (-not (Test-Path -LiteralPath $bkCur -PathType Container)) { $bkCur = '' } } } catch {}
-      $bkO = @{ ok = $bkOk; path = $bkCur; names = $bkNames; err = $bkErr }
-      Send-Response $stream $(if ($bkOk) { '200 OK' } else { '400 Bad Request' }) 'application/json; charset=utf-8' ($utf8.GetBytes((ConvertTo-Json -InputObject $bkO -Compress)))
+      $bkO = @{ ok = $bkOk; path = $bkCur; names = $bkNames; files = $bkFiles; err = $bkErr }
+      if ($bkRaw -ne $null) { Send-Response $stream '200 OK' 'application/json; charset=utf-8' $bkRaw }
+      else { Send-Response $stream $(if ($bkOk) { '200 OK' } else { '400 Bad Request' }) 'application/json; charset=utf-8' ($utf8.GetBytes((ConvertTo-Json -InputObject $bkO -Compress -Depth 4))) }
     } elseif ($path -like '/auto/take*') {
       $arr = @($global:autoQ); $global:autoQ.Clear(); Auto-Save
       $js = if ($arr.Count) { ConvertTo-Json -InputObject $arr -Depth 4 -Compress } else { '[]' }; if ($arr.Count -eq 1 -and $js -notmatch '^\[') { $js = '[' + $js + ']' }
@@ -636,6 +684,20 @@ public static class ThabatFolderPick {
     } elseif ($path -match '^/updcfg(\?m=(notify|auto|off))?$') {
       $c = Upd-Cfg; if ($matches[2]) { $c.mode = $matches[2]; Upd-Save $c }
       Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes((@{ mode = $c.mode } | ConvertTo-Json -Compress)))
+    } elseif ($path -like '/restart*') {
+      # 3.168: «restart the helper» from Thabat's settings: answer, then start a fresh copy once this one has let go of the port
+      $global:restart = $true
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}'))
+    } elseif ($path -match '^/win\?x=(-?\d{1,5})&y=(-?\d{1,5})&w=(\d{3,5})&h=(\d{3,5})&m=([01])$') {
+      # 3.168: where the Thabat window was and how big; Thabat.bat opens the next window there
+      $wx = [int]$matches[1]; $wy = [int]$matches[2]; $ww = [int]$matches[3]; $wh = [int]$matches[4]
+      if ($wx -ge -20000 -and $wx -le 30000 -and $wy -ge -20000 -and $wy -le 30000 -and $ww -ge 400 -and $ww -le 12000 -and $wh -ge 300 -and $wh -le 12000) {
+        try { [IO.File]::WriteAllText((Join-Path $kdir 'win.txt'), ("$wx $wy $ww $wh " + $matches[5]), (New-Object System.Text.UTF8Encoding($false))) } catch {} }
+      Send-Response $stream '200 OK' 'application/json' ($utf8.GetBytes('{"ok":true}'))
+    } elseif ($path -match '^/img\?u=(.+)$') {
+      $im = Img-Get (Q-Dec $matches[1])
+      if ($im -eq $null) { Send-Response $stream '404 Not Found' 'application/json' ($utf8.GetBytes('{"error":"img"}')) }
+      else { Send-Response $stream '200 OK' $im.ct $im.b }
     } elseif ($path -like '/ping*') {
       Send-Response $stream '200 OK' 'application/json; charset=utf-8' ($utf8.GetBytes('{"ok":true,"v":1}'))
     } elseif ($path -like '/fg*') {

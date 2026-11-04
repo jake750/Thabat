@@ -25,6 +25,6 @@ try { $r = Send-Cmd } catch {
   if (Test-Path -LiteralPath $h) { Start-Process powershell.exe -WindowStyle Hidden -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $h + '"'); Start-Sleep -Seconds 3 }
   try { $r = Send-Cmd } catch { Write-Output ('Thabat helper not reachable: ' + $_.Exception.Message); exit 1 }
 }
-if ($r.ok -and ($What -eq 'pdf' -or $What -eq 'open') -and -not $r.open) { $vbs = Join-Path $PSScriptRoot 'Thabat.vbs'; if (Test-Path -LiteralPath $vbs) { Start-Process wscript.exe -ArgumentList ('"' + $vbs + '"') } }
+if ($r.ok -and ($What -eq 'pdf' -or ($What -eq 'open' -and $Text -notmatch '^thabat://helper/')) -and -not $r.open) { $vbs = Join-Path $PSScriptRoot 'Thabat.vbs'; if (Test-Path -LiteralPath $vbs) { Start-Process wscript.exe -ArgumentList ('"' + $vbs + '"') } }
 if ($r.ok) { if ($r.open) { Write-Output 'OK: sent to Thabat.' } else { Write-Output 'OK: queued; Thabat adds it when it opens.' }; exit 0 }
 Write-Output 'Refused (check the text and options).'; exit 1
