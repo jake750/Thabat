@@ -1,0 +1,53 @@
+/* v3.169.0 thirteenth list L: the look */
+/* 274 cards without a frame */
+html.cs-bare .card{background:transparent!important;border-color:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.lkpv.cs-bare .card{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none}
+/* 273 ornament under page titles */
+html.l15o-star .view>.pgt,html.l15o-line .view>.pgt{position:relative;margin-bottom:24px}
+html.l15o-star .view>.pgt::before,html.l15o-line .view>.pgt::before{content:"";position:absolute;bottom:-12px;inset-inline-start:2px;height:12px;background:var(--accent);pointer-events:none}
+html.l15o-line .view>.pgt::before{width:46px;height:3px;bottom:-9px;border-radius:2px;opacity:.85}
+html.l15o-star .view>.pgt::before{width:96px;opacity:.75;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 12'%3E%3Cpath d='M0 5.5h38v1H0zM58 5.5h38v1H58z'/%3E%3Cpath d='M48 0l1.9 3.4L53.7 2.3 52.6 6l3.4 1.9-3.4 1.9 1.1 3.8-3.8-1.1L48 12l-1.9-3.4-3.8 1.1 1.1-3.8L40 6l3.4-1.9-1.1-3.8 3.8 1.1z'/%3E%3C/svg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 12'%3E%3Cpath d='M0 5.5h38v1H0zM58 5.5h38v1H58z'/%3E%3Cpath d='M48 0l1.9 3.4L53.7 2.3 52.6 6l3.4 1.9-3.4 1.9 1.1 3.8-3.8-1.1L48 12l-1.9-3.4-3.8 1.1 1.1-3.8L40 6l3.4-1.9-1.1-3.8 3.8 1.1z'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+html.ux8sh .view>.pgt::before,html.qfs .view>.pgt::before{display:none}
+/* the look sheet preview */
+.lkpv .lkpvtask span,.lkpv .lkpvn span{font-size:calc(13.5px * var(--l15t,1))}
+.lkpv.rd-less .card{border-radius:11px}.lkpv.rd-less .lkpvbtn,.lkpv.rd-less .lkpvchip{border-radius:5px}
+.lkpv.rd-sq .card{border-radius:3px}.lkpv.rd-sq .lkpvbtn,.lkpv.rd-sq .lkpvchip{border-radius:3px}
+.l15pvbar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin:4px 0 8px}
+.l15pvbar>i{display:block;height:100%;width:68%;background:var(--accent);border-radius:0}
+.lkpv.pb-thin .l15pvbar{height:3px}.lkpv.pb-thick .l15pvbar{height:10px}.lkpv.pb-round .l15pvbar,.lkpv.pb-round .l15pvbar>i{border-radius:99px}
+.l15pvo{height:12px;margin:-4px 0 6px;display:none}
+.lkpv.po-line .l15pvo,.lkpv.po-star .l15pvo{display:block}
+.lkpv.po-line .l15pvo::before{content:"";display:block;width:40px;height:3px;border-radius:2px;background:var(--accent);margin-top:4px}
+.lkpv.po-star .l15pvo::before{content:"✦";display:block;color:var(--accent);font-size:11px;line-height:12px}
+/* 278 ready themes */
+.l15th{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 10px}
+.l15th>.muted{flex:1 1 100%;font-size:12.5px}
+.l15thb{display:inline-flex;align-items:center;gap:3px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font:inherit;font-size:13px;cursor:pointer;min-height:36px}
+.l15thb i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.l15thb i:nth-of-type(3){margin-inline-end:5px;border:1px solid var(--line)}
+.l15thb.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+/* 280 the magnifier */
+#l15Mag{position:fixed;z-index:200;left:12px;right:12px;top:calc(max(env(safe-area-inset-top,0px),12px) + 14px);max-height:40vh;overflow:auto;padding:14px 16px;border-radius:16px;background:var(--panel);color:var(--text);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 10px 32px rgba(0,0,0,.4);font-size:22px;line-height:1.55;font-weight:500;overflow-wrap:anywhere;animation:l15mg .16s ease-out}
+html.android #l15Mag{top:calc(max(env(safe-area-inset-top,0px),30px) + 12px)}
+@keyframes l15mg{from{opacity:0;transform:translateY(-6px)}}
+.l15hl{background:color-mix(in srgb,var(--accent) 18%,transparent);border-radius:4px}
+/* board templates: where to put one */
+.l15wb{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.l15wb .btn{justify-content:center;min-height:42px}
+/* board undo/redo: faded when there is nothing to go back or forward to */
+#wbUndo,#wbRedo{transition:opacity .15s,color .15s}
+#wbUndo.l15off,#wbRedo.l15off{opacity:.28}
+#wbUndo:not(.l15off),#wbRedo:not(.l15off){opacity:1;color:var(--text)}
+/* the sliding highlight of the main navigation */
+.navpill{position:relative}
+#l15Nav{position:absolute;left:0;top:0;z-index:0;border-radius:12px;pointer-events:none;background:color-mix(in srgb,var(--accent) 17%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 12%,transparent);transition:transform .34s cubic-bezier(.3,.85,.25,1),width .34s cubic-bezier(.3,.85,.25,1),height .34s,opacity .2s;will-change:transform}
+html.l15nav .navpill .navbtn{position:relative;z-index:1}
+html.l15nav .navpill .navbtn.on{background:transparent!important;box-shadow:none!important}
+html.l15nav .navpill .navbtn .uic,html.l15nav .navpill .navbtn svg{transition:transform .25s}
+html.l15nav .navpill .navbtn.on svg{transform:scale(1.08)}
+html.rmotion #l15Nav{transition:none}
+/* his report 2026-11-04: the studio palette swatches grew on hover in a jerky way */
+.palsw button{flex:1 1 0;transition:flex-grow .42s cubic-bezier(.25,.9,.3,1);will-change:flex-grow}
+.palsw button:hover{flex-grow:1.6}
+html.rmotion .palsw button{transition:none}
+

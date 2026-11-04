@@ -1,6 +1,6 @@
 /* ============ v3.66.0 the look (fourth list, group C: 37 39–43 45–58) ============ */
 /* S.settings.lk = {tscale, glass, shape, icw, motion, calFill, countUp, strike, calm, auC, auS, navS, hdLogo, div} */
-const LK_D={tscale:true,glass:60,shape:'',icw:1.8,motion:'auto',calFill:'',countUp:true,strike:true,calm:false,auC:'multi',auS:'normal',navS:'float',hdLogo:true,div:'line'};
+const LK_D={tscale:true,glass:60,shape:'',icw:1.8,motion:'auto',calFill:'',countUp:true,strike:true,calm:false,auC:'multi',auS:'normal',navS:'float',hdLogo:true,div:'line',txs:1,rad:'',orn:'',bar:'',mag:true};
 function LK(){return Object.assign({},LK_D,S.settings.lk||{})}
 /* 54. themes taken from old mushafs: ivory paper, ink, gold — accents with their own surfaces */
 Object.assign(COLORS,{ivory:{n:{ar:'عاجي (مصحف قديم)',en:'Ivory (old mushaf)'},d:'#d2b27a',l:'#8a6326',sh:38,msh:1},ink:{n:{ar:'حبر',en:'Ink'},d:'#8fb3d9',l:'#24507d',sh:214,msh:1},mgold:{n:{ar:'ذهب المصاحف',en:'Mushaf gold'},d:'#d9b64a',l:'#87690f',sh:150,msh:1}});
@@ -66,7 +66,7 @@ function lkLogo(){$$('.view>.pgt').forEach(h=>{if(h.querySelector('.lklogo'))ret
 function lkOpen(){const st=S.settings,P={color:st.color||'yellow',mode:st.mode||'dark',style:st.style||'minimal',lk:LK()};
   const seg=(k,opts,cur)=>`<div class="seg lkseg" data-k="${k}">${opts.map(([v,l])=>`<button type="button" data-v="${v}" class="${String(cur)===String(v)?'on':''}">${l}</button>`).join('')}</div>`;
   const row=(lab,ctl)=>`<div class="lkrow"><span>${lab}</span>${ctl}</div>`;const T=k=>t('lka.'+k);
-  openInfo('🎨 '+T('t'),`<div class="lkwrap"><div class="lkpv" id="lkPv"><div class="lkpvbg"><div class="card"><h3><span>${T('pvT')}</span></h3><div class="lkpvtask"><i class="ck"></i><span>${T('pvTask')}</span><small>17:30</small></div><div class="lkpvtask done"><i class="ck on">✓</i><span>${T('pvDone')}</span></div><div class="lkpvn"><b>68%</b><span>${T('pvWall')}</span></div><div class="row" style="gap:6px"><span class="lkpvbtn">${T('pvBtn')}</span><span class="lkpvchip">${T('pvChip')}</span></div><hr></div></div></div>
+  openInfo('🎨 '+T('t'),`<div class="lkwrap"><div class="lkpv" id="lkPv"><div class="lkpvbg"><div class="card"><h3><span>${T('pvT')}</span></h3><div class="l15pvo"></div><div class="lkpvtask"><i class="ck"></i><span>${T('pvTask')}</span><small>17:30</small></div><div class="lkpvtask done"><i class="ck on">✓</i><span>${T('pvDone')}</span></div><div class="lkpvn"><b>68%</b><span>${T('pvWall')}</span></div><div class="l15pvbar"><i></i></div><div class="row" style="gap:6px"><span class="lkpvbtn">${T('pvBtn')}</span><span class="lkpvchip">${T('pvChip')}</span></div><hr></div></div></div>
    <div class="lkctl">
     <div class="lkh">${T('gTheme')}</div>
     <div class="lkcols">${Object.keys(COLORS).filter(k=>COLORS[k].n).map(k=>{const C=COLORS[k];return`<button type="button" class="lkc ${P.color===k?'on':''}" data-c="${k}" title="${esc(C.n[LANG]||C.n.ar)}" style="--c:${C.d}"></button>`}).join('')}</div>
@@ -74,9 +74,14 @@ function lkOpen(){const st=S.settings,P={color:st.color||'yellow',mode:st.mode||
     ${row(T('style'),seg('style',Object.keys(STYLES).map(k=>[k,STYLES[k][LANG]||STYLES[k].ar]),P.style))}
     ${row(T('calm'),seg('calm',[[false,T('off')],[true,T('on')]],P.lk.calm))}
     <div class="lkh">${T('gShape')}</div>
-    ${row(T('shape'),seg('shape',[['',T('shDef')],['flat',T('shFlat')],['line',T('shLine')],['raised',T('shRaised')]],P.lk.shape))}
+    ${row(T('shape'),seg('shape',[['',T('shDef')],['flat',T('shFlat')],['line',T('shLine')],['raised',T('shRaised')],['bare',t('l15.bare')]],P.lk.shape))}
+    ${row(t('l15.rad'),seg('rad',[['',t('l15.rRound')],['less',t('l15.rLess')],['sq',t('l15.rSq')]],P.lk.rad))}
     ${row(T('glass'),`<input type="range" min="0" max="100" step="5" data-k="glass" value="${P.lk.glass}">`)}
     ${row(T('icw'),seg('icw',[[1.4,T('thin')],[1.8,T('normal')],[2.3,T('bold')]],P.lk.icw))}
+    ${row(t('l15.txs'),seg('txs',[[0.9,'90%'],[1,'100%'],[1.1,'110%'],[1.2,'120%'],[1.3,'130%']],P.lk.txs))}
+    ${row(t('l15.orn'),seg('orn',[['',t('l15.oNone')],['line',t('l15.oLine')],['star',t('l15.oStar')]],P.lk.orn))}
+    ${row(t('l15.bar'),seg('bar',[['thin',t('l15.bThin')],['',T('normal')],['thick',t('l15.bThick')],['round',t('l15.bRound')]],P.lk.bar))}
+    ${row(t('l15.mag'),seg('mag',[[true,T('on')],[false,T('off')]],P.lk.mag))}
     ${row(T('tscale'),seg('tscale',[[true,T('on')],[false,T('off')]],P.lk.tscale))}
     ${row(T('div'),seg('div',[['line',T('dLine')],['orn',T('dOrn')],['space',T('dSpace')],['dash',T('dDash')]],P.lk.div))}
     ${row(T('navS'),seg('navS',[['float',T('nFloat')],['edge',T('nEdge')],['clear',T('nClear')]],P.lk.navS))}
@@ -95,7 +100,7 @@ function lkOpen(){const st=S.settings,P={color:st.color||'yellow',mode:st.mode||
   const pv=()=>lkPreview(P);
   $$('.lkcols [data-c]').forEach(b=>b.onclick=()=>{P.color=b.dataset.c;$$('.lkcols [data-c]').forEach(x=>x.classList.toggle('on',x===b));pv()});
   $$('.lkcols [data-cf]').forEach(b=>b.onclick=()=>{P.lk.calFill=b.dataset.cf;$$('.lkcols [data-cf]').forEach(x=>x.classList.toggle('on',x===b));pv()});
-  $$('.lkseg').forEach(sg=>sg.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const k=sg.dataset.k;let v=b.dataset.v;if(v==='true')v=true;else if(v==='false')v=false;else if(k==='icw')v=+v;
+  $$('.lkseg').forEach(sg=>sg.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const k=sg.dataset.k;let v=b.dataset.v;if(v==='true')v=true;else if(v==='false')v=false;else if(k==='icw'||k==='txs')v=+v;
     if(k==='mode'||k==='style')P[k]=v;else P.lk[k]=v;sg.querySelectorAll('[data-v]').forEach(x=>x.classList.toggle('on',x===b));pv()}));
   $$('.lkrow input[type=range]').forEach(i=>i.oninput=()=>{P.lk[i.dataset.k]=+i.value;pv()});
   $('#lkApply').onclick=()=>{st.color=P.color;st.mode=P.mode;st.style=P.style;st.lk=Object.assign({},P.lk);save();applyTheme();try{applyLook2()}catch(e){}try{renderSettings()}catch(e){}document.querySelectorAll('.modal.on').forEach(m=>{if(m.querySelector('#lkPv'))m.classList.remove('on')});toast(T('ok'))};
