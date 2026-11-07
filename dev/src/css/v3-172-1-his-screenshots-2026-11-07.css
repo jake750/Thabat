@@ -1,0 +1,44 @@
+/* v3.172.1 (his screenshots 2026-11-07) */
+/* notes: no timeline switch any more; the pin never sits on a title written left to right */
+#ntlBtn{display:none!important}
+html[dir=rtl] .ncard .nbody>b{padding-left:20px}html[dir=ltr] .ncard .nbody>b{padding-right:20px}
+/* notes on phones look like a phone's notes app: two columns of small, even cards */
+@media (max-width:700px){
+  .ngrid{gap:10px}.ngrid>.ncol{gap:10px}
+  #notesGrid .ncard{border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+  #notesGrid .nbody{padding:12px 12px 10px;gap:4px}
+  #notesGrid .nbody>b{font-size:15px;font-weight:700;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+  #notesGrid .nbody p{font-size:13px;line-height:1.55;-webkit-line-clamp:4;overflow-wrap:anywhere}
+  #notesGrid .nbody small{font-size:11px;margin-top:2px}
+  #notesGrid .ncover{aspect-ratio:1/1}
+  #notesGrid .npin{top:8px;font-size:11px}
+}
+/* the page title bar on phones is solid, so nothing scrolling under it shows through */
+@media (max-width:700px){html.ux8sh #v-today>.pgt,html.ux8sh #v-cal>.pgt,html.ux8sh #v-brief>.pgt,html.ux8sh #v-boards>.pgt{background:var(--bg);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* pictures in a note: drag to reorder */
+.neimg{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:pan-y}
+.neimg.nimdrag{z-index:5;opacity:.92;box-shadow:0 10px 26px rgba(0,0,0,.45);transition:none!important;cursor:grabbing}
+.neimgs.nimdragging .neimg:not(.nimdrag){cursor:grabbing}
+/* on touch screens the arrows go (drag instead); the remaining buttons stay small in the bottom corner */
+@media (pointer:coarse){
+  .neact [data-mv]{display:none!important}
+  .neact{inset:auto 0 0 auto;padding:4px;background:none;gap:4px}
+  .neact button{width:28px!important;height:26px!important;min-width:0!important;min-height:0!important;padding:0!important;margin:0!important;border-radius:8px!important;background:rgba(0,0,0,.55)!important;color:#fff!important;font-size:12px!important;line-height:1!important}
+}
+
+/* the note editor ends above the phone's own buttons bar (its save row was hidden under it) */
+@media (max-width:700px){html.android #noteModal{bottom:calc(var(--andnav,0px) + var(--andman,0px))}html.android #noteModal .notebox{height:100%;max-height:100%}}
+
+/* a number stepper on one line */
+.nstepw{display:flex;align-items:center;gap:6px;min-width:0;max-width:100%}
+.nstepw .nsb{margin:0}.nstepw input.nstepi{flex:1 1 auto;min-width:48px;width:auto}
+@media (max-width:700px){.qrped{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.qrped label:has(select),.qrped label:not(:has(.nstepw)):not(:has(select)){grid-column:1/-1}.qrped .nstepw input.nstepi{max-width:none}}
+
+/* calendar: the symbols legend button goes; full-screen mushaf: no notifications bell */
+#calLeg{display:none!important}
+html.qfs #nclBtn{display:none!important}
+
+/* «half of the wird» reads on the paper page too */
+.qc2half{color:inherit;font-weight:600;background:color-mix(in srgb,var(--accent) 32%,transparent);border:1px solid color-mix(in srgb,var(--accent) 60%,transparent)}
+.mushaf:not(.dark) .qpage .qc2half{color:#3a2d16}
