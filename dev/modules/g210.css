@@ -1,0 +1,134 @@
+/* ============ v3.173.0 his request 2026-11-07: Apple-style motion everywhere («butter smooth») ============ */
+/* One motion language for every window, menu, sheet, page, list and control:
+   things arrive fast and settle slowly (springs with no bounce), they grow from where you tapped,
+   only transform and opacity move, nothing blurs while it moves, and leaving is quicker than arriving.
+   The curves are Apple's springs (duration .5 s perceived) sampled into linear(); the JS part retimes
+   every older rule to them (apmRetime). «أقل حركة» (html.rmotion) keeps its plain fades. */
+:root{
+  --apm-smooth:linear(0,.037,.12,.224,.333,.436,.53,.612,.683,.743,.793,.835,.868,.895,.917,.934,.948,.96,.968,.975,.981,.985,.988,.991,.993,.995,.996,.997,.997,.998,.999,.999,1);
+  --apm-snappy:linear(0,.036,.12,.227,.344,.457,.561,.654,.733,.798,.852,.894,.927,.952,.97,.983,.992,.999,1.002,1.005,1.006,1.006,1.006,1.005,1.005,1.004,1.003,1.003,1.002,1.002,1.001,1.001,1);
+  --apm-bouncy:linear(0,.048,.162,.305,.457,.597,.723,.824,.904,.963,1.002,1.027,1.04,1.045,1.044,1.04,1.034,1.027,1.02,1.014,1.009,1.005,1.002,1,.999,.998,.998,.998,.998,.998,.999,.999,1);
+  --apm-out:cubic-bezier(.22,1,.36,1);
+  --apm-sheet:cubic-bezier(.32,.72,0,1);
+}
+@supports not (transition-timing-function:linear(0,1)){:root{--apm-smooth:cubic-bezier(.22,1,.36,1);--apm-snappy:cubic-bezier(.3,1.15,.4,1);--apm-bouncy:cubic-bezier(.3,1.3,.4,1)}}
+
+/* ---- the shapes (same names as before, so every rule that used them gets the new motion) ---- */
+/* backdrops: only opacity (animating backdrop-filter re-blurs the screen on every frame) */
+@keyframes mdxin{from{opacity:0}}
+@keyframes mdxo{from{opacity:1}to{opacity:0}}
+/* windows on the PC: grow a little from where you clicked (--apm-ox/oy), no blur */
+@keyframes mdxpop{from{opacity:0;transform:translateY(8px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes mdxpopl{from{opacity:0;transform:translateY(8px) scale(.94)}}
+@keyframes mdxpopo{to{opacity:0;transform:translateY(4px) scale(.97)}}
+@keyframes mdxsoft{from{opacity:0}}
+@keyframes mdxsofto{to{opacity:0}}
+@keyframes ux8pop{from{opacity:0;transform:translateY(8px) scale(.94)}}
+/* sheets on the phone: up from the bottom edge, where they live */
+@keyframes mdxup{from{transform:translateY(100%)}to{transform:none}}
+@keyframes mdxdown{to{transform:translateY(100%)}}
+@keyframes uxup{from{transform:translateY(100%)}to{transform:none}}
+@keyframes rpkUp{from{transform:translateY(100%)}}
+@keyframes qbup{from{transform:translateY(100%)}to{transform:none}}
+/* menus and pop-ups: scale out of the button that opened them */
+@keyframes ppin{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes ppout{to{opacity:0;transform:scale(.96)}}
+@keyframes ppsoft{from{opacity:0}}
+@keyframes ux8menu{from{opacity:0;transform:scale(.92)}}
+@keyframes rpkIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes qbdrop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+@keyframes l15mg{from{opacity:0;transform:scale(.94)}}
+@keyframes fpkIn{from{opacity:0;transform:scale(.96)}to{opacity:1}}
+/* small notices */
+@keyframes ux8tin{from{opacity:0;transform:translateY(16px) scale(.96)}}
+@keyframes ux8tout{to{opacity:0;transform:translateY(6px) scale(.97)}}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* pages */
+@keyframes ux8card{from{opacity:0;transform:translateY(12px)}}
+@keyframes uxslf{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+@keyframes uxslb{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes dslide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes dslider{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+/* new: a section that opens, a list row that arrives, a month that changes */
+@keyframes apmrev{from{opacity:0;transform:translateY(-6px)}}
+@keyframes apmrow{from{opacity:0;transform:translateY(-6px) scale(.98)}}
+@keyframes apmfade{from{opacity:0}}
+
+/* ---- timing of the main surfaces (the JS retime pass covers every other rule) ---- */
+html:not(.mdx0) .modal.on,html:not(.mdx0) .praymodal.on{animation:mdxin .34s var(--apm-out) both}
+.modal.mdxout,.praymodal.mdxout{animation:mdxo .24s var(--apm-out) both}
+@media (min-width:701px){
+  html:not(.rmotion) .modal.on>.box{animation:mdxpop .62s var(--apm-smooth) both;transform-origin:var(--apm-ox,50%) var(--apm-oy,50%)}
+  html.lite:not(.rmotion) .modal.on>.box{animation-name:mdxpopl}
+  html:not(.rmotion) .modal.mdxout>.box{animation:mdxpopo .22s var(--apm-out) both;transform-origin:var(--apm-ox,50%) var(--apm-oy,50%)}
+}
+@media (max-width:700px){
+  html:not(.rmotion) .modal.on.uxsheet>.box{animation:mdxup .56s var(--apm-sheet) both}
+  html:not(.rmotion) .modal.mdxout.uxsheet>.box{animation:mdxdown .26s var(--apm-sheet) both}
+}
+html:not(.mdx0) .pppop:not(.ppout){animation:ppin .42s var(--apm-smooth) both;transform-origin:var(--apm-ox,50%) var(--apm-oy,0%)}
+html:not(.mdx0) .pppop.ppout{animation:ppout .18s var(--apm-out) both;transform-origin:var(--apm-ox,50%) var(--apm-oy,0%)}
+html:not(.mdx0) .rpk:not(.fxout) .rpkbox{animation:ppin .42s var(--apm-smooth) both;transform-origin:var(--apm-ox,50%) var(--apm-oy,0%)}
+html:not(.mdx0) .rpk.fxout{animation:ppout .18s var(--apm-out) both}
+html:not(.mdx0) .rpk.mob:not(.fxout){animation:mdxin .34s var(--apm-out) both}
+html:not(.mdx0) .rpk.mob:not(.fxout) .rpkbox{animation:mdxup .52s var(--apm-sheet) both}
+html:not(.mdx0) .rpk.mob.fxout{animation:mdxo .24s var(--apm-out) both}
+html:not(.mdx0) .rpk.mob.fxout .rpkbox{animation:mdxdown .24s var(--apm-sheet) both}
+html:not(.mdx0) .sheet.on{animation:mdxin .34s var(--apm-out) both}
+.sheet.mdxout{animation:mdxo .24s var(--apm-out) both}
+html:not(.rmotion) .qbpop,html:not(.rmotion) .lshmenu,html:not(.rmotion) .wbsmsub{transform-origin:var(--apm-ox,50%) var(--apm-oy,0%)}
+html:not(.rmotion) .toast{animation:ux8tin .55s var(--apm-smooth)}
+html:not(.rmotion) .toast.ux8out{animation:ux8tout .2s var(--apm-out) forwards}
+/* pages: the page fades in, its cards rise 12 px one after another (35 ms apart), only the start is held */
+html:not(.rmotion) .view.on{animation:apmfade .3s var(--apm-out)}
+html:not(.rmotion) .view.ux8enter .card{animation:ux8card .6s var(--apm-smooth) backwards}
+html:not(.rmotion) .view.ux8enter .card:nth-child(2){animation-delay:.035s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(3){animation-delay:.07s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(4){animation-delay:.105s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(n+5){animation-delay:.14s}
+html:not(.rmotion) .view.uxsl-f.ux8enter .card,html:not(.rmotion) .view.uxsl-b.ux8enter .card{animation:none}   /* phones: the page slides as one, fewer things move */
+html:not(.rmotion) .view.on.uxsl-f{animation:uxslf .46s var(--apm-smooth)}
+html:not(.rmotion) .view.on.uxsl-b{animation:uxslb .46s var(--apm-smooth)}
+html[dir=ltr]:not(.rmotion) .view.on.uxsl-f{animation-name:uxslb}
+html[dir=ltr]:not(.rmotion) .view.on.uxsl-b{animation-name:uxslf}
+@media (min-width:701px){html:not(.rmotion) #detail.dslide{animation:dslide .5s var(--apm-smooth)}html[dir=rtl]:not(.rmotion) #detail.dslide{animation-name:dslider}}
+
+/* ---- touch: a press answers at once (80 ms), the release settles back with a small spring ---- */
+html:not(.rmotion) .btn,html:not(.rmotion) .chip,html:not(.rmotion) .navbtn,html:not(.rmotion) .qck,html:not(.rmotion) .suitem{
+  transition-property:transform,background-color,border-color,box-shadow,color,opacity;
+  transition-duration:.5s,.2s,.2s,.2s,.2s,.2s;
+  transition-timing-function:var(--apm-snappy),var(--apm-out),var(--apm-out),var(--apm-out),var(--apm-out),var(--apm-out)}
+html:not(.rmotion) .btn:active,html:not(.rmotion) .chip:active,html:not(.rmotion) .qck:active,html:not(.rmotion) .suitem:active,html:not(.rmotion) .navbtn:active{transition-duration:.08s,.08s,.2s,.2s,.2s,.2s;transform:scale(.96)}
+html:not(.rmotion) .navbtn:active{transform:scale(.93)}
+html:not(.rmotion) .btn:disabled:active{transform:none}
+/* cards lift on the PC with the same smooth spring */
+@media (hover:hover){html:not(.rmotion) .lshc,html:not(.rmotion) .bkc,html:not(.rmotion) .ncard{transition:transform .5s var(--apm-smooth),box-shadow .3s var(--apm-out),border-color .2s var(--apm-out)}}
+
+/* ---- switches: the knob slides with transform (it moved by «left» before), a snappy spring ---- */
+html .sw-toggle,html:not(.rmotion) .sw-toggle{transition:background-color .25s var(--apm-out)}
+html .sw-toggle::after,html:not(.rmotion) .sw-toggle::after{inset-inline-start:3px!important;transition:transform .45s var(--apm-snappy),background-color .25s var(--apm-out)}
+html .sw-toggle.on::after{transform:translateX(18px)}
+html[dir=rtl] .sw-toggle.on::after{transform:translateX(-18px)}
+html:not(.rmotion) .sw-toggle:active::after{transform:scaleX(1.18)}
+html:not(.rmotion) .sw-toggle.on:active::after{transform:translateX(18px) scaleX(1.18)}
+html[dir=rtl]:not(.rmotion) .sw-toggle.on:active::after{transform:translateX(-18px) scaleX(1.18)}
+
+/* ---- a section that opens (details, «more» folds) reveals its content ---- */
+html:not(.rmotion) details[open]>:not(summary){animation:apmrev .45s var(--apm-smooth)}
+html:not(.rmotion) details>summary::before,html:not(.rmotion) details>summary::after{transition:transform .4s var(--apm-smooth)}
+
+/* ---- list rows (tasks, notes) that arrive or move: done in JS (apmFlip); a leaving row fades in place ---- */
+.apmrel{position:relative}
+.apmghost{position:absolute!important;margin:0!important;pointer-events:none!important;z-index:3;box-sizing:border-box}
+
+/* ---- the picture viewer grows out of the picture you tapped ---- */
+#lbox.apmclosing{pointer-events:none}
+#lbox img{transition:opacity .25s var(--apm-out)}
+html:not(.rmotion) #lbox.on .lbbar{animation:apmfade .4s var(--apm-out) .08s backwards}
+
+/* ---- the month in the calendar slides the way you went ---- */
+#cal.apmmon{will-change:transform}
+
+/* ---- less motion («أقل»): no movement, only short fades (durations need !important against 3.66's .001ms rule) ---- */
+html.rmotion details[open]>:not(summary){animation:apmfade .2s ease-out!important}
+html.rmotion .sw-toggle::after{transition:transform .2s ease-out,background-color .2s ease-out!important}
