@@ -80,17 +80,19 @@ html:not(.rmotion) .qbpop,html:not(.rmotion) .lshmenu,html:not(.rmotion) .wbsmsu
 html:not(.rmotion) .toast{animation:ux8tin .55s var(--apm-smooth)}
 html:not(.rmotion) .toast.ux8out{animation:ux8tout .2s var(--apm-out) forwards}
 /* pages: the page fades in, its cards rise 12 px one after another (35 ms apart), only the start is held */
-html:not(.rmotion) .view.on{animation:apmfade .3s var(--apm-out)}
-html:not(.rmotion) .view.ux8enter .card{animation:ux8card .6s var(--apm-smooth) backwards}
-html:not(.rmotion) .view.ux8enter .card:nth-child(2){animation-delay:.035s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(3){animation-delay:.07s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(4){animation-delay:.105s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(n+5){animation-delay:.14s}
-html:not(.rmotion) .view.uxsl-f.ux8enter .card,html:not(.rmotion) .view.uxsl-b.ux8enter .card{animation:none}   /* phones: the page slides as one, fewer things move */
-html:not(.rmotion) .view.on.uxsl-f{animation:uxslf .46s var(--apm-smooth)}
-html:not(.rmotion) .view.on.uxsl-b{animation:uxslb .46s var(--apm-smooth)}
-html[dir=ltr]:not(.rmotion) .view.on.uxsl-f{animation-name:uxslb}
-html[dir=ltr]:not(.rmotion) .view.on.uxsl-b{animation-name:uxslf}
+/* 3.173.1 (his video 2026-11-07 «flicker on every page change, heavy»): the page itself never fades or moves in CSS any more.
+   The old slide class was removed after 320 ms, which changed the page's animation name and restarted its fade from 0 (the flash),
+   and fading a whole page makes every glass card lose and re-find its blur on each frame (the weight). Phones slide the page with
+   transform only (apmPage, JS, once); on the PC only the first cards fade in, quickly. */
+html .view,html .view.on,html .view.on.uxsl-f,html .view.on.uxsl-b,html[dir] .view.on.uxsl-f,html[dir] .view.on.uxsl-b{animation:none!important}
+html:not(.rmotion) .view.ux8enter .card{animation:apmcard .3s var(--apm-out) backwards}
+html:not(.rmotion) .view.ux8enter .card:nth-child(2){animation-delay:.025s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(3){animation-delay:.05s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(4){animation-delay:.075s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(5),html:not(.rmotion) .view.ux8enter .card:nth-child(6){animation-delay:.1s}
+html:not(.rmotion) .view.ux8enter .card:nth-child(n+7){animation:none}
+@media (max-width:700px){html:not(.rmotion) .view.ux8enter .card{animation:none}}
+@keyframes apmcard{from{opacity:0}}
 @media (min-width:701px){html:not(.rmotion) #detail.dslide{animation:dslide .5s var(--apm-smooth)}html[dir=rtl]:not(.rmotion) #detail.dslide{animation-name:dslider}}
 
 /* ---- touch: a press answers at once (80 ms), the release settles back with a small spring ---- */

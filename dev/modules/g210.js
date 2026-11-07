@@ -20,7 +20,8 @@ function apmPick(tf,dur,exit){                                             /* �
   if(!tf||/^(linear|steps|step-)/.test(tf)||/var\(|linear\(/.test(tf))return null;
   if(exit)return[APM.out,Math.min(dur,.24)];
   if(dur<=.2)return[APM.out,dur];
-  return[APM.sm,Math.min(1.2,dur>.6?dur:dur*1.4)]}
+  if(dur<=.25)return[APM.out,dur];
+  return[APM.sm,dur>.6?dur:Math.min(.6,dur*1.2)]}   /* 3.173.1: shorter (×1.2, ≤ .6 s): frequent things stay quick */
 function apmRetime(){if(!APM.sm)return;const kf={};
   const walkK=rules=>{for(const r of rules){if(r instanceof CSSKeyframesRule)kf[r.name]=r.cssRules.length;else if(r.cssRules&&!(r instanceof CSSStyleRule))try{walkK(r.cssRules)}catch(e){}}};
   const walk=rules=>{for(const r of rules){
@@ -52,7 +53,7 @@ hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){if(APM.ms
 {const UI=/^(ease|ease-out|ease-in-out|cubic-bezier\(\.2, ?\.[78], ?\.[23], ?1\))$/;
  Element.prototype.animate=function(kf,o){if(!apmRM()&&APM.sm){let p=typeof o==='number'?{duration:o}:o;
    if(p&&typeof p==='object'&&p.iterations!==Infinity){const d=+p.duration||0,e=p.easing;
-     if(d>0&&d<=900&&(e==null||UI.test(String(e).replace(/0\./g,'.')))){const q=Object.assign({},p,{easing:APM.sm,duration:Math.round(d<=200?d*1.3:d*1.4)});try{return APM.na.call(this,kf,q)}catch(x){}}}}
+     if(d>0&&d<=900&&(e==null||UI.test(String(e).replace(/0\./g,'.')))){const q=Object.assign({},p,{easing:APM.sm,duration:Math.round(d<=200?d*1.15:d*1.2)});try{return APM.na.call(this,kf,q)}catch(x){}}}}
    return APM.na.call(this,kf,o)}}
 
 /* (3) windows and menus grow from where you tapped (keyboard: from the focused control) */
@@ -167,3 +168,10 @@ function apmTabContent(T,g,dir){
       else if(r.attributeName==='style'&&/display:\s*none/.test(o)&&getComputedStyle(t).display!=='none')C.add(t)}}
   const top=[...C].filter(a=>![...C].some(b=>b!==a&&b.contains(a))).slice(0,4);
   top.forEach(el=>{if(el.getAnimations().some(x=>x.playState==='running'))return;apmAnim(el,[{opacity:0,transform:`translateX(${dir*14}px)`},{opacity:1,transform:'none'}],{duration:460})})}
+
+/* (9) 3.173.1: page changes. Phones: the new page slides 20 px from the side of the tab you went to, transform only
+   (a transform does not disturb the glass cards' blur; opacity on the page did). The PC: no page-level motion (its first cards fade, CSS). */
+hookFn('showView',()=>showView,f=>{showView=f},'pre',function(){APM.pv=typeof curView==='function'?curView():null});
+hookFn('showView',()=>showView,f=>{showView=f},'post',function(v){try{const was=APM.pv;APM.pv=null;if(!was||was===v||apmRM()||!MOB.matches||document.documentElement.classList.contains('lite'))return;
+  const el=document.getElementById('v-'+v);if(!el)return;const fw=NAV_ORD.indexOf(v)>NAV_ORD.indexOf(was),x=(fw?1:-1)*(document.documentElement.dir==='rtl'?-1:1)*20;
+  el.getAnimations().forEach(a=>{if(!a.animationName)a.cancel()});apmAnim(el,[{transform:`translateX(${x}px)`},{transform:'none'}],{duration:380})}catch(e){}});

@@ -1,7 +1,7 @@
 # Thabat (ثبات): guide for Claude
 
 Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HTML file (no framework, works from `file://`) + Android WebView shell + Windows helper.
-- Version: **3.173.0** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
+- Version: **3.173.1** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
 - History, design notes per release, finished lists and **rejected suggestions** are in `CLAUDE_ARCHIVE.md` — grep it, never load it whole.
 
 ## Active
@@ -62,6 +62,6 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 - Interface zoom: divide screen rects by `uiZoom()`, heights by `--uiz`.
 - `position:fixed` inside `.view` breaks (transform): append to `body`. Glass `.card` needs `!important` for fixed.
 - Grids holding user text: `minmax(0,1fr)` + `min-width:0`.
-- Motion (3.173, g210): use `var(--apm-smooth|snappy|out|sheet)`, transform/opacity only, no bounce; `apmRetime` retimes older rules at idle; tab rows animate generically (`apmTabGo`).
+- Motion (3.173, g210): use `var(--apm-smooth|snappy|out|sheet)`, transform/opacity only, no bounce; never animate opacity/filter on `.view` or any ancestor of glass cards (breaks their blur, flicker); `apmRetime` retimes older rules at idle; tab rows animate generically (`apmTabGo`).
 - PowerShell: variable names ignore case; commas inside method calls split arguments.
 - Never fabricate Quran text or religious data; use only verified sources he approves.
