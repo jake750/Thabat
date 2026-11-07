@@ -22,7 +22,7 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 - Keystore password: only in `THABAT_KS_PASS` on the command line. Never in a file, commit or memory.
 - Never remove the «created by jake750_» credit, the logo or `LICENSE.txt`.
 - His copy `C:\Users\foura\Documents\Thabat\`: release.py replaces only `Thabat.html`. Helper/library scripts are copied there and to `%LOCALAPPDATA%\Programs\Thabat` (the running one) with `.bak`, then restarted.
-- Editing this file: add or change single lines with Edit; never rewrite it whole. Move finished detail to `CLAUDE_ARCHIVE.md`. Keep it under 100 lines.
+- Editing this file: add or change single lines with Edit; never rewrite it whole. Move finished detail to `CLAUDE_ARCHIVE.md`. Keep it between 50 and 80 lines, always: anything beyond goes to the archive.
 
 ## Machine
 - Repo: `C:\Users\foura\Documents\Thabat Dev`, remote github.com/jake750/Thabat (public, `main`). Owner pushes directly; collaborators need PRs.
@@ -33,7 +33,7 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 ## Code layout
 - Source of truth: `dev/src/` (parts joined by `order.txt`). `dev/src.html` is generated; never edit it or `Thabat/Thabat.html`.
 - `dev/build.py` builds; `dev/release.py` builds, checks, packages zips + APK + setup exe, updates his copies.
-- `dev/modules/` = merged modules (latest g208). `dev/win/` helper/library scripts; `dev/mac/`; `dev/android/` (shell sources, `build_win.py`); `dev/i18n/` language packs; `dev/data/` side files.
+- `dev/modules/` = merged modules (latest g209). `dev/win/` helper/library scripts; `dev/mac/`; `dev/android/` (shell sources, `build_win.py`); `dev/i18n/` language packs; `dev/data/` side files.
 - State: global `S` in IndexedDB `thabat`/`kv` (+ quick-start copy in localStorage). Days via `day(key)`.
 - Strings: `t(key)`; every visible string goes through it.
 - PC servers: helper 47813, library 47815. Every route needs the key check and refuses web origins.
@@ -53,7 +53,7 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 
 ## Release
 1. `git fetch`; `origin/main` must be an ancestor of HEAD. Never hide push errors.
-2. `THABAT_KS_PASS=… python dev/release.py`; read its WARNING lines.
+2. `THABAT_KS_PASS=… python dev/release.py`; read its WARNING lines. A fresh worktree first needs the last release's zips (`gh release download`) and `android/base.apk` + keystore copied from the main checkout.
 3. Update the version line here (one Edit) and add the release's notes to `CLAUDE_ARCHIVE.md`.
 4. Commit (Co-Authored-By line), push, `gh release create vX.Y.Z Thabat.apk Thabat-Windows.zip Thabat-Mac.zip Thabat-Setup.exe --target main`.
 5. Send him the three files from the checkout where release.py ran.
