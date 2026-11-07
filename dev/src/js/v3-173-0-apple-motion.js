@@ -120,3 +120,50 @@ APM.sg=typeof SG!=='undefined'?SG.cur||null:null;   /* the group shown at the la
 hookFn('sgApply',()=>sgApply,f=>{sgApply=f},'post',function(){try{const cur=SG.cur||null,was=APM.sg||null;APM.sg=cur;if(cur===was||apmRM()||curView()!=='set')return;
   const x=(cur?1:-1)*(document.documentElement.dir==='rtl'?-1:1)*28;
   [$('#sgList'),$('#v-set .set')].forEach(el=>{if(el&&el.getClientRects().length)apmAnim(el,[{opacity:0,transform:`translateX(${x}px)`},{opacity:1,transform:'none'}],{duration:500})})}catch(e){}});
+
+/* (8) tabs, everywhere (Summary, library shelves, notes modes, window tabs, segmented choices…): any row of buttons where one is chosen.
+   The chosen pill slides to the new tab like a segmented control, the text colours cross over, and whatever the tab changed
+   (a list re-drawn, a panel shown) slides in a little from the side you went to. Nothing is named: it works on every tab row. */
+const apmSel=b=>!!b&&(b.getAttribute('aria-selected')==='true'||b.getAttribute('aria-pressed')==='true'||/(^|\s)(on|act|active|sel|cur)(\s|$)/.test(b.className||''));
+const apmKids=g=>[...g.children].filter(c=>c.tagName==='BUTTON'||c.getAttribute('role')==='tab'||c.classList.contains('chip'));
+document.addEventListener('click',e=>{if(apmRM())return;const b=e.target&&e.target.closest&&e.target.closest('button,[role=tab],.chip');const g=b&&b.parentElement;
+  if(!g||g.closest('nav,.pppop,#ppPop,.navpill,#l15Nav,.toast,#lbox'))return;const K=apmKids(g);if(K.length<2||K.length>14||!K.includes(b))return;
+  const was=K.filter(apmSel);if(was.length!==1||was[0]===b)return;
+  const z=uiZoom()||1,old=was[0],gr=g.getBoundingClientRect(),cs=getComputedStyle(old),ncs=getComputedStyle(b);
+  const T={g,gid:g.id,br:b.getBoundingClientRect(),old,oi:K.indexOf(old),ni:K.indexOf(b),or:old.getBoundingClientRect(),gr,z,pill:{bg:cs.backgroundColor,bi:cs.backgroundImage,br:cs.borderRadius,sh:cs.boxShadow},oc:cs.color,nc:ncs.color,muts:[]};
+  const mo=new MutationObserver(rs=>{for(const r of rs)T.muts.push(r)});mo.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden','class','style'],attributeOldValue:true});
+  setTimeout(()=>{T.muts.push(...mo.takeRecords());mo.disconnect();try{apmTabGo(T)}catch(x){}},40)},true);
+function apmTabGo(T){let g=T.g;if(!g.isConnected&&T.gid)g=document.getElementById(T.gid);
+  if(!g||!g.isConnected){const h=document.elementFromPoint(T.br.left+T.br.width/2,T.br.top+T.br.height/2),b=h&&h.closest&&h.closest('button,[role=tab],.chip');g=b&&b.parentElement;if(g&&apmKids(g).length<2)g=null}   /* the row was drawn again */
+  if(g&&(!g.isConnected||!g.getClientRects().length))g=null;
+  const K=g?apmKids(g):[],now=K.filter(apmSel),nb=now.length===1?now[0]:null;if(g&&!nb)return;const ni=nb?K.indexOf(nb):T.ni;if(nb&&ni===T.oi&&nb===T.old)return;
+  const dir=(ni>T.oi?1:-1)*(document.documentElement.dir==='rtl'?-1:1);
+  if(g)apmPill(T,g,nb);apmTabContent(T,g||document.createElement('i'),dir)}   /* a row drawn away (its section replaced) still slides the new content */
+function apmPill(T,g,nb){const z=uiZoom()||1;
+  /* the pill: a copy of the chosen background travels from the old tab to the new one, behind the labels */
+  const P=T.pill,has=P&&(P.bg&&!/rgba\(0, 0, 0, 0\)|transparent/.test(P.bg)||P.bi&&P.bi!=='none');const or=T.or,nr=nb.getBoundingClientRect(),gr=g.getBoundingClientRect();
+  if(has&&nr.width&&or.width&&Math.abs(or.top-T.gr.top-(nr.top-gr.top))<4){
+    const stat=getComputedStyle(g).position==='static';if(stat)g.classList.add('apmrel');g.classList.add('apmtabs');
+    const p=document.createElement('i');p.className='apmpill';p.setAttribute('aria-hidden','true');
+    const L=(r)=>((r.left-gr.left)/z-g.clientLeft+g.scrollLeft),Tp=(r)=>((r.top-gr.top)/z-g.clientTop+g.scrollTop);
+    p.style.cssText=`left:${L(nr)}px;top:${Tp(nr)}px;width:${nr.width/z}px;height:${nr.height/z}px;background-color:${P.bg};background-image:${P.bi};border-radius:${P.br};box-shadow:${P.sh}`;
+    g.prepend(p);const sv=nb.getAttribute('style');nb.style.setProperty('background','transparent','important');nb.style.setProperty('box-shadow','none','important');
+    const fx=(L(T.or)+(gr.left-T.gr.left)/z)-L(nr),fs=or.width/nr.width;
+    const a=apmAnim(p,[{transform:`translateX(${fx}px) scaleX(${fs})`},{transform:'none'}],{duration:480,easing:APM.sn});
+    apmAnim(nb,[{color:T.nc},{color:getComputedStyle(nb).color}],{duration:320,easing:APM.out});
+    if(T.old.isConnected&&T.old!==nb)apmAnim(T.old,[{color:T.oc},{color:getComputedStyle(T.old).color}],{duration:320,easing:APM.out});
+    let dn=0;const done=()=>{if(dn++)return;p.remove();if(sv==null)nb.removeAttribute('style');else nb.setAttribute('style',sv);g.classList.remove('apmtabs');if(stat)g.classList.remove('apmrel')};
+    if(a&&a.finished)a.finished.then(done,done);setTimeout(done,700)}}
+/* the content the tab changed */
+function apmTabContent(T,g,dir){
+  const vis=el=>el&&el.isConnected&&el.getClientRects().length,big=el=>{const r=el.getBoundingClientRect();return r.width>=120&&r.height>=36&&r.bottom>0&&r.top<innerHeight},C=new Set();
+  const skip=el=>!el||el===g||g.contains(el)||el.closest('.toast,#ppPop,.pppop,nav,#lbox,.apmghost,.pgt,.pgtip')||el===document.body||el.classList.contains('view')||el.tagName==='MAIN';
+  for(const r of T.muts){const t=r.target;if(!(t instanceof Element))continue;
+    if(r.type==='childList'){if(skip(t)&&!(t.contains(g)&&t!==document.body))continue;
+      if(t.contains(g)){[...t.children].forEach(c=>{if(c!==g&&!c.contains(g)&&!skip(c)&&vis(c)&&big(c))C.add(c)})}else if(vis(t)&&big(t))C.add(t)}
+    else{if(skip(t)||!vis(t)||!big(t))continue;const o=r.oldValue||'';
+      if(r.attributeName==='hidden'&&o!==null&&!t.hidden)C.add(t);
+      else if(r.attributeName==='class'&&!/(^|\s)(on|show|open|act)(\s|$)/.test(o)&&/(^|\s)(on|show|open|act)(\s|$)/.test(t.className)&&!apmKids(t.parentElement||t).includes(t))C.add(t);
+      else if(r.attributeName==='style'&&/display:\s*none/.test(o)&&getComputedStyle(t).display!=='none')C.add(t)}}
+  const top=[...C].filter(a=>![...C].some(b=>b!==a&&b.contains(a))).slice(0,4);
+  top.forEach(el=>{if(el.getAnimations().some(x=>x.playState==='running'))return;apmAnim(el,[{opacity:0,transform:`translateX(${dir*14}px)`},{opacity:1,transform:'none'}],{duration:460})})}

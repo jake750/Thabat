@@ -132,3 +132,8 @@ html:not(.rmotion) #lbox.on .lbbar{animation:apmfade .4s var(--apm-out) .08s bac
 /* ---- less motion («أقل»): no movement, only short fades (durations need !important against 3.66's .001ms rule) ---- */
 html.rmotion details[open]>:not(summary){animation:apmfade .2s ease-out!important}
 html.rmotion .sw-toggle::after{transition:transform .2s ease-out,background-color .2s ease-out!important}
+
+/* ---- tabs: the chosen pill slides behind the labels (JS apmTabGo) ---- */
+.apmtabs{isolation:isolate}
+.apmtabs>.apmpill{position:absolute;z-index:0;pointer-events:none;transform-origin:0 50%;margin:0;padding:0;border:0}
+.apmtabs>button,.apmtabs>[role=tab],.apmtabs>.chip{position:relative;z-index:1}
