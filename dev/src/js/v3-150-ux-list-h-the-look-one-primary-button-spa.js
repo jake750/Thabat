@@ -25,10 +25,10 @@ function ux8PriSoon(){if(UX8.pend)return;UX8.pend=setTimeout(ux8Pri,140)}
 const UX8_SC=[4,8,12,16,24];
 const UX8_SKIP=/qimg|mushaf|\.ml\b|\.aen|#cal\b|\.cell|calsky|\.msb|wb|board|#bwrap|bkp|bkv|lpv|tpk|rpk|\.uic|svg|\.navpill|kbd|\.qcov|\.hm|tdaring|\.pez|qyg|\.c30g|\.ndbt|chart|#bPlot|\.bx|\.inline\b/i;
 function ux8Snap(v){if(v<=4||v>28)return v;let b=UX8_SC[0];for(const s of UX8_SC)if(Math.abs(s-v)<Math.abs(b-v)||(Math.abs(s-v)===Math.abs(b-v)&&s>b))b=s;return b}
-const UX8O=new Map();
+const UX8O=new Map(),UX8SH=new WeakMap();
 function ux8Space(){const on=S.settings.ux8Space!==false,rules=[];
   const walk=l=>{for(const r of l){if(r.cssRules&&!r.selectorText)walk(r.cssRules);else if(r.style&&r.selectorText)rules.push(r)}};
-  for(const sh of document.styleSheets){try{if(sh.href)continue;walk(sh.cssRules)}catch(e){}}
+  for(const sh of document.styleSheets){try{if(sh.href)continue;const k=on+':'+sh.cssRules.length;if(UX8SH.get(sh)===k)continue;UX8SH.set(sh,k);walk(sh.cssRules)}catch(e){}}   /* 3.174: a sheet already done (same rules, same setting) is skipped: a theme change no longer re-reads the whole style */
   rules.forEach(r=>{const st=r.style,sel=r.selectorText;if(UX8_SKIP.test(sel))return;
     let o=UX8O.get(r);if(!o){o={};['gap','row-gap','column-gap','padding'].forEach(p=>{const v=st.getPropertyValue(p);if(v)o[p]=[v,st.getPropertyPriority(p)]});UX8O.set(r,o)}
     for(const p in o){const [v,pr]=o[p];

@@ -2,11 +2,10 @@
 <script>/* 3.36: the loader. The app above is not run by the browser directly (type="text/x-thabat"): this runs it at once, the same as before,
    unless the browser storage only holds the short start copy (its meta says slim) — then the full data is first read from IndexedDB
    (at most 4 s; on failure the app starts from the short copy and joins the rest when it can). */
-(function(){var go=function(){var m=document.getElementById('thMain');if(!m||m.dataset.ran)return;m.dataset.ran='1';var T=window.__TH_T={a:performance.now()};var s=document.createElement('script');s.textContent=m.textContent;m.textContent='';document.body.appendChild(s);T.b=performance.now()};
-  /* 3.170: a copy of the last Today page is shown first and painted before the app script runs (the first real render removes it) */
-  var snap=false;try{var sn=JSON.parse(localStorage.getItem('thabat.tdSnap')||'null'),v=document.getElementById('v-today');if(sn&&sn.h&&v&&(sn.d===new Date().toDateString()||Date.now()-sn.at<3*36e5)){var de=document.documentElement;if(sn.cls)de.className=sn.cls;if(sn.st)de.setAttribute('style',sn.st);if(sn.bst)document.body.setAttribute('style',sn.bst);if(sn.dir)de.dir=sn.dir;if(sn.lang)de.lang=sn.lang;
-    var d=document.createElement('div');d.id='tdSnap';d.setAttribute('aria-hidden','true');d.innerHTML=sn.h;v.classList.add('m16snap');v.insertBefore(d,v.firstChild);snap=true}}catch(e){}
-  if(snap){var go0=go;go=function(){var r=function(){setTimeout(go0,0)};try{requestAnimationFrame(r)}catch(e){}setTimeout(go0,120)}}
+(function(){var go=function(){var m=document.getElementById('thMain');if(!m||m.dataset.ran)return;m.dataset.ran='1';var T=window.__TH_T={a:performance.now()};var s=document.createElement('script');s.textContent=m.textContent;m.textContent='';try{document.body.appendChild(s)}finally{T.b=performance.now();try{window.thSplashEnd&&window.thSplashEnd()}catch(e){}}};
+  /* 3.174: the start-up screen (body) is painted first: the app runs one frame later (3.170's picture of Today is replaced by it) */
+  try{localStorage.removeItem('thabat.tdSnap')}catch(e){}
+  var go0=go;go=function(){var k=false,r=function(){if(!k){k=true;setTimeout(go0,0)}};try{requestAnimationFrame(r)}catch(e){}setTimeout(r,100)};
   /* 3.171: a language other than Arabic or English: its file is loaded before the app runs */
   var lg='';try{lg=localStorage.getItem('thabat.lang')||''}catch(e){}
   if(/^[a-z]{2,3}$/.test(lg)&&lg!=='ar'&&lg!=='en'){var go2=go,gd=false;go=function(){var f=function(){if(gd)return;gd=true;go2()};try{var sc=document.createElement('script');sc.src='Thabat-lang-'+lg+'.js';sc.onload=f;sc.onerror=f;document.head.appendChild(sc)}catch(e){f()}setTimeout(f,3000)}}

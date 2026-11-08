@@ -1,6 +1,30 @@
 </style>
 </head>
 <body>
+<!-- 3.174: the start-up screen. It covers the page while the app loads and builds its first page, then fades away (thSplashEnd, called by the loader below) -->
+<style>#thSplash{position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:var(--bg);color:var(--text);transition:opacity .38s cubic-bezier(.22,1,.36,1),visibility 0s linear .38s;contain:strict}
+#thSplash.out{opacity:0;visibility:hidden;pointer-events:none}
+#thSplash .tsl{font-weight:700;font-size:54px;line-height:1.5;letter-spacing:-.5px;background:linear-gradient(to top,var(--water) 42%,var(--text) 42%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;animation:tsIn .5s cubic-bezier(.22,1,.36,1) both}
+html[lang=en] #thSplash .tsl{font-size:40px;letter-spacing:.3px}
+#thSplash .tsb{width:112px;height:3px;border-radius:3px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden;animation:tsIn .5s .12s cubic-bezier(.22,1,.36,1) both}
+#thSplash .tsb i{display:block;width:40%;height:100%;border-radius:3px;background:var(--water);animation:tsRun 1.1s cubic-bezier(.45,0,.25,1) infinite}
+html[dir=rtl] #thSplash .tsb i{animation-name:tsRunR}
+#thSplash .tsc{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));font-size:11px;letter-spacing:.4px;color:var(--muted);opacity:.7}
+@keyframes tsIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes tsRun{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+@keyframes tsRunR{from{transform:translateX(100%)}to{transform:translateX(-250%)}}
+html.rmotion #thSplash .tsl,html.rmotion #thSplash .tsb{animation:none}
+html.rmotion #thSplash .tsb i{animation:tsFade 1.4s ease-in-out infinite alternate;width:100%}
+@keyframes tsFade{from{opacity:.25}to{opacity:.8}}</style>
+<div id="thSplash" role="progressbar" aria-busy="true"><div class="tsl">ثبات</div><div class="tsb"><i></i></div><div class="tsc" dir="ltr">created by jake750_</div></div>
+<script>/* 3.174: the start-up screen closes once the first page is built, the browser has had a quiet moment and the font is in (each wait has a limit); it never stays longer than 12 s */
+(function(){var el=document.getElementById('thSplash'),B=window.__thBoot,done=false;try{if(B&&B.lang&&B.lang!=='ar')el.firstChild.textContent='Thabat';el.setAttribute('aria-label',B&&B.lang&&B.lang!=='ar'?'Loading':'جارٍ التحميل')}catch(e){}
+  var close=function(){if(done)return;done=true;window.__thSplT=performance.now();el.classList.add('out');setTimeout(function(){el.remove()},450)};
+  window.thSplashEnd=function(){if(done)return;var n=0,step=function(){if(++n<3)return;var f=function(){var k=false,g=function(){if(!k){k=true;close()}};try{requestAnimationFrame(function(){requestAnimationFrame(g)})}catch(e){}setTimeout(g,120)};
+      try{if(document.fonts&&document.fonts.status!=='loaded'){var w=false,h=function(){if(!w){w=true;f()}};document.fonts.ready.then(h,h);setTimeout(h,700)}else f()}catch(e){f()}};
+    /* (1) the work the app left for its first quiet moment (2) at least a short look at the screen so it never just blinks */
+    try{(window.requestIdleCallback||function(c){setTimeout(c,1)})(step,{timeout:500})}catch(e){step()}setTimeout(step,0);setTimeout(step,Math.max(0,280-(performance.now()-(window.__thSpl0||0))))};
+  window.__thSpl0=performance.now();setTimeout(close,12000)})();</script>
 <div id="aurora"><i></i><i></i><i></i></div>
 <div class="app">
   <nav class="side">

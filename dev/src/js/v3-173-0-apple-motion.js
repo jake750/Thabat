@@ -22,7 +22,8 @@ function apmPick(tf,dur,exit){                                             /* �
   if(dur<=.2)return[APM.out,dur];
   if(dur<=.25)return[APM.out,dur];
   return[APM.sm,dur>.6?dur:Math.min(.6,dur*1.2)]}   /* 3.173.1: shorter (×1.2, ≤ .6 s): frequent things stay quick */
-function apmRetime(){if(!APM.sm)return;const kf={};
+function apmRetime(){if(!APM.sm)return;const kf=APM.kf||(APM.kf={}),SH=APM.sh||(APM.sh=new WeakMap()),todo=[];   /* 3.174: only sheets that are new or changed are read again */
+  for(const s of document.styleSheets){try{const n=s.cssRules.length;if(SH.get(s)!==n){SH.set(s,n);todo.push(s)}}catch(e){}}if(!todo.length)return;
   const walkK=rules=>{for(const r of rules){if(r instanceof CSSKeyframesRule)kf[r.name]=r.cssRules.length;else if(r.cssRules&&!(r instanceof CSSStyleRule))try{walkK(r.cssRules)}catch(e){}}};
   const walk=rules=>{for(const r of rules){
     if(r instanceof CSSStyleRule){if(APM.seen.has(r))continue;APM.seen.add(r);const st=r.style,sel=r.selectorText||'';if(APM_KEEP.test(sel))continue;
@@ -41,8 +42,8 @@ function apmRetime(){if(!APM.sm)return;const kf={};
           if(k){nt.push(k[0]);nd.push(k[1]+'s');ch=true}else{nt.push(t);nd.push(D[i%D.length])}});
         if(ch)try{st.animationDuration=nd.join(',');st.animationTimingFunction=nt.join(',')}catch(e){}}
     }else if(r.cssRules)try{walk(r.cssRules)}catch(e){}}};
-  for(const s of document.styleSheets){try{walkK(s.cssRules)}catch(e){}}
-  for(const s of document.styleSheets){try{walk(s.cssRules)}catch(e){}}}
+  for(const s of todo){try{walkK(s.cssRules)}catch(e){}}
+  for(const s of todo){try{walk(s.cssRules)}catch(e){}}}
 function apmInit(){APM.sm=apmCurve('smooth');APM.out=apmCurve('out');APM.bo=apmCurve('bouncy');APM.sn=apmCurve('snappy');
   const go=()=>{const t0=performance.now();try{apmRetime()}catch(e){console.error(e)}APM.ms=Math.round(performance.now()-t0)};
   if(window.requestIdleCallback)requestIdleCallback(go,{timeout:1200});else setTimeout(go,300)}   /* after the first paint: start-up stays as fast as before (~50 ms of work) */

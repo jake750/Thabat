@@ -14,5 +14,7 @@
 (function(){var f=window.fetch,re=/^http:\/\/127\.0\.0\.1:4781[35]\//,add=function(u){var k=window.THABAT_KEY;return k?u+(u.indexOf('?')<0?'?':'&')+'k='+k:u},load=function(){return new Promise(function(ok){var s=document.createElement('script');s.src='thabat-key.js?'+Date.now();s.onload=s.onerror=function(){s.remove();ok()};document.head.appendChild(s)})};
 window.fetch=function(u,o){if(typeof u!=='string'||!re.test(u))return f.apply(this,arguments);var had=window.THABAT_KEY;return f.call(window,add(u),o).then(function(r){if(r.status!==401)return r;return load().then(function(){return window.THABAT_KEY&&window.THABAT_KEY!==had?f.call(window,add(u),o):r})})}})();</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script>/* 3.174: the saved look (theme colours, light/dark, language direction) is put on the page before anything is drawn, so the start-up screen and the app open in their own colours */
+try{var B=JSON.parse(localStorage.getItem('thabat.boot')||'null'),E=document.documentElement;if(B){if(B.cls)E.className=B.cls;if(B.st)E.setAttribute('style',B.st);if(B.dir)E.dir=B.dir;if(B.lang)E.lang=B.lang}window.__thBoot=B}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><!-- 3.174: the font no longer holds back the first paint -->
 <style>

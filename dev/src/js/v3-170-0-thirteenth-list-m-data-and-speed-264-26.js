@@ -89,14 +89,13 @@ async function m16AllOpen(){openInfo('๐ฉบ '+t('m16.allT'),`<div class="empty">โ
    the loader in tail.html shows it and lets it paint before the app script runs, and the first real render below removes it.
    Not kept while the app lock is on, in presentation mode, in a demo or a solo window. */
 const M16S={t:0},M16_TR=['navhide','ux8sh','lkscr','qread','privm','qfs','qfs-one','solo','qnote','lxside'];
-function m16SnapOk(){try{return!lockCfg().on&&!S._demo&&!document.documentElement.classList.contains('privm')&&!document.documentElement.classList.contains('solo')&&S.settings.tdSnap!==false}catch(e){return false}}
+function m16SnapOk(){return false;/* 3.174: replaced by the start-up screen; kept so the old copy is removed */try{return!lockCfg().on&&!S._demo&&!document.documentElement.classList.contains('privm')&&!document.documentElement.classList.contains('solo')&&S.settings.tdSnap!==false}catch(e){return false}}
 function m16SnapSave(){try{if(!m16SnapOk()){localStorage.removeItem('thabat.tdSnap');return}const v=$('#v-today');if(!v||curView()!=='today'||$('#tdSnap'))return;
   const c=v.cloneNode(true);c.querySelectorAll('script,canvas,video,audio,iframe,input,textarea,select').forEach(e=>{if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.tagName)){const s=document.createElement('span');s.className='m16fld';s.textContent=e.value||e.placeholder||'';e.replaceWith(s)}else e.remove()});
   c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));c.querySelectorAll('img').forEach(e=>{if(/^blob:/.test(e.getAttribute('src')||''))e.remove()});let h=c.innerHTML.replace(/\son\w+="[^"]*"/g,'');if(h.length>600000)return;
   const de=document.documentElement;const cls=[...de.classList].filter(k=>!M16_TR.includes(k)).join(' ');localStorage.setItem('thabat.tdSnap',JSON.stringify({at:Date.now(),d:new Date().toDateString(),h,cls,st:de.getAttribute('style')||'',bst:document.body.getAttribute('style')||'',dir:de.dir,lang:de.lang}))}catch(e){try{localStorage.removeItem('thabat.tdSnap')}catch(x){}}}
 function m16SnapSoon(){clearTimeout(M16S.t);M16S.t=setTimeout(()=>{(window.requestIdleCallback||setTimeout)(m16SnapSave)},1800)}
 function m16SnapDrop(){const s=document.getElementById('tdSnap');if(s){s.remove();const v=$('#v-today');if(v)v.classList.remove('m16snap')}}
-{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){m16SnapDrop();m16SnapSoon()})}
-addEventListener('pagehide',m16SnapSave);document.addEventListener('visibilitychange',()=>{if(document.hidden)m16SnapSave()});
+{hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'post',function(){m16SnapDrop()})}
 setTimeout(m16SnapDrop,0);
 
