@@ -19,7 +19,8 @@ const ADH_FADL={
   21:['كان النبي ﷺ يقوله إذا صلّى الصبح.','رواه ابن ماجه'],
   22:['«يا أيها الناس توبوا إلى الله، فإني أتوب في اليوم إليه مائة مرة».','رواه مسلم'],
   23:['من قالها لم يضرّه شيء.','رواه مسلم'],
-  24:['«من صلّى عليّ حين يصبح عشراً وحين يمسي عشراً أدركته شفاعتي يوم القيامة».','رواه الطبراني، وفي إسناده ضعف']};
+  24:['«من صلّى عليّ حين يصبح عشراً وحين يمسي عشراً أدركته شفاعتي يوم القيامة».','رواه الطبراني، وفي إسناده ضعف'],
+  25:['«إن الله ليعجب إلى العبد إذا قال: لا إله إلا أنت، إني قد ظلمت نفسي، فاغفر لي ذنوبي، إنه لا يغفر الذنوب إلا أنت. قال: عبدي عرف أن له ربا يغفر ويعاقب».','رواه ابن أبي شيبة والنسائي في الكبرى، وصححه الألباني في السلسلة الصحيحة (1653)']};
 function adhFadl(a){if(String(a.key||'').startsWith('x'))return null;if(a.custom){const c=(S.adhCustom||[]).find(x=>x.id===a.cid);return c&&c.fadl?[c.fadl,'']:null}return ADH_FADL[a.i]||null}
 function adhStreak(){let d=keyToDate(todayKey()),n=0;if(adhLvl((S.days[todayKey()]||{}).adh)<3)d=addDays(d,-1);for(let i=0;i<4000;i++){const k=dKey(d);if(adhLvl((S.days[k]||{}).adh)===3){n++;d=addDays(d,-1)}else break}return n}
 function adhBestStreak(){const ks=Object.keys(S.days).filter(k=>adhLvl(S.days[k].adh)===3).sort();let best=0,cur=0,prev=null;for(const k of ks){cur=prev&&dKey(addDays(keyToDate(prev),1))===k?cur+1:1;best=Math.max(best,cur);prev=k}return best}
