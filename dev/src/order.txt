@@ -201,6 +201,7 @@ css/v3-172-0-thirteenth-list-n-hijri-letter-dates-a.css
 css/v3-172-1-his-screenshots-2026-11-07.css
 css/image-viewer.css
 css/v3-173-0-apple-motion.css
+css/v3-173-2-his-screenshots-2026-11-08.css
 body.html
 js/core.js
 js/helpers.js
@@ -483,5 +484,6 @@ js/v3-172-0-thirteenth-list-n-letters-on-hijri-date.js
 js/image-viewer-zoom-pan-swipe-download.js
 js/v3-172-1-his-screenshots-2026-11-07.js
 js/v3-173-0-apple-motion.js
+js/v3-173-2-his-screenshots-2026-11-08.js
 js/loop.js
 tail.html

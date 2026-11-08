@@ -1,7 +1,7 @@
 # Thabat (ثبات): guide for Claude
 
 Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HTML file (no framework, works from `file://`) + Android WebView shell + Windows helper.
-- Version: **3.173.1** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
+- Version: **3.173.2** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
 - History, design notes per release, finished lists and **rejected suggestions** are in `CLAUDE_ARCHIVE.md` — grep it, never load it whole.
 
 ## Active
@@ -33,7 +33,7 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 ## Code layout
 - Source of truth: `dev/src/` (parts joined by `order.txt`). `dev/src.html` is generated; never edit it or `Thabat/Thabat.html`.
 - `dev/build.py` builds; `dev/release.py` builds, checks, packages zips + APK + setup exe, updates his copies.
-- `dev/modules/` = merged modules (latest g210). `dev/win/` helper/library scripts; `dev/mac/`; `dev/android/` (shell sources, `build_win.py`); `dev/i18n/` language packs; `dev/data/` side files.
+- `dev/modules/` = merged modules (latest g211). `dev/win/` helper/library scripts; `dev/mac/`; `dev/android/` (shell sources, `build_win.py`); `dev/i18n/` language packs; `dev/data/` side files.
 - State: global `S` in IndexedDB `thabat`/`kv` (+ quick-start copy in localStorage). Days via `day(key)`.
 - Strings: `t(key)`; every visible string goes through it.
 - PC servers: helper 47813, library 47815. Every route needs the key check and refuses web origins.

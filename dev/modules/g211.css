@@ -1,0 +1,28 @@
+/* v3.173.2 (his screenshots 2026-11-08) */
+/* 1. Today header, prayer card: six prayers in a narrow card ran their times together («18:4717:23»).
+   The card is a size container where its width comes from the layout (compact Today on PC, phones);
+   below 320px the prayers go in two rows of three, so every time keeps its full size. */
+@media (min-width:981px){html.tdc #v-today .tdpr{container:tdpr/inline-size}}
+@media (max-width:700px){#v-today .tdpr{container:tdpr/inline-size}}
+#v-today .tdpr .pr span,#v-today .tdpr .pr b{white-space:nowrap}
+@container tdpr (max-width:320px){
+  #v-today .tdpr .prayers{grid-template-columns:repeat(3,minmax(0,1fr))!important;row-gap:4px!important;padding:5px 6px!important}
+}
+/* 2. «something you did away from the device» on phones: the old grid (44px | number | 44px | unit) was written
+   before − and + were grouped with the number, so the group got 44px: the numbers vanished and + left the screen.
+   Hours and minutes now share one row, each group taking half. */
+@media (max-width:700px){
+  #manPop .form label:has(#manH) .inline{display:flex!important;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:6px;width:100%}
+  #manPop .form label:has(#manH) .inline>.nstepw{flex:1 1 0;min-width:0;gap:4px}
+  #manPop .form label:has(#manH) .nsb{width:34px;height:38px;margin:0}
+  #manPop .form label:has(#manH) .nstepw input.nstepi{flex:1 1 0;width:0;min-width:2.4em;max-width:none;padding-inline:4px}
+  #manPop .form label:has(#manH) .inline>span:not(.nstepw){flex:none}
+}
+/* 3. sleep periods on phones: «from» and «to» side by side, the period's length and ✕ on the same row's end */
+@media (max-width:700px){
+  .slrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:6px 8px;align-items:end}
+  .slrow label{min-width:0}
+  .slrow label input.in{width:100%;min-width:0;box-sizing:border-box;padding-inline:8px}
+  .slrow small{grid-column:1/3;grid-row:2;margin:0}
+  .slrow [data-del]{grid-column:3;grid-row:1}
+}
