@@ -1,11 +1,10 @@
 # Thabat (ثبات): guide for Claude
 
 Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HTML file (no framework, works from `file://`) + Android WebView shell + Windows helper.
-- Version: **3.174.0** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
+- Version: **3.174.1** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
 - History, design notes per release, finished lists and **rejected suggestions** are in `CLAUDE_ARCHIVE.md` — grep it, never load it whole.
 
 ## Active
-- 3.174.1 (written daily intention no longer logs a fast; summary «السماء» tile no longer stuck at 0: `lkCount` aborted its own count-up after the first frame) is committed but not released: needs `THABAT_KS_PASS` from him.
 - Today chips, option A (time-aware strip + «المزيد N»): in the web demo only (`dev/modules/smartchips.js`); he wants it in the app later, ask before moving it.
 - Languages: Turkish shipped (3.171). The rest wait until he asks, then one release each: id, ur, fr, fa, ms, bn, de, es, it, zh, ja (ur, fa are RTL).
 - Waiting on him: font choice (Plex / Noto Kufi / Readex Pro / Tajawal / Almarai); logo idea (then items 181 icon, 183 About page); takbir wording; Quran content sources (asbab an-nuzul, mutashabihat, qira'at); Google Cloud OAuth client for two-way Google Calendar; support e-mail (`SUPPORT_EMAIL`, `store/privacy.html`).
