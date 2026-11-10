@@ -51,7 +51,7 @@ const LKJ={id:null};document.addEventListener('click',e=>{const ck=e.target.clos
 /* 48. big numbers count up once when they come into view */
 const LKC=new WeakMap();
 function lkCount(el){if(!LK().countUp||document.documentElement.classList.contains('rmotion'))return;const tx=el.textContent,m=tx.match(/^(\D*?)(\d+)(\D*)$/);if(!m)return;const to=+m[2];if(!to||to>100000||LKC.get(el)===tx)return;LKC.set(el,tx);
-  const t0=performance.now(),D=650,step=()=>{const p=Math.min(1,(performance.now()-t0)/D),v=Math.round(to*(1-Math.pow(1-p,3)));if(el.textContent!==m[1]+v+m[3]&&LKC.get(el)!==tx)return;el.textContent=m[1]+v+m[3];LKC.set(el,m[1]+v+m[3]);if(p<1)setTimeout(step,16);else LKC.set(el,tx)};step()}
+  const t0=performance.now(),D=650,step=()=>{const p=Math.min(1,(performance.now()-t0)/D),v=Math.round(to*(1-Math.pow(1-p,3)));if(el.textContent!==LKC.get(el))return;el.textContent=m[1]+v+m[3];LKC.set(el,m[1]+v+m[3]);if(p<1)setTimeout(step,16);else LKC.set(el,tx)};step()}
 function lkCountScan(root){if(!LK().countUp)return;(root||document).querySelectorAll('#glPct,#v-brief .tile b,#v-brief .crxt b,#v-brief .bnum,#v-brief .kpi b,#tdaRing span').forEach(el=>{if(el.offsetParent)lkCount(el)})}
 {hookFn('renderBrief',()=>renderBrief,f=>{renderBrief=f},'post',function(){setTimeout(()=>lkCountScan($('#v-brief')),60)})}
 {const _sv=showView;showView=function(v,...a){const r=_sv(v,...a);try{lkLogo()}catch(e){}if(v==='today'||v==='brief')setTimeout(()=>lkCountScan(),120);return r}}
