@@ -2,11 +2,11 @@
    congregation this month vs last, the khatma in N days, the hizb bar (hizb/athman division), hizbs read this month, a gentle note after three days away, the khatma by surahs ============ */
 /* 12th-12: the day before Arafah, Tasu'a or Ashura: a chip «tomorrow is …» with «I'll fast» → day(tomorrow).niyya; on the day the fast is logged by itself (one undo) */
 function fsnTomorrow(){const tm=addDays(keyToDate(todayKey()),1),v=virtDay(tm);return v&&v.fast?{k:v.k,dk:dKey(tm)}:null}
-function fsnChip(){const T=fsnTomorrow();if(!T)return'';const pt=prayerTimes(keyToDate(todayKey()));if(Date.now()<pt.dhuhr)return'';const on=!!(S.days[T.dk]&&S.days[T.dk].niyya);
+function fsnChip(){const T=fsnTomorrow();if(!T)return'';const pt=prayerTimes(keyToDate(todayKey()));if(Date.now()<pt.dhuhr)return'';const on=!!(S.days[T.dk]&&S.days[T.dk].niyya===1);
   return`<span class="evchip big fsn" data-fsn style="--c:#14b8a6">🌙 ${esc(t('fsn.tom',T.lab||t('fast.'+T.k)))}${on?`<b class="fsnok">✓ ${esc(t('fsn.on'))}</b>`:`<button class="btn sm" data-fsnb>${esc(t('fsn.b'))}</button>`}</span>`}
 {hookFn('renderTodayEv',()=>renderTodayEv,f=>{renderTodayEv=f},'post',function(){try{const box=$('#todayEv');if(!box||box.querySelector('[data-fsn]'))return;const h=fsnChip();if(!h)return;box.insertAdjacentHTML('afterbegin',h);
   const b=box.querySelector('[data-fsnb]');if(b)b.onclick=e=>{e.stopPropagation();const T=fsnTomorrow();if(!T)return;day(T.dk).niyya=1;save();renderTodayEv();toast(t('fsn.saved'))}}catch(e){console.error(e)}})}
-function fsnLog(){const k=todayKey(),d=S.days[k];if(!d||!d.niyya||d.fast||d.niyyaDone)return;d.fast=1;d.niyyaDone=1;save();setTimeout(()=>{try{toastAct(t('fsn.logged'),t('undo'),()=>{d.fast=0;save();try{renderToday()}catch(e){}})}catch(e){}},1200)}
+function fsnLog(){const k=todayKey(),d=S.days[k];if(!d||d.niyya!==1||d.fast||d.niyyaDone)return;d.fast=1;d.niyyaDone=1;save();setTimeout(()=>{try{toastAct(t('fsn.logged'),t('undo'),()=>{d.fast=0;save();try{renderToday()}catch(e){}})}catch(e){}},1200)}
 {hookFn('renderToday',()=>renderToday,f=>{renderToday=f},'pre',function(){try{fsnLog()}catch(e){}})}
 
 /* 12th-16: morning and evening adhkar over a whole year (S.adhkar[date].m / .e) */
