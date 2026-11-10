@@ -24,7 +24,7 @@
     EVS().push({id:'de1',title:T.e1,date:dKey(addDays(keyToDate(tk),2)),time:'10:00',end:'11:00',color:'#0ea5e9',rep:'none',rem:60,notes:'',big:true},{id:'de2',title:T.e2,date:dKey(addDays(keyToDate(tk),6)),time:'15:00',end:'',color:'#8b5cf6',rep:'none',rem:null,notes:'',big:false});
     S.quran.page=236;S.quran.khatmas=[{start:dKey(addDays(keyToDate(tk),-95)),end:dKey(addDays(keyToDate(tk),-40))}];S.quran.kStart=dKey(addDays(keyToDate(tk),-39));S.quran.memorized=[582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604];S.quran.hifzAt='78:1';S.quran.view=235;S.quran.pv=236;
     const y=String(new Date().getFullYear());S.ygoals={[y]:[{id:'yg1',name:T.g1,target:3,unit:T.u1,done:2},{id:'yg2',name:T.g2,target:12,unit:T.u2,done:7}]};
-    S.demoSeeded=1;save()}
+    S.notified=S.notified||{};Object.keys(S.days||{}).forEach(k=>{S.notified['full-'+k]=1});S.demoSeeded=1;save()}
   if(!S.demoSeeded){try{seed()}catch(e){console.error('demo seed',e)}renderAll()}
   /* the demo ribbon */
   const css=document.createElement('style');css.textContent=`.demorb{position:fixed;z-index:60;inset-inline-end:16px;bottom:14px;display:flex;align-items:center;gap:8px;padding:5px 6px 5px 12px;border-radius:999px;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));box-shadow:0 6px 20px rgba(0,0,0,.25);font-size:12px;color:var(--text);max-width:calc(100vw - 140px)}
