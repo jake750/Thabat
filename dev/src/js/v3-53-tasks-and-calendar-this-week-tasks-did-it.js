@@ -46,7 +46,7 @@ BT_GROUPS.find(g=>g[0]==='review')[1].push('cmoBtn','rmcBtn');Object.assign(BT_I
 function dayClock(k){const d=S.days[k]||{},R=70,cx=90,cy=90,ang=ts=>{const x=new Date(ts);return((x.getHours()*60+x.getMinutes())/1440)*Math.PI*2-Math.PI/2},pt=(a,r)=>[cx+Math.cos(a)*r,cy+Math.sin(a)*r];
   const arc=(s,e,r,col,w)=>{let a1=ang(s),a2=ang(e);if(a2<=a1)a2+=Math.PI*2;const[x1,y1]=pt(a1,r),[x2,y2]=pt(a2,r);return`<path d="M${x1.toFixed(1)} ${y1.toFixed(1)}A${r} ${r} 0 ${a2-a1>Math.PI?1:0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${col}" stroke-width="${w}" fill="none" stroke-linecap="butt"/>`};
   let s=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="color-mix(in srgb,var(--text) 10%,transparent)" stroke-width="14"/>`;
-  const sl=d.sleep3;if(sl&&sl.bed&&sl.wake){const day0=keyToDate(k),b=atTime(addDays(day0,-1),sl.bed),w=atTime(day0,sl.wake);s+=arc(b,w,R-16,'color-mix(in srgb,#6366f1 70%,transparent)',6)}
+  /* 3.174.3: every sleep period (sleep3.p), not only the old single bed/wake */try{slSpans(k).forEach(q=>{if(q.t1-q.t0>6e4)s+=arc(q.t0,q.t1,R-16,'color-mix(in srgb,#6366f1 80%,transparent)',7)})}catch(e){}
   (d.sessions||[]).forEach(x=>{const c=catRaw(topOf(x.cat));if(x.end-x.start>6e4)s+=arc(x.start,x.end,R,c?c.color:'#888',14)});
   const P=prayerTimes(keyToDate(k));PRAYERS.forEach(p=>{const a=ang(P[p]),[x1,y1]=pt(a,R+9),[x2,y2]=pt(a,R-9);s+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="var(--gold)" stroke-width="2"/>`});
   [0,6,12,18].forEach(h=>{const a=h/24*Math.PI*2-Math.PI/2,[x,y]=pt(a,R+20);s+=`<text x="${x.toFixed(1)}" y="${(y+4).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--muted)">${h}</text>`});
