@@ -4,13 +4,18 @@
 function adfFit(){const L=$('#adhList'),F=$('#adhF');if(!L||!F||!L.clientHeight)return;
   const tx=F.querySelector('.aftx'),fd=F.querySelector('.affadl'),rg=F.querySelector('.afring');if(!tx)return;
   tx.style.fontSize='';tx.style.lineHeight='';if(fd)fd.style.fontSize='';if(rg)rg.style.width=rg.style.height='';F.style.gap='';
-  const fits=()=>F.scrollHeight<=L.clientHeight+1;if(fits())return;
+  /* 3.174.4: measure against the list's content box; its 18 px top/bottom padding let a card 36 px too tall pass as fitting */
+  const lc=getComputedStyle(L),avail=L.clientHeight-(parseFloat(lc.paddingTop)||0)-(parseFloat(lc.paddingBottom)||0);
+  const fits=()=>F.scrollHeight<=avail+1;if(fits())return;
   let fs=parseFloat(getComputedStyle(tx).fontSize)||20;F.style.gap='12px';
   while(!fits()&&fs>14){fs-=1;tx.style.fontSize=fs+'px';tx.style.lineHeight=fs<17?'1.8':'1.95'}
   if(!fits()&&rg){rg.style.width=rg.style.height='86px'}
   if(!fits()&&fd)fd.style.fontSize='11.5px'}
 {hookFn('renderAdhFocus',()=>renderAdhFocus,f=>{renderAdhFocus=f},'post',function(){try{adfFit()}catch(e){}})}
 addEventListener('resize',()=>{if(S.adhFocus&&$('#adhSheet.on'))adfFit()});
+/* the list also changes height without a window resize (reset row, header buttons, fonts arriving): refit then too */
+try{let adfH=0;new ResizeObserver(()=>{const L=$('#adhList');if(!L||L.clientHeight===adfH)return;adfH=L.clientHeight;if(S.adhFocus&&$('#adhSheet.on'))adfFit()}).observe($('#adhList'))}catch(e){}
+try{document.fonts&&document.fonts.ready.then(()=>{if(S.adhFocus&&$('#adhSheet.on'))adfFit()})}catch(e){}
 /* the offline banner and network toasts stay away while the mushaf is full screen; they come back when it closes */
 function qfsQuiet(){return document.documentElement.classList.contains('qfs')}
 {const _t=toast;toast=function(m,...a){if(qfsQuiet()&&typeof m==='string'&&(m.indexOf(t('net.off'))>=0||m.indexOf(t('net.fail'))>=0||m.indexOf(t('ux.on'))>=0))return;return _t.call(this,m,...a)}}
