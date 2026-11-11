@@ -1,0 +1,23 @@
+/* v3.174.1 calendar header on phones: the occasions button sits beside the month name (not over the line under it), prev / today / next as three equal buttons, the tools as an even 4-column grid of icon-over-label tiles; the shooting star in a day cell is thin and soft like the wall's */
+.cht-l,.cht-g{display:none!important}
+@media (max-width:700px){
+  #v-cal .calhead>div:first-child{padding-top:0}
+  #v-cal #calTtl{min-height:38px;display:flex;align-items:center;padding-inline-end:44px}
+  #v-cal .calhead .occi{top:1px!important;inset-inline-end:0!important;width:36px;height:36px;min-height:36px!important}
+  #v-cal .calhead>.row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px!important;align-items:stretch}
+  #v-cal .calhead>.row>#calPrev,#v-cal .calhead>.row>#calToday,#v-cal .calhead>.row>#calNext{width:100%;min-width:0;justify-content:center;gap:4px}
+  #v-cal .calhead>.row.caltight #calPrev span,#v-cal .calhead>.row.caltight #calNext span{display:inline}
+  #v-cal .calhead>.row #calTools3{grid-column:1/-1;display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px!important;margin:2px 0 0!important;width:100%}
+  #v-cal #calTools3>button{display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:100%!important;min-width:0;height:56px;min-height:56px;padding:6px 4px!important;font-size:11.5px!important;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #v-cal #calTools3>button>span{overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  #v-cal #calTools3>button svg,#v-cal #calTools3>button .uic{width:19px!important;height:19px!important;flex:none;margin:0!important}
+  #v-cal #calTools3 .cht-l{display:block!important}
+  #v-cal #calTools3>#cal2Btn{display:none!important}
+}
+/* calmer shooting star in a day cell */
+#v-cal #cal .cell .cmetc,.cal2box .cell .cmetc{width:34%;max-width:38px;height:1.5px;top:46%;border-radius:2px;background:linear-gradient(to right,rgba(255,255,255,.95),rgba(255,236,170,.55) 30%,transparent);filter:drop-shadow(0 0 3px rgba(255,236,170,.6));animation:cmetc2 3.6s ease-in-out infinite}
+#v-cal #cal .cell .cmetc::before,.cal2box .cell .cmetc::before{left:-1.5px;top:-1.25px;width:4px;height:4px;background:#fff;box-shadow:0 0 5px 1px rgba(255,245,200,.75)}
+html.mode-light #v-cal #cal .cell:not(.fl) .cmetc{background:linear-gradient(to right,#b8860b,rgba(209,154,0,.5) 30%,transparent);filter:drop-shadow(0 0 2px rgba(209,154,0,.35))}
+html.mode-light #v-cal #cal .cell:not(.fl) .cmetc::before{background:#c28a00;box-shadow:0 0 4px rgba(209,154,0,.5)}
+@keyframes cmetc2{0%,100%{opacity:.9}50%{opacity:.5}}
+html.rmotion #cal .cell .cmetc,html.lite #cal .cell .cmetc{animation:none;opacity:.85}

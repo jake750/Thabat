@@ -202,6 +202,7 @@ css/v3-172-1-his-screenshots-2026-11-07.css
 css/image-viewer.css
 css/v3-173-0-apple-motion.css
 css/v3-173-2-his-screenshots-2026-11-08.css
+css/v3-174-1-calendar-header-tidy-calm-meteor.css
 body.html
 js/core.js
 js/helpers.js
@@ -486,5 +487,6 @@ js/v3-172-1-his-screenshots-2026-11-07.js
 js/v3-173-0-apple-motion.js
 js/v3-173-2-his-screenshots-2026-11-08.js
 js/v3-174-0-start-up-screen.js
+js/v3-174-1-calendar-header-tidy.js
 js/loop.js
 tail.html

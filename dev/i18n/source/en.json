@@ -1059,6 +1059,8 @@
  "chg.398": "<ul><li>🤲 Nawafil: tarawih with its rak’at, a Summary card, a prayer-map tab, and each day’s rak’at in the week view and the calendar day panel</li><li>🌌 Qiyam and witr are one record from the evening review or the nawafil, and the witr and duha reminders stay quiet once logged</li></ul>",
  "chg.399": "<ul><li>📜 «Introduction» in the Taysir mushafs: the mushaf’s own pages before page 1, with the key to its colours</li><li>📶 On the phone: download mushafs on Wi-Fi only, the same setting as library lessons</li></ul>",
  "chg.t": "What's new in Thabat {0}",
+ "cht.ly": "Layers",
+ "cht.more": "More",
  "chw.t": "Weekly challenge",
  "ck.bad": "Pick a letter or a digit",
  "ck.clash": "That key is used for «{0}»",
