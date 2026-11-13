@@ -11,3 +11,6 @@
   .card>h3.wallh::after{content:'';order:3;flex-basis:100%;height:0}
   .card>h3.wallh>.btn{order:4;margin-inline-start:0}
 }
+/* 3.174.8: in «تخصيص المظهر» on phones the sticky preview filled the whole sheet (taller than it with interface zoom) and covered every control: it now scrolls with the content */
+@media(max-width:700px){#infoBox .lkpv,#lkPv{position:relative!important;top:auto!important;z-index:auto!important}}
+@media(max-width:700px){#infoBox.lkbox>.evact{display:none!important}}

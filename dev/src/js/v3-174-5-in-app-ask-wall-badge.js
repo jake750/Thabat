@@ -20,3 +20,5 @@ function wallHdFit(){const g=$('#goalLbl'),h=g&&g.parentElement;if(!h)return;con
 hookFn('renderGlass',()=>renderGlass,f=>{renderGlass=f},'post',function(){try{wallHdFit()}catch(e){}});
 addEventListener('resize',()=>{try{wallHdFit()}catch(e){}});
 setTimeout(()=>{try{wallHdFit()}catch(e){}},0);
+/* 3.174.8: the look sheet's preview no longer sticks over the controls on phones (also set inline, like the wall header) */
+hookFn('lkOpen',()=>lkOpen,f=>{lkOpen=f},'post',function(){try{const pv=$('#lkPv');if(pv&&matchMedia('(max-width:700px)').matches){pv.style.setProperty('position','relative','important');pv.style.setProperty('top','auto','important')}}catch(e){}});
