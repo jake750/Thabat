@@ -8,12 +8,12 @@ niyyaAsk=function(){const d=day(todayKey());uiAsk(t('ny.ask'),d.niyya||'',v=>{d.
 function wallHdFit(){const g=$('#goalLbl'),h=g&&g.parentElement;if(!h)return;const ph=matchMedia('(max-width:700px)').matches;let br=h.querySelector(':scope>.wallbr');
   if(!br){br=document.createElement('i');br.className='wallbr';br.setAttribute('aria-hidden','true');h.appendChild(br)}
   const set=(el,o)=>{for(const k in o){if(ph)el.style.setProperty(k,o[k],'important');else el.style.removeProperty(k)}};
-  set(h,{'flex-wrap':'wrap','justify-content':'flex-start','row-gap':'10px','column-gap':'8px'});
+  const geo=document.documentElement.classList.contains('st-geo');set(h,{'flex-wrap':'wrap','justify-content':geo?'center':'flex-start','row-gap':'10px','column-gap':'8px'});
   set(br,{'display':'block','flex':'0 0 100%','width':'100%','height':'0','order':'3'});if(!ph)br.style.setProperty('display','none');
   [...h.children].forEach(c=>{if(c===br)return;
     if(c===g){set(c,{'order':'1','white-space':'nowrap','margin':'0','min-width':'0','max-width':'100%','overflow':'hidden','text-overflow':'ellipsis','flex':'0 1 auto'});
       const pill={'font-size':'12px','font-weight':'700','color':'var(--accent)','padding':'3px 10px','border-radius':'999px','border':'1px solid var(--accent)','line-height':'1.5'};for(const k in pill){if(ph&&g.textContent.trim())c.style.setProperty(k,pill[k],'important');else c.style.removeProperty(k)}return}
-    if(c.classList.contains('uxcm')){set(c,{'order':'2','margin-inline-start':'auto'});return}
+    if(c.classList.contains('uxcm')){if(geo){c.style.removeProperty('order');c.style.removeProperty('margin-inline-start')}else set(c,{'order':'2','margin-inline-start':'auto'});return}
     if(c.tagName==='SPAN'&&!c.id){set(c,{'order':'0','white-space':'nowrap','flex':'0 0 auto'});return}
     set(c,{'order':'4','margin-inline-start':'0'})});
   if(!h._wmo){h._wmo=new MutationObserver(()=>{clearTimeout(h._wmt);h._wmt=setTimeout(wallHdFit,30)});h._wmo.observe(h,{childList:true})}}
@@ -22,3 +22,5 @@ addEventListener('resize',()=>{try{wallHdFit()}catch(e){}});
 setTimeout(()=>{try{wallHdFit()}catch(e){}},0);
 /* 3.174.8: the look sheet's preview no longer sticks over the controls on phones (also set inline, like the wall header) */
 hookFn('lkOpen',()=>lkOpen,f=>{lkOpen=f},'post',function(){try{const pv=$('#lkPv');if(pv&&matchMedia('(max-width:700px)').matches){pv.style.setProperty('position','relative','important');pv.style.setProperty('top','auto','important')}}catch(e){}});
+/* 3.175.0: re-run when the style changes (the mihrab cards centre the wall header) */
+hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(){try{wallHdFit()}catch(e){}});
