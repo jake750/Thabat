@@ -1,0 +1,13 @@
+/* ============ v3.174.5 in-app ask box + the wall header on phones (badge no longer squeezed off the edge) ============ */
+#infoBox.uiabox{width:min(420px,calc(100vw - 32px))}
+#infoBox.uiabox .uia-in{width:100%;box-sizing:border-box;font-size:16px;padding:12px 14px;margin-top:4px}
+#infoBox.uiabox .evact{gap:8px;margin-top:14px}
+@media(max-width:700px){
+  h3:has(>#goalLbl){flex-wrap:wrap;justify-content:flex-start!important;row-gap:10px;column-gap:8px}
+  h3:has(>#goalLbl)>span:first-child{white-space:nowrap;order:0}
+  #goalLbl{order:1;white-space:nowrap;margin:0!important;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  #goalLbl:not(:empty){font-size:12px;font-weight:700;color:var(--accent);padding:3px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+  h3:has(>#goalLbl)>.uxcm{order:2;margin-inline-start:auto!important}
+  h3:has(>#goalLbl)::after{content:'';order:3;flex-basis:100%;height:0}
+  h3:has(>#goalLbl)>.btn{order:4;margin-inline-start:0}
+}
