@@ -1,0 +1,73 @@
+/* ============ v3.176.0 his pick «ج · قوية» (2026-11-16): bubbly motion everywhere ============ */
+/* The 3.173 motion system stays (same tokens, same shapes, transform and opacity only); its springs now bounce:
+   --apm-smooth passes its target by 5 % (moves, lists, tabs, pages), --apm-snappy by 18 % (a released button, a switch knob),
+   --bub by 12 % (whatever appears: windows, menus, notices). Leaving dips the other way first (--bub-out) and is quicker.
+   Sheets on phones stretch instead of overshooting, so no gap shows under them. «تقليل الحركة» (html.rmotion) is unchanged. */
+:root{
+  --apm-smooth:linear(0,.023,.082,.165,.263,.366,.47,.568,.659,.741,.812,.872,.922,.962,.993,1.015,1.032,1.042,1.048,1.05,1.049,1.047,1.043,1.038,1.033,1.028,1.023,1.018,1.014,1.01,1.007,1.004,1.002,1.001,.999,.999,1);
+  --apm-snappy:linear(0,.047,.167,.329,.508,.683,.84,.969,1.066,1.132,1.168,1.179,1.172,1.151,1.122,1.09,1.058,1.03,1.007,.989,.977,.97,.968,.969,.973,.978,.984,.989,.994,.999,1.002,1.004,1.005,1.006,1.006,1.005,1);
+  --apm-bouncy:linear(0,.035,.124,.247,.386,.529,.665,.786,.889,.972,1.035,1.078,1.105,1.118,1.119,1.112,1.1,1.084,1.067,1.051,1.035,1.021,1.01,1,.994,.989,.987,.986,.986,.987,.989,.991,.993,.995,.996,.998,1);
+  --bub:var(--apm-bouncy);
+  --bub-out:cubic-bezier(.36,0,.66,-.56);
+}
+@supports not (transition-timing-function:linear(0,1)){:root{--apm-smooth:cubic-bezier(.22,1.2,.36,1);--apm-snappy:cubic-bezier(.3,2.1,.5,1);--apm-bouncy:cubic-bezier(.34,1.56,.64,1)}}
+
+/* ---- shapes: things start smaller, so the spring has room to pass 1 and settle ---- */
+@keyframes mdxpop{from{opacity:0;transform:translateY(10px) scale(.7)}to{opacity:1;transform:none}}
+@keyframes mdxpopl{from{opacity:0;transform:translateY(10px) scale(.7)}}
+@keyframes mdxpopo{to{opacity:0;transform:scale(.8)}}
+@keyframes ux8pop{from{opacity:0;transform:translateY(10px) scale(.7)}}
+@keyframes ppin{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes ppout{to{opacity:0;transform:scale(.8)}}
+@keyframes ux8menu{from{opacity:0;transform:scale(.7)}}
+@keyframes rpkIn{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:none}}
+@keyframes qbdrop{from{opacity:0;transform:scale(.75)}to{opacity:1;transform:none}}
+@keyframes l15mg{from{opacity:0;transform:scale(.75)}}
+@keyframes fpkIn{from{opacity:0;transform:scale(.8)}to{opacity:1}}
+@keyframes ux8tin{from{opacity:0;transform:translateY(24px) scale(.8)}}
+@keyframes ux8tout{to{opacity:0;transform:translateY(10px) scale(.85)}}
+@keyframes apmrow{from{opacity:0;transform:translateY(-8px) scale(.9)}}
+/* sheets: up from the bottom edge, a small stretch past their height, then settle (the bottom edge never leaves the screen) */
+@keyframes bubup{0%{transform:translateY(100%)}58%{transform:translateY(0) scaleY(1.035)}80%{transform:scaleY(.992)}100%{transform:none}}
+@keyframes bubdown{0%{transform:none}28%{transform:scaleY(1.02)}100%{transform:translateY(100%)}}
+@keyframes bubcard{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@keyframes bubin{from{opacity:0;transform:translateY(10px) scale(.9)}}
+@keyframes bubtick{from{transform:scale(.4)}}
+
+/* ---- the main surfaces ---- */
+@media (min-width:701px){
+  html:not(.rmotion) .modal.on>.box{animation:mdxpop .56s var(--bub) both}
+  html:not(.rmotion) .modal.mdxout>.box{animation:mdxpopo .24s var(--bub-out) both}
+  html:not(.rmotion):not(.st-glass) .view.ux8enter .card{animation:bubcard .4s var(--apm-smooth) backwards}
+}
+@media (max-width:700px){
+  html:not(.rmotion) .modal.on.uxsheet>.box{animation:bubup .6s cubic-bezier(.3,.7,.3,1) both;transform-origin:50% 100%}
+  html:not(.rmotion) .modal.mdxout.uxsheet>.box{animation:bubdown .26s cubic-bezier(.4,0,.8,.4) both;transform-origin:50% 100%}
+}
+html:not(.mdx0) .pppop:not(.ppout){animation:ppin .5s var(--bub) both}
+html:not(.mdx0) .pppop.ppout{animation:ppout .18s var(--bub-out) both}
+html:not(.mdx0) .rpk:not(.fxout) .rpkbox{animation:ppin .5s var(--bub) both}
+html:not(.mdx0):not(.rmotion) .rpk.mob:not(.fxout) .rpkbox{animation:bubup .58s cubic-bezier(.3,.7,.3,1) both;transform-origin:50% 100%}
+html:not(.rmotion) .toast{animation:ux8tin .55s var(--bub)}
+html:not(.rmotion) .toast.ux8out{animation:ux8tout .22s var(--bub-out) forwards}
+
+/* ---- press: a clear squash, the release springs back past 1 ---- */
+html:not(.rmotion) .btn:active,html:not(.rmotion) .qck:active,html:not(.rmotion) .suitem:active{transform:scale(.92)}
+html:not(.rmotion) .chip:active{transform:scale(.9)}
+html:not(.rmotion) .navbtn:active{transform:scale(.86)}
+html:not(.rmotion) .btn:disabled:active{transform:none}
+html:not(.rmotion) .task .ck{transition:transform .5s var(--apm-snappy),background-color .2s var(--apm-out),border-color .2s var(--apm-out)}
+html:not(.rmotion) .task .ck:active{transform:scale(.78);transition-duration:.08s,.2s,.2s}
+html:not(.rmotion) #tasks li.task.done.lkjust .ck{animation:bubtick .5s var(--bub)}
+
+/* ---- what is inside a window or a menu arrives one after another (45 ms apart, eight steps, then together);
+        only in the first moments after it opens (.bubst, set by bubStagger), so a menu that repaints stays still.
+        :where() keeps these at zero weight: a child with its own animation keeps it ---- */
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(*){animation:bubin .42s var(--bub) backwards}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(2)){animation-delay:.045s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(3)){animation-delay:.09s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(4)){animation-delay:.135s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(5)){animation-delay:.18s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(6)){animation-delay:.225s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(7)){animation-delay:.27s}
+:where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(n+8)){animation-delay:.315s}
