@@ -38,7 +38,7 @@
 @media (min-width:701px){
   html:not(.rmotion) .modal.on>.box{animation:mdxpop .56s var(--bub) both}
   html:not(.rmotion) .modal.mdxout>.box{animation:mdxpopo .24s var(--bub-out) both}
-  html:not(.rmotion):not(.st-glass) .view.ux8enter .card{animation:bubcard .4s var(--apm-smooth) backwards}
+  html:not(.rmotion):not(.bjs):not(.st-glass) .view.ux8enter .card{animation:bubcard .4s var(--apm-smooth) backwards}
 }
 @media (max-width:700px){
   html:not(.rmotion) .modal.on.uxsheet>.box{animation:bubup .6s cubic-bezier(.3,.7,.3,1) both;transform-origin:50% 100%}
@@ -52,9 +52,9 @@ html:not(.rmotion) .toast{animation:ux8tin .55s var(--bub)}
 html:not(.rmotion) .toast.ux8out{animation:ux8tout .22s var(--bub-out) forwards}
 
 /* ---- press: a clear squash, the release springs back past 1 ---- */
-html:not(.rmotion) .btn:active,html:not(.rmotion) .qck:active,html:not(.rmotion) .suitem:active{transform:scale(.92)}
-html:not(.rmotion) .chip:active{transform:scale(.9)}
-html:not(.rmotion) .navbtn:active{transform:scale(.86)}
+html:not(.rmotion):not(.bjs) .btn:active,html:not(.rmotion):not(.bjs) .qck:active,html:not(.rmotion):not(.bjs) .suitem:active{transform:scale(.92)}
+html:not(.rmotion):not(.bjs) .chip:active{transform:scale(.9)}
+html:not(.rmotion):not(.bjs) .navbtn:active{transform:scale(.86)}
 html:not(.rmotion) .btn:disabled:active{transform:none}
 html:not(.rmotion) .task .ck{transition:transform .5s var(--apm-snappy),background-color .2s var(--apm-out),border-color .2s var(--apm-out)}
 html:not(.rmotion) .task .ck:active{transform:scale(.78);transition-duration:.08s,.2s,.2s}
@@ -71,3 +71,5 @@ html:not(.rmotion) #tasks li.task.done.lkjust .ck{animation:bubtick .5s var(--bu
 :where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(6)){animation-delay:.225s}
 :where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(7)){animation-delay:.27s}
 :where(html:not(.rmotion) .bubst:not(.ppout))>:where(:nth-child(n+8)){animation-delay:.315s}
+
+/* 3.176.1: the press squash and the page entrance are played by script (bubPressEnd, bubPage) once html.bjs is set; the rules above stay as the fallback */

@@ -85,13 +85,13 @@ html:not(.rmotion) .toast.ux8out{animation:ux8tout .2s var(--apm-out) forwards}
    and fading a whole page makes every glass card lose and re-find its blur on each frame (the weight). Phones slide the page with
    transform only (apmPage, JS, once); on the PC only the first cards fade in, quickly. */
 html .view,html .view.on,html .view.on.uxsl-f,html .view.on.uxsl-b,html[dir] .view.on.uxsl-f,html[dir] .view.on.uxsl-b{animation:none!important}
-html:not(.rmotion) .view.ux8enter .card{animation:apmcard .3s var(--apm-out) backwards}
-html:not(.rmotion) .view.ux8enter .card:nth-child(2){animation-delay:.025s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(3){animation-delay:.05s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(4){animation-delay:.075s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(5),html:not(.rmotion) .view.ux8enter .card:nth-child(6){animation-delay:.1s}
-html:not(.rmotion) .view.ux8enter .card:nth-child(n+7){animation:none}
-@media (max-width:700px){html:not(.rmotion) .view.ux8enter .card{animation:none}}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card{animation:apmcard .3s var(--apm-out) backwards}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(2){animation-delay:.025s}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(3){animation-delay:.05s}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(4){animation-delay:.075s}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(5),html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(6){animation-delay:.1s}
+html:not(.rmotion):not(.bjs) .view.ux8enter .card:nth-child(n+7){animation:none}
+@media (max-width:700px){html:not(.rmotion):not(.bjs) .view.ux8enter .card{animation:none}}
 @keyframes apmcard{from{opacity:0}}
 @media (min-width:701px){html:not(.rmotion) #detail.dslide{animation:dslide .5s var(--apm-smooth)}html[dir=rtl]:not(.rmotion) #detail.dslide{animation-name:dslider}}
 
@@ -100,8 +100,8 @@ html:not(.rmotion) .btn,html:not(.rmotion) .chip,html:not(.rmotion) .navbtn,html
   transition-property:transform,background-color,border-color,box-shadow,color,opacity;
   transition-duration:.5s,.2s,.2s,.2s,.2s,.2s;
   transition-timing-function:var(--apm-snappy),var(--apm-out),var(--apm-out),var(--apm-out),var(--apm-out),var(--apm-out)}
-html:not(.rmotion) .btn:active,html:not(.rmotion) .chip:active,html:not(.rmotion) .qck:active,html:not(.rmotion) .suitem:active,html:not(.rmotion) .navbtn:active{transition-duration:.08s,.08s,.2s,.2s,.2s,.2s;transform:scale(.96)}
-html:not(.rmotion) .navbtn:active{transform:scale(.93)}
+html:not(.rmotion):not(.bjs) .btn:active,html:not(.rmotion):not(.bjs) .chip:active,html:not(.rmotion):not(.bjs) .qck:active,html:not(.rmotion):not(.bjs) .suitem:active,html:not(.rmotion):not(.bjs) .navbtn:active{transition-duration:.08s,.08s,.2s,.2s,.2s,.2s;transform:scale(.96)}
+html:not(.rmotion):not(.bjs) .navbtn:active{transform:scale(.93)}
 html:not(.rmotion) .btn:disabled:active{transform:none}
 /* cards lift on the PC with the same smooth spring */
 @media (hover:hover){html:not(.rmotion) .lshc,html:not(.rmotion) .bkc,html:not(.rmotion) .ncard{transition:transform .5s var(--apm-smooth),box-shadow .3s var(--apm-out),border-color .2s var(--apm-out)}}
