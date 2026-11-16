@@ -1,7 +1,7 @@
 # Thabat (ثبات): guide for Claude
 
 Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HTML file (no framework, works from `file://`) + Android WebView shell + Windows helper.
-- Version: **3.176.1** (`APP_VER`; PC copies + push only, APK and GitHub release wait for `THABAT_KS_PASS`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
+- Version: **3.176.1** (`APP_VER`). Android shell: `android/base.apk` = versionCode 46, bridge 14.
 - History, design notes per release, finished lists and **rejected suggestions** are in `CLAUDE_ARCHIVE.md` — grep it, never load it whole.
 
 ## Active
