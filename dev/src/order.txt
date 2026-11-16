@@ -206,6 +206,7 @@ css/v3-174-1-calendar-header-tidy-calm-meteor.css
 css/v3-174-5-in-app-ask-wall-badge.css
 css/v3-175-0-mihrab-cards.css
 css/v3-176-0-bubbly-motion.css
+css/v3-177-0-bubbly-second-pass.css
 body.html
 js/core.js
 js/helpers.js
@@ -493,5 +494,6 @@ js/v3-174-0-start-up-screen.js
 js/v3-174-1-calendar-header-tidy.js
 js/v3-174-5-in-app-ask-wall-badge.js
 js/v3-176-0-bubbly-motion.js
+js/v3-177-0-bubbly-second-pass.js
 js/loop.js
 tail.html
