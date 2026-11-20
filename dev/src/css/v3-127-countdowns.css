@@ -18,7 +18,7 @@ html[dir=ltr] .cdnnum{direction:ltr}
 .cdnc.past .cdnu b{opacity:.8}
 .cdnca{display:flex;gap:6px;justify-content:flex-end;margin-top:auto}
 .cdnca .btn{color:#fff;border-color:rgba(255,255,255,.28);background:rgba(0,0,0,.18);min-height:32px}
-.cdnf{display:grid;gap:12px}.cdnf label{display:grid;gap:5px;font-size:13px;color:var(--muted)}.cdnf2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.cdnf{display:grid;gap:12px}.cdnf label{display:grid;gap:5px;font-size:13px;color:var(--muted)}.cdnf2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.cdnf2>label{align-content:start}
 .cdncols{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.cdncols button{width:32px;height:32px;border-radius:50%;border:2px solid transparent;background:var(--c);cursor:pointer}.cdncols button.on{border-color:var(--text);box-shadow:0 0 0 2px var(--bg) inset}
 .cdnimgrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cdnimgrow small{color:var(--muted)}
 .cdnfa{display:flex;gap:8px;justify-content:flex-end}
