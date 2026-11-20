@@ -1,0 +1,4 @@
+/* ============ v3.179.0 the update notice: a dot on the Settings button (the sync dot keeps the other corner) and the Settings row ============ */
+.navbtn .upd9dot{position:absolute;top:6px;inset-inline-start:14px;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--bg);pointer-events:none}
+.upd9row label{color:var(--accent)}
+#upd9Btn{display:inline-flex;align-items:center;gap:6px}#upd9Btn .uic{width:16px;height:16px}
