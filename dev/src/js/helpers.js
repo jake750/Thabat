@@ -25,4 +25,18 @@ const MICON={
   listen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg>',
   read:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2zM22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>'
 };
+/* 3.178: one page watcher for the passes that look over the whole page again after it changes (button labels, form fields,
+   «new» badges, PC resizers, icon labels): one observer instead of six, one timer instead of six (they ran at six different moments).
+   A change that only swaps the text of something whose text changed a moment ago (a ticking clock, the timer) wakes nobody:
+   before this, the timer's every second made all six scan the whole page. Waits for 250 ms of quiet, never more than 1.2 s. */
+const DOMI={fns:[],t:0,first:0,mo:null,tick:new WeakMap()};
+function domIdle(fn){DOMI.fns.push(fn);if(!DOMI.mo&&document.body){DOMI.mo=new MutationObserver(domIdleMut);DOMI.mo.observe(document.body,{childList:true,subtree:true})}}
+function domIdleMut(ms){const now=performance.now();let real=false;
+  for(const m of ms){let el=false;for(const n of m.addedNodes)if(n.nodeType===1){el=true;break}
+    if(!el)for(const n of m.removedNodes)if(n.nodeType===1){el=true;break}
+    if(el){real=true;continue}
+    const last=DOMI.tick.get(m.target);DOMI.tick.set(m.target,now);if(!last||now-last>3000)real=true}
+  if(!real)return;clearTimeout(DOMI.t);if(!DOMI.first)DOMI.first=now;
+  DOMI.t=setTimeout(domIdleRun,now-DOMI.first>950?0:250)}
+function domIdleRun(){DOMI.t=0;DOMI.first=0;for(const f of DOMI.fns){try{f()}catch(e){console.error(e)}}}
 

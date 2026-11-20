@@ -44,7 +44,7 @@ function distrAdd(){const T=S.timer;if(T.mode!=='work')return;T.distr=(T.distr||
 function renderDistrBtn(){let b=$('#distrBtn');const on=S.timer&&S.timer.mode==='work'&&S.settings.distrOn!==false;if(!on){if(b)b.parentElement.remove();return}
   if(!b){const anchor=$('#tState');if(!anchor)return;anchor.insertAdjacentHTML('afterend',`<div class="distrw"><button class="btn sm ghost" id="distrBtn"></button></div>`);b=$('#distrBtn');b.onclick=distrAdd}
   b.textContent='⚡ '+t('ds3.btn')+((S.days[todayKey()]||{}).distr?' · '+S.days[todayKey()].distr:'')}
-setInterval(renderDistrBtn,3000);
+setInterval(()=>{if(!document.hidden)renderDistrBtn()},3000);
 /* 34 + 44. best focus hours and unlogged gaps (brief) */
 function bestHours(){const H=Array(24).fill(0),tk=todayKey();for(let i=0;i<30;i++){const d=S.days[dKey(addDays(keyToDate(tk),-i))];(d&&d.sessions||[]).forEach(s=>{let a=s.start;while(a<s.end){const h=new Date(a).getHours(),nx=Math.min(s.end,new Date(a).setMinutes(60,0,0));H[h]+=nx-a;a=nx}})}
   let best=-1,bv=0;for(let h=0;h<23;h++){const v=H[h]+H[h+1];if(v>bv){bv=v;best=h}}return bv>36e5?best:-1}

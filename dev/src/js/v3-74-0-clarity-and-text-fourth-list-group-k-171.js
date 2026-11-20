@@ -17,7 +17,7 @@ function cntFix(s){if(typeof s!=='string'||!/[0-9٠-٩] /.test(s))return s;retur
 const ILB_SEL='.netb button,#qbTop button,.bk2bar button,#bkTop button,#lpath button,.wbt .tool';
 function ilbMark(){if(!S.settings.iconLabels)return;$$(ILB_SEL).forEach(b=>{if(b.dataset.ilb)return;const own=[...b.childNodes].some(n=>n.nodeType===3&&n.textContent.trim().length>1&&!/^[\p{Extended_Pictographic}\s⋯✕↔⧉]+$/u.test(n.textContent.trim()));if(own)return;const l=b.getAttribute('aria-label')||b.dataset.tt||b.getAttribute('title');if(!l)return;b.dataset.ilb=l.replace(/\s*\(.*\)$/,'').slice(0,22)})}
 function ilbApply(){document.documentElement.classList.toggle('iconlbl',!!S.settings.iconLabels);if(S.settings.iconLabels)ilbMark()}
-{let q=null;new MutationObserver(()=>{if(!S.settings.iconLabels||q)return;q=setTimeout(()=>{q=null;ilbMark()},400)}).observe(document.body,{childList:true,subtree:true})}
+{domIdle(()=>{if(S.settings.iconLabels)ilbMark()})   /* 3.178: the shared page watcher */}
 
 /* 186. switching dark ↔ light fades instead of jumping */
 {const _at=applyTheme;let last=null;applyTheme=function(...a){const m=S.settings&&S.settings.mode;if(last!==null&&m!==last&&document.startViewTransition&&!document.documentElement.classList.contains('rmotion')){last=m;let r;document.startViewTransition(()=>{r=_at(...a)});return r}last=m;return _at(...a)}}

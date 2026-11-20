@@ -24,7 +24,7 @@ html.lg #aurora i:nth-child(2){background:radial-gradient(closest-side,color-mix
 html.lg #aurora i:nth-child(3){background:radial-gradient(closest-side,color-mix(in oklch,var(--accent),#ec4899 45%) 0%,transparent)!important;opacity:.24!important}
 html.lg.mode-light #aurora i{opacity:.28!important}
 html.lite.lg.st-glass body{background:var(--bg)}
-html.lite.lg.st-glass{animation:orbitA 26s steps(260) infinite,orbitB 26s steps(260) infinite -13s!important}
+html.lite.lg.st-glass{animation:none!important}   /* 3.178: the moving light re-styled the whole page 10 times a second on phones */
 html.lite.lg.st-glass .card::after,html.lite.lg.st-glass .tile::after,html.lite.lg.st-glass .mtile::after{display:block!important;content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
   background:radial-gradient(380px circle at var(--lx) var(--ly),color-mix(in srgb,#fff 55%,transparent),color-mix(in srgb,var(--accent) 38%,transparent) 26%,transparent 60%) fixed,radial-gradient(320px circle at var(--mx) var(--my),color-mix(in srgb,#fff 40%,transparent),color-mix(in srgb,var(--water) 30%,transparent) 28%,transparent 60%) fixed!important;
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}

@@ -18,7 +18,9 @@ document.addEventListener('change',e=>{const i=e.target;if(!i.matches||!i.matche
 /* 80 82 90 91 92: one pass over new fields */
 const SRCH_SEL='input[type=search],#nSearch,#setQ,#qSrch,#wbPickQ,#cmdIn,#bkxQ,#trxQ,#lshQ,#lshPQ,#auQ,#arcQ,#lnkQ,input[placeholder*="بحث"],input[placeholder*="ابحث"],input[placeholder*="Search"]';
 const URL_SEL='#icsUrl,#mUrl,#updUrl,input[id*="Url"],input[id*="url"],input[placeholder^="http"]';
-function frmFix(root){(root.querySelectorAll?root:document).querySelectorAll('input:not([data-frm])').forEach(i=>{const tp=(i.getAttribute('type')||'text').toLowerCase();if(tp==='number'&&MOB.matches&&i.offsetParent===null)return;i.dataset.frm='1';
+/* 3.178: the hidden-number check reads layout for all fields first, then the fields are changed (reading after each change made the browser lay the page out again for every field) */
+function frmFix(root){const L=[...(root.querySelectorAll?root:document).querySelectorAll('input:not([data-frm])')];if(!L.length)return;const FH='.modal:not(.on),.sheet:not(.on),.view:not(.on),[hidden],details:not([open])',hid=MOB.matches?new Set(L.filter(i=>(i.getAttribute('type')||'').toLowerCase()==='number'&&(i.closest(FH)||i.offsetParent===null))):null;   /* closed windows and other pages are known hidden without asking for a layout */
+  L.forEach(i=>{const tp=(i.getAttribute('type')||'text').toLowerCase();if(hid&&hid.has(i))return;i.dataset.frm='1';
   /* 92 */
   if(tp==='number'){if(!i.inputMode)i.inputMode=(+i.step&&+i.step%1)||String(i.step||'').includes('.')?'decimal':'numeric'}
   else if(i.matches(URL_SEL)){if(tp==='text')i.type='url';i.inputMode='url';i.autocapitalize='off';i.spellcheck=false}
@@ -41,6 +43,6 @@ function frmHijri(i){if(i.nextElementSibling&&i.nextElementSibling.classList.con
 function frmStep(i){const mk=(d,txt)=>{const b=document.createElement('button');b.type='button';b.className='nsb';b.textContent=txt;b.setAttribute('aria-label',txt);
   b.onclick=()=>{const st=+i.step||1,mn=i.min!==''?+i.min:-Infinity,mx=i.max!==''?+i.max:Infinity,v=(+i.value||0)+d*st;i.value=Math.min(mx,Math.max(mn,Math.round(v*1000)/1000));i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}))};return b};
   i.classList.add('nstepi');i.before(mk(-1,'−'));i.after(mk(1,'+'))}
-{let q=null;new MutationObserver(ms=>{if(q)return;q=setTimeout(()=>{q=null;try{frmFix(document)}catch(e){}},250)}).observe(document.body,{childList:true,subtree:true})}
+{domIdle(()=>{try{frmFix(document)}catch(e){}})   /* 3.178: the shared page watcher */}
 setTimeout(()=>{try{frmFix(document)}catch(e){}},800);
 

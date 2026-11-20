@@ -29,7 +29,7 @@ function applyLook2(){const h=document.documentElement,st=S.settings;h.classList
 applyLook2();
 /* 33. accessible names for icon buttons */
 function a11yPass(root){(root||document).querySelectorAll('button:not([aria-label]),[role=button]:not([aria-label])').forEach(b=>{const tx=(b.textContent||'').replace(/[^\p{L}\p{N}]/gu,'');if(tx.length>1)return;const l=b.title||b.dataset.tip||'';if(l)b.setAttribute('aria-label',l)})}
-let A11Y_T=null;new MutationObserver(()=>{clearTimeout(A11Y_T);A11Y_T=setTimeout(()=>a11yPass(),600)}).observe(document.body,{childList:true,subtree:true});
+let A11Y_T=null;domIdle(()=>a11yPass())   /* 3.178: the shared page watcher */;
 /* 35. swipe between pages on the phone */
 (()=>{const ORDER=['today','cal','brief','boards'];let sx=0,sy=0,st=0,ok=false;const m=$('main');if(!m)return;
   m.addEventListener('touchstart',e=>{const tg=e.target;ok=MOB.matches&&e.touches.length===1&&ORDER.includes(curView())&&!(curView()==='boards'&&nbMode==='boards')&&!tg.closest('input,textarea,select,.hrs,.bwrap,.mushaf,.sttabs,.chips,.ctxbar,.rclist,.dtl,.scrollx,[contenteditable],.modal')&&!S.settings.noSwipe;sx=e.touches[0].clientX;sy=e.touches[0].clientY;st=Date.now()},{passive:true});

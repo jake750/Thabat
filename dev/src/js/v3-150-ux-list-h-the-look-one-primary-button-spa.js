@@ -15,8 +15,8 @@ function ux8Ms(ms){ms=+ms||0;return ms>=3000&&ms<=12000?6000:ms}
 function ux8Pri(){UX8.pend=0;
   document.querySelectorAll('.modal.on>.box,.modal.on .sheet-box,#setupModal.on .box').forEach(box=>{
     const all=[...box.querySelectorAll('.btn.pri')].filter(b=>!b.closest('.toast')&&b.offsetParent!==null);
-    all.forEach(b=>b.classList.remove('ux8sec'));
-    if(all.length>1)all.slice(0,-1).forEach(b=>b.classList.add('ux8sec'))})}
+    /* 3.178: change a class only when it differs; touching it every time woke this observer again, 7 times a second while a window was open */
+    all.forEach((b,i)=>{const w=i<all.length-1;if(b.classList.contains('ux8sec')!==w)b.classList.toggle('ux8sec',w)})})}
 function ux8PriSoon(){if(UX8.pend)return;UX8.pend=setTimeout(ux8Pri,140)}
 {const mo=new MutationObserver(ms=>{for(const m of ms){const n=m.target;if(n&&n.closest&&(n.closest('.modal')||(n.classList&&n.classList.contains('modal')))){ux8PriSoon();return}}});
   mo.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}

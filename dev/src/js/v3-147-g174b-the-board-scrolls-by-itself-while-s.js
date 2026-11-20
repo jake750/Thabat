@@ -12,7 +12,8 @@ function wbAutoPan(){const o=typeof WB!=='undefined'&&WB.op,wrap=$('#bwrap');
   try{wrap.dispatchEvent(new PointerEvent('pointermove',{pointerId:WBAP.id,pointerType:WBAP.pt||'mouse',clientX:WBAP.x,clientY:WBAP.y,bubbles:true,isPrimary:true}))}catch(x){}}
 setInterval(wbAutoPan,16);
 /* the board's tool bar stays on screen: the board fits the window at any interface size, and the bar follows the visible bottom when the page is scrolled */
-function wbBarKeep(){const w=$('#bwrap'),b=$('#btbar');if(!w||!b||!w.offsetParent)return;const z=uiZoom()||1,r=w.getBoundingClientRect(),vb=(window.visualViewport?visualViewport.offsetTop+visualViewport.height:innerHeight);
+function wbBarKeep(){const w=$('#bwrap'),b=$('#btbar');if(!w||!b||document.hidden||w.closest('.view:not(.on)')||!w.offsetParent)return;   /* 3.178: no layout read while the board is not shown */
+  const z=uiZoom()||1,r=w.getBoundingClientRect(),vb=(window.visualViewport?visualViewport.offsetTop+visualViewport.height:innerHeight);
   if(!w.classList.contains('present')){const m=w.closest('main'),top=r.top+(m?m.scrollTop:0),h=Math.max(MOB.matches?300:360,Math.round((vb-top)/z-(MOB.matches?86:14)))+'px';if(w.style.height!==h){w.style.height=h;try{wbApplyView()}catch(e){}}}
   const over=Math.max(0,r.bottom-vb),px=over>0?Math.min(over,r.height-80)/z:0;const v=px?`${12+px}px`:'';
   [b,$('#bmini')].forEach(el=>{if(el&&el.style.bottom!==v)el.style.bottom=v})}

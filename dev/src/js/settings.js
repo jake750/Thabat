@@ -6,7 +6,7 @@ function renderSettings(){const st=S.settings,P=st.prayer;
    $('#tourAgain').onclick=openTour;$('#bkNow').onclick=()=>autoBackup(true);renderBkList()}
   $('#langIn').value=LANG;$('#langIn').onchange=e=>setLang(e.target.value);
   $('#styleSeg').innerHTML=Object.entries(STYLES).map(([k,v])=>`<button data-k="${k}" class="${st.style===k?'on':''}">${lx(v)}</button>`).join('');
-  $('#perfSeg').innerHTML=[['auto','perf.auto'],['lite','perf.lite'],['full','perf.full']].map(([k,l])=>`<button data-k="${k}" class="${perfGet()===k?'on':''}">${t(l)}</button>`).join('');$('#perfSub').textContent=t('perf.sub')+(isLite()?' — '+t('perf.nowLite')+(window.LOWP_===true&&perfGet()!=='lite'?' ('+t('perf.batt')+')':''):' — '+t('perf.nowFull'));
+  $('#perfSeg').innerHTML=[['auto','perf.auto'],['lite','perf.lite'],['mid','perf.mid'],['full','perf.full']].map(([k,l])=>`<button data-k="${k}" class="${perfGet()===k?'on':''}">${t(l)}</button>`).join('');$('#perfSub').textContent=t('perf.sub')+(perfTier()==='mid'?' — '+t('perf.nowMid'):isLite()?' — '+t('perf.nowLite')+(window.LOWP_===true&&perfGet()!=='lite'?' ('+t('perf.batt')+')':''):' — '+t('perf.nowFull'));
   $$('#perfSeg button').forEach(b=>b.onclick=()=>{perfSet(b.dataset.k);applyTheme();renderSettings()});toggle($('#perfBattT'),battAuto(),v=>{try{localStorage.setItem('thabat.perfBatt',v?'1':'0')}catch(e){}setTimeout(powerCheck,0)});
   $$('#styleSeg button').forEach(b=>b.onclick=()=>{st.style=b.dataset.k;save();applyTheme();renderSettings()});
   $('#modeSeg').innerHTML=Object.entries(MODES).map(([k,v])=>`<button data-k="${k}" class="${st.mode===k?'on':''}">${lx(v)}</button>`).join('');

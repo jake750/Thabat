@@ -13,7 +13,7 @@ function rszAttach(el,k){if(!PC()||!el||el.querySelector(':scope>.rszh'))return;
     addEventListener('pointermove',mv,true);addEventListener('pointerup',up,true);addEventListener('pointercancel',up,true)};
   h.ondblclick=()=>{document.documentElement.style.removeProperty('--'+k);rszSave(k,null)}}
 function rszScan(){if(!PC())return;rszAttach($('#tdCol3'),'tdc3W');rszAttach($('.lpvside'),'lpvW');const toc=$('.netoc.side');if(toc)rszAttach(toc,'ntocW');rszAttach($('#qNoteSide'),'qnW')}
-rszLoad();{let q=null;new MutationObserver(()=>{if(q)return;q=setTimeout(()=>{q=null;try{rszScan()}catch(e){}},300)}).observe(document.body,{childList:true,subtree:true})}
+rszLoad();{domIdle(()=>rszScan())   /* 3.178: the shared page watcher */}
 
 /* 134. the mushaf with a note beside it (PC) */
 function qnOpen(){if(!PC())return;let p=$('#qNoteSide');if(p){qnClose();return}p=document.createElement('aside');p.id='qNoteSide';p.className='qnside';document.body.append(p);document.documentElement.classList.add('qnote');qnRender();rszScan()}

@@ -41,5 +41,5 @@ function newbSeen(){try{return JSON.parse(localStorage.getItem('thabat.newb')||'
 function newbPaint(){const S0=newbSeen();if(!S0._since){S0._since=Date.now();try{localStorage.setItem('thabat.newb',JSON.stringify(S0))}catch(e){}}if(Date.now()-S0._since>30*864e5)return;
   Object.entries(NEWB).forEach(([sel,k])=>{const el=$(sel);if(!el)return;el.classList.toggle('newb',!S0[k])})}
 document.addEventListener('click',e=>{const hit=Object.keys(NEWB).find(sel=>e.target.closest&&e.target.closest(sel));if(!hit)return;const S0=newbSeen();S0[NEWB[hit]]=Date.now();try{localStorage.setItem('thabat.newb',JSON.stringify(S0))}catch(x){}const el=$(hit);if(el)el.classList.remove('newb')},true);
-{let q=null;new MutationObserver(()=>{if(q)return;q=setTimeout(()=>{q=null;try{newbPaint()}catch(e){}},400)}).observe(document.body,{childList:true,subtree:true})}
+{domIdle(()=>newbPaint())   /* 3.178: the shared page watcher */}
 

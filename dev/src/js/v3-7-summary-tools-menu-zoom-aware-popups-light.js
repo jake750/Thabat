@@ -29,7 +29,7 @@ document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest
 {hookFn('showView',()=>showView,f=>{showView=f},'pre',function(...a){try{btToggle(false)}catch(e){}})}
 window.addEventListener('resize',()=>{const P=$('#btPanel');if(P&&!P.hidden)btToggle(true)});
 /* light glass: on phones in automatic performance mode, keep the moving lights without live blur */
-function lgApply(){const st=S.settings;document.documentElement.classList.toggle('lg',st.style==='glass'&&isLite()&&perfGet()==='auto')}
+function lgApply(){const st=S.settings;document.documentElement.classList.toggle('lg',st.style==='glass'&&(perfTier()==='mid'||isLite()&&perfGet()==='auto'))}
 {hookFn('applyTheme',()=>applyTheme,f=>{applyTheme=f},'post',function(...a){try{lgApply()}catch(e){}})}
 try{lgApply()}catch(e){}
 
