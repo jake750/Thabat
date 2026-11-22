@@ -209,6 +209,7 @@ css/v3-176-0-bubbly-motion.css
 css/v3-177-0-bubbly-second-pass.css
 css/v3-178-0-performance.css
 css/v3-179-0-update-notice.css
+css/v3-180-0-colour-picker.css
 body.html
 js/core.js
 js/helpers.js
@@ -499,5 +500,6 @@ js/v3-176-0-bubbly-motion.js
 js/v3-177-0-bubbly-second-pass.js
 js/v3-178-0-performance.js
 js/v3-179-0-update-notice.js
+js/v3-180-0-colour-picker.js
 js/loop.js
 tail.html

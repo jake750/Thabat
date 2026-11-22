@@ -6035,6 +6035,7 @@
   "upd.sub": "GitHub, uygulama her açıldığında denetlenir (en fazla saatte bir). Alanı boş bırak veya başka bir adres belirle",
   "upd.avail": "Güncelleme hazır: {0} sürümü",
   "upd.availSub": "Kurana kadar burada kalır",
+  "cpk.done": "Tamam",
   "upd.t": "Güncellemeler",
   "upd2.auto": "Kendiliğinden güncelle",
   "upd2.notify": "Yalnızca bana söyle",
