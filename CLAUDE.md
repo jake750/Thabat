@@ -49,11 +49,12 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 - `python dev/build.py`, then `preview_start` name `thabat`, open `http://localhost:8765/Thabat.html?v=<new>`.
 - Close overlays first; test 411×860 and 1920×1040 @125 %, Arabic/English, dark/light.
 - Hidden pane: no rAF, animations stuck (`document.getAnimations().forEach(a=>a.finish())`), stub `prompt`.
+- Fake test values go into `S` + the render function, not the DOM: a re-render wipes DOM edits before the screenshot.
 - Mock library/helper URLs: tests must never touch his real servers. Reset viewport to desktop after.
 
 ## Release
 1. `git fetch`; `origin/main` must be an ancestor of HEAD. Never hide push errors.
-2. `THABAT_KS_PASS=… python dev/release.py`; read its WARNING lines. A fresh worktree first needs the last release's zips (`gh release download`) and `android/base.apk` + keystore copied from the main checkout.
+2. `THABAT_KS_PASS=… python dev/release.py`; read its WARNING lines. No password given: `python dev/release.py --no-apk` (PC copies now), full release when it arrives. GitHub's «bypass» notice on push is normal for the owner. A fresh worktree first needs the last release's zips (`gh release download`) and `android/base.apk` + keystore copied from the main checkout.
 3. Update the version line here (one Edit) and add the release's notes to `CLAUDE_ARCHIVE.md`.
 4. Commit (Co-Authored-By line), push, `gh release create vX.Y.Z Thabat.apk Thabat-Windows.zip Thabat-Mac.zip Thabat-Setup.exe --target main`.
 5. Send him the three files from the checkout where release.py ran.
@@ -65,3 +66,4 @@ Prayer-centred productivity app by Fourat Bouchaa, credited **jake750_**. One HT
 - Motion (3.173 g210 + 3.176 bubbly, his pick «ج · قوية»): use `var(--apm-smooth|snappy|out|sheet)` and `var(--bub)`/`var(--bub-out)` for things that appear/leave (the springs bounce since 3.176), transform/opacity only; never animate opacity/filter on `.view` or any ancestor of glass cards (breaks their blur, flicker); `apmRetime` retimes older rules at idle; tab rows animate generically (`apmTabGo`).
 - PowerShell: variable names ignore case; commas inside method calls split arguments.
 - Never fabricate Quran text or religious data; use only verified sources he approves.
+- Mihrab card style puts «…» outside the card header on purpose: header measurements (overflow, two-row switch) must exclude it.
