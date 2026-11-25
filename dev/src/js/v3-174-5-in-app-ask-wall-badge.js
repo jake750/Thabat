@@ -12,7 +12,7 @@ function wallHdFit(){const g=$('#goalLbl'),h=g&&g.parentElement;if(!h)return;con
   set(br,{'display':'block','flex':'0 0 100%','width':'100%','height':'0','order':'3'});if(!ph)br.style.setProperty('display','none');
   [...h.children].forEach(c=>{if(c===br)return;
     if(c===g){set(c,{'order':'1','white-space':'nowrap','margin':'0','min-width':'0','max-width':'100%','overflow':'hidden','text-overflow':'ellipsis','flex':'0 1 auto'});
-      const pill={'font-size':'12px','font-weight':'700','color':'var(--accent)','padding':'3px 10px','border-radius':'999px','border':'1px solid var(--accent)','line-height':'1.5'};for(const k in pill){if(ph&&g.textContent.trim())c.style.setProperty(k,pill[k],'important');else c.style.removeProperty(k)}return}
+      const lf=g.classList.contains('gl-left'),pill={'font-size':'12px','font-weight':'700','color':lf?'var(--muted)':'var(--accent)','padding':'3px 10px','border-radius':'999px','border':'1px solid '+(lf?'var(--line)':'var(--accent)'),'line-height':'1.5'};for(const k in pill){if(ph&&g.textContent.trim())c.style.setProperty(k,pill[k],'important');else c.style.removeProperty(k)}return}
     if(c.classList.contains('uxcm')){if(geo){c.style.removeProperty('order');c.style.removeProperty('margin-inline-start')}else set(c,{'order':'2','margin-inline-start':'auto'});return}
     if(c.tagName==='SPAN'&&!c.id){set(c,{'order':'0','white-space':'nowrap','flex':'0 0 auto'});return}
     set(c,{'order':'4','margin-inline-start':c.id==='wallImg'?'auto':'0'})});

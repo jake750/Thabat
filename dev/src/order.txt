@@ -501,5 +501,6 @@ js/v3-177-0-bubbly-second-pass.js
 js/v3-178-0-performance.js
 js/v3-179-0-update-notice.js
 js/v3-180-0-colour-picker.js
+js/v3-182-0-card-headers.js
 js/loop.js
 tail.html
