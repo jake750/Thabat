@@ -1,0 +1,16 @@
+/* ============ v3.183 the selected ayah on the tajweed Qalun pages and its floating bar ============ */
+/* the boxes tint the line under them (multiply in light, screen in dark), so the tajweed colours stay readable */
+.qtjsel{position:absolute;pointer-events:none;z-index:2;overflow:visible}
+.qtjsel rect{fill:rgba(255,190,40,.30);stroke:rgba(214,140,0,.75);stroke-width:1.2;vector-effect:non-scaling-stroke;mix-blend-mode:multiply}
+.mushaf.sepia .qtjsel rect{fill:rgba(255,170,40,.30)}
+.mushaf.dark .qtjsel rect{fill:rgba(110,170,255,.24);stroke:rgba(150,200,255,.8);mix-blend-mode:screen}
+.qtjbar{position:fixed;z-index:400;display:flex;align-items:center;gap:2px;padding:5px;border-radius:14px;background:var(--panel);background:color-mix(in srgb,color-mix(in srgb,var(--bg) 70%,#000) 92%,transparent);backdrop-filter:blur(24px);
+  border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.4);max-width:calc(100vw - 16px);overflow-x:auto;scrollbar-width:none;
+  opacity:0;transform:translateY(6px) scale(.92);transition:opacity .18s var(--apm-out,ease-out),transform .32s var(--bub,cubic-bezier(.34,1.56,.64,1))}
+.qtjbar.on{opacity:1;transform:none}
+.qtjbar .qtjh{font-size:12px;opacity:.7;padding:0 8px;white-space:nowrap}
+.qtjbar button{display:inline-flex;align-items:center;gap:5px;border:0;background:none;color:inherit;font:inherit;font-size:13px;padding:7px 10px;border-radius:10px;cursor:pointer;white-space:nowrap;min-height:36px}
+.qtjbar button:hover,.qtjbar button:focus-visible{background:color-mix(in srgb,currentColor 10%,transparent)}
+.qtjbar button[data-x=more]{font-size:17px;padding:7px 9px}
+@media (max-width:480px){.qtjbar .qtjh{display:none}.qtjbar button{padding:7px 8px;font-size:12.5px}}
+@media (prefers-reduced-motion:reduce){.qtjbar{transition:opacity .12s}.qtjbar{transform:none}}

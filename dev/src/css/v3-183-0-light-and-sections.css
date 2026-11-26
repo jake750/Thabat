@@ -1,0 +1,11 @@
+/* ============ v3.183.0 the glass light no longer restyles the whole page (2026-11-25, Qalun mushaf plan, phase 0) ============ */
+/* The moving light on the glass rims was four custom properties animated on <html> and inherited by every element: the browser
+   worked out the style of all ~5 700 elements 50 times a second (PC idle: 1 880 ms of every 3 s). Now the properties do not inherit
+   and each rim animates its own copy; a small script puts every copy on the same clock, so it is still one light. */
+@property --lx{syntax:'<percentage>';inherits:false;initial-value:20%}
+@property --ly{syntax:'<percentage>';inherits:false;initial-value:10%}
+@property --mx{syntax:'<percentage>';inherits:false;initial-value:80%}
+@property --my{syntax:'<percentage>';inherits:false;initial-value:90%}
+html.st-glass{animation:none}
+html.st-glass :is(.card,.tile,nav.side,.pr,.cell,.mtile,.adhkar-btn,.sheet-box,.qnav,.swt,.th)::after{animation:orbitA 26s steps(520) infinite,orbitB 26s steps(520) infinite -13s}   /* 20 steps a second: the glow drifts 12 px a step, and the browser's work per second drops to a tenth */
+html.st-glass:is(.lite,.pmid,.rmotion) :is(.card,.tile,nav.side,.pr,.cell,.mtile,.adhkar-btn,.sheet-box,.qnav,.swt,.th)::after{animation:none!important}
