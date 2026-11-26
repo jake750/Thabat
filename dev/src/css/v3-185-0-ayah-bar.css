@@ -1,0 +1,22 @@
+/* ============ v3.185 one bar for the selected ayah: colours, copy, share, tafsir, «…»; the ayah menu in groups ============ */
+.qtjbar .uic{width:20px;height:20px}
+.qtjbar.aybar button[data-x]{padding:7px 9px}
+.aydots{display:inline-flex;align-items:center;gap:0}
+.qtjbar .aydot{padding:0;width:34px;justify-content:center}
+.aydot::before{content:'';flex:none;width:20px;height:20px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18);transition:transform .32s var(--bub,cubic-bezier(.34,1.56,.64,1)),box-shadow .2s}
+.aydot.on::before{box-shadow:0 0 0 2px var(--bg,#111),0 0 0 4px var(--c);transform:scale(.86)}
+.aydot:active::before{transform:scale(.78)}
+.aysep{display:block;flex:none;width:1px;height:22px;background:var(--line);margin:0 4px}
+/* the menu: four labelled colours on top, then the groups */
+.aygrp .aydots{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:2px 0 4px;width:100%}
+.aygrp .aydot{display:flex;align-items:center;gap:8px;border:0;background:none;color:var(--text);font:inherit;font-size:13.5px;padding:9px 10px;border-radius:9px;cursor:pointer;text-align:start}
+.aygrp .aydot::before{width:16px;height:16px}
+.aygrp .aydot.on{background:color-mix(in srgb,var(--c) 18%,transparent)}
+.aygrp .aydot:hover{background:color-mix(in srgb,var(--c) 12%,transparent)}
+.aygh{font-size:11.5px;color:var(--muted);padding:8px 10px 2px;border-top:1px solid var(--line);margin-top:4px}
+.aymenu .aygrid button .uic{width:18px;height:18px}
+/* marks painted on the tajweed Qalun pictures (multiply in light, screen in dark, so the tajweed colours stay readable) */
+.qtjmk{position:absolute;pointer-events:none;z-index:1;overflow:visible}
+.qtjmk rect{fill-opacity:.14;mix-blend-mode:multiply}
+.mushaf.dark .qtjmk rect{fill-opacity:.16;mix-blend-mode:screen}
+@media (prefers-reduced-motion:reduce){.aydot::before{transition:none}}
