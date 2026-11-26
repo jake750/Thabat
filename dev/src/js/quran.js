@@ -121,10 +121,14 @@ function qLayout(r,p){const B=QB[r];if(B.cache[p])return B.cache[p];const g=B.pa
   const lines={};let a=0;let maxNat=tgt;tl.forEach((L,j)=>{const b=cuts[j]??N;lines[L]={w:W.slice(a,b),k:WK.slice(a,b),nat:width(a,b)};maxNat=Math.max(maxNat,width(a,b));a=b});
   return B.cache[p]={lines,maxNat,short:p<=2,sp}}
 function qTextPageHTML(p,r){return`<div class="mp" data-p="${p}" data-r="${r}"></div>`}
+/* font size: his pick «C» of four (about +10 %): word gaps shrink to 15 %, the freed width goes to the glyphs; qLayout is unchanged, so every line keeps the same words.
+   Height cap .61 of a line: above about .62 a deep letter can touch the marks of the next line (Hafs p. 341 «تُرۡجَعُ» / «وَٱسۡجُدُواْۤ»), checked on all 604 pages */
+const QGAPK=.15;
 function qRenderMP(el){const r=el.dataset.r,p=+el.dataset.p,B=QB[r];if(!B)return;const box=el.parentElement;const Wb=box.clientWidth,Hb=box.clientHeight;if(!Wb||!Hb)return;
-  const Lh=Hb/15,lay=qLayout(r,p),g=B.pages[p];let fs=Math.min(Wb*0.955/(lay.maxNat/100),Lh*0.6);const lineW=lay.short?Wb:Math.min(Wb,lay.maxNat*fs/100*1.04);
+  const Lh=Hb/15,lay=qLayout(r,p),g=B.pages[p];let mx=0;for(const L of Object.values(lay.lines))mx=Math.max(mx,L.nat-Math.max(0,L.w.length-1)*lay.sp*(1-QGAPK));
+  const fs0=Math.min(Wb*0.955/(lay.maxNat/100),Lh*0.6);let fs=mx?Math.min(Wb*0.99/(mx/100),Lh*0.61):fs0;const lineW=lay.short?Wb:Math.min(Wb,Math.max(lay.maxNat*fs0/100*1.04,mx*fs/100*1.02));
   let h='';for(let l=1;l<=15;l++){const t_=g.ln[l];
-    if(t_==='t'){const L=lay.lines[l];h+=`<div class="ml ${lay.short?'c':''}" style="gap:${lay.sp/100}em">${L.w.map((w,i)=>{const m=w.match(/^([\s\S]*?)([\s\u00a0]*[\u0660-\u0669\u06F0-\u06F9]+)$/);return`<span data-k="${L.k[i]}">${m?esc(m[1])+'<i class="aen">'+esc(m[2])+'</i>':esc(w)}</span>`}).join('')}</div>`}
+    if(t_==='t'){const L=lay.lines[l];h+=`<div class="ml ${lay.short?'c':''}" style="gap:${lay.sp*QGAPK/100}em">${L.w.map((w,i)=>{const m=w.match(/^([\s\S]*?)([\s\u00a0]*[\u0660-\u0669\u06F0-\u06F9]+)$/);return`<span data-k="${L.k[i]}">${m?esc(m[1])+'<i class="aen">'+esc(m[2])+'</i>':esc(w)}</span>`}).join('')}</div>`}
     else if(t_&&t_.k==='n')h+=`<div class="ml sn"><span class="snb">سورة ${esc(QS[t_.s-1][0])}</span></div>`;
     else if(t_&&t_.k==='b')h+=`<div class="ml c">${esc(B.bas)}</div>`;
     else if(!lay.short)h+=`<div class="ml"></div>`}
